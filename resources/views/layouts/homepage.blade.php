@@ -1,0 +1,163 @@
+@extends('layouts.navigation')
+<style>
+    .custom {
+      height: 400px;
+      width: 100%;
+      padding-bottom: 50px;
+      padding-top: 10px;
+    }
+  </style>
+<main id="main" class="main">
+
+  @auth
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-circle me-1"></i>
+        Hello Welcome back!!  {{Auth::user()->fname .' '. Auth::user()->lname .' '. Auth::user()->mname}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  @endauth
+
+  
+  @foreach($announcements as $announcementId => $photos)
+  <div class="card">
+      <div class="card-body" style="padding-top: 20px">
+          
+            <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <img style="width: 50px; height: 40px;" class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
+                </div>
+                <div class="ps-3">
+                    <h4>{{ $photos[0]->fname .' '. $photos[0]->mname .' '. $photos[0]->lname }}</h4>
+                    <span style="font-size: smaller">({{ $photos[0]->role }}) {{ $photos[0]->created_time }}</span>
+                </div>
+            </div>
+
+            <h5 style="font-style: italic; padding-bottom: 20px; padding-top: 30px;">{{ $photos[0]->title }}</h5>
+            <h6>{{ $photos[0]->content }}</h6>
+       
+              <div class="row">
+                  @php $displayedPhotos = 0; @endphp
+                  @foreach($photos as $key => $photo)
+                      @if($key < 3) 
+                          <div class="col-md-4 mb-3">
+                              <a data-bs-toggle="modal" data-bs-target="#LargeImageModal{{ $announcementId }}_{{ $key }}">
+                                  <img src="{{ asset('images/'.$photo->img_path) }}" class="custom" alt="...">
+                              </a>
+                          </div>
+                          <div class="modal fade" id="LargeImageModal{{ $announcementId }}_{{ $key }}" tabindex="-1" aria-labelledby="LargeImageModalLabel" aria-hidden="true">
+                              <div class="modal-dialog modal-lg">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h5 class="modal-title" id="LargeImageModalLabel"></h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <img src="{{ asset('images/'.$photo->img_path) }}" class="img-fluid" alt="Large Image" style="width: 100%; height: 100vh;">
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          @php $displayedPhotos++; @endphp
+                      @endif
+                  @endforeach
+              </div>
+
+            <div class="row" style="padding-bottom: 20px">
+
+                <div>
+                    <button data-id="{{$photos[0]->announcement_id}}" type="button" class="btn btn-outline-dark commentshowBtn" data-bs-toggle="modal" data-bs-target="#showcomments">
+                        Comments <i class="bi bi-chat-dots"></i>
+                    </button>
+                    @if(count($photos) > 3)
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#RemainingImagesModal{{ $announcementId }}">
+                            +{{ count($photos) - 3 }} <i class="bi bi-images"></i>
+                        </button>
+                    @endif
+                </div>
+            
+                <div class="modal fade" id="showcomments" tabindex="-1">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header" >
+                        <h5 id="header" class="modal-title" >All Comments <i class="bi bi-chat-dots"></i></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <section class="section profile">
+                          <div class="row">
+                            <div class="col-xl-4">
+                            </div>
+                            <div class="col-xl-12">
+                              
+                              <div id="try" style="padding-bottom: 30px">
+
+                              </div>
+
+                              <form id="addcommentform" class="row g-3" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" class="form-control id" id="announcement_id" name="announcement_id">
+                                <div class="col-md-10">
+                                  <input type="text" id="content" name="content" class="form-control" placeholder="Write a comment">
+                                </div>
+                                <div class="col-md-2">
+                                  <button data-id="{{$photo->announcement_id}}" type="submit" class="btn btn-outline-dark addcommentBtn">Comment</button>
+                                </div>
+                              </form>
+                         
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="modal fade" id="RemainingImagesModal{{ $announcementId }}" tabindex="-1" aria-labelledby="RemainingImagesModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="RemainingImagesModalLabel">Remaining Picture(s) <i class="bi bi-images"></i></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="carouselRemaining{{ $announcementId }}" class="carousel slide" data-bs-ride="carousel">
+                                      <div class="carousel-inner">
+                                        @for ($i = 3; $i < count($photos); $i++)
+                                            <div class="carousel-item {{ $i === 3 ? 'active' : '' }}">
+                                                <a data-bs-toggle="modal" data-bs-target="#LargeImageModal{{ $announcementId }}_{{ $i }}">
+                                                  <img src="{{ asset('images/'.$photos[$i]->img_path) }}" class="d-block mx-auto" style="width: 100%; height: 100vh;" alt="...">
+                                                </a>
+                                            </div>  
+                                        @endfor
+                                    </div>
+      
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselRemaining{{ $announcementId }}" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselRemaining{{ $announcementId }}" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                      </div>
+                </div>
+
+            </div>
+            
+          </div>
+      </div>
+  </div>
+  @endforeach
+  
+</main>
