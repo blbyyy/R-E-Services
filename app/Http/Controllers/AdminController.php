@@ -56,6 +56,7 @@ class AdminController extends Controller
         return View::make('admin.dashboard',compact('usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount'));
     }
 
+    //show comments
     public function showannouncement()
     {
         $student = DB::table('students')
