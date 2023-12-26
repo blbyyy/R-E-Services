@@ -79,14 +79,6 @@ class FacultyController extends Controller
         $faculty->address = $request->address;
         $faculty->birthdate = $request->birthdate;
 
-        // $files = $request->file('avatar');
-        // $faculty->avatar = 'images/'.time().'-'.$files->getClientOriginalName();
-
-        // $faculty->save();
-
-        // $data = array('status' => 'saved');
-        // Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
-
         $user = User::find(Auth::id());
         $user->fname = $request->fname;
         $user->lname = $request->lname;

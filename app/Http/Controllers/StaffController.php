@@ -79,14 +79,6 @@ class StaffController extends Controller
         $staff->address = $request->address;
         $staff->birthdate = $request->birthdate;
 
-        // $files = $request->file('avatar');
-        // $staff->avatar = 'images/'.time().'-'.$files->getClientOriginalName();
-
-        // $staff->save();
-
-        // $data = array('status' => 'saved');
-        // Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
-
         $user = User::find(Auth::id());
         $user->fname = $request->fname;
         $user->lname = $request->lname;

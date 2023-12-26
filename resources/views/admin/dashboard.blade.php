@@ -4,9 +4,8 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="row">
-  
               
-              <div class="col-xxl-4 col-md-4">
+            <div class="col-xxl-6 col-md-6">
                 <div class="card info-card black-card">
                     <div class="filter">
                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -34,72 +33,36 @@
                     </div>
                 </div>
             </div>
-            
-  
-              <div class="col-xxl-4 col-md-4">
-                <div class="card info-card black-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Applications</h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bi bi-file-earmark-text"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>{{$applicationCount}}</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="col-xxl-4 col-xl-4">
-                <div class="card info-card blue-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Pending Applications</h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bi bi-clipboard-x"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>{{$pendingCount}}</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="col-xxl-4 col-md-4">
-                <div class="card info-card green-card">  
-                  <div class="card-body">
-                    <h5 class="card-title">Passed Application</h5>
-                    <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                          <i class="bi bi-clipboard-check"></i>
-                        </div>
-                      <div class="ps-3">
-                        <h6>{{$passedCount}}</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Customers Card -->
 
-              <div class="col-xxl-4 col-xl-4">
-                <div class="card info-card red-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Returned Applications</h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bi bi-clipboard-x"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>{{$returnedCount}}</h6>
-                      </div>
-                    </div>
+            <div class="col-xxl-6 col-md-6">
+              <div class="card info-card blue-card">
+                  <div class="filter">
+                      <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                          <li class="dropdown-header text-start">
+                              <h6>Filter</h6>
+                          </li>
+                          <li><a class="dropdown-item filter-options" data-filter="applications" href="#">All</a></li>
+                          <li><a class="dropdown-item filter-options" data-filter="pending" href="#">Pending</a></li>
+                          <li><a class="dropdown-item filter-options" data-filter="passed" href="#">Passed</a></li>
+                          <li><a class="dropdown-item filter-options" data-filter="returned" href="#">Returned</a></li>
+                      </ul>
                   </div>
-                </div>
+          
+                  <div id="application-table" class="card-body">
+                    <h5 class="card-title">Applications <span id="filterTexts">| All</span></h5>
+                      <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-file-earmark-text"></i>
+                          </div>
+                          <div class="ps-3">
+                              <h6 id="applicationCount">{{$applicationCount}}</h6>
+                          </div>
+                      </div>
+                  </div>
               </div>
-
+            </div>
+          
             </div>
           </div>
         </div>
@@ -161,6 +124,62 @@
               filterText = '';
       }
       $('#filterText').text('| ' + filterText);
+  }
+
+  $(document).ready(function() {
+      // Initial display (All users count)
+      displayApplicationCount('applications');
+
+      // Event handler for filter options
+      $('.filter-options').click(function() {
+          var filterValue = $(this).data('filter');
+          displayApplicationCount(filterValue);
+      });
+  });
+
+  function displayApplicationCount(filter) {
+      var count;
+
+      // Determine the count based on the selected filter
+      switch (filter) {
+          case 'applications':
+              count = {{$applicationCount}};
+              break;
+          case 'pending':
+              count = {{$pendingCount}};
+              break;
+          case 'passed':
+              count = {{$passedCount}};
+              break;
+          case 'returned':
+              count = {{$returnedCount}};
+              break;
+          default:
+              count = 0;
+      }
+
+      // Update the user count
+      $('#applicationCount').text(count);
+
+      // Update the filter text
+      var filterTexts;
+      switch (filter) {
+          case 'applications':
+              filterText = 'All';
+              break;
+          case 'pending':
+              filterText = 'Pending';
+              break;
+          case 'passed':
+              filterText = 'Passed';
+              break;
+          case 'returned':
+              filterText = 'Returned';
+              break;
+          default:
+              filterText = '';
+      }
+      $('#filterTexts').text('| ' + filterText);
   }
 </script>
 
