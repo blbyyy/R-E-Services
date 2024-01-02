@@ -17,6 +17,9 @@
     }
 </style>
 <main id="main" class="main">
+    <div class="pagetitle">
+        <h1>My Files</h1>
+    </div>
     <div class="row g-4">
         <div class="col-12">
             <button type="button" class="btn btn-dark" onclick="toggleFileUploadForm()"><i class="bi bi-folder-plus"></i> Upload File</button>

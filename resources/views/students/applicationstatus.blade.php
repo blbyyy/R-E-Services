@@ -1,22 +1,25 @@
 @extends('layouts.navigation')
-<main id="main" class="main">
 <style>
-    .icon{
-        font-size: 8em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-top: 30px;
-        padding-bottom: 50px;
-        color: maroon;
-    }
-    .body{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-bottom: 50px;
-    }
+  .icon{
+      font-size: 8em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 30px;
+      padding-bottom: 50px;
+      color: maroon;
+  }
+  .body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 50px;
+  }
 </style>
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Applications Status</h1>
+</div>
 <div class="row g-4">
   @if(count($studentstats) > 0)
     @foreach($studentstats as $stats)

@@ -26,22 +26,84 @@ Route::view('/CreateAccount', 'layouts.createacc');
 
 Route::view('/Contact', 'layouts.contact');
 
-Route::post('/apply/certification/requested/{id}',[
-    'uses' => 'RequestingFormController@apply_certification',
-    'as' => 'StudentRequested'
+//START STUDENT POV
+Route::view('/Register/Student', 'students.register');
+
+Route::post('Student/Registered',[
+    'uses' => 'StudentController@register',
+    'as' => 'StudentRegistered'
 ]);
 
+Route::get('/Student/Profile/{id}', [
+    'uses' => 'StudentController@profile',
+          'as' => 'student.profile'
+  ]);
+
+Route::put('/Student/Profile/Updated/{id}', [
+    'uses' => 'StudentController@updateprofile',
+          'as' => 'student.update-profile'
+  ]);
+
+Route::post('/Student/Profile/Avatar/Changed', [
+    'uses' => 'StudentController@changeavatar',
+          'as' => 'updateavatar'
+  ]);
+
 Route::get('/apply/certification', [
-    'uses' => 'RequestingFormController@certification_page',
+    'uses' => 'StudentController@certification',
           'as' => 'certification.page'
   ]);
 
 Route::get('/application/status', [
-    'uses' => 'RequestingFormController@application_status',
+    'uses' => 'StudentController@application_status',
           'as' => 'application.status'
   ]);
 
-Route::get('/application/status/{id}', 'RequestingFormController@show')->name('get-specific-data');
+Route::get('/application/status/{id}', 'StudentController@show_application')->name('get-specific-data');
+
+Route::post('/apply/certification/requested/{id}',[
+    'uses' => 'StudentController@apply_certification',
+    'as' => 'StudentRequested'
+]);
+//END OF STUDENT POV
+
+//START STAFF POV
+Route::view('/Register/Staff', 'staff.register');
+
+Route::post('Staff/Registered',[
+    'uses' => 'StaffController@register',
+    'as' => 'StaffRegistered'
+]);
+
+Route::get('/Staff/Profile/{id}', [
+    'uses' => 'StaffController@profile',
+          'as' => 'staff.profile'
+  ]);
+
+Route::put('/Staff/Profile/Updated/{id}', [
+    'uses' => 'StaffController@updateprofile',
+          'as' => 'staff.update-profile'
+  ]);
+//END OF STAFF POV
+
+//START FACULTY POV
+Route::view('/Register/Faculty', 'faculty.register');
+
+Route::post('Faculty/Registered',[
+    'uses' => 'FacultyController@register',
+    'as' => 'FacultyRegistered'
+]);
+
+Route::get('/Faculty/Profile/{id}', [
+    'uses' => 'FacultyController@profile',
+          'as' => 'faculty.profile'
+  ]);
+
+Route::put('/Faculty/Profile/Updated/{id}', [
+    'uses' => 'FacultyController@updateprofile',
+          'as' => 'faculty.update-profile'
+  ]);
+//END OF FACULTY POV
 
 Route::get('/applicationlist', [
     'uses' => 'RequestingFormController@application_list',
@@ -77,44 +139,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logoutss', 'HomeController@perform');
 });
 
-Route::view('/Register/Student', 'students.register');
 
-Route::post('Student/Registered',[
-    'uses' => 'StudentController@register',
-    'as' => 'StudentRegistered'
-]);
-
-Route::get('/Student/Profile/{id}', [
-    'uses' => 'StudentController@profile',
-          'as' => 'student.profile'
-  ]);
-
-Route::put('/Student/Profile/Updated/{id}', [
-    'uses' => 'StudentController@updateprofile',
-          'as' => 'student.update-profile'
-  ]);
-
-Route::post('/Student/Profile/Avatar/Changed', [
-    'uses' => 'StudentController@changeavatar',
-          'as' => 'updateavatar'
-  ]);
-
-Route::view('/Register/Staff', 'staff.register');
-
-Route::post('Staff/Registered',[
-    'uses' => 'StaffController@register',
-    'as' => 'StaffRegistered'
-]);
-
-Route::get('/Staff/Profile/{id}', [
-    'uses' => 'StaffController@profile',
-          'as' => 'staff.profile'
-  ]);
-
-Route::put('/Staff/Profile/Updated/{id}', [
-    'uses' => 'StaffController@updateprofile',
-          'as' => 'staff.update-profile'
-  ]);
 
 Route::get('/Admin/Profile/{id}', [
     'uses' => 'AdminController@profile',
@@ -126,22 +151,7 @@ Route::put('/Admin/Profile/Updated/{id}', [
           'as' => 'admin.update-profile'
   ]);
 
-Route::view('/Register/Faculty', 'faculty.register');
 
-Route::post('Faculty/Registered',[
-    'uses' => 'FacultyController@register',
-    'as' => 'FacultyRegistered'
-]);
-
-Route::get('/Faculty/Profile/{id}', [
-    'uses' => 'FacultyController@profile',
-          'as' => 'faculty.profile'
-  ]);
-
-Route::put('/Faculty/Profile/Updated/{id}', [
-    'uses' => 'FacultyController@updateprofile',
-          'as' => 'faculty.update-profile'
-  ]);
 
 Route::post('/request',[
     'uses' => 'RequestingFormController@store',
@@ -323,7 +333,7 @@ Route::post('/student/myfiles/upload', 'StudentController@upload_file')->name('u
 
 Route::get('/show/pdf/{id}', 'StudentController@pdfinfo')->name('pdf.info');
 
-Route::get('/get/file/{id}', 'RequestingFormController@getfile_id')->name('get-file-id');
+Route::get('/get/file/{id}', 'StudentController@getfile_id')->name('get-file-id');
 
 Route::get('/application/status/certification/{id}', 'AdminController@admin_certification')->name('admin-certification');
 

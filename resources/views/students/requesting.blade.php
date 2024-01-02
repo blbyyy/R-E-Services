@@ -17,6 +17,9 @@
   }
 </style>
 <main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Certification</h1>
+  </div>
 
   <div class="row g-4">
     @if(count($myfiles) > 0)

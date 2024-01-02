@@ -27,7 +27,7 @@
                     <div>
                       <img id="img" class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" />
                     </div>
-                      <<div class="text-center" style="padding-bottom: 10px; padding-top: 10px">
+                      <div class="text-center" style="padding-bottom: 10px; padding-top: 10px">
                         <button id="toggleForm" type="submit" class="btn btn-outline-dark">Change Avatar</button>
                       </div>
                       <form style="display: none;" id="avatarForm" class="row g-3" method="POST" action="{{ route('updateavatar') }}" enctype="multipart/form-data">
