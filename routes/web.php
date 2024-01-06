@@ -46,25 +46,59 @@ Route::put('/Student/Profile/Updated/{id}', [
 
 Route::post('/Student/Profile/Avatar/Changed', [
     'uses' => 'StudentController@changeavatar',
-          'as' => 'updateavatar'
+          'as' => 'student_update_avatar'
+  ]);
+
+
+Route::post('/Student/Profile/Avatar/Change-Password', [
+    'uses' => 'StudentController@changePassword',
+          'as' => 'student_change_password'
   ]);
 
 Route::get('/apply/certification', [
     'uses' => 'StudentController@certification',
-          'as' => 'certification.page'
+          'as' => 'student.certification.page'
   ]);
 
 Route::get('/application/status', [
     'uses' => 'StudentController@application_status',
-          'as' => 'application.status'
+          'as' => 'student.application.status'
   ]);
 
-Route::get('/application/status/{id}', 'StudentController@show_application')->name('get-specific-data');
+Route::get('/application/status/{id}', [
+    'uses' => 'StudentController@show_application',
+          'as' => 'student.get-specific-data'
+  ]);
 
 Route::post('/apply/certification/requested/{id}',[
     'uses' => 'StudentController@apply_certification',
     'as' => 'StudentRequested'
 ]);
+
+Route::get('/student/myfiles', [
+    'uses' => 'StudentController@myfiles',
+          'as' => 'student_myfiles'
+  ]);
+
+Route::post('/student/myfiles/upload',[
+    'uses' => 'StudentController@upload_file',
+    'as' => 'student_upload_file'
+]);
+
+Route::get('/pdf/{fileName}', [
+    'uses' => 'StudentController@showpdf',
+          'as' => 'student_pdf_show'
+  ]);
+
+Route::get('/show/pdf/{id}', [
+    'uses' => 'StudentController@pdfinfo',
+          'as' => 'student_pdf_info'
+  ]);
+
+Route::get('/get/file/{id}', [
+    'uses' => 'StudentController@getfile_id',
+          'as' => 'student_get-file-id'
+  ]);
 //END OF STUDENT POV
 
 //START STAFF POV
@@ -83,6 +117,61 @@ Route::get('/Staff/Profile/{id}', [
 Route::put('/Staff/Profile/Updated/{id}', [
     'uses' => 'StaffController@updateprofile',
           'as' => 'staff.update-profile'
+  ]);
+
+Route::post('/Staff/Profile/Avatar/Changed', [
+    'uses' => 'StaffController@changeavatar',
+          'as' => 'staff_update_avatar'
+  ]);
+
+Route::post('/Staff/Profile/Avatar/Change-Password', [
+    'uses' => 'StaffController@changePassword',
+          'as' => 'staff_change_password'
+  ]);
+
+Route::get('/staff/myfiles', [
+    'uses' => 'StaffController@myfiles',
+          'as' => 'staff_myfiles'
+  ]);
+
+Route::post('/staff/myfiles/upload',[
+    'uses' => 'StaffController@upload_file',
+    'as' => 'staff_upload_file'
+]);
+
+Route::get('/staff/pdf/{fileName}', [
+    'uses' => 'StaffController@showpdf',
+          'as' => 'staff_pdf_show'
+  ]);
+
+Route::get('/staff/show/pdf/{id}', [
+    'uses' => 'StaffController@pdfinfo',
+          'as' => 'staff_pdf_info'
+  ]);
+
+Route::get('/staff/get/file/{id}', [
+    'uses' => 'StaffController@getfile_id',
+          'as' => 'staff_get-file-id'
+  ]);
+
+Route::get('/staff/apply/certification', [
+    'uses' => 'StaffController@certification',
+          'as' => 'certification.page'
+  ]);
+
+Route::post('/staff/apply/certification/requested/{id}',[
+    'uses' => 'StaffController@apply_certification',
+    'as' => 'StaffRequested'
+]);
+
+Route::get('/staff/application/status', [
+    'uses' => 'StaffController@application_status',
+          'as' => 'staff.application.status'
+  ]);
+
+Route::get('/staff/application/status/{id}', [
+    'uses' => 'StaffController@show_application',
+          'as' => 'staff.get-specific-data'
   ]);
 //END OF STAFF POV
 
@@ -123,8 +212,20 @@ Route::get('/', function () {
         ->select('students.*','users.*')
         ->where('user_id',Auth::id())
         ->first();
+    
+    $staff = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
 
-        return View::make('layouts.navigation',compact('admin','student'));
+    $faculty = DB::table('faculty')
+        ->join('users','users.id','faculty.user_id')
+        ->select('faculty.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        return View::make('layouts.navigation',compact('admin','student','staff','faculty'));
 
 });
 
@@ -325,15 +426,7 @@ Route::get('/tryupload', function () {
 
 // Route::post('/upload', 'ResearchController@upload')->name('tryuploads');
 
-Route::get('/pdf/{fileName}', 'StudentController@showpdf')->name('pdf.show');
 
-Route::get('/student/myfiles', 'StudentController@myfiles')->name('myfiles');
-
-Route::post('/student/myfiles/upload', 'StudentController@upload_file')->name('uploadfile');
-
-Route::get('/show/pdf/{id}', 'StudentController@pdfinfo')->name('pdf.info');
-
-Route::get('/get/file/{id}', 'StudentController@getfile_id')->name('get-file-id');
 
 Route::get('/application/status/certification/{id}', 'AdminController@admin_certification')->name('admin-certification');
 
@@ -341,8 +434,6 @@ Route::post('/application/status/certification/{id}/sent', [
     'uses' => 'AdminController@certification',
           'as' => 'certification'
   ]);
-
-Route::post('/change-password', 'StudentController@changePassword')->name('change.password');
 
 // Route::get('/events', [CalendarController::class, 'index']);
 Route::get('/events', 'CalendarController@index')->name('events');

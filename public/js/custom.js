@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    //research status
+    //student view application status
     $(".view-details-button").click(function() {
         var id = $(this).data('id');
         console.log(id)
@@ -820,7 +820,7 @@ $(document).ready(function () {
         });
     });
     
-    //view pdf 
+    //student view pdf  
     $(".showpdfinfo").click(function () {
         var id = $(this).data("id");
         $.ajax({
@@ -899,7 +899,7 @@ $(document).ready(function () {
         });
     });
 
-    //applying certification
+    //student applying certification
     $(".applycertification").on("click", function (e) {
         e.preventDefault();
         var id = $(this).data("id");
@@ -1047,6 +1047,180 @@ $(document).ready(function () {
 
     });
 
-    // event calendar 
+    //delete staff file
+    $(".stafffiledeleteBtn").on("click", function (e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+        console.log(id);
+            Swal.fire({
+            title: 'Are you sure you want to delete this file?',
+            text: "You won't be able to undo this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/staff/myfiles/" + id + "/deleted",
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        setTimeout(function() {
+                            window.location.href = '/staff/myfiles';
+                        }, 1500);
+                        console.log(data);
+                        Swal.fire(
+                            'Deleted!',
+                            'File has been deleted.',
+                            'success'
+                          )
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                });
+
+            }
+          })
+
+    });
+
+    //staff view pdf  
+    $(".staffshowpdfinfo").click(function () {
+        var id = $(this).data("id");
+        $.ajax({
+            type: "GET",
+            url: "/staff/show/pdf/" + id,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            dataType: "json",
+            success: function (data) {
+                var pdfUrl = '/uploads/pdf/' + data.research_file;
+    
+                // Dynamically create an <embed> element
+                var embedElement = document.createElement("embed");
+                embedElement.setAttribute("src", pdfUrl);
+                embedElement.setAttribute("type", "application/pdf");
+                embedElement.setAttribute("width", "100%");
+                embedElement.setAttribute("height", "600px");
+    
+                // Replace the existing content of the container with the new <embed> element
+                $('#content').text(data.research_title);
+                $("#pdf-container").html(embedElement);
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+    });
+
+    //staff applying certification
+    $(".staffapplycertification").on("click", function (e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+        let editformData = new FormData($("#staffcertificationform")[0]);
+        for(var pair of editformData.entries()){
+            console.log(pair[0] + ',' + pair[1]);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/staff/apply/certification/requested/" + id ,
+            data: editformData,
+            contentType: false,
+            processData: false,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                setTimeout(function() {
+                    window.location.href = '/staff/apply/certification';
+                }, 1500);
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Request Sent',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+    });
+
+    //staff view application status
+    $(".staff-view-details-button").click(function() {
+        var id = $(this).data('id');
+        console.log(id)
+        $.ajax({
+            url: '/staff/application/status/' + id, 
+            type: 'GET',
+            success: function(data) {
+                console.log(data.certificate_file);
+
+                $("#research_title").text(data.research_title);
+                $("#thesis_type").text(data.thesis_type);
+                $("#submission_frequency").text(data.submission_frequency);
+                $("#adviser_name").text(data.adviser_name);
+                $("#adviser_email").text(data.adviser_email);
+                $("#research_specialist").text(data.research_specialist);
+                $("#research_staff").text(data.research_staff);
+                if (data.status === "Pending") {
+                    $("#status").html('<span class="badge border-success border-1 text-success"><h5>Pending</h5></span>');
+                } else if (data.status === "Returned") {
+                    $("#status").html('<span class="badge border-warning border-1 text-danger"><h5>Returned</h5></span>');
+                } else if (data.status === "Passed") {
+                    $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
+
+                    var pdfLink = $('<a>', {
+                        href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
+                        text: "Download PDF",
+                        target: "_blank"
+                    });
+                    $("#certificate").empty().append(pdfLink);
+
+                    $('#viewInfo').on('hidden.bs.modal', function () {
+                        $("#staffviewInfo").empty();
+                    });
+
+
+                }
+                $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
+                $("#simmilarity_percentage_results").text(data.simmilarity_percentage_results + " %");
+                $("#requestor_name").text(data.requestor_name);
+                $("#student_id").text(data.tup_id);
+                $("#tup_mail").text(data.tup_mail);
+                $("#requestor_type").text(data.requestor_type);
+                $("#sex").text(data.sex);
+                $("#course").text(data.course);
+                $("#college").text(data.college);
+                $("#researchers_name1").text(data.researchers_name1);
+                $("#researchers_name2").text(data.researchers_name2);
+                $("#researchers_name3").text(data.researchers_name3);
+                $("#researchers_name4").text(data.researchers_name4);
+                $("#researchers_name5").text(data.researchers_name5);
+                $("#researchers_name6").text(data.researchers_name6);
+                $("#researchers_name7").text(data.researchers_name7);
+                $("#researchers_name8").text(data.researchers_name8);
+            }, 
+            error: function (error) {
+                console.log(error);
+            },
+        });
+    });
+ 
     
 });

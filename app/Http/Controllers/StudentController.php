@@ -115,6 +115,29 @@ class StudentController extends Controller
         return redirect()->to('/Student/Profile/{id}')->with('success', 'Avatar changed successfully.');
     }
     
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required',
+            'newpassword' => 'required|min:8',
+            'renewpassword' => 'required|same:newpassword',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->password, $user->password)) {
+            return redirect()->back()->with('error', 'Current password is incorrect.');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->newpassword),
+        ]);
+
+        Alert::success('Success', 'Password changed successfully!');
+
+        return redirect()->to('/Student/Profile/{id}')->with('success', 'Password changed successfully.');
+    }
+
     public function myfiles()
     {
         $student = DB::table('students')
@@ -203,29 +226,6 @@ class StudentController extends Controller
     {
         $cert = Files::find($id);
         return response()->json($cert);
-    }
-
-    public function changePassword(Request $request)
-    {
-        $request->validate([
-            'password' => 'required',
-            'newpassword' => 'required|min:8',
-            'renewpassword' => 'required|same:newpassword',
-        ]);
-
-        $user = Auth::user();
-
-        if (!Hash::check($request->password, $user->password)) {
-            return redirect()->back()->with('error', 'Current password is incorrect.');
-        }
-
-        $user->update([
-            'password' => Hash::make($request->newpassword),
-        ]);
-
-        Alert::success('Success', 'Password changed successfully!');
-
-        return redirect()->to('/Student/Profile/{id}')->with('success', 'Password changed successfully.');
     }
 
     public function certification()

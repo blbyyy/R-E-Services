@@ -299,19 +299,19 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="">
+        <a class="nav-link " href="{{url('/staff/myfiles')}}">
           <i class="bi bi-folder"></i>
           <span>My Files</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="">
+        <a class="nav-link " href="{{url('/staff/apply/certification')}}">
           <i class="bi bi-award"></i>
           <span>Certification</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="">
+        <a class="nav-link " href="{{url('/staff/application/status')}}">
           <i class="bi bi-file-earmark-bar-graph"></i>
           <span>Application Status</span>
         </a>

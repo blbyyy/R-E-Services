@@ -30,7 +30,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Upload a file</h5>
         
-                    <form class="row g-3" method="POST" action="{{ route('student_upload_file') }}" enctype="multipart/form-data">
+                    <form class="row g-3" method="POST" action="{{ route('staff_upload_file') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="col-12">
                             <label for="research_title" class="form-label">Research Title</label>
@@ -63,10 +63,10 @@
                             </div>
                         
                             <center>
-                                <button type="button" class="btn btn-outline-dark showpdfinfo" data-bs-toggle="modal" data-bs-target="#showfiles" data-id="{{$files->id}}">
+                                <button type="button" class="btn btn-outline-dark staffshowpdfinfo" data-bs-toggle="modal" data-bs-target="#showfiles" data-id="{{$files->id}}">
                                     <i class="bi bi-info-circle"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-dark filedeleteBtn" data-id="{{$files->id}}">
+                                <button type="button" class="btn btn-outline-dark stafffiledeleteBtn" data-id="{{$files->id}}">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </center>
@@ -111,6 +111,7 @@
           </div>
         </div>
 </main>
+
 <script>
     function showFileUploadForm() {
         document.getElementById('fileUploadForm').style.display = 'block';

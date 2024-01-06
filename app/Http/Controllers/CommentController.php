@@ -45,8 +45,7 @@ class CommentController extends Controller
         ->where('announcements.id', $id)
         ->get();
     
-    return response()->json($comments);
-    
+        return response()->json($comments);
     }
 
     public function addcomment(Request $request, $id)

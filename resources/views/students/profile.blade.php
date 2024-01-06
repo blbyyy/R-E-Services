@@ -1,6 +1,7 @@
 @extends('layouts.navigation')
 @include('sweetalert::alert')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>My Profile</h1>
@@ -30,7 +31,7 @@
                       <div class="text-center" style="padding-bottom: 10px; padding-top: 10px">
                         <button id="toggleForm" type="submit" class="btn btn-outline-dark">Change Avatar</button>
                       </div>
-                      <form style="display: none;" id="avatarForm" class="row g-3" method="POST" action="{{ route('updateavatar') }}" enctype="multipart/form-data">
+                      <form style="display: none;" id="avatarForm" class="row g-3" method="POST" action="{{ route('student_update_avatar') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="col-sm-8">
                           <input class="form-control" type="file" id="avatar" name="avatar">
@@ -46,7 +47,7 @@
                       <div class="text-center" style="padding-bottom: 10px; padding-top: 10px">
                         <button id="toggleForm" type="submit" class="btn btn-outline-dark">Change Avatar</button>
                       </div>
-                      <form style="display: none;" id="avatarForm" class="row g-3" method="POST" action="{{ route('updateavatar') }}" enctype="multipart/form-data">
+                      <form style="display: none;" id="avatarForm" class="row g-3" method="POST" action="{{ route('student_update_avatar') }}" enctype="multipart/form-data">
                         @csrf
                           <div class="col-sm-8">
                             <input class="form-control" type="file" id="avatar" name="avatar">
@@ -280,7 +281,6 @@
 
                 </div>
                
-
                 <div class="tab-pane fade pt-3" id="profile-settings">
 
                 </div>
@@ -288,7 +288,7 @@
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
 
-                  <form action="{{ route('change.password') }}" method="post">
+                  <form action="{{ route('student_change_password') }}" method="post">
                     @csrf
                 
                     <div class="row mb-3">
@@ -299,16 +299,17 @@
                     </div>
                 
                     <div class="row mb-3">
-                        <label for="newpassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                        <div class="col-md-8 col-lg-9">
-                            <input name="newpassword" type="password" class="form-control" id="newpassword" required>
-                        </div>
+                      <label for="newpassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                      <div class="col-md-8 col-lg-9">
+                          <input name="newpassword" type="password" class="form-control" id="newpassword" required>
+                      </div>
                     </div>
-                
+                  
                     <div class="row mb-3">
                         <label for="renewpassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                         <div class="col-md-8 col-lg-9">
                             <input name="renewpassword" type="password" class="form-control" id="renewpassword" required>
+                            <span id="passwordMatchMessage"></span>
                         </div>
                     </div>
                 
@@ -329,15 +330,13 @@
     </section>
 
   </main>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script>
-     $(document).ready(function () {
+  $(document).ready(function () {
         // When the "Change Avatar" button is clicked
         $("#toggleForm").click(function () {
             // Toggle the visibility of the form
             $("#avatarForm").toggle();
         });
-    
 
     let img = document.getElementById('img');
     let input = document.getElementById('avatar');
@@ -346,5 +345,20 @@
       if (input.files[0])
       img.src = URL.createObjectURL(input.files[0])
     }
+
+    $('#newpassword, #renewpassword').on('input', function () {
+                  var newPassword = $("#newpassword").val();
+                  var renewPassword = $("#renewpassword").val();
+                  var messageSpan = $("#passwordMatchMessage");
+
+                  if (newPassword === renewPassword) {
+                      messageSpan.text("Password match.");
+                      messageSpan.css('color', 'green');
+                  } else {
+                      messageSpan.text("Password did not match.");
+                      messageSpan.css('color', 'red');
+                  }
+    });
+
   });
   </script>

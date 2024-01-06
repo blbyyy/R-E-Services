@@ -47,7 +47,12 @@ Route::post('/uploadpdf', [
 
 Route::delete('/student/myfiles/{id}/deleted', [
     'uses' => 'StudentController@deletepdf',
-          'as' => 'file.delete'
+          'as' => 'student.file.delete'
+  ]);
+
+Route::delete('/staff/myfiles/{id}/deleted', [
+    'uses' => 'StaffController@deletepdf',
+          'as' => 'staff.file.delete'
   ]);
 
 //   Route::post('/apply/certification/requested',[
