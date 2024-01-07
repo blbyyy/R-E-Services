@@ -21,8 +21,8 @@
     <h1>Applications Status</h1>
 </div>
 <div class="row g-4">
-  @if(count($studentstats) > 0)
-    @foreach($studentstats as $stats)
+  @if(count($facultystats) > 0)
+    @foreach($facultystats as $stats)
       <div class="col-md-4">
           <div class="card">
               <div class="card-body">
@@ -32,7 +32,7 @@
                 </div>
                 
                 <center>
-                <button type="button" class="btn btn-outline-dark view-details-button" data-bs-toggle="modal" data-bs-target="#viewInfo" data-id="{{ $stats->id }}">
+                <button type="button" class="btn btn-outline-dark faculty-view-details-button" data-bs-toggle="modal" data-bs-target="#facultyviewInfo" data-id="{{ $stats->id }}">
                   <i class="bi bi-info-circle"> View Details</i>
                 </button>
                 </center>
@@ -57,7 +57,7 @@
     </div>
   @endif
 
-    <div class="modal fade" id="viewInfo" tabindex="-1">
+    <div class="modal fade" id="facultyviewInfo" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header" >
@@ -171,42 +171,42 @@
                             <div id="college" class="col-lg-9 col-md-8"></div>
                           </div>
 
-                          <div class="row">
+                          <div class="row" id="r1">
                             <div class="col-lg-3 col-md-4 label ">Researcher 1</div>
                             <div id="researchers_name1" class="col-lg-9 col-md-8"></div>
                           </div>
         
-                          <div class="row">
+                          <div class="row" id="r2">
                             <div class="col-lg-3 col-md-4 label">Researcher 2</div>
                             <div id="researchers_name2" class="col-lg-9 col-md-8"></div>
                           </div>
         
-                          <div class="row">
+                          <div class="row" id="r3">
                             <div class="col-lg-3 col-md-4 label">Researcher 3</div>
                             <div id="researchers_name3" class="col-lg-9 col-md-8"></div>
                           </div>
                           
-                          <div class="row">
+                          <div class="row" id="r4">
                             <div class="col-lg-3 col-md-4 label ">Researcher 4</div>
                             <div id="researchers_name4" class="col-lg-9 col-md-8"></div>
                           </div>
         
-                          <div class="row">
+                          <div class="row" id="r5">
                             <div class="col-lg-3 col-md-4 label">Researcher 5</div>
                             <div id="researchers_name5" class="col-lg-9 col-md-8"></div>
                           </div>
         
-                          <div class="row">
+                          <div class="row" id="r6">
                             <div class="col-lg-3 col-md-4 label">Researcher 6</div>
                             <div id="researchers_name6" class="col-lg-9 col-md-8"></div>
                           </div>
 
-                          <div class="row">
+                          <div class="row" id="r7">
                             <div class="col-lg-3 col-md-4 label ">Researcher 7</div>
                             <div id="researchers_name7" class="col-lg-9 col-md-8"></div>
                           </div>
         
-                          <div class="row">
+                          <div class="row" id="r8">
                             <div class="col-lg-3 col-md-4 label">Researcher 8</div>
                             <div id="researchers_name8" class="col-lg-9 col-md-8"></div>
                           </div>

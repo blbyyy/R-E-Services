@@ -184,7 +184,7 @@
                 <span>My Profile</span>
               </a>
               @elseif(Auth::user()->role == 'Faculty')
-              <a class="dropdown-item d-flex align-items-center" href="{{ url('Faculty/Profile/{id}') }}">
+              <a class="dropdown-item d-flex align-items-center" href="{{ url('faculty/profile/{id}') }}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -275,7 +275,7 @@
       <li class="nav-item">
         <a class="nav-link " href="{{url('/apply/certification')}}">
           <i class="bi bi-award"></i>
-          <span>Apply For Certification</span>
+          <span>Certification</span>
         </a>
       </li>
       <li class="nav-item">
@@ -325,19 +325,19 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="">
+        <a class="nav-link " href="{{url('/faculty/myfiles')}}">
           <i class="bi bi-folder"></i>
           <span>My Files</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="">
+        <a class="nav-link " href="{{url('/faculty/apply/certification')}}">
           <i class="bi bi-award"></i>
           <span>Certification</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="">
+        <a class="nav-link " href="{{url('/faculty/application/status')}}">
           <i class="bi bi-file-earmark-bar-graph"></i>
           <span>Application Status</span>
         </a>

@@ -68,7 +68,7 @@
                     </div>
                 
                     <center>
-                        <button type="button" class="btn btn-outline-dark applycert" data-bs-toggle="modal" data-bs-target="#applycertification" data-id="{{$files->id}}">
+                        <button type="button" class="btn btn-outline-dark staffapplycert" data-bs-toggle="modal" data-bs-target="#staffapplycertification" data-id="{{$files->id}}">
                             Apply Certification</i>
                         </button>
                     </center>
@@ -94,7 +94,7 @@
     @endif
   </div>  
 
-  <div class="modal fade" id="applycertification" tabindex="-1">
+  <div class="modal fade" id="staffapplycertification" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -173,56 +173,7 @@
             </div>
     
             {{-- <hr class="thick-hr"> --}}
-    
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="researchers_name1" class="form-control" id="researchers_name1" placeholder="Your Email">
-                <label for="researchers_name1">Researcher Name 1</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="researchers_name2" class="form-control" id="researchers_name2" placeholder="Password">
-                <label for="researchers_name2">Researcher Name 2</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="researchers_name3" class="form-control" id="researchers_name3" placeholder="Your Email">
-                <label for="researchers_name3">Researcher Name 3</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="researchers_name4" type="text" class="form-control" id="researchers_name4" placeholder="Password">
-                <label for="researchers_name4">Researcher Name 4</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="researchers_name5" class="form-control" id="researchers_name5" placeholder="Your Email">
-                <label for="researchers_name5">Researcher Name 5</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="researchers_name6" type="text" class="form-control" id="researchers_name6" placeholder="Password">
-                <label for="researchers_name6">Researcher Name 6</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="researchers_name7" type="text" class="form-control" id="researchers_name7" placeholder="Your Email">
-                <label for="researchers_name">Researcher Name 7</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="researchers_name8" class="form-control" id="researchers_name8" placeholder="Password">
-                <label for="researchers_name8">Researcher Name 8</label>
-              </div>
-            </div>
-    
+
             <div class="col-md-12">
                 <div class="form-floating">
                   <input name="purpose" type="text" class="form-control" id="purpose" placeholder="Purpose">
@@ -267,6 +218,19 @@
                 <input name="course" type="text" class="form-control" id="course" placeholder="Course">
                 <label for="course">Course</label>
               </div>
+            </div>
+
+            <div id="additionalFieldsContainer">
+              <div class="col-md-12">
+                <div class="form-floating">
+                    <input name="researchers_name1" class="form-control" id="researchers_name1" placeholder="Your Email">
+                    <label for="researchers_name1">Researcher Name 1</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <button type="button" class="btn btn-outline-dark" id="addResearcher">Add Researcher</button>
             </div>
     
             <div class="col-12">
@@ -318,4 +282,30 @@
 
         formContainer.style.display = option === 'yes' ? 'block' : 'none';
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initial count of visible input fields
+        let visibleFieldsCount = 1;
+
+        // Add button click event
+        document.getElementById('addResearcher').addEventListener('click', function () {
+            // Increment the count
+            visibleFieldsCount++;
+
+            // Create a new input field
+            const newInputField = document.createElement('div');
+            newInputField.innerHTML = `
+                <br>
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        <input name="researchers_name${visibleFieldsCount}" class="form-control" id="researchers_name${visibleFieldsCount}" placeholder="Your Email">
+                        <label for="researchers_name${visibleFieldsCount}">Researcher Name ${visibleFieldsCount}</label>
+                    </div>
+                </div>
+            `;
+
+            // Append the new input field to the container
+            document.getElementById('additionalFieldsContainer').appendChild(newInputField);
+        });
+    });
 </script>

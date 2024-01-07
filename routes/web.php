@@ -49,7 +49,6 @@ Route::post('/Student/Profile/Avatar/Changed', [
           'as' => 'student_update_avatar'
   ]);
 
-
 Route::post('/Student/Profile/Avatar/Change-Password', [
     'uses' => 'StudentController@changePassword',
           'as' => 'student_change_password'
@@ -156,7 +155,7 @@ Route::get('/staff/get/file/{id}', [
 
 Route::get('/staff/apply/certification', [
     'uses' => 'StaffController@certification',
-          'as' => 'certification.page'
+          'as' => 'staff.certification.page'
   ]);
 
 Route::post('/staff/apply/certification/requested/{id}',[
@@ -183,7 +182,7 @@ Route::post('Faculty/Registered',[
     'as' => 'FacultyRegistered'
 ]);
 
-Route::get('/Faculty/Profile/{id}', [
+Route::get('/faculty/profile/{id}', [
     'uses' => 'FacultyController@profile',
           'as' => 'faculty.profile'
   ]);
@@ -191,6 +190,61 @@ Route::get('/Faculty/Profile/{id}', [
 Route::put('/Faculty/Profile/Updated/{id}', [
     'uses' => 'FacultyController@updateprofile',
           'as' => 'faculty.update-profile'
+  ]);
+
+  Route::post('/faculty/profile/avatar/changed', [
+    'uses' => 'FacultyController@changeavatar',
+          'as' => 'faculty_update_avatar'
+  ]);
+
+Route::post('/faculty/profile/avatar/change-password', [
+    'uses' => 'FacultyController@changePassword',
+          'as' => 'faculty_change_password'
+  ]);
+
+Route::get('/faculty/myfiles', [
+    'uses' => 'FacultyController@myfiles',
+          'as' => 'faculty_myfiles'
+  ]);
+
+Route::post('/faculty/myfiles/upload',[
+    'uses' => 'FacultyController@upload_file',
+    'as' => 'faculty_upload_file'
+]);
+
+Route::get('/faculty/pdf/{fileName}', [
+    'uses' => 'FacultyController@showpdf',
+          'as' => 'faculty_pdf_show'
+  ]);
+
+Route::get('/faculty/show/pdf/{id}', [
+    'uses' => 'FacultyController@pdfinfo',
+          'as' => 'faculty_pdf_info'
+  ]);
+
+Route::get('/faculty/get/file/{id}', [
+    'uses' => 'FacultyController@getfile_id',
+          'as' => 'faculty_get-file-id'
+  ]);
+
+Route::get('/faculty/apply/certification', [
+    'uses' => 'FacultyController@certification',
+          'as' => 'facultycertification.page'
+  ]);
+
+Route::post('/faculty/apply/certification/requested/{id}',[
+    'uses' => 'FacultyController@apply_certification',
+    'as' => 'FacultyRequested'
+]);
+
+Route::get('/faculty/application/status', [
+    'uses' => 'FacultyController@application_status',
+          'as' => 'faculty.application.status'
+  ]);
+
+Route::get('/faculty/application/status/{id}', [
+    'uses' => 'FacultyController@show_application',
+          'as' => 'faculty.get-specific-data'
   ]);
 //END OF FACULTY POV
 

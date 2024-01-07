@@ -18,7 +18,7 @@
 </style>
 <main id="main" class="main">
   <div class="pagetitle">
-    <h1>Certification</h1>
+    <h1>Apply for Certification</h1>
   </div>
 
   <div class="row g-4">
@@ -68,7 +68,7 @@
                     </div>
                 
                     <center>
-                        <button type="button" class="btn btn-outline-dark studentapplycert" data-bs-toggle="modal" data-bs-target="#studentapplycertification" data-id="{{$files->id}}">
+                        <button type="button" class="btn btn-outline-dark facultyapplycert" data-bs-toggle="modal" data-bs-target="#facultyapplycertification" data-id="{{$files->id}}">
                             Apply Certification</i>
                         </button>
                     </center>
@@ -94,7 +94,7 @@
     @endif
   </div>  
 
-  <div class="modal fade" id="studentapplycertification" tabindex="-1">
+  <div class="modal fade" id="facultyapplycertification" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -103,7 +103,7 @@
         </div>
         <div class="modal-body">
 
-          <form id="studentcertificationform" class="row g-3" enctype="multipart/form-data">
+          <form id="facultycertificationform" class="row g-3" enctype="multipart/form-data">
             @csrf
 
           <input type="hidden" class="form-control" id="research_id" name="research_id">
@@ -173,7 +173,7 @@
             </div>
     
             {{-- <hr class="thick-hr"> --}}
-    
+
             <div class="col-md-12">
                 <div class="form-floating">
                   <input name="purpose" type="text" class="form-control" id="purpose" placeholder="Purpose">
@@ -231,6 +231,7 @@
 
             <div class="col-12">
               <button type="button" class="btn btn-outline-dark" id="addResearcher">Add Researcher</button>
+
             </div>
     
             <div class="col-12">
@@ -244,7 +245,7 @@
     
             <div class="col-12" style="padding-top: 20px">
               <div class="d-flex justify-content-end">
-              <button type="submit" class="btn btn-outline-dark studentapplycertification">Apply Certification</button>
+              <button type="submit" class="btn btn-outline-dark facultyapplycertification">Apply Certification</button>
               </div>
             </div>
     
