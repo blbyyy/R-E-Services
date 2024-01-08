@@ -63,11 +63,14 @@
                             </div>
                         
                             <center>
-                                <button type="button" class="btn btn-outline-dark studentshowpdfinfo" data-bs-toggle="modal" data-bs-target="#showfiles" data-id="{{$files->id}}">
-                                    <i class="bi bi-info-circle"></i>
+                                <button type="button" class="btn btn-outline-dark studentshowpdfinfo" data-bs-toggle="modal" data-bs-target="#studentshowfiles" data-id="{{$files->id}}">
+                                    <i class="bi bi-eye"></i>
                                 </button>
                                 <button type="button" class="btn btn-outline-dark studentfiledeleteBtn" data-id="{{$files->id}}">
                                     <i class="bi bi-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-dark studentfilehistory" data-bs-toggle="modal" data-bs-target="#studentshowhistory" data-id="{{$files->id}}">
+                                    <i class="bi bi-clock-history"></i>
                                 </button>
                             </center>
                         </div>
@@ -89,9 +92,8 @@
             </div>
         </div>
         @endif
-    </div>
-
-        <div class="modal fade" id="showfiles" tabindex="-1">
+    
+        <div class="modal fade" id="studentshowfiles" tabindex="-1">
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
@@ -99,8 +101,6 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h5>Research Title:</h5>
-                    <p id="content" style="font-style: italic; padding-bottom: 20px;"></p>
                     <div id="pdf-container"></div>
                 </div>
                 <div class="modal-footer">
@@ -108,7 +108,51 @@
                 </div>
               </div>
             </div>
-          </div>
+        </div>
+
+        <div class="modal fade" id="studentshowhistory" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                          <h5 id="studenttitle" class="card-title"></h5>
+                          <table id="studenthistoryTable" class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th scope="col">Submission Frequency</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Initial Similarity</th>
+                                <th scope="col">Similarity Result</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <p id="studentmessage">
+                        </div>
+                      </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+
         </div>
 </main>
 <script>

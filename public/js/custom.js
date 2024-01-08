@@ -786,6 +786,43 @@ $(document).ready(function () {
                 }
             });
         });
+
+        $(".certificationBtn").on("click", function (e) {
+            e.preventDefault();
+            // var id = $(this).data("id");
+            var id = $("#file_id").val();
+            let editformData = new FormData($("#certificationform")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/application/status/certification/" + id + "/sent",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/applicationlist';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Request Sent',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
     //END OF ADMIN POV
 
     //START OF STUDENT POV
@@ -810,7 +847,6 @@ $(document).ready(function () {
                     embedElement.setAttribute("height", "600px");
         
                     // Replace the existing content of the container with the new <embed> element
-                    $('#content').text(data.research_title);
                     $("#pdf-container").html(embedElement);
                 },
                 error: function (error) {
@@ -825,7 +861,7 @@ $(document).ready(function () {
             var id = $(this).data("id");
             console.log(id);
                 Swal.fire({
-                title: 'Are you sure you want to delete this filesfasf?',
+                title: 'Are you sure you want to delete this file',
                 text: "You won't be able to undo this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -866,6 +902,72 @@ $(document).ready(function () {
 
         });
 
+        //student file history
+        $(".studentfilehistory").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/student/show/history/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+
+                    if (data.history.length === 0) {
+                        $("#studenttitle").empty();
+                        $("#studentmessage").empty();
+
+                        var tbody = $("#studenthistoryTable tbody");
+                        tbody.empty(); 
+
+                        $("#studentmessage").html("<br><p class='text-center'>No certification procedure exists.</p>");
+                    } else {
+                        $("#studenttitle").empty();
+                        $("#studentmessage").empty();
+                        
+                        var researchTitle = data.title ? data.title.research_title : null;
+                        $("#studenttitle").text(researchTitle);
+
+                        var tbody = $("#studenthistoryTable tbody");
+                        tbody.empty(); 
+
+                        data.history.forEach(function (entry) {
+                            var color;
+                            switch (entry.status) {
+                                case "Passed":
+                                    color = "blue";
+                                    break;
+                                case "Returned":
+                                    color = "red";
+                                    break;
+                                case "Pending":
+                                    color = "orange";
+                                    break;
+                                default:
+                                    color = "black";
+                            }
+                            var row = '<tr>' +
+                            '<th scope="row">' + entry.submission_frequency + '</th>' +
+                                '<td>' + entry.date + '</td>' +
+                                '<td>' + entry.date_processing_end + '</td>' +
+                                '<td style="color: ' + color + ';">' + entry.status + '</td>' +
+                                '<td>' + entry.initial_simmilarity_percentage + '%' + '</td>' +
+                                '<td>' + entry.simmilarity_percentage_results + '%' + '</td>' +
+                                '</tr>';
+                            tbody.append(row);
+                        });
+
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+        
         //student fetching file id to apply certification
         $(".studentapplycert").click(function() {
             var id = $(this).data("id");
@@ -1132,6 +1234,72 @@ $(document).ready(function () {
 
         });
 
+        //staff file history
+        $(".stafffilehistory").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/staff/show/history/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+
+                    if (data.history.length === 0) {
+                        $("#stafftitle").empty();
+                        $("#staffmessage").empty();
+
+                        var tbody = $("#staffhistoryTable tbody");
+                        tbody.empty(); 
+
+                        $("#staffmessage").html("<br><p class='text-center'>No certification procedure exists.</p>");
+                    } else {
+                        $("#stafftitle").empty();
+                        $("#staffmessage").empty();
+                        
+                        var researchTitle = data.title ? data.title.research_title : null;
+                        $("#stafftitle").text(researchTitle);
+
+                        var tbody = $("#staffhistoryTable tbody");
+                        tbody.empty(); 
+
+                        data.history.forEach(function (entry) {
+                            var color;
+                            switch (entry.status) {
+                                case "Passed":
+                                    color = "blue";
+                                    break;
+                                case "Returned":
+                                    color = "red";
+                                    break;
+                                case "Pending":
+                                    color = "orange";
+                                    break;
+                                default:
+                                    color = "black";
+                            }
+                            var row = '<tr>' +
+                            '<th scope="row">' + entry.submission_frequency + '</th>' +
+                                '<td>' + entry.date + '</td>' +
+                                '<td>' + entry.date_processing_end + '</td>' +
+                                '<td style="color: ' + color + ';">' + entry.status + '</td>' +
+                                '<td>' + entry.initial_simmilarity_percentage + '%' + '</td>' +
+                                '<td>' + entry.simmilarity_percentage_results + '%' + '</td>' +
+                                '</tr>';
+                            tbody.append(row);
+                        });
+
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+        
         //staff fetching file id to apply certification
         $(".staffapplycert").click(function() {
             var id = $(this).data("id");
@@ -1397,6 +1565,72 @@ $(document).ready(function () {
                 }
             })
 
+        });
+
+        //faculty file history
+        $(".facultyfilehistory").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/show/history/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+
+                    if (data.history.length === 0) {
+                        $("#staffttitle").empty();
+                        $("#staffmessage").empty();
+
+                        var tbody = $("#facultyhistoryTable tbody");
+                        tbody.empty(); 
+
+                        $("#staffmessage").html("<br><p class='text-center'>No certification procedure exists.</p>");
+                    } else {
+                        $("#facultytitle").empty();
+                        $("#facultymessage").empty();
+                        
+                        var researchTitle = data.title ? data.title.research_title : null;
+                        $("#facultytitle").text(researchTitle);
+
+                        var tbody = $("#facultyhistoryTable tbody");
+                        tbody.empty(); 
+
+                        data.history.forEach(function (entry) {
+                            var color;
+                            switch (entry.status) {
+                                case "Passed":
+                                    color = "blue";
+                                    break;
+                                case "Returned":
+                                    color = "red";
+                                    break;
+                                case "Pending":
+                                    color = "orange";
+                                    break;
+                                default:
+                                    color = "black";
+                            }
+                            var row = '<tr>' +
+                            '<th scope="row">' + entry.submission_frequency + '</th>' +
+                                '<td>' + entry.date + '</td>' +
+                                '<td>' + entry.date_processing_end + '</td>' +
+                                '<td style="color: ' + color + ';">' + entry.status + '</td>' +
+                                '<td>' + entry.initial_simmilarity_percentage + '%' + '</td>' +
+                                '<td>' + entry.simmilarity_percentage_results + '%' + '</td>' +
+                                '</tr>';
+                            tbody.append(row);
+                        });
+
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
         });
 
         //faculty fetching file id to apply certification

@@ -226,6 +226,30 @@ class FacultyController extends Controller
         }
     }
 
+    public function history($id)
+    {
+        $title = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('files.*', 'requestingform.*')
+            ->where('requestingform.research_id', $id)
+            ->first();
+
+        $history = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('files.*', 'requestingform.*')
+            ->where('requestingform.research_id', $id)
+            ->orderBy('requestingform.date', 'asc') 
+            ->get();
+
+        $response = [
+            'title' => $title,
+            'history' => $history,
+        ];
+        
+        // Return the array as JSON
+        return response()->json($response);
+    }
+
     public function pdfinfo($id)
     {
         $cert = Files::find($id);

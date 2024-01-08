@@ -126,6 +126,7 @@ class StaffController extends Controller
         $user = Auth::user();
 
         if (!Hash::check($request->password, $user->password)) {
+            Alert::error('Error', 'Current password is incorrect.');
             return redirect()->back()->with('error', 'Current password is incorrect.');
         }
 
@@ -220,6 +221,29 @@ class StaffController extends Controller
 
             return response()->json($errorResponse, 500);
         }
+    }
+
+    public function history($id)
+    {
+        $title = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('files.*', 'requestingform.*')
+            ->where('requestingform.research_id', $id)
+            ->first();
+
+        $history = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('files.*', 'requestingform.*')
+            ->where('requestingform.research_id', $id)
+            ->orderBy('requestingform.date', 'asc') 
+            ->get();
+
+        $response = [
+            'title' => $title,
+            'history' => $history,
+        ];
+
+        return response()->json($response);
     }
 
     public function pdfinfo($id)

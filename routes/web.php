@@ -98,6 +98,11 @@ Route::get('/get/file/{id}', [
     'uses' => 'StudentController@getfile_id',
           'as' => 'student_get-file-id'
   ]);
+
+Route::get('/student/show/history/{id}', [
+    'uses' => 'StudentController@history',
+          'as' => 'student_pdf_history'
+  ]);
 //END OF STUDENT POV
 
 //START STAFF POV
@@ -172,6 +177,11 @@ Route::get('/staff/application/status/{id}', [
     'uses' => 'StaffController@show_application',
           'as' => 'staff.get-specific-data'
   ]);
+
+Route::get('/staff/show/history/{id}', [
+    'uses' => 'StaffController@history',
+          'as' => 'staff_pdf_history'
+  ]);
 //END OF STAFF POV
 
 //START FACULTY POV
@@ -192,7 +202,7 @@ Route::put('/Faculty/Profile/Updated/{id}', [
           'as' => 'faculty.update-profile'
   ]);
 
-  Route::post('/faculty/profile/avatar/changed', [
+Route::post('/faculty/profile/avatar/changed', [
     'uses' => 'FacultyController@changeavatar',
           'as' => 'faculty_update_avatar'
   ]);
@@ -246,6 +256,11 @@ Route::get('/faculty/application/status/{id}', [
     'uses' => 'FacultyController@show_application',
           'as' => 'faculty.get-specific-data'
   ]);
+
+Route::get('/faculty/show/history/{id}', [
+    'uses' => 'FacultyController@history',
+          'as' => 'faculty_pdf_history'
+  ]);
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [
@@ -294,8 +309,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/logoutss', 'HomeController@perform');
 });
 
-
-
 Route::get('/Admin/Profile/{id}', [
     'uses' => 'AdminController@profile',
           'as' => 'admin.profile'
@@ -306,7 +319,15 @@ Route::put('/Admin/Profile/Updated/{id}', [
           'as' => 'admin.update-profile'
   ]);
 
+Route::post('/admin/profile/avatar/changed', [
+    'uses' => 'AdminController@changeavatar',
+          'as' => 'admin_update_avatar'
+  ]);
 
+Route::post('/admin/profile/avatar/change-password', [
+    'uses' => 'AdminController@changePassword',
+          'as' => 'admin_change_password'
+  ]);
 
 Route::post('/request',[
     'uses' => 'RequestingFormController@store',

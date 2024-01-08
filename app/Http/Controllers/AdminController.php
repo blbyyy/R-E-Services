@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use RealRashid\SweetAlert\Facades\Alert;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Staff;
@@ -127,7 +132,6 @@ class AdminController extends Controller
         $staff->mname = $request->mname;
         $staff->profession = $request->profession;
         $staff->staff_id = $request->staff_id;
-        $staff->email = $request->email;
         $staff->gender = $request->gender;
         $staff->phone = $request->phone;
         $staff->address = $request->address;
@@ -137,10 +141,56 @@ class AdminController extends Controller
         $user->fname = $request->fname;
         $user->lname = $request->lname;
         $user->mname = $request->mname;
-        $user->email = $request->email;
         $user->save();
 
-        return redirect()->to('/Staff/Profile/{id}');
+        Alert::success('Success', 'Profile was successfully updated');
+
+        return redirect()->to('/Admin/Profile/{id}')->with('success', 'Profile was successfully updated');
+    }
+
+    public function changeavatar(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->select('staff.id')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $admin = Staff::find($admin->id);
+        $files = $request->file('avatar');
+        $admin->avatar = 'images/'.time().'-'.$files->getClientOriginalName();
+
+        $admin->save();
+
+        $data = array('status' => 'saved');
+        Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        $admin->save();
+
+        Alert::success('Success', 'Avatar changed successfully!');
+
+        return redirect()->to('/Admin/Profile/{id}')->with('success', 'Avatar changed successfully.');
+    }
+    
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required',
+            'newpassword' => 'required|min:8',
+            'renewpassword' => 'required|same:newpassword',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->password, $user->password)) {
+            Alert::error('Error', 'Current password is incorrect.');
+            return redirect()->back()->with('error', 'Current password is incorrect.');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->newpassword),
+        ]);
+
+        Alert::success('Success', 'Password changed successfully!');
+        return redirect()->to('/Admin/Profile/{id}')->with('success', 'Password changed successfully.');
     }
 
     public function announcement_img_upload($filename)
