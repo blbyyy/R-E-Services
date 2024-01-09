@@ -51,6 +51,52 @@ class StudentController extends Controller
             return redirect()->to('/homepage');
 
     }
+
+    public function fillup()
+    {
+        $student = DB::table('students')
+        ->join('users','users.id','students.user_id')
+        ->select('students.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        return View::make('auth.fillup',compact('student'));
+    }
+
+    public function filled(Request $request)
+    { 
+        $student_id = DB::table('students')
+        ->select('students.id')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $student = Student::find($student_id->id);
+        $student->mname = $request->mname;
+        $student->college = $request->college;
+        $student->course = $request->course;
+        $student->tup_id = $request->tup_id;
+        $student->gender = $request->gender;
+        $student->phone = $request->phone;
+        $student->address = $request->address;
+        $student->birthdate = $request->birthdate;
+
+        if ($request->hasFile('avatar')) {
+            $files = $request->file('avatar');
+            $student->avatar = 'images/' . time() . '-' . $files->getClientOriginalName();
+            Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        } else {
+            $student->avatar = 'avatar.jpg';
+        }
+        
+        $student->save();
+
+        $user = User::find(Auth::id());
+        $user->mname = $request->mname;
+        $user->save();
+
+        return redirect()->to('/homepage')->with('success', 'User profile was set up properly.');
+
+    }
     
     public function profile($id)
     {

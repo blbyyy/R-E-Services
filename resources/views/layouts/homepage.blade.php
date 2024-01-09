@@ -1,4 +1,7 @@
 @extends('layouts.navigation')
+@include('sweetalert::alert')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
     .custom {
       height: 400px;
@@ -8,6 +11,24 @@
     }
   </style>
 <main id="main" class="main">
+
+  @if(session('success'))
+  <script>
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: '{{ session('success') }}',
+      });
+  </script>
+  @elseif(session('error'))
+    <script>
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: '{{ session('error') }}',
+        });
+    </script>
+  @endif
 
   @auth
     <div class="alert alert-success alert-dismissible fade show" role="alert">

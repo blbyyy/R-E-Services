@@ -22,6 +22,16 @@ Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
 
 Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');
 
+Route::get('/student/fillup', [
+    'uses' => 'StudentController@fillup',
+          'as' => 'student.fillup'
+  ]);
+
+Route::post('/student/fillup/sent}', [
+    'uses' => 'StudentController@filled',
+          'as' => 'student.fillup-sent'
+  ]);
+
 Route::view('/CreateAccount', 'layouts.createacc');
 
 Route::view('/Contact', 'layouts.contact');

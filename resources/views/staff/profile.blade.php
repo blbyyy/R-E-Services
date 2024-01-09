@@ -9,11 +9,19 @@
     </div><!-- End Page Title -->
 
     @if(session('success'))
+    <script>
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session('success') }}',
+        });
+    </script>
+    @elseif(session('error'))
       <script>
         Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: '{{ session('success') }}',
+          icon: 'error',
+          title: 'Error',
+          text: '{{ session('error') }}',
           });
       </script>
     @endif
@@ -286,7 +294,7 @@
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form action="{{ route('staff_change_password') }}" method="post">
+                  <form action="{{ route('student.fillup-sent') }}" method="post">
                     @csrf
 
                     <div class="row mb-3">

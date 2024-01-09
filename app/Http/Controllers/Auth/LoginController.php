@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
@@ -62,9 +63,9 @@ class LoginController extends Controller
 
         $existingUser = User::where('email', $user->email)->first();
         if($existingUser){
-
             auth()->login($existingUser, true);
-        } else {
+           
+        } else {      
 
             $newUser = new User;
             $newUser->fname = $user['given_name'];
@@ -74,23 +75,22 @@ class LoginController extends Controller
             $newUser->save();
             $last = DB::getPdo()->lastInsertId();
 
-        
             $newStudent = new Student;
             $newStudent->fname = $user['given_name'];
             $newStudent->lname = $user['family_name'];
             $newStudent->email = $user->email;
-            $newStudent->avatar = $user->avatar;
             $newStudent->user_id = $last;
 
-            $avatar = $user->avatar;
-            $avatarContents = file_get_contents($avatar);
-            $filename = uniqid() . '.jpg';
-            $avatarLink = asset('storage/images/'.$filename, $avatarContents);
-            $newStudent->avatar = $avatarLink;
-            Storage::put('storage/images/'.time().'-'.$filename, $avatarContents);
+            // $avatar = $user->avatar;
+            // $avatarContents = file_get_contents($avatar);
+            // $filename = uniqid() . '.jpg';
+            // $avatarLink = asset('storage/images/'.$filename, $avatarContents);
+            // $newStudent->avatar = $avatarLink;
+            // Storage::put('storage/images/'.time().'-'.$filename, $avatarContents);
             $newStudent->save();
             
             auth()->login($newUser, true);
+            return redirect()->to('/student/fillup')->with('success', 'You already logged in; to continue, fill out the remaining fields in your user profile.');
         }
         return redirect()->to('/homepage');
     }

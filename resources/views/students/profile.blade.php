@@ -8,11 +8,19 @@
     </div><!-- End Page Title -->
 
     @if(session('success'))
+    <script>
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session('success') }}',
+        });
+    </script>
+    @elseif(session('error'))
       <script>
         Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: '{{ session('success') }}',
+          icon: 'error',
+          title: 'Error',
+          text: '{{ session('error') }}',
           });
       </script>
     @endif
