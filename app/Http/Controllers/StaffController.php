@@ -128,15 +128,14 @@ class StaffController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             Alert::error('Error', 'Current password is incorrect.');
             return redirect()->back()->with('error', 'Current password is incorrect.');
+        }else {
+            $user->update([
+                'password' => Hash::make($request->newpassword),
+            ]);
+            Alert::success('Success', 'Password changed successfully!');
+            return redirect()->to('/Staff/Profile/{id}')->with('success', 'Password changed successfully.');
         }
-
-        $user->update([
-            'password' => Hash::make($request->newpassword),
-        ]);
-
-        Alert::success('Success', 'Password changed successfully!');
-
-        return redirect()->to('/Staff/Profile/{id}')->with('success', 'Password changed successfully.');
+        
     }
 
     public function myfiles()

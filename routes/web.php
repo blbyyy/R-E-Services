@@ -59,7 +59,7 @@ Route::post('/Student/Profile/Avatar/Changed', [
           'as' => 'student_update_avatar'
   ]);
 
-Route::post('/Student/Profile/Avatar/Change-Password', [
+Route::post('/Student/Profile/Change-Password', [
     'uses' => 'StudentController@changePassword',
           'as' => 'student_change_password'
   ]);
@@ -138,7 +138,7 @@ Route::post('/Staff/Profile/Avatar/Changed', [
           'as' => 'staff_update_avatar'
   ]);
 
-Route::post('/Staff/Profile/Avatar/Change-Password', [
+Route::post('/Staff/Profile/Change-Password', [
     'uses' => 'StaffController@changePassword',
           'as' => 'staff_change_password'
   ]);
@@ -352,7 +352,13 @@ Route::get('/announcements', function () {
         ->where('user_id',Auth::id())
         ->first();
 
-    return View::make('admin.announcement',compact('admin'));
+    $staff = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+    return View::make('admin.announcement',compact('admin','staff'));
 
 });
 

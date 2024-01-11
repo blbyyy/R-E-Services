@@ -18,10 +18,11 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-              <h5 class="card-title">{{$applications->research_title}}<span>({{$applications->status}})</span></h5>
+              <h5 class="card-title">{{$applications->research_title}}<span>({{$applications->status}}){{$applications->status}}</span></h5>
               <div class="icon">
                 <i class="bi bi-file-earmark-pdf"></i>
               </div>
+              <h6 class="text-center">{{$applications->submission_frequency}}</h6>
 
               @if($applications->status == 'Passed')
                 <center>

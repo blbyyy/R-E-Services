@@ -130,16 +130,15 @@ class FacultyController extends Controller
         $user = Auth::user();
 
         if (!Hash::check($request->password, $user->password)) {
+            Alert::error('Error', 'Current password is incorrect.');
             return redirect()->back()->with('error', 'Current password is incorrect.');
+        }else {
+            $user->update([
+                'password' => Hash::make($request->newpassword),
+            ]);
+            Alert::success('Success', 'Password changed successfully!');
+            return redirect()->to('/Faculty/Profile/{id}')->with('success', 'Password changed successfully.');
         }
-
-        $user->update([
-            'password' => Hash::make($request->newpassword),
-        ]);
-
-        Alert::success('Success', 'Password changed successfully!');
-
-        return redirect()->to('/faculty/profile/{id}')->with('success', 'Password changed successfully.');
     }
 
     public function myfiles()

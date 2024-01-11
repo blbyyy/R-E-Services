@@ -294,7 +294,7 @@
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form action="{{ route('student.fillup-sent') }}" method="post">
+                  <form action="{{ route('staff_change_password') }}" method="post">
                     @csrf
 
                     <div class="row mb-3">

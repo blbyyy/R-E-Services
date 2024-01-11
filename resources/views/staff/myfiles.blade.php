@@ -102,8 +102,6 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h5>Research Title:</h5>
-                    <p id="content" style="font-style: italic; padding-bottom: 20px;"></p>
                     <div id="pdf-container"></div>
                 </div>
                 <div class="modal-footer">

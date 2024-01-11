@@ -43,10 +43,11 @@ class RequestingFormController extends Controller
         // $application = RequestingForm::orderBy('id')->get();
 
         $application = DB::table('requestingform')
-        ->join('files','files.id','requestingform.research_id')
-        ->select('files.*','requestingform.*')
-        ->orderBy('requestingform.id')
+        ->join('files', 'files.id', '=', 'requestingform.research_id')
+        ->select('files.*', 'requestingform.*')
+        ->orderByRaw("CASE WHEN requestingform.status = 'Pending' THEN 0 ELSE 1 END, requestingform.id")
         ->get();
+
     
         return View::make('applications.applicationslist',compact('student', 'staff', 'faculty', 'admin', 'application'));
     }

@@ -293,6 +293,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link " href="{{url('announcements')}}">
+          <i class="bi bi-megaphone"></i>
+          <span>Announcements</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link " href="{{url('/events')}}">
           <i class="bi bi-calendar-event"></i>
           <span>Events</span>
