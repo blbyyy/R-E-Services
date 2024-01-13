@@ -171,8 +171,6 @@ class StudentController extends Controller
 
         $user = Auth::user();
 
-        dd($user);
-
         if (!Hash::check($request->password, $user->password)) {
             Alert::error('Error', 'Current password is incorrect.');
             return redirect()->back()->with('error', 'Current password is incorrect.');
@@ -183,6 +181,17 @@ class StudentController extends Controller
             Alert::success('Success', 'Password changed successfully!');
             return redirect()->to('/Student/Profile/{id}')->with('success', 'Password changed successfully.');
         }
+    }
+    
+    public function validatePassword(Request $request)
+    {
+        $enteredPassword = $request->input('password');
+        $user = Auth::user();
+
+        // Check if the entered password matches the stored hashed password
+        $isMatch = Hash::check($enteredPassword, $user->password);
+
+        return response()->json(['match' => $isMatch]);
     }
 
     public function myfiles()

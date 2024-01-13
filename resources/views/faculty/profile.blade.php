@@ -305,10 +305,11 @@
                     @csrf
 
                     <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                      <label for="password" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
-                      </div>
+                          <input name="password" type="password" class="form-control" id="password" required onchange="validatePassword()">
+                          <span id="passwordMatchMessages"></span>
+                        </div>
                     </div>
 
                     <div class="row mb-3">
@@ -342,34 +343,59 @@
     </section>
   </main>
 <script>
-    $(document).ready(function () {
-          // When the "Change Avatar" button is clicked
-          $("#toggleForm").click(function () {
-              // Toggle the visibility of the form
-              $("#avatarForm").toggle();
-          });
+  function validatePassword() {
+      var enteredPassword = document.getElementById('password').value;
+      var messageSpan = $("#passwordMatchMessages");
+
+      // Send the hashed password to the server for validation
+      $.ajax({
+          url: '/faculty/profile/validate-password',
+          method: 'POST',
+          data: { password: enteredPassword }, // Use 'password' as the key to match your Laravel controller
+          success: function(response) {
+              if (response.match) {
+                  messageSpan.text("Current password match.");
+                  messageSpan.css('color', 'green');
+              } else {
+                  messageSpan.text("Current password is wrong");
+                  messageSpan.css('color', 'red');
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(error);
+              // Handle error if needed
+          }
+      });
+  }
+
+  $(document).ready(function () {
+            // When the "Change Avatar" button is clicked
+            $("#toggleForm").click(function () {
+                // Toggle the visibility of the form
+                $("#avatarForm").toggle();
+            });
+        
       
-    
-      let img = document.getElementById('img');
-      let input = document.getElementById('avatar');
-    
-      input.onchange = (e) => {
-        if (input.files[0])
-        img.src = URL.createObjectURL(input.files[0])
-      }
-    
-      $('#newpassword, #renewpassword').on('input', function () {
-                      var newPassword = $("#newpassword").val();
-                      var renewPassword = $("#renewpassword").val();
-                      var messageSpan = $("#passwordMatchMessage");
-    
-                      if (newPassword === renewPassword) {
-                          messageSpan.text("Password match.");
-                          messageSpan.css('color', 'green');
-                      } else {
-                          messageSpan.text("Password did not match.");
-                          messageSpan.css('color', 'red');
-                      }
-        });
-    });
+        let img = document.getElementById('img');
+        let input = document.getElementById('avatar');
+      
+        input.onchange = (e) => {
+          if (input.files[0])
+          img.src = URL.createObjectURL(input.files[0])
+        }
+      
+        $('#newpassword, #renewpassword').on('input', function () {
+                        var newPassword = $("#newpassword").val();
+                        var renewPassword = $("#renewpassword").val();
+                        var messageSpan = $("#passwordMatchMessage");
+      
+                        if (newPassword === renewPassword) {
+                            messageSpan.text("Password match.");
+                            messageSpan.css('color', 'green');
+                        } else {
+                            messageSpan.text("Password did not match.");
+                            messageSpan.css('color', 'red');
+                        }
+          });
+  });
 </script>

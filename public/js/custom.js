@@ -1085,7 +1085,7 @@ $(document).ready(function () {
                         });
                         $("#certificate").empty().append(pdfLink);
 
-                        $('#viewInfo').on('hidden.bs.modal', function () {
+                        $('#studentviewInfo').on('hidden.bs.modal', function () {
                             $("#certificate").empty();
                         });
 

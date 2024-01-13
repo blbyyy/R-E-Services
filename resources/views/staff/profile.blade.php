@@ -298,10 +298,11 @@
                     @csrf
 
                     <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                      <label for="password" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
-                      </div>
+                          <input name="password" type="password" class="form-control" id="password" required onchange="validatePassword()">
+                          <span id="passwordMatchMessages"></span>
+                        </div>
                     </div>
 
                     <div class="row mb-3">
@@ -337,6 +338,31 @@
 
 </main>
 <script>
+function validatePassword() {
+    var enteredPassword = document.getElementById('password').value;
+    var messageSpan = $("#passwordMatchMessages");
+
+    // Send the hashed password to the server for validation
+    $.ajax({
+        url: '/staff/profile/validate-password',
+        method: 'POST',
+        data: { password: enteredPassword }, // Use 'password' as the key to match your Laravel controller
+        success: function(response) {
+            if (response.match) {
+                messageSpan.text("Current password match.");
+                messageSpan.css('color', 'green');
+            } else {
+                messageSpan.text("Current password is wrong");
+                messageSpan.css('color', 'red');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            // Handle error if needed
+        }
+    });
+}
+
 $(document).ready(function () {
       // When the "Change Avatar" button is clicked
       $("#toggleForm").click(function () {

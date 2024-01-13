@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\PdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,11 @@ Route::put('/Student/Profile/Updated/{id}', [
 Route::post('/Student/Profile/Avatar/Changed', [
     'uses' => 'StudentController@changeavatar',
           'as' => 'student_update_avatar'
+  ]);
+
+Route::post('/student/profile/validate-password', [
+    'uses' => 'StudentController@validatePassword',
+          'as' => 'student_validate_password'
   ]);
 
 Route::post('/Student/Profile/Change-Password', [
@@ -131,6 +137,11 @@ Route::get('/Staff/Profile/{id}', [
 Route::put('/Staff/Profile/Updated/{id}', [
     'uses' => 'StaffController@updateprofile',
           'as' => 'staff.update-profile'
+  ]);
+
+Route::post('/staff/profile/validate-password', [
+    'uses' => 'StaffController@validatePassword',
+          'as' => 'staff_validate_password'
   ]);
 
 Route::post('/Staff/Profile/Avatar/Changed', [
@@ -210,6 +221,11 @@ Route::get('/faculty/profile/{id}', [
 Route::put('/Faculty/Profile/Updated/{id}', [
     'uses' => 'FacultyController@updateprofile',
           'as' => 'faculty.update-profile'
+  ]);
+
+Route::post('/faculty/profile/validate-password', [
+    'uses' => 'FacultyController@validatePassword',
+          'as' => 'faculty_validate_password'
   ]);
 
 Route::post('/faculty/profile/avatar/changed', [
@@ -531,3 +547,7 @@ Route::get('/events', 'CalendarController@index')->name('events');
 Route::post('/events/create', 'CalendarController@create_event')->name('create_event');
 Route::post('/fullcalendars/update', [CalendarController::class, 'update']);
 Route::delete('/fullcalendars/delete', [CalendarController::class, 'destroy']);
+
+Route::post('/validate-password', 'StudentController@validatePassword')->name('validate.password');
+
+

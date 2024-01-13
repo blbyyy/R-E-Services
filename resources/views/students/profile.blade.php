@@ -296,13 +296,14 @@
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
 
-                  <form action="{{ route('student_change_password') }}" method="post">
+                <form id="passwordForm" action="{{ route('student_change_password') }}" method="post">
                     @csrf
-                
+
                     <div class="row mb-3">
-                        <label for="password" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                        <div class="col-md-8 col-lg-9">
-                            <input name="password" type="password" class="form-control" id="password" required>
+                      <label for="password" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                      <div class="col-md-8 col-lg-9">
+                          <input name="password" type="password" class="form-control" id="password" required onchange="validatePassword()">
+                          <span id="passwordMatchMessages"></span>
                         </div>
                     </div>
                 
@@ -320,11 +321,11 @@
                             <span id="passwordMatchMessage"></span>
                         </div>
                     </div>
-                
+                    
                     <div class="text-center">
                         <button type="submit" class="btn btn-outline-dark">Change Password</button>
                     </div>
-                  </form>
+                </form>
 
                 </div>
 
@@ -338,11 +339,35 @@
     </section>
 
   </main>
-  <script>
+<script>
+  function validatePassword() {
+    var enteredPassword = document.getElementById('password').value;
+    var messageSpan = $("#passwordMatchMessages");
+
+    // Send the hashed password to the server for validation
+    $.ajax({
+        url: '/student/profile/validate-password',
+        method: 'POST',
+        data: { password: enteredPassword }, // Use 'password' as the key to match your Laravel controller
+        success: function(response) {
+            if (response.match) {
+                messageSpan.text("Current password match.");
+                messageSpan.css('color', 'green');
+            } else {
+                messageSpan.text("Current password is wrong");
+                messageSpan.css('color', 'red');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            // Handle error if needed
+        }
+    });
+  }
+
   $(document).ready(function () {
-        // When the "Change Avatar" button is clicked
+
         $("#toggleForm").click(function () {
-            // Toggle the visibility of the form
             $("#avatarForm").toggle();
         });
 
@@ -369,4 +394,4 @@
     });
 
   });
-  </script>
+</script>

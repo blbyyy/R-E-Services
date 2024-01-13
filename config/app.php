@@ -184,6 +184,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -215,6 +216,8 @@ return [
     'Form' => Collective\Html\FormFacade::class,
     'Html' => Collective\Html\HtmlFacade::class,
     'Cloudinary' => CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::class,
+    'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+    'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

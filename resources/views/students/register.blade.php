@@ -63,7 +63,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                <label for="tup_id">TUP ID</label>
+                <label for="tup_id">TUP ID (TUPT-XX-XXXX)</label>
                 </div>
             </div>
 

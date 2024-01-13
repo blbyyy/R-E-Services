@@ -119,6 +119,17 @@ class FacultyController extends Controller
         return redirect()->to('/faculty/profile/{id}')->with('success', 'Avatar changed successfully.');
     }
 
+    public function validatePassword(Request $request)
+    {
+        $enteredPassword = $request->input('password');
+        $user = Auth::user();
+
+        // Check if the entered password matches the stored hashed password
+        $isMatch = Hash::check($enteredPassword, $user->password);
+
+        return response()->json(['match' => $isMatch]);
+    }
+
     public function changePassword(Request $request)
     {
         $request->validate([
