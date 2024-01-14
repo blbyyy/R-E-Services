@@ -550,4 +550,22 @@ Route::delete('/fullcalendars/delete', [CalendarController::class, 'destroy']);
 
 Route::post('/validate-password', 'StudentController@validatePassword')->name('validate.password');
 
+Route::get('/admin/departmentlist', [
+  'uses' => 'DepartmentController@index',
+        'as' => 'department.list'
+]);
 
+Route::post('/admin/add/department', [
+  'uses' => 'DepartmentController@add_department',
+        'as' => 'admin.add.department'
+]);
+
+Route::get('/admin/departmentlist/{id}', [
+  'uses' => 'DepartmentController@edit_department',
+        'as' => 'admin.edit.department'
+]);
+
+Route::post('/admin/departmentlist/{id}/updated', [
+  'uses' => 'DepartmentController@update_department',
+        'as' => 'admin.update.department'
+]);

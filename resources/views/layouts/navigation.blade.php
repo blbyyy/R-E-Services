@@ -357,6 +357,18 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link " href="{{url('/homepage')}}">
+          <i class="bi bi-person-fill-gear"></i>
+          <span>Administration</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/admin/departmentlist')}}">
+          <i class="bi bi-person-lines-fill"></i>
+          <span>Departments</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link " href="{{url('/dashboard')}}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>

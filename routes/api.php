@@ -18,6 +18,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::delete('/admin/departmentlist/{id}/deleted', [
+  'uses' => 'DepartmentController@delete_department',
+        'as' => 'admin.department.delete'
+]);
+
 Route::resource('request', 'RequestingFormController');
 
 Route::delete('/studentlist/{id}/deleted', [
@@ -61,7 +66,4 @@ Route::delete('/faculty/myfiles/{id}/deleted', [
   ]);
 
 
-//   Route::post('/apply/certification/requested',[
-//     'uses' => 'RequestingFormController@apply_certification',
-//     'as' => 'StudentRequested'
-// ]);
+

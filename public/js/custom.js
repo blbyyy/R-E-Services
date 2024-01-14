@@ -823,6 +823,120 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //edit department info
+        $(".departmenteditBtn").click(function() {
+            var id = $(this).data("id");
+            
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/departmentlist/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $('#department_edit_id').val(data.id);
+                    $('#dept_name').val(data.department_name);
+                    $('#dept_code').val(data.department_code);
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //update student info
+        $(".departmentupdateBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $("#department_edit_id").val();
+            let editformData = new FormData($("#departmentinfoform")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            // console.log(editformData)
+            $.ajax({
+                type: "POST",
+                url: "/admin/departmentlist/" + id + "/updated",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/admin/departmentlist';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Department Info Updated',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //delete student info
+        $(".departmentdeleteBtn").on("click", function (e) {
+            var id = $(this).data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Are you sure you want to delete this department?',
+                text: "You won't be able to undo this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/admin/departmentlist/" + id + "/deleted",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            setTimeout(function() {
+                                window.location.href = '/admin/departmentlist';
+                            }, 1500);
+                            console.log(data);
+                            Swal.fire(
+                                'Deleted!',
+                                'Department has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+
+                }
+            })
+
+        });
     //END OF ADMIN POV
 
     //START OF STUDENT POV

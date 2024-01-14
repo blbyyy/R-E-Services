@@ -108,46 +108,8 @@
 
           <input type="hidden" class="form-control" id="research_id" name="research_id">
     
-          {{-- <label>Is there an initial run of a similarity test (turnitin) by your research adviser?</label>
-            <div class="col-sm-12">
-                <div class="form-check">
-                    <input name="advisors_turnitin_precheck" class="form-check-input" type="radio" name="advisors_turnitin_precheck" id="advisors_turnitin_precheck_yes" value="Yes" onclick="toggleForms('yes')">
-                    <label class="form-check-label" for="advisors_turnitin_precheck_yes">
-                        Yes
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input name="advisors_turnitin_precheck" class="form-check-input" type="radio" name="advisors_turnitin_precheck" id="advisors_turnitin_precheck_no" value="No" onclick="toggleForms('no')">
-                    <label class="form-check-label" for="advisors_turnitin_precheck_no">
-                        No
-                    </label>
-                </div>
-            </div> --}}
-
-              <div id="formContainer" style="display: none;">
-                <div class="col-md-12">
-                  <div class="form-floating mb-3">
-                      <select name="submission_frequency" class="form-select" id="submission_frequency" aria-label="State">
-                          <option value="First Submission">First Submission</option>
-                          <option value="Second Submission">Second Submission</option>
-                          <option value="Third Submission">Third Submission</option>
-                          <option value="Fourth Submission">Fourth Submission</option>
-                          <option value="Fifth Submission">Fifth Submission</option>
-                      </select>
-                      <label for="submission_frequency">Frequency of Submission</label>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="form-floating">
-                        <input name="initial_simmilarity_percentage" type="number" class="form-control" id="initial_simmilarity_percentage" placeholder="Enter the initial percentage of similarity for your paper">
-                        <label for="initial_simmilarity_percentage">Enter the initial percentage of similarity for your paper</label>
-                    </div>
-                </div>
-            </div>
-    
             <div class="col-md-6">
-              <div class="form-floating mb-3">
+              <div class="form-floating">
                 <select name="thesis_type" class="form-select" id="thesis_type" aria-label="State">
                   <option value=""></option>
                   <option value="Undergaduate Thesis">Undergraduate Thesis</option>
@@ -161,7 +123,7 @@
             </div>
     
             <div class="col-md-6">
-              <div class="form-floating mb-3">
+              <div class="form-floating">
                 <select name="requestor_type" class="form-select" id="requestor_type" aria-label="State">
                   <option value=""></option>
                   <option value="Graduate Student">Graduate Student</option>
@@ -169,6 +131,18 @@
                   <option value="Faculty">Faculty</option>
                 </select>
                 <label for="requestor_type">Requestor Type</label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-floating">
+                <select name="adviser_id" class="form-select" id="adviser_id" aria-label="State">
+                  <option value="">Select Adviser.....</option>
+                  @foreach($advisers as $adviser)
+                    <option value="{{$adviser->id}}">{{$adviser->lname}}, {{$adviser->fname}} {{$adviser->mname}} ({{$adviser->department_name}})</option>
+                  @endforeach
+                </select>
+                <label for="adviser_id">Adviser Name</label>
               </div>
             </div>
     
@@ -184,32 +158,6 @@
                 <label for="research_staff">Research Staff</label>
               </div>
             </div>
-    
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <select name="adviser_id" class="form-select" id="adviser_id" aria-label="State">
-                  <option value=""></option>
-                  @foreach($advisers as $adviser)
-                    <option value="{{$adviser->id}}">{{$adviser->lname}}, {{$adviser->fname}} {{$adviser->mname}},</option>
-                  @endforeach
-                </select>
-                <label for="adviser_id">Adviser Name</label>
-              </div>
-            </div>
-
-
-            {{-- <div class="col-md-6">
-              <div class="form-floating">
-                <input name="college" type="text" class="form-control" id="college" placeholder="College">
-                <label for="college">College</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="course" type="text" class="form-control" id="course" placeholder="Course">
-                <label for="course">Course</label>
-              </div>
-            </div> --}}
 
             <div id="additionalFieldsContainer">
               <div class="col-md-12">
@@ -220,11 +168,11 @@
               </div>
             </div>
 
-            <div class="col-12">
-              <button type="button" class="btn btn-outline-dark" id="addResearcher">Add Researcher</button>
+            <div class="d-grid gap-2 mt-3">
+              <button type="button" class="btn btn-outline-dark" id="addResearcher"><i class="bi bi-plus-lg"></i> Add Researcher</button>
             </div>
     
-            <div class="col-12">
+            <div class="col-12" style="padding-top: 20px">
               <div class="form-check">
                 <input name="agreement" class="form-check-input" type="checkbox" id="agreement" value="I Agree" required>
                 <label class="form-check-label" for="agreement">
@@ -233,49 +181,23 @@
               </div>
             </div>
     
-            <div class="col-12" style="padding-top: 20px">
+            <div class="col-" style="padding-top: 20px">
               <div class="d-flex justify-content-end">
-              <button type="submit" class="btn btn-outline-dark studentapplycertification">Apply Certification</button>
+                <button type="submit" class="btn btn-outline-dark studentapplycertification">Apply Certification</button>
               </div>
             </div>
     
           </form>
          
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
       </div>
     </div>
   </div>
-
 </main>
-<script>
-
-  
-  function toggleForms(option) {
-      var formContainer = document.getElementById('formContainer');
-      if (option === 'yes') {
-          formContainer.style.display = 'block';
-      } else {
-          formContainer.style.display = 'none';
-      }
-  }
-
-  function toggleForms(option) {
-        var formContainer = document.getElementById('formContainer');
-        var submissionFrequency = document.getElementById('submission_frequency');
-        var initialsimilarityPercentage = document.getElementById('initial_simmilarity_percentage');
-
-        if (option === 'no') {
-
-            submissionFrequency.value = 'First Submission';
-            initialsimilarityPercentage.value = '0';
-        }
-
-        formContainer.style.display = option === 'yes' ? 'block' : 'none';
-    }
-
+<script> 
     document.addEventListener('DOMContentLoaded', function () {
         // Initial count of visible input fields
         let visibleFieldsCount = 1;
@@ -301,6 +223,4 @@
             document.getElementById('additionalFieldsContainer').appendChild(newInputField);
         });
     });
-
-   
 </script>

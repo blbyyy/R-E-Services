@@ -323,7 +323,12 @@ class StudentController extends Controller
         ->where('files.user_id', Auth::id())
         ->get();
 
-        $advisers = Faculty::orderBy('id')->get();
+        $advisers = DB::table('faculty')
+        ->join('departments', 'departments.id', '=', 'faculty.department_id')
+        ->select('faculty.*','departments.department_name','departments.id as department_id') 
+        ->get();
+
+        // $advisers = Faculty::orderBy('id')->get();
         
         return View::make('students.requesting',compact('student','myfiles','advisers'));
     }
