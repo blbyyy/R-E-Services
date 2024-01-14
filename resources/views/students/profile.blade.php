@@ -323,8 +323,12 @@
                     </div>
                     
                     <div class="text-center">
-                        <button type="submit" class="btn btn-outline-dark">Change Password</button>
+                        <button type="submit" class="btn btn-outline-dark changePassword">Change Password</button>
+                        <button style="display: none;" type="button" class="btn btn-outline-dark errorButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Please double-check your password entry.">
+                          Change Password
+                        </button>
                     </div>
+                    
                 </form>
 
                 </div>
@@ -353,9 +357,14 @@
             if (response.match) {
                 messageSpan.text("Current password match.");
                 messageSpan.css('color', 'green');
+                $(".changePassword").show();
+                $(".errorButton").hide();
             } else {
                 messageSpan.text("Current password is wrong");
                 messageSpan.css('color', 'red');
+                // $(".changePassword").prop("disabled", true);
+                $(".changePassword").hide();
+                $(".errorButton").show();
             }
         },
         error: function(xhr, status, error) {
@@ -384,12 +393,20 @@
                   var renewPassword = $("#renewpassword").val();
                   var messageSpan = $("#passwordMatchMessage");
 
-                  if (newPassword === renewPassword) {
-                      messageSpan.text("Password match.");
-                      messageSpan.css('color', 'green');
-                  } else {
+                  if (!newPassword && !renewPassword) {
+                      messageSpan.text("");
+                      $(".changePassword").show();
+                      $(".errorButton").hide();
+                  } else if (newPassword !== renewPassword) {
                       messageSpan.text("Password did not match.");
                       messageSpan.css('color', 'red');
+                      $(".changePassword").hide();
+                      $(".errorButton").show();
+                  } else if (newPassword === renewPassword) {
+                      messageSpan.text("Password match.");
+                      messageSpan.css('color', 'green');
+                      $(".changePassword").show();
+                      $(".errorButton").hide();
                   }
     });
 

@@ -108,7 +108,7 @@
 
           <input type="hidden" class="form-control" id="research_id" name="research_id">
     
-          <label>Is there an initial run of a similarity test (turnitin) by your research adviser?</label>
+          {{-- <label>Is there an initial run of a similarity test (turnitin) by your research adviser?</label>
             <div class="col-sm-12">
                 <div class="form-check">
                     <input name="advisors_turnitin_precheck" class="form-check-input" type="radio" name="advisors_turnitin_precheck" id="advisors_turnitin_precheck_yes" value="Yes" onclick="toggleForms('yes')">
@@ -122,7 +122,7 @@
                         No
                     </label>
                 </div>
-            </div>
+            </div> --}}
 
               <div id="formContainer" style="display: none;">
                 <div class="col-md-12">
@@ -172,15 +172,6 @@
               </div>
             </div>
     
-            {{-- <hr class="thick-hr"> --}}
-    
-            <div class="col-md-12">
-                <div class="form-floating">
-                  <input name="purpose" type="text" class="form-control" id="purpose" placeholder="Purpose">
-                  <label for="purpose">Purpose</label>
-                </div>
-            </div>
-    
             <div class="col-md-6">
               <div class="form-floating">
                 <input name="research_specialist" type="text" class="form-control" id="research_specialist" placeholder="Researcher Specialist">
@@ -195,19 +186,19 @@
             </div>
     
             <div class="col-md-6">
-              <div class="form-floating">
-                <input name="adviser_name" type="text" class="form-control" id="adviser_name" placeholder="Name of Adviser">
-                <label for="adviser_name">Name of Adviser</label>
+              <div class="form-floating mb-3">
+                <select name="adviser_id" class="form-select" id="adviser_id" aria-label="State">
+                  <option value=""></option>
+                  @foreach($advisers as $adviser)
+                    <option value="{{$adviser->id}}">{{$adviser->lname}}, {{$adviser->fname}} {{$adviser->mname}},</option>
+                  @endforeach
+                </select>
+                <label for="adviser_id">Adviser Name</label>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="adviser_email" type="text" class="form-control" id="adviser_email" placeholder="Adviser Email">
-                <label for="adviser_email">Adviser Email</label>
-              </div>
-            </div>
-    
-            <div class="col-md-6">
+
+
+            {{-- <div class="col-md-6">
               <div class="form-floating">
                 <input name="college" type="text" class="form-control" id="college" placeholder="College">
                 <label for="college">College</label>
@@ -218,7 +209,7 @@
                 <input name="course" type="text" class="form-control" id="course" placeholder="Course">
                 <label for="course">Course</label>
               </div>
-            </div>
+            </div> --}}
 
             <div id="additionalFieldsContainer">
               <div class="col-md-12">
@@ -260,6 +251,8 @@
 
 </main>
 <script>
+
+  
   function toggleForms(option) {
       var formContainer = document.getElementById('formContainer');
       if (option === 'yes') {
@@ -308,4 +301,6 @@
             document.getElementById('additionalFieldsContainer').appendChild(newInputField);
         });
     });
+
+   
 </script>

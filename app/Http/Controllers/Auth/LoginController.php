@@ -66,7 +66,7 @@ class LoginController extends Controller
             auth()->login($existingUser, true);
            
         } else {      
-
+            
             $newUser = new User;
             $newUser->fname = $user['given_name'];
             $newUser->lname = $user['family_name'];
@@ -81,12 +81,6 @@ class LoginController extends Controller
             $newStudent->email = $user->email;
             $newStudent->user_id = $last;
 
-            // $avatar = $user->avatar;
-            // $avatarContents = file_get_contents($avatar);
-            // $filename = uniqid() . '.jpg';
-            // $avatarLink = asset('storage/images/'.$filename, $avatarContents);
-            // $newStudent->avatar = $avatarLink;
-            // Storage::put('storage/images/'.time().'-'.$filename, $avatarContents);
             $newStudent->save();
             
             auth()->login($newUser, true);

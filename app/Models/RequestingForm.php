@@ -21,7 +21,7 @@ class RequestingForm extends Model
         "email_address",
         "thesis_type",
         "advisors_turnitin_precheck",
-        "adviser_name",
+        "adviser_id",
         "submission_frequency",
         "research_specialist",
         "tup_id",

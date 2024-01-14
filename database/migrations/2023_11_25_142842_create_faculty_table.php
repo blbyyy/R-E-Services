@@ -13,12 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::create('departments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('department_name');
+            $table->text('department_code');
+            $table->timestamps();
+        });
+
         Schema::create('faculty', function (Blueprint $table) {
             $table->increments('id');
             $table->text('fname')->nullable()->default('Need to update');
             $table->text('lname')->nullable()->default('Need to update');
             $table->text('mname')->nullable()->default('Need to update');
-            $table->text('department')->nullable()->default('Need to update');
+            $table->integer('department_id')->unsigned()->nullable();
+            $table->foreign('department_id')->references('id')->on('departments');
             $table->text('position')->nullable()->default('Need to update');
             $table->text('designation')->nullable()->default('Need to update');
             $table->string('email')->unique();
@@ -41,6 +49,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('faculty');
+        Schema::dropIfExists('faculty', 'departments');
     }
 };

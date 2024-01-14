@@ -36,7 +36,8 @@ return new class extends Migration
             $table->string('email_address')->nullable();
             $table->text('thesis_type')->nullable();
             $table->text('advisors_turnitin_precheck');
-            $table->text('adviser_name')->nullable();
+            $table->integer('adviser_id')->unsigned()->nullable();
+            $table->foreign('adviser_id')->references('id')->on('faculty');
             $table->text('submission_frequency')->default('First Submission')->nullable();
             $table->text('research_specialist')->nullable();
             $table->string('tup_id')->nullable();

@@ -35,7 +35,7 @@ class FacultyController extends Controller
             $faculty->fname = $request->fname;
             $faculty->lname = $request->lname;
             $faculty->mname = $request->mname;
-            $faculty->department = $request->department;
+            $faculty->department_id = '1';
             $faculty->position = $request->position;
             $faculty->designation = $request->designation;
             $faculty->tup_id = $request->tup_id;

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Faculty;
 use App\Models\RequestingForm;
 use App\Models\User;
 use App\Models\Files; 
@@ -236,7 +237,6 @@ class StudentController extends Controller
     public function showpdf($fileName)
     {
         $filePath = public_path("uploads/pdf/{$fileName}");
-
         return response()->file($filePath);
     }
 
@@ -322,13 +322,41 @@ class StudentController extends Controller
         ->select('files.*') 
         ->where('files.user_id', Auth::id())
         ->get();
+
+        $advisers = Faculty::orderBy('id')->get();
         
-        return View::make('students.requesting',compact('student','myfiles'));
+        return View::make('students.requesting',compact('student','myfiles','advisers'));
     }
 
     public function apply_certification(Request $request, $id)
-    { 
+    {
+        $submission = DB::table('requestingform')
+        ->join('users', 'users.id', 'requestingform.user_id')
+        ->join('files', 'files.id', 'requestingform.research_id')
+        ->where('requestingform.research_id', $request->research_id)
+        ->selectRaw(
+            'CASE 
+                WHEN COUNT(*) = 0 THEN "First Submission"
+                WHEN COUNT(*) = 1 THEN "Second Submission"
+                WHEN COUNT(*) = 2 THEN "Third Submission"
+                WHEN COUNT(*) = 3 THEN "Fourth Submission"
+                WHEN COUNT(*) = 4 THEN "Fifth Submission"
+                WHEN COUNT(*) = 5 THEN "Sixth Submission"
+                ELSE "Other Submission" 
+            END as submission_frequency')
+        ->value('submission_frequency');
+
+        $latestPercentage = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.simmilarity_percentage_results')
+            ->where('requestingform.research_id', $request->research_id)
+            ->orderBy('requestingform.created_at', 'desc') 
+            ->value('simmilarity_percentage_results');
+
         $student =  Student::where('user_id',Auth::id())->first();
+
+        $advisers = Faculty::orderBy('id')->get();
 
         $studentfullname = $student->fname .' '. $student->mname .' '. $student->lname;
 
@@ -336,18 +364,35 @@ class StudentController extends Controller
             $form->date = now();
             $form->email_address = $student->email;
             $form->thesis_type = $request->thesis_type;
-            $form->advisors_turnitin_precheck = $request->advisors_turnitin_precheck;
-            $form->adviser_name = $request->adviser_name;
-            $form->submission_frequency = $request->submission_frequency;
+            
+            $form->submission_frequency = $submission;
+            $form->initial_simmilarity_percentage = 0;
+
+            if ($submission === 'First Submission') {
+                $form->advisors_turnitin_precheck = 'No';
+                $form->initial_simmilarity_percentage = 0;
+            } else {
+                $form->advisors_turnitin_precheck = 'Yes';
+                $form->initial_simmilarity_percentage = $latestPercentage;
+            } 
+
+            $form->adviser_id = $request->adviser_id;
+
+            $email = DB::table('faculty')
+            ->where('id', $request->adviser_id)
+            ->value('email');
+
+            $form->adviser_email = $email;
+           
             $form->research_specialist = $request->research_specialist;
             $form->tup_id = $student->tup_id;
             $form->requestor_name = $studentfullname;
             $form->tup_mail = $student->email;
             $form->sex = $student->gender;
             $form->requestor_type = $request->requestor_type;
-            $form->college = $request->college;
-            $form->course = $request->course;
-            $form->purpose = $request->purpose;
+            $form->college = $student->college;
+            $form->course = $student->course;
+            $form->purpose = 'Certification';
             $form->researchers_name1 = $request->researchers_name1;
             $form->researchers_name2 = $request->researchers_name2;
             $form->researchers_name3 = $request->researchers_name3;
@@ -356,15 +401,12 @@ class StudentController extends Controller
             $form->researchers_name6 = $request->researchers_name6;
             $form->researchers_name7 = $request->researchers_name7;
             $form->researchers_name8 = $request->researchers_name8;
-            $form->adviser_email = $request->adviser_email;
             $form->agreement = $request->agreement;
-            $form->score = '0';
+            $form->score = 0;
             $form->research_staff = $request->research_staff;
             $form->research_id = $request->research_id;
             $form->user_id = $student->user_id;
             $form->status = 'Pending';
-            $form->initial_simmilarity_percentage = $request->initial_simmilarity_percentage;
-            $form->simmilarity_percentage_results = '0';
             $form->save();
 
             $file = Files::find($request->research_id);
