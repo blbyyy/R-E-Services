@@ -1097,33 +1097,6 @@ $(document).ready(function () {
         
                     $('#research_id').val(id);
         
-                    // if (data.length === 0) {
-                    //     $('#header').text('No Comments');
-                    //     $("#try").html("<br><p class='text-center'>Be the first to comment on this post.</p>");
-                    // } else {
-                    //     // If comments exist, display them
-                    //     data.forEach(function(item) {
-                    //         $('#header').text('All Comments');
-                    //         var card = $("<div>").addClass("d-flex align-items-center");
-                    //         var cardIcon = $("<div>").addClass("card-icon rounded-circle d-flex align-items-center justify-content-center");
-                    //         var img = $("<img>").attr("style", "width: 50px; height: 40px;").addClass("rounded-circle").attr("src", "https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180").attr("alt", "");
-                    //         var cardContent = $("<div>").addClass("ps-3");
-                    //         var h4 = $("<h4>").text(item.fname + ' ' + item.mname + ' ' + item.lname);
-                    //         var span = $("<span>").attr("style", "font-size: smaller").text("(" + item.role + ")" + " " + item.created_at);
-        
-                    //         cardIcon.append(img);
-                    //         cardContent.append(h4, span);
-                    //         card.append(cardIcon, cardContent);
-        
-                    //         $("#try").append(card);
-                            
-                    //         $("#try").append(
-                    //             "<br>",
-                    //             "<span>" + item.comment_content + "</span>",
-                    //             "<hr>"
-                    //         );
-                    //     });
-                    // }
                 },
                 error: function(error) {
                     console.log(error);
@@ -1142,6 +1115,65 @@ $(document).ready(function () {
             $.ajax({
                 type: "POST",
                 url: "/apply/certification/requested/" + id ,
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/apply/certification';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Request Sent',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //student fetching file id to re-apply certification
+        $(".fetch_id").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/student/reapply/get/file/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+        
+                    $('#re_apply_research_id').val(id);
+        
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //student re-apply certification
+        $(".studentreapplycert").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            let editformData = new FormData($("#studentreapplycertificationform")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/student/re-apply/certification/requested/" + id ,
                 data: editformData,
                 contentType: false,
                 processData: false,

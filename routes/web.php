@@ -85,9 +85,24 @@ Route::get('/application/status/{id}', [
           'as' => 'student.get-specific-data'
   ]);
 
+Route::get('/get/file/{id}', [
+    'uses' => 'StudentController@getfile_id',
+          'as' => 'student_get-file-id'
+  ]);
+
 Route::post('/apply/certification/requested/{id}',[
     'uses' => 'StudentController@apply_certification',
     'as' => 'StudentRequested'
+]);
+
+Route::get('/student/reapply/get/file/{id}', [
+  'uses' => 'StudentController@re_apply_getfile_id',
+        'as' => 'student_reapply_get-file-id'
+]);
+
+Route::post('/student/re-apply/certification/requested/{id}', [
+  'uses' => 'StudentController@reApply',
+        'as' => 'student.reapply.certification'
 ]);
 
 Route::get('/student/myfiles', [
@@ -108,11 +123,6 @@ Route::get('/pdf/{fileName}', [
 Route::get('/show/pdf/{id}', [
     'uses' => 'StudentController@pdfinfo',
           'as' => 'student_pdf_info'
-  ]);
-
-Route::get('/get/file/{id}', [
-    'uses' => 'StudentController@getfile_id',
-          'as' => 'student_get-file-id'
   ]);
 
 Route::get('/student/show/history/{id}', [

@@ -327,10 +327,14 @@ class StudentController extends Controller
         ->join('departments', 'departments.id', '=', 'faculty.department_id')
         ->select('faculty.*','departments.department_name','departments.id as department_id') 
         ->get();
-
-        // $advisers = Faculty::orderBy('id')->get();
         
         return View::make('students.requesting',compact('student','myfiles','advisers'));
+    }
+
+    public function getfile_id($id)
+    {
+        $file = RequestingForm::find($id);
+        return response()->json($file);
     }
 
     public function apply_certification(Request $request, $id)
@@ -356,7 +360,7 @@ class StudentController extends Controller
             ->join('files', 'files.id', 'requestingform.research_id')
             ->select('requestingform.simmilarity_percentage_results')
             ->where('requestingform.research_id', $request->research_id)
-            ->orderBy('requestingform.created_at', 'desc') 
+            ->orderBy('requestingform.id', 'desc') 
             ->value('simmilarity_percentage_results');
 
         $student =  Student::where('user_id',Auth::id())->first();
@@ -422,6 +426,112 @@ class StudentController extends Controller
 
     }
 
+    public function re_apply_getfile_id($id)
+    {
+        $file = RequestingForm::find($id);
+        return response()->json($file);
+    }
+
+    public function reApply(Request $request, $id)
+    {
+        $latestApplication = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.*')
+            ->where('requestingform.research_id', $request->re_apply_research_id)
+            ->orderBy('requestingform.created_at', 'desc') 
+            ->first();
+        
+        $latestPercentage = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.simmilarity_percentage_results')
+            ->where('requestingform.research_id', $request->re_apply_research_id)
+            ->orderBy('requestingform.id', 'desc') 
+            ->value('simmilarity_percentage_results');
+
+        $submission = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.research_id', $request->re_apply_research_id)
+            ->selectRaw(
+                'CASE 
+                    WHEN COUNT(*) = 0 THEN "First Submission"
+                    WHEN COUNT(*) = 1 THEN "Second Submission"
+                    WHEN COUNT(*) = 2 THEN "Third Submission"
+                    WHEN COUNT(*) = 3 THEN "Fourth Submission"
+                    WHEN COUNT(*) = 4 THEN "Fifth Submission"
+                    WHEN COUNT(*) = 5 THEN "Sixth Submission"
+                    ELSE "Other Submission" 
+                END as submission_frequency')
+            ->value('submission_frequency');
+
+            $form = new RequestingForm;
+            $form->date = now();
+            $form->email_address = $latestApplication->email_address;
+            $form->thesis_type = $latestApplication->thesis_type;
+            $form->submission_frequency = $submission;
+            $form->simmilarity_percentage_results = 0;
+            $form->advisors_turnitin_precheck = 'Yes';
+            $form->initial_simmilarity_percentage = $latestPercentage;
+            $form->adviser_id = $latestApplication->adviser_id;
+
+            $adviser_email = DB::table('faculty')
+            ->where('id', $latestApplication->adviser_id)
+            ->value('email');
+
+            $form->adviser_email = $adviser_email;
+            
+            $form->research_specialist = $latestApplication->research_specialist;
+            $form->tup_id = $latestApplication->tup_id;
+            $form->requestor_name = $latestApplication->requestor_name;
+            $form->tup_mail = $latestApplication->tup_mail;
+            $form->sex = $latestApplication->sex;
+            $form->requestor_type = $latestApplication->requestor_type;
+            $form->college = $latestApplication->college;
+            $form->course = $latestApplication->course;
+            $form->purpose = $latestApplication->purpose;
+            $form->researchers_name1 = $latestApplication->researchers_name1;
+            $form->researchers_name2 = $latestApplication->researchers_name2;
+            $form->researchers_name3 = $latestApplication->researchers_name3;
+            $form->researchers_name4 = $latestApplication->researchers_name4;
+            $form->researchers_name5 = $latestApplication->researchers_name5;
+            $form->researchers_name6 = $latestApplication->researchers_name6;
+            $form->researchers_name7 = $latestApplication->researchers_name7;
+            $form->researchers_name8 = $latestApplication->researchers_name8;
+            $form->agreement = $latestApplication->agreement;
+            $form->score = 0;
+            $form->research_staff = $latestApplication->research_staff;
+            $form->research_id = $latestApplication->research_id;
+            $form->user_id = $latestApplication->user_id;
+            $form->status = 'Pending';
+            $form->save();
+
+            if ($submission === 'First Submission') {
+                $file = Files::find($request->re_apply_research_id);
+                $file->file_status = 'Pending';
+                $file->save();
+            } else {
+                $request->validate([
+                    'research_file' => 'required|mimes:pdf|max:10240', // PDF file validation with a maximum size of 10MB
+                ]);
+                
+                $file = Files::find($request->re_apply_research_id);
+                $file->file_status = 'Pending';
+
+                $pdfFile = $request->file('research_file');
+                $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
+                $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+                
+                $file->research_file = $pdfFileName;
+
+                $file->save();
+            } 
+
+            return response()->json(["form" => $form, "file" => $file ]);
+
+    }
+
     public function application_status()
     {
         $student = DB::table('students')
@@ -466,10 +576,5 @@ class StudentController extends Controller
 
     }
 
-    public function getfile_id($id)
-    {
-        $file = RequestingForm::find($id);
-        return response()->json($file);
-    }
 
 }

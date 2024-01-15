@@ -58,6 +58,23 @@
                 </div>
             </div>
           </div>
+        @elseif($files->file_status == 'Returned')
+          <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{$files->research_title}}</h5>
+                    <div class="icon">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </div>
+                
+                    <center>
+                      <button type="button" class="btn btn-outline-dark fetch_id" data-bs-toggle="modal" data-bs-target="#studentreapplycertification" data-id="{{$files->id}}">
+                          Re-Apply</i>
+                      </button> 
+                    </center>
+                </div>
+            </div>
+          </div>
         @else
           <div class="col-md-4">
             <div class="card">
@@ -70,7 +87,7 @@
                     <center>
                         <button type="button" class="btn btn-outline-dark studentapplycert" data-bs-toggle="modal" data-bs-target="#studentapplycertification" data-id="{{$files->id}}">
                             Apply Certification</i>
-                        </button>
+                        </button> 
                     </center>
                 </div>
             </div>
@@ -196,6 +213,43 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="studentreapplycertification" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Apply for Certification</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <form id="studentreapplycertificationform" class="row g-3" enctype="multipart/form-data">
+            @csrf
+
+              <input type="hidden" class="form-control" id="re_apply_research_id" name="re_apply_research_id">
+
+              <div class="col-12">
+                  <label for="research_file" class="form-label">Enter the revised research file in this field:</label>
+                  <input type="file" class="form-control" id="research_file" name="research_file">
+                  <span style="font-size: small">(Note: The uploaded PDF file should not exceed 10mb in size.)</span>
+              </div>
+    
+            <div class="col-" style="padding-top: 20px">
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-outline-dark studentreapplycert">Apply Certification</button>
+              </div>
+            </div>
+    
+          </form>
+         
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 <script> 
     document.addEventListener('DOMContentLoaded', function () {

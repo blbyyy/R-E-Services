@@ -23,7 +23,7 @@
 <div class="row g-4">
   @if(count($studentstats) > 0)
     @foreach($studentstats as $stats)
-      <div class="col-md-4">
+      <div class="col-md-3">
           <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{$stats->research_title}}<span>({{$stats->status}})</span></h5>
@@ -32,9 +32,9 @@
                 </div>
                 
                 <center>
-                <button type="button" class="btn btn-outline-dark student-view-details-button" data-bs-toggle="modal" data-bs-target="#studentviewInfo" data-id="{{ $stats->id }}">
-                  <i class="bi bi-info-circle"> View Details</i>
-                </button>
+                  <button type="button" class="btn btn-outline-dark student-view-details-button" data-bs-toggle="modal" data-bs-target="#studentviewInfo" data-id="{{ $stats->id }}">
+                    <i class="bi bi-info-circle"> View Details</i>
+                  </button>
                 </center>
 
               </div>
