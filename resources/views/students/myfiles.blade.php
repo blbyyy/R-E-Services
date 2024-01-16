@@ -39,7 +39,7 @@
                         <div class="col-12">
                             <label for="research_file" class="form-label">Research File</label>
                             <input type="file" class="form-control" id="research_file" name="research_file">
-                            <span>(Note: The uploaded PDF file should not exceed 10mb in size.)</span>
+                            <span style="font-size: small">(Note: The uploaded PDF file should not exceed 10mb in size.)</span>
                         </div>
         
                         <div class="col-12" style="padding-top: 20px">

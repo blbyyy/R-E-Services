@@ -370,4 +370,46 @@ class FacultyController extends Controller
         $file = RequestingForm::find($id);
         return response()->json($file);
     }
+
+    public function students_application()
+    {
+        $faculty = DB::table('faculty')
+        ->join('users','users.id','faculty.user_id')
+        ->select('faculty.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $faculty_id = DB::table('faculty')
+            ->where('user_id', Auth::id())
+            ->value('id');
+        
+        $application = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('students', 'users.id', 'students.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.*','files.id as file_id','files.research_title')
+            ->where('requestingform.adviser_id', $faculty_id)
+            ->get();
+
+        // dd($application);
+
+        return View::make('faculty.student_application',compact('application','faculty'));
+    }
+
+    public function students_application_specific($id)
+    {
+        $application = DB::table('requestingform')
+        ->join('faculty', 'faculty.id', '=', 'requestingform.adviser_id')
+        ->join('files', 'files.id', '=', 'requestingform.research_id')
+        ->where('requestingform.id', $id)
+        ->select(
+            'requestingform.*',
+            'files.id as files_id', 'files.research_file',
+            'faculty.id as faculty_id',
+            DB::raw("CONCAT(faculty.fname, ' ', faculty.lname, ' ', faculty.mname) as adviser_name")
+        )
+        ->first();
+    
+        return response()->json($application);
+    }
 }

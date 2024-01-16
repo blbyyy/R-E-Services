@@ -297,6 +297,16 @@ Route::get('/faculty/show/history/{id}', [
     'uses' => 'FacultyController@history',
           'as' => 'faculty_pdf_history'
   ]);
+
+Route::get('/faculty/student-applications', [
+    'uses' => 'FacultyController@students_application',
+          'as' => 'faculty_student_applications'
+  ]);
+
+Route::get('/faculty/student-applications/{id}', [
+    'uses' => 'FacultyController@students_application_specific',
+          'as' => 'faculty_student_applications-specific'
+  ]);
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [

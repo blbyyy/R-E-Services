@@ -362,7 +362,6 @@
             } else {
                 messageSpan.text("Current password is wrong");
                 messageSpan.css('color', 'red');
-                // $(".changePassword").prop("disabled", true);
                 $(".changePassword").hide();
                 $(".errorButton").show();
             }
@@ -391,11 +390,13 @@
     $('#newpassword, #renewpassword').on('input', function () {
                   var newPassword = $("#newpassword").val();
                   var renewPassword = $("#renewpassword").val();
+                  var currentPassword = $("#password").val();
                   var messageSpan = $("#passwordMatchMessage");
 
-                  if (!newPassword && !renewPassword) {
-                      messageSpan.text("");
-                      $(".changePassword").show();
+                  if ((!newPassword && !renewPassword) || !currentPassword) {
+                      messageSpan.text("You need to enter your current password.");
+                      messageSpan.css('color', 'orange');
+                      $(".changePassword").prop("disabled", true);
                       $(".errorButton").hide();
                   } else if (newPassword !== renewPassword) {
                       messageSpan.text("Password did not match.");
@@ -406,6 +407,7 @@
                       messageSpan.text("Password match.");
                       messageSpan.css('color', 'green');
                       $(".changePassword").show();
+                      $(".changePassword").prop("disabled", false);
                       $(".errorButton").hide();
                   }
     });

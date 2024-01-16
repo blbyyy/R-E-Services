@@ -385,7 +385,11 @@ class StudentController extends Controller
                 $form->initial_simmilarity_percentage = $latestPercentage;
             } 
 
-            $form->adviser_id = $request->adviser_id;
+            $userid = DB::table('faculty')
+            ->where('id', $request->adviser_id)
+            ->value('user_id');
+
+            $form->adviser_id = $userid;
 
             $email = DB::table('faculty')
             ->where('id', $request->adviser_id)

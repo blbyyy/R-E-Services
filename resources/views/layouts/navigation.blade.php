@@ -348,12 +348,24 @@
           <span>Application Status</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/faculty/student-applications')}}">
+          <i class="bi bi-file-earmark-person"></i>
+          <span>Students Application</span>
+        </a>
+      </li>
 
       @elseif(Auth::user()->role == 'Admin')
       <li class="nav-item">
         <a class="nav-link " href="{{url('/homepage')}}">
           <i class="bi bi-house-door"></i>
           <span>Home</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/dashboard')}}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
@@ -369,21 +381,15 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="{{url('/dashboard')}}">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+        <a class="nav-link " href="{{url('announcements')}}">
+          <i class="bi bi-megaphone"></i>
+          <span>Announcements</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link " href="{{url('/events')}}">
           <i class="bi bi-calendar-event"></i>
           <span>Events</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('announcements')}}">
-          <i class="bi bi-megaphone"></i>
-          <span>Announcements</span>
         </a>
       </li>
       <li class="nav-item">
