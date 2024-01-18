@@ -15,22 +15,24 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('fname')->nullable()->default('Need to update');
-            $table->text('lname')->nullable()->default('Need to update');
-            $table->text('mname')->nullable()->default('Need to update');
-            $table->text('college')->nullable()->default('Need to update');
-            $table->text('course')->nullable()->default('Need to update');
+            $table->string('fname')->nullable();
+            $table->string('lname')->nullable();
+            $table->string('mname')->nullable();
+            $table->string('college')->nullable();
+            $table->string('course')->nullable();
             $table->string('email')->unique();
-            $table->string('tup_id')->nullable()->default('Need to update');
-            $table->text('gender')->nullable()->default('Need to update');
-            $table->string('phone')->nullable()->default('Need to update');
-            $table->string('address')->nullable()->default('Need to update');
+            $table->string('tup_id')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->date('birthdate')->nullable();
             $table->string('avatar')->nullable()->default('avatar.jpg');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
+        
+        
     }
 
     /**
