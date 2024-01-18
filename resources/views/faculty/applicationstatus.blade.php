@@ -1,4 +1,3 @@
-{{-- try commit --}}
 @extends('layouts.navigation')
 <style>
   .icon{
