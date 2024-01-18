@@ -2,13 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-  
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
     <title>R&E-Services</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta content="{{ csrf_token() }}" name="csrf-token" >
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" />
 
