@@ -16,6 +16,10 @@ use DB;
 use File;
 use Auth;
 
+//MOBILE
+use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 class LoginController extends Controller
 {
     /*
@@ -87,6 +91,26 @@ class LoginController extends Controller
             return redirect()->to('/student/fillup')->with('success', 'You already logged in; to continue, fill out the remaining fields in your user profile.');
         }
         return redirect()->to('/homepage');
+    }
+
+    //MOBILE
+    public function LoginMobile(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json(["errors" => "Invalid credentials.", "status" => 200]);
+        }
+
+        $user = Auth::user();
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json([
+            "success" => "Login Successfully.",
+            "user" => $user,
+            "token" => $token,
+            "status" => 200,
+        ]);
     }
 
 }
