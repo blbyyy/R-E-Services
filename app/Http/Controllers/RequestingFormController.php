@@ -48,7 +48,6 @@ class RequestingFormController extends Controller
         ->orderByRaw("CASE WHEN requestingform.status = 'Pending' THEN 0 ELSE 1 END, requestingform.id")
         ->get();
 
-    
         return View::make('applications.applicationslist',compact('student', 'staff', 'faculty', 'admin', 'application'));
     }
 
