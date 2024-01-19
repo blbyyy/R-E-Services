@@ -22,24 +22,26 @@ return new class extends Migration
 
         Schema::create('faculty', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('fname')->nullable()->default('Need to update');
-            $table->text('lname')->nullable()->default('Need to update');
-            $table->text('mname')->nullable()->default('Need to update');
+            $table->string('fname')->nullable();
+            $table->string('lname')->nullable();
+            $table->string('mname')->nullable();
             $table->integer('department_id')->unsigned()->nullable();
             $table->foreign('department_id')->references('id')->on('departments');
-            $table->text('position')->nullable()->default('Need to update');
-            $table->text('designation')->nullable()->default('Need to update');
+            $table->string('position')->nullable();
+            $table->string('designation')->nullable();
             $table->string('email')->unique();
-            $table->string('tup_id')->nullable()->default('Need to update');
-            $table->text('gender')->nullable()->default('Need to update');
-            $table->string('phone')->nullable()->default('Need to update');
-            $table->string('address')->nullable()->default('Need to update');
+            $table->string('tup_id')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->date('birthdate')->nullable();
             $table->string('avatar')->nullable()->default('avatar.jpg');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
+        
+        
     }
 
     /**
