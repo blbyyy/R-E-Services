@@ -65,5 +65,8 @@ Route::delete('/faculty/myfiles/{id}/deleted', [
           'as' => 'faculty.file.delete'
   ]);
 
+//MOBILE
+Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
+
 
 
