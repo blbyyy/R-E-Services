@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    {{-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> --}}
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>R&E-Services</title>
@@ -444,8 +444,6 @@
 
   </aside><!-- End Sidebar-->
   
-
-
   <main id="main" class="main">
     <div class="card" id="spinnerCard" style="display: none;">
       <div class="card-body">
@@ -459,7 +457,6 @@
       </div>
     </div>
   </main>
-
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -485,7 +482,6 @@
   <script src="https://redigitalize-production.up.railway.app/assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="https://redigitalize-production.up.railway.app/assets/vendor/php-email-form/validate.js"></script>
   <script src="https://redigitalize-production.up.railway.app/js/custom.js"></script>
-
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>

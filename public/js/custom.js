@@ -1105,7 +1105,7 @@ $(document).ready(function () {
         });
 
         //student applying certification
-        $(".studentapplycertification").on("click", function (e) {
+        $(".studentcertification").on("click", function (e) {
             e.preventDefault();
             var id = $(this).data("id");
             let editformData = new FormData($("#studentcertificationform")[0]);
@@ -1215,8 +1215,19 @@ $(document).ready(function () {
                     $("#submission_frequency").text(data.submission_frequency);
                     $("#adviser_name").text(data.adviser_name);
                     $("#adviser_email").text(data.adviser_email);
-                    $("#research_specialist").text(data.research_specialist);
-                    $("#research_staff").text(data.research_staff);
+
+                    if (data.research_specialist === null) {
+                        $("#research_specialist").text('tba');
+                    } else {
+                        $("#research_specialist").text(data.research_specialist);
+                    }
+
+                    if (data.research_staff === null) {
+                        $("#research_staff").text('tba');
+                    } else {
+                        $("#research_staff").text(data.research_staff);
+                    }
+
                     if (data.status === "Pending") {
                         $("#status").html('<span class="badge border-success border-1 text-success"><h5>Pending</h5></span>');
                     } else if (data.status === "Returned") {
@@ -1234,9 +1245,8 @@ $(document).ready(function () {
                         $('#studentviewInfo').on('hidden.bs.modal', function () {
                             $("#certificate").empty();
                         });
-
-
                     }
+
                     $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
                     $("#simmilarity_percentage_results").text(data.simmilarity_percentage_results + " %");
                     $("#requestor_name").text(data.requestor_name);
@@ -1246,6 +1256,7 @@ $(document).ready(function () {
                     $("#sex").text(data.sex);
                     $("#course").text(data.course);
                     $("#college").text(data.college);
+
                     if (data.researchers_name1 !== null) {
                         $("#r1").show();
                         $("#researchers_name1").text(data.researchers_name1);
@@ -1959,7 +1970,6 @@ $(document).ready(function () {
                     } else {
                         $("#r8").hide();
                     }
-
                 }, 
                 error: function (error) {
                     console.log(error);
@@ -1982,8 +1992,18 @@ $(document).ready(function () {
                     $("#submission_frequency").text(data.submission_frequency);
                     $("#adviser_name").text(data.adviser_name);
                     $("#adviser_email").text(data.adviser_email);
-                    $("#research_specialist").text(data.research_specialist);
-                    $("#research_staff").text(data.research_staff);
+
+                    if (data.research_specialist === null) {
+                        $("#research_specialist").text("tba");
+                    } else {
+                        $("#research_specialist").text(data.research_specialist);
+                    }
+                    if (data.research_staff === null) {
+                        $("#research_staff").text("tba");
+                    } else {
+                        $("#research_staff").text(data.research_staff);
+                    }
+                    
                     if (data.status === "Pending") {
                         $("#status").html('<span class="badge border-success border-1 text-success"><h5>Pending</h5></span>');
                     } else if (data.status === "Returned") {

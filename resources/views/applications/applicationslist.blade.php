@@ -9,6 +9,12 @@
       padding-bottom: 50px;
       color: maroon;
   }
+  .body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 50px;
+  }
 </style>
 <main id="main" class="main">
 
@@ -21,8 +27,22 @@
       <i class="bi bi-grid"></i> Tile View
     </button>
     <button type="button" class="btn btn-dark" onclick="showOrToggleView('table')">
-        <i class="bi bi-menu-button-wide"></i> Table View
+      <i class="bi bi-layout-text-window-reverse"></i> Table View
     </button>
+  </div>
+
+  <div class="col-md-12" >
+    <div class="card" id="default" style="display: block;">
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <div class="icon">
+              <i class="bi bi-question-lg"></i>
+            </div>
+            <div class="body">a
+                <h2>There's no view selected.</h2>
+            </div>
+        </div>
+    </div>
   </div>
 
   <div id="tiles" style="display: none;">
@@ -215,28 +235,65 @@
           });
   });
 
+  // var currentViewId = '';  // Variable to store the ID of the currently visible view
+
+  // function showOrToggleView(viewId) {
+  //     var targetView = document.getElementById(viewId);
+
+  //     if (currentViewId !== viewId) {
+  //         // Hide the currently visible view
+  //         if (currentViewId !== '') {
+  //             document.getElementById(currentViewId).style.display = 'none';
+  //         }
+
+  //         // Show the new view
+  //         targetView.style.display = 'block';
+  //         currentViewId = viewId;
+  //     } else {
+  //         // Toggle the display if it's the same view
+  //         if (targetView.style.display === 'none' || targetView.style.display === '') {
+  //             targetView.style.display = 'block';
+  //         } else {
+  //             targetView.style.display = 'none';
+  //             currentViewId = '';  // No view is currently visible
+              
+  //         }
+  //     }
+  // }
+
   var currentViewId = '';  // Variable to store the ID of the currently visible view
 
-  function showOrToggleView(viewId) {
-      var targetView = document.getElementById(viewId);
+// Get the default card by ID
+var defaultCard = document.getElementById('default');
 
-      if (currentViewId !== viewId) {
-          // Hide the currently visible view
-          if (currentViewId !== '') {
-              document.getElementById(currentViewId).style.display = 'none';
-          }
+function showOrToggleView(viewId) {
+    var targetView = document.getElementById(viewId);
 
-          // Show the new view
-          targetView.style.display = 'block';
-          currentViewId = viewId;
-      } else {
-          // Toggle the display if it's the same view
-          if (targetView.style.display === 'none' || targetView.style.display === '') {
-              targetView.style.display = 'block';
-          } else {
-              targetView.style.display = 'none';
-              currentViewId = '';  // No view is currently visible
-          }
-      }
-  }
+    // Hide the default card initially
+    defaultCard.style.display = 'none';
+
+    if (currentViewId !== viewId) {
+        // Hide the currently visible view
+        if (currentViewId !== '') {
+            document.getElementById(currentViewId).style.display = 'none';
+        }
+
+        // Show the new view
+        targetView.style.display = 'block';
+        currentViewId = viewId;
+    } else {
+        // Toggle the display if it's the same view
+        if (targetView.style.display === 'none' || targetView.style.display === '') {
+            targetView.style.display = 'block';
+        } else {
+            targetView.style.display = 'none';
+            currentViewId = '';  // No view is currently visible
+
+            // Show the default card when no view is selected
+            defaultCard.style.display = 'block';
+        }
+    }
+}
+
+
 </script>

@@ -23,7 +23,7 @@
 <div class="row g-4">
   @if(count($studentstats) > 0)
     @foreach($studentstats as $stats)
-      <div class="col-md-3">
+      <div class="col-md-4">
           <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{$stats->research_title}}<span>({{$stats->status}})</span></h5>
@@ -109,12 +109,12 @@
         
                           <div class="row">
                             <div class="col-lg-3 col-md-4 label">Research Specialist</div>
-                            <div id="research_specialist" class="col-lg-9 col-md-8"></div>
+                            <div id="research_specialist" class="col-lg-9 col-md-8">tba</div>
                           </div>
 
                           <div class="row">
                             <div class="col-lg-3 col-md-4 label">Research Staff</div>
-                            <div id="research_staff" class="col-lg-9 col-md-8"></div>
+                            <div id="research_staff" class="col-lg-9 col-md-8">tba</div>
                           </div>
         
                           <div class="row">
