@@ -68,6 +68,12 @@ Route::delete('/faculty/myfiles/{id}/deleted', [
 //MOBILE START
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
 Route::get('/dashboardmobile', 'App\Http\Controllers\AdminController@dashboardmobile');
+
+Route::get('/departmentsmobile', 'App\Http\Controllers\DepartmentController@mobileindex');
+Route::post('/departmentsmobile', 'App\Http\Controllers\DepartmentController@mobileadd_department');
+Route::get('/departmentsmobile/{id}', 'App\Http\Controllers\DepartmentController@mobileedit_department');
+Route::put('/departmentsmobile/{id}', 'App\Http\Controllers\DepartmentController@mobileupdate_department');
+Route::delete('/departmentsmobile/{id}', 'App\Http\Controllers\DepartmentController@mobiledelete_department');
 //MOBILE END
 
 
