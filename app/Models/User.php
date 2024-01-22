@@ -8,8 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-//MOBILE
+//MOBILE START
 use Tymon\JWTAuth\Contracts\JWTSubject;
+//MOBILE END
 
 class User extends Authenticatable implements JWTSubject
 {

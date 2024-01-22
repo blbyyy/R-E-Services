@@ -562,5 +562,51 @@ class AdminController extends Controller
 
         return response()->json($file);
     }
+
+    //MOBILE START
+    public function dashboardmobile(Request $request)
+    {
+        $usersCount = DB::table('users')->count();
+        $studentCount = DB::table('users')->where('role', 'Student')->count();
+        $staffCount = DB::table('users')->where('role', 'Staff')->count();
+        $facultyCount = DB::table('users')->where('role', 'Faculty')->count();
+        $applicationCount = DB::table('requestingform')->count();
+
+        $pendingCount = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.status', '=', 'Pending')
+            ->count();
+
+        $passedCount = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.status', '=', 'Passed')
+            ->count();
+
+        $returnedCount = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.status', '=', 'Returned')
+            ->count();
+
+        $admin = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $data = [
+            'usersCount' => $usersCount,
+            'studentCount' => $studentCount,
+            'staffCount' => $staffCount,
+            'facultyCount' => $facultyCount,
+            'applicationCount' => $applicationCount,
+            'admin' => $admin,
+            'pendingCount' => $pendingCount,
+            'passedCount' => $passedCount,
+            'returnedCount' => $returnedCount,
+        ];
+
+        return response()->json($data);
+    }
+    //MOBILE END
     
 }
