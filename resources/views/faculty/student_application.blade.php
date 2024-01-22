@@ -94,12 +94,12 @@
               
                                 <div class="row">
                                   <div class="col-lg-3 col-md-4 label">Research Specialist</div>
-                                  <div id="research_specialist" class="col-lg-9 col-md-8"></div>
+                                  <div id="research_specialist" class="col-lg-9 col-md-8">tba</div>
                                 </div>
       
                                 <div class="row">
                                   <div class="col-lg-3 col-md-4 label">Research Staff</div>
-                                  <div id="research_staff" class="col-lg-9 col-md-8"></div>
+                                  <div id="research_staff" class="col-lg-9 col-md-8">tba</div>
                                 </div>
               
                                 <div class="row">

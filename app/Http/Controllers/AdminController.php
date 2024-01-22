@@ -539,6 +539,8 @@ class AdminController extends Controller
             $form = RequestingForm::find($id);
             $form->status = $request->status;
             $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
+            $form->research_speacialist = $specialist;
+            $form->research_staff = $specialist;
             $form->date_processing_end = now();
             $form->certificate_id = $last;
             $form->save();
@@ -550,10 +552,20 @@ class AdminController extends Controller
         // $file->date_processing_end = now();
         // $file->save();
 
+        $staff = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $specialist = $staff->fname .' '. $staff->mname .' '. $staff->lname;
+        
         $form = RequestingForm::find($id);
         $form->status = $request->status;
         $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
         $form->date_processing_end = now();
+        $form->research_speacialist = $specialist;
+        $form->research_staff = $specialist;
         $form->save();
 
         $file = Files::find($file_id->id);

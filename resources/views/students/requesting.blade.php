@@ -162,19 +162,6 @@
                 <label for="adviser_id">Adviser Name</label>
               </div>
             </div>
-    
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="research_specialist" type="text" class="form-control" id="research_specialist" placeholder="Researcher Specialist">
-                <label for="research_specialist">Researcher Specialist</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="research_staff" type="text" class="form-control" id="research_staff" placeholder="Research Staff">
-                <label for="research_staff">Research Staff</label>
-              </div>
-            </div>
 
             <div id="additionalFieldsContainer">
               <div class="col-md-12">
@@ -200,7 +187,7 @@
     
             <div class="col-" style="padding-top: 20px">
               <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-outline-dark studentapplycertification">Apply Certification</button>
+                <button type="submit" class="btn btn-outline-dark studentcertification">Apply Certification</button>
               </div>
             </div>
     

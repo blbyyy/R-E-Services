@@ -385,19 +385,14 @@ class StudentController extends Controller
                 $form->initial_simmilarity_percentage = $latestPercentage;
             } 
 
-            $userid = DB::table('faculty')
-            ->where('id', $request->adviser_id)
-            ->value('user_id');
+            $form->adviser_id = $request->adviser_id;
 
-            $form->adviser_id = $userid;
-
-            $email = DB::table('faculty')
+            $adviser_email = DB::table('faculty')
             ->where('id', $request->adviser_id)
             ->value('email');
 
-            $form->adviser_email = $email;
+            $form->adviser_email = $adviser_email;
            
-            $form->research_specialist = $request->research_specialist;
             $form->tup_id = $student->tup_id;
             $form->requestor_name = $studentfullname;
             $form->tup_mail = $student->email;
@@ -416,7 +411,6 @@ class StudentController extends Controller
             $form->researchers_name8 = $request->researchers_name8;
             $form->agreement = $request->agreement;
             $form->score = 0;
-            $form->research_staff = $request->research_staff;
             $form->research_id = $request->research_id;
             $form->user_id = $student->user_id;
             $form->status = 'Pending';

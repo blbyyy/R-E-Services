@@ -70,41 +70,6 @@ Route::post('/Student/Profile/Change-Password', [
           'as' => 'student_change_password'
   ]);
 
-Route::get('/apply/certification', [
-    'uses' => 'StudentController@certification',
-          'as' => 'student.certification.page'
-  ]);
-
-Route::get('/application/status', [
-    'uses' => 'StudentController@application_status',
-          'as' => 'student.application.status'
-  ]);
-
-Route::get('/application/status/{id}', [
-    'uses' => 'StudentController@show_application',
-          'as' => 'student.get-specific-data'
-  ]);
-
-Route::get('/get/file/{id}', [
-    'uses' => 'StudentController@getfile_id',
-          'as' => 'student_get-file-id'
-  ]);
-
-Route::post('/apply/certification/requested/{id}',[
-    'uses' => 'StudentController@apply_certification',
-    'as' => 'StudentRequested'
-]);
-
-Route::get('/student/reapply/get/file/{id}', [
-  'uses' => 'StudentController@re_apply_getfile_id',
-        'as' => 'student_reapply_get-file-id'
-]);
-
-Route::post('/student/re-apply/certification/requested/{id}', [
-  'uses' => 'StudentController@reApply',
-        'as' => 'student.reapply.certification'
-]);
-
 Route::get('/student/myfiles', [
     'uses' => 'StudentController@myfiles',
           'as' => 'student_myfiles'
@@ -129,6 +94,41 @@ Route::get('/student/show/history/{id}', [
     'uses' => 'StudentController@history',
           'as' => 'student_pdf_history'
   ]);
+
+Route::get('/apply/certification', [
+    'uses' => 'StudentController@certification',
+          'as' => 'student.certification.page'
+  ]);
+
+Route::get('/get/file/{id}', [
+    'uses' => 'StudentController@getfile_id',
+          'as' => 'student_get-file-id'
+  ]);
+
+Route::post('/apply/certification/requested/{id}',[
+    'uses' => 'StudentController@apply_certification',
+    'as' => 'StudentRequested'
+]);
+
+Route::get('/student/reapply/get/file/{id}', [
+  'uses' => 'StudentController@re_apply_getfile_id',
+        'as' => 'student_reapply_get-file-id'
+]);
+
+Route::post('/student/re-apply/certification/requested/{id}', [
+  'uses' => 'StudentController@reApply',
+        'as' => 'student.reapply.certification'
+]);
+
+Route::get('/application/status', [
+  'uses' => 'StudentController@application_status',
+        'as' => 'student.application.status'
+]);
+
+Route::get('/application/status/{id}', [
+  'uses' => 'StudentController@show_application',
+        'as' => 'student.get-specific-data'
+]);
 //END OF STUDENT POV
 
 //START STAFF POV
