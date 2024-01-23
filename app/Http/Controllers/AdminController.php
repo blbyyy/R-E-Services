@@ -619,6 +619,49 @@ class AdminController extends Controller
 
         return response()->json($data);
     }
+
+    public function addAnnouncements(Request $request)
+    {  
+        // Your existing code for creating an announcement
+        $announcement = new Announcement();
+        $announcement->title = $request->title; 
+        $announcement->content = $request->content;
+        $announcement->user_id = $request->user_id; // Assuming this is a placeholder value
+        $announcement->save();
+        $announcement_id = $announcement->id;
+
+        // Fetching images from the request
+        $images = $request->file('images');
+
+        if ($images) {
+            foreach ($images as $index => $file) {
+                $multi = [];
+
+                // Assuming $this->announcement_img_upload() and other functions are defined elsewhere
+                $this->announcement_img_upload($file);
+
+                $multi['img_path'] = time() . $file->getClientOriginalName();
+                $multi['announcements_id'] = $announcement_id;
+
+                // You can adjust the method of storage or retrieval based on your requirements.
+                DB::table('announcementsphoto')->insert($multi);
+            }
+        }
+
+        // Prepare JSON response
+        $response = [
+            'success' => true,
+            'message' => 'Announcement added successfully',
+            'announcement_id' => $announcement_id,
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listAnnouncement()
+    {
+        return Announcement::all();
+    }
     //MOBILE END
     
 }

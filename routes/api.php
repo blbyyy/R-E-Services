@@ -74,6 +74,14 @@ Route::post('/departmentsmobile', 'App\Http\Controllers\DepartmentController@mob
 Route::get('/departmentsmobile/{id}', 'App\Http\Controllers\DepartmentController@mobileedit_department');
 Route::put('/departmentsmobile/{id}', 'App\Http\Controllers\DepartmentController@mobileupdate_department');
 Route::delete('/departmentsmobile/{id}', 'App\Http\Controllers\DepartmentController@mobiledelete_department');
+
+Route::post('/add-announcements', 'AdminController@addAnnouncements');
+Route::get('/announcements', 'AdminController@listAnnouncement');
+
+Route::get('/mobileevents', 'CalendarController@mobileindex')->name('mobileevents');
+Route::post('/mobileevents/create', 'CalendarController@mobilecreate_event')->name('mobilecreate_event');
+Route::post('/mobilefullcalendars/update', [CalendarController::class, 'mobileupdate']);
+Route::delete('/mobilefullcalendars/delete', [CalendarController::class, 'mobiledestroy']);
 //MOBILE END
 
 
