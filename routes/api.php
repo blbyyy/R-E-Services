@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CalendarController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -82,7 +86,13 @@ Route::get('/mobileevents', 'CalendarController@mobileindex')->name('mobileevent
 Route::post('/mobileevents/create', 'CalendarController@mobilecreate_event')->name('mobilecreate_event');
 Route::post('/mobilefullcalendars/update', [CalendarController::class, 'mobileupdate']);
 Route::delete('/mobilefullcalendars/delete', [CalendarController::class, 'mobiledestroy']);
+
+Route::get('/mobileshowannouncement', 'AdminController@mobileshowannouncement');
+Route::get('/show/comments/{id}', 'CommentController@mobileshowcomments');
+Route::post('/add/{id}/comment', [
+  'uses' => 'CommentController@mobileaddcomment',
+        'as' => 'mobileaddcomment'
+]);
+
+Route::get('/staffprofile/{id}', 'App\Http\Controllers\StaffController@getProfile');
 //MOBILE END
-
-
-

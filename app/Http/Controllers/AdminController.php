@@ -22,7 +22,6 @@ use DB;
 use File;
 use Auth;
 
-
 class AdminController extends Controller
 {
     public function dashboard()
@@ -661,6 +660,57 @@ class AdminController extends Controller
     public function listAnnouncement()
     {
         return Announcement::all();
+    }
+
+    public function mobileshowannouncement()
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        $staff = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        $admin = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        $announcements = DB::table('announcements')
+            ->join('announcementsphoto', 'announcementsphoto.announcements_id', 'announcements.id')
+            ->join('users', 'announcements.user_id', 'users.id')
+            ->select(
+                'users.fname',
+                'users.lname',
+                'users.mname',
+                'users.role',
+                'announcementsphoto.id as photo_id',
+                'announcements.id as announcement_id',
+                'announcements.title',
+                'announcements.content',
+                'announcementsphoto.img_path',
+                DB::raw('TIME(announcements.created_at) as created_time')
+            )
+            ->orderBy('announcements.id')
+            ->get()
+            ->groupBy('announcement_id');
+    
+        $data = compact('admin', 'student', 'staff', 'faculty', 'announcements');
+    
+        // Return the data as JSON response
+        return response()->json($data);
     }
     //MOBILE END
     
