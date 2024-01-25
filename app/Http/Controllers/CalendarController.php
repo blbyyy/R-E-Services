@@ -95,35 +95,61 @@ class CalendarController extends Controller
             return response()->json($data);
         }
 
-        return response()->json(['error' => 'Invalid request']);
+        return response()->json(['admin' => $admin, 'staff' => $staff]);
     }
 
     public function mobilecreate_event(Request $request)
-    { 
-        $event = new Event;
-        $event->title = $request->title;
-        $event->start = $request->start;
-        $event->end = $request->end;
-        $event->save();
+{
+    $event = new Event;
 
-        return response()->json(['success' => true, 'message' => 'Event was successfully created!']);
+    // Validate input
+    if (!$request->has('title') || empty($request->title)) {
+        return response()->json(['error' => 'Event title is required.'], 400);
+    }
+
+    // Set values and save
+    $event->title = $request->title;
+    $event->start = $request->start;
+    $event->end = $request->end;
+    $event->save();
+
+    Alert::success('Success', 'Event was successfully created!');
+
+    return response()->json(['message' => 'Event was successfully created!']);
+}
+
+
+    public function mobilecreate(Request $request)
+    {
+        $insertArr = [
+            'title' => $request->title,
+            'start' => $request->start,
+            'end' => $request->end
+        ];
+
+        $event = Event::create($insertArr);
+        return response()->json($event);
     }
 
     public function mobileupdate(Request $request)
-    {  
-        $where = array('id' => $request->id);
-        $updateArr = ['title' => $request->title, 'start' => $request->start, 'end' => $request->end];
+    {
+        $where = ['id' => $request->id];
+        $updateArr = [
+            'title' => $request->title,
+            'start' => $request->start,
+            'end' => $request->end
+        ];
+
         $event = Event::where($where)->update($updateArr);
-        
-        return response()->json(['success' => true, 'message' => 'Event updated successfully']);
+        return response()->json($event);
     }
 
     public function mobiledestroy(Request $request)
     {
         $event = Event::findOrFail($request->id);
         $event->delete();
-        $data = ['success' => true, 'message' => 'Event deleted successfully'];
-        return response()->json($data);
+
+        return response()->json(['success' => 'deleted', 'code' => '200']);
     }
     //MOBILE END
         

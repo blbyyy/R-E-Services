@@ -82,10 +82,10 @@ Route::delete('/departmentsmobile/{id}', 'App\Http\Controllers\DepartmentControl
 Route::post('/add-announcements', 'AdminController@addAnnouncements');
 Route::get('/announcements', 'AdminController@listAnnouncement');
 
-Route::get('/mobileevents', 'CalendarController@mobileindex')->name('mobileevents');
-Route::post('/mobileevents/create', 'CalendarController@mobilecreate_event')->name('mobilecreate_event');
-Route::post('/mobilefullcalendars/update', [CalendarController::class, 'mobileupdate']);
-Route::delete('/mobilefullcalendars/delete', [CalendarController::class, 'mobiledestroy']);
+Route::get('/events', 'CalendarController@mobileindex')->name('mobileindex');
+Route::post('/events/create', 'CalendarController@mobilecreate_event')->name('mobilecreate_event');
+Route::post('/fullcalendars/update', 'CalendarController@mobileupdate');
+Route::delete('/fullcalendars/delete', 'CalendarController@mobiledestroy');
 
 Route::get('/mobileshowannouncement', 'AdminController@mobileshowannouncement');
 Route::get('/show/comments/{id}', 'CommentController@mobileshowcomments');
@@ -95,4 +95,12 @@ Route::post('/add/{id}/comment', [
 ]);
 
 Route::get('/staffprofile/{id}', 'App\Http\Controllers\StaffController@getProfile');
+
+Route::get('/profile/{id}', 'App\Http\Controllers\StudentController@getProfile');
+Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload_file');
+Route::get('/myfiles/{id}', 'App\Http\Controllers\StudentController@mobilemyfiles')->name('mobilemyfiles');
+Route::delete('/delete_file/{file}', 'StudentController@deleteFile');
+Route::get('/get_files/{id}', 'App\Http\Controllers\StudentController@get_files')->name('get_files');
+
+Route::post('/apply-certification', 'App\Http\Controllers\RequestingFormController@apply_certifications');
 //MOBILE END

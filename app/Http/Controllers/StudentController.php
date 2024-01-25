@@ -574,5 +574,106 @@ class StudentController extends Controller
 
     }
 
+    //MOBILE START
+    public function getProfile($id)
+    {
+            $student = DB::table('students')
+                ->join('users', 'users.id', 'students.user_id')
+                ->select('students.*', 'users.*')
+                ->where('user_id', $id)
+                ->first();   
+
+        return response()->json($student);
+    }
+
+    public function mobileupload_file(Request $request)
+    {
+        $request->validate([
+            'research_title' => 'required|string',
+            'research_file' => 'required|mimes:pdf|max:2048',
+            'user_id' => 'required|integer' // Add validation for user_id
+            // 'initial_simmilarity_percentage' => 'required|integer',
+            // 'simmilarity_percentage_results' => 'required|integer',
+            
+        ]);
+
+        // dd($request->all());
+
+        try {
+            $file = new Files;
+            $file->research_title = $request->research_title;
+            $file->user_id = $request->user_id;
+            $file->initial_simmilarity_percentage = 0;
+            $file->simmilarity_percentage_results = 0;
+
+            // dd($file->user_id);
+
+            if ($request->hasFile('research_file')) {
+                $pdfFile = $request->file('research_file');
+                $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
+                $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+                $file->research_file = $pdfFileName;
+            }
+
+            $file->save();
+
+            return response()->json(['message' => 'File uploaded successfully','data' => $file], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'File upload failed', 'data' => $file->user_id], 500);
+        }
+    }
+
+    public function mobilemyfiles($id)
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $myfiles = DB::table('files')
+            ->join('users', 'users.id', '=', 'files.user_id')
+            ->join('students', 'students.user_id', '=', 'users.id')
+            ->select('files.*')
+            ->where('files.user_id', $id)
+            ->get();
+
+        return response()->json(['student' => $student, 'myfiles' => $myfiles]);
+    }
+
+    public function deleteFile(Files $file)
+    {
+        try {
+            // Delete the file from the storage
+            Storage::delete('uploads/pdf/' . $file->research_file);
+
+            // Delete the file record from the database
+            $file->delete();
+
+            return response()->json(['message' => 'File deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'File deletion failed'], 500);
+        }
+    }
+
+    public function get_files($id)
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $files = DB::table('files')
+            ->join('users', 'users.id', '=', 'files.user_id')
+            ->join('students', 'students.user_id', '=', 'users.id')
+            ->select('files.*')
+            ->where('files.user_id', $id)
+            ->get();
+
+        return response()->json(['student' => $student, 'files' => $files]);
+    }
+    //MOBILE END
+
 
 }
