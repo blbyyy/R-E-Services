@@ -69,6 +69,11 @@ Route::delete('/faculty/myfiles/{id}/deleted', [
           'as' => 'faculty.file.delete'
   ]);
 
+Route::delete('/administrator/{id}/deleted', [
+    'uses' => 'AdminController@deleteAdministration',
+          'as' => 'administratorDelete'
+  ]);
+
 //MOBILE START
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
 Route::get('/dashboardmobile', 'App\Http\Controllers\AdminController@dashboardmobile');

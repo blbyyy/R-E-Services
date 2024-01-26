@@ -59,6 +59,120 @@ class AdminController extends Controller
 
         return View::make('admin.dashboard',compact('usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount'));
     }
+
+    public function administration()
+    {
+        $admin = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
+        $adminlist = DB::table('staff')  
+            ->join('users', 'users.id', 'staff.user_id')  
+            ->select('staff.*', 'users.id as userid', 'users.role')  
+            ->get(); 
+
+        // dd($adminlist);
+        
+        return View::make('admin.administration',compact('admin','adminlist'));
+    }
+
+    public function addAdministration(Request $request)
+    {
+            $users = new User();
+            $users->fname = $request->admin_fname; 
+            $users->lname = $request->admin_lname;
+            $users->mname = $request->admin_mname; 
+            $users->role = $request->admin_role; 
+            $users->email = $request->admin_email;
+            $users->password = bcrypt($request->admin_password);
+            $users->save();
+            $lastid = DB::getPdo()->lastInsertId();
+
+            $staff = new Staff();
+            $staff->fname = $request->admin_fname;
+            $staff->lname = $request->admin_lname;
+            $staff->mname = $request->admin_mname;
+            $staff->position = $request->admin_position;
+            $staff->designation = $request->admin_designation;
+            $staff->tup_id = $request->admin_id;
+            $staff->email = $request->admin_email;
+            $staff->gender = $request->admin_gender;
+            $staff->phone = $request->admin_phone;
+            $staff->address = $request->admin_address;
+            $staff->birthdate = $request->admin_birthdate;
+            $staff->user_id = $lastid;
+            $staff->save();
+                
+            return redirect()->to('/administration')->with('success', 'Administrator Added');
+    }
+
+    public function editAdministration($id)
+    {
+        $staff = Staff::find($id);
+        return response()->json($staff);
+    }
+
+    public function updateAdministration(Request $request, $id)
+    {
+        $staff = Staff::find($id);
+        $staff->fname = $request->fname;
+        $staff->lname = $request->lname;
+        $staff->mname = $request->mname;
+        $staff->position = $request->position;
+        $staff->designation = $request->designation;
+        $staff->tup_id = $request->staffid;
+        $staff->email = $request->email;
+        $staff->gender = $request->gender;
+        $staff->phone = $request->phone;
+        $staff->address = $request->address;
+        $staff->birthdate = $request->birthdate;
+        $staff->save();
+
+        $user_id = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('users.id')
+        ->where('staff.id',$id)
+        ->first();
+
+        $user = User::find($user_id->id);
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->mname = $request->mname;
+        $user->email = $request->email;
+        $user->save();
+
+        return response()->json(["staff" => $staff, "user" => $user],201);
+    }
+
+    public function editAdministrationRole($id)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.id as userid','users.role')
+        ->where('staff.id', $id)
+        ->first();
+
+        return response()->json($admin);
+    }
+
+    public function updateAdministrationRole(Request $request, $id)
+    {
+        $user = User::find($request->roleId);
+        $user->role = $request->role;
+        $user->save();
+
+        return response()->json($user);
+    }
+
+    public function deleteAdministration(string $id)
+    {
+        $staff = Staff::findOrFail($id);
+        $staff->delete();
+        $data = array('success' =>'deleted','code'=>'200');
+        return response()->json($data);
+    }
    
     public function showannouncement()
     {

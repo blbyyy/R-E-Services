@@ -592,3 +592,33 @@ Route::post('/admin/departmentlist/{id}/updated', [
   'uses' => 'DepartmentController@update_department',
         'as' => 'admin.update.department'
 ]);
+
+Route::get('/administration', [
+  'uses' => 'AdminController@administration',
+        'as' => 'administration'
+]);
+
+Route::get('/administration/{id}/edit', [
+  'uses' => 'AdminController@editAdministration',
+        'as' => 'editAdministration'
+]);
+
+Route::post('/administration/{id}/edit/updated', [
+    'uses' => 'AdminController@updateAdministration',
+          'as' => 'updateAdministration'
+  ]);
+
+Route::get('/administration/edit/{id}/role', [
+    'uses' => 'AdminController@editAdministrationRole',
+          'as' => 'editAdministrationRole'
+  ]);
+  
+Route::post('/administration/edit/{id}/role/updated', [
+      'uses' => 'AdminController@updateAdministrationRole',
+            'as' => 'updateAdministrationRole'
+    ]);
+
+Route::post('/administration/add', [
+      'uses' => 'AdminController@addAdministration',
+            'as' => 'addAdministration'
+    ]);

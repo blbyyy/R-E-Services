@@ -383,7 +383,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="{{url('/homepage')}}">
+        <a class="nav-link " href="{{url('/administration')}}">
           <i class="bi bi-person-fill-gear"></i>
           <span>Administration</span>
         </a>

@@ -377,10 +377,9 @@ $(document).ready(function () {
             });
         });
 
-        //edit staff user info
+        //edit faculty user info
         $(".facultyeditBtn").click(function() {
             var id = $(this).data("id");
-            
             $.ajax({
                 type: "GET",
                 enctype: 'multipart/form-data',
@@ -417,7 +416,7 @@ $(document).ready(function () {
             });
         });
 
-        //update staff user info
+        //update faculty user info
         $(".facultyupdateBtn").on("click", function (e) {
             e.preventDefault();
             var id = $("#faculty_edit_id").val();
@@ -937,6 +936,195 @@ $(document).ready(function () {
                 }
             })
 
+        });
+
+        //edit administration
+        $(".editAdministrationBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/administration/" + id + "/edit",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data.staff_id);
+                    $('#administrationId').val(data.id);
+                    $('#fname').val(data.fname);
+                    $('#lname').val(data.lname);
+                    $('#mname').val(data.mname);
+                    $('#staffid').val(data.tup_id);
+                    $('#email').val(data.email);
+                    $('#position').val(data.position);
+                    $('#designation').val(data.designation);
+                    $('#phone').val(data.phone);
+                    $('#gender').val(data.gender);
+                    $('#address').val(data.address);
+                    $('#birthdate').val(data.birthdate);
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //update administration
+        $(".administrationUpdateBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $("#administrationId").val();
+            let editformData = new FormData($("#editAdministrationForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/administration/" + id + "/edit/updated",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/administration';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Administration Info Updated',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+         //delete administrator
+         $(".deleteAdministrationBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Are you sure you want to delete this administrator?',
+                text: "You won't be able to undo this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/administrator/" + id + "/deleted",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            setTimeout(function() {
+                                window.location.href = '/administration';
+                            }, 1500);
+                            console.log(data);
+                            Swal.fire(
+                                'Deleted!',
+                                'Administrator has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+
+                }
+            })
+
+        });
+
+        //edit administration role
+        $(".roleChangeBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/administration/edit/" + id + "/role",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data.user_id);
+                    $('#roleId').val(data.user_id);
+                    $('#role').val(data.role);
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //update administration role
+        $(".roleUpdateBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $("#roleId").val();
+            let editformData = new FormData($("#changeRoleForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/administration/edit/" + id + "/role/updated",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/administration';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Administration Role Changed',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
         });
     //END OF ADMIN POV
 
