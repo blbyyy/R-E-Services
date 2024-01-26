@@ -32,7 +32,6 @@
                       <div class="icon">
                           <i class="bi bi-file-earmark-pdf"></i>
                       </div>
-                  
                       <center>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="This file is currently undergoing certification.">
                             Apply Certification
@@ -48,8 +47,6 @@
                     <h5 class="card-title">{{$files->research_title}}</h5>
                     <div class="icon">
                         <i class="bi bi-file-earmark-pdf"></i>
-                    </div>
-                
                     <center>
                         <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="This file is already passed the certification.">
                           Apply Certification
@@ -66,12 +63,13 @@
                     <div class="icon">
                         <i class="bi bi-file-earmark-pdf"></i>
                     </div>
-                
+
                     <center>
-                      <button type="button" class="btn btn-outline-dark fetch_id" data-bs-toggle="modal" data-bs-target="#studentreapplycertification" data-id="{{$files->id}}">
-                          Re-Apply</i>
+                      <button type="button" class="btn btn-outline-dark reApplyGetId" data-bs-toggle="modal" data-bs-target="#StudentReApplyCertification" data-id="{{$files->id}}">
+                          Re-Apply
                       </button> 
                     </center>
+
                 </div>
             </div>
           </div>
@@ -83,12 +81,13 @@
                     <div class="icon">
                         <i class="bi bi-file-earmark-pdf"></i>
                     </div>
-                
+
                     <center>
-                        <button type="button" class="btn btn-outline-dark studentapplycert" data-bs-toggle="modal" data-bs-target="#studentapplycertification" data-id="{{$files->id}}">
-                            Apply Certification</i>
-                        </button> 
+                      <button type="button" class="btn btn-outline-dark applyGetId" data-bs-toggle="modal" data-bs-target="#StudentApplyCertification" data-id="{{$files->id}}">
+                            Apply
+                      </button> 
                     </center>
+
                 </div>
             </div>
           </div>
@@ -111,7 +110,7 @@
     @endif
   </div>  
 
-  <div class="modal fade" id="studentapplycertification" tabindex="-1">
+  <div class="modal fade" id="StudentApplyCertification" tabindex="-1"> 
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -120,7 +119,7 @@
         </div>
         <div class="modal-body">
 
-          <form id="studentcertificationform" class="row g-3" enctype="multipart/form-data">
+          <form id="studentApplyCertificationForm" class="row g-3" enctype="multipart/form-data">
             @csrf
 
           <input type="hidden" class="form-control" id="research_id" name="research_id">
@@ -187,7 +186,7 @@
     
             <div class="col-" style="padding-top: 20px">
               <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-outline-dark studentcertification">Apply Certification</button>
+                <button type="button" class="btn btn-outline-dark" id="studentApplyCertification">Submit</button>
               </div>
             </div>
     
@@ -201,7 +200,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="studentreapplycertification" tabindex="-1">
+  <div class="modal fade" id="StudentReApplyCertification" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -210,10 +209,10 @@
         </div>
         <div class="modal-body">
 
-          <form id="studentreapplycertificationform" class="row g-3" enctype="multipart/form-data">
+          <form id="studentReApplyCertificationForm" class="row g-3" enctype="multipart/form-data">
             @csrf
 
-              <input type="hidden" class="form-control" id="re_apply_research_id" name="re_apply_research_id">
+              <input type="hidden" class="form-control" id="reApplyResearchId" name="reApplyResearchId">
 
               <div class="col-12">
                   <label for="research_file" class="form-label">Enter the revised research file in this field:</label>
@@ -223,7 +222,7 @@
     
             <div class="col-" style="padding-top: 20px">
               <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-outline-dark studentreapplycert">Apply Certification</button>
+                <button type="button" class="btn btn-outline-dark studentReApplyCertification">Submit</button>
               </div>
             </div>
     

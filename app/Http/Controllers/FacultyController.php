@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
 use App\Models\RequestingForm;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Models\Faculty;
 use App\Models\User;
@@ -19,6 +20,13 @@ use Auth;
 
 class FacultyController extends Controller
 {
+    public function registration_page()
+    {
+        $department = Department::orderBy('id')->get();
+
+        return View::make('faculty.register',compact('department'));
+    }
+
     public function register(Request $request)
     { 
             $users = new User;
@@ -35,7 +43,7 @@ class FacultyController extends Controller
             $faculty->fname = $request->fname;
             $faculty->lname = $request->lname;
             $faculty->mname = $request->mname;
-            $faculty->department_id = '1';
+            $faculty->department_id = $request->department;
             $faculty->position = $request->position;
             $faculty->designation = $request->designation;
             $faculty->tup_id = $request->tup_id;

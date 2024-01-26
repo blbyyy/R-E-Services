@@ -368,11 +368,14 @@
 
       @elseif(Auth::user()->role == 'Admin')
       <li class="nav-item">
-        <a class="nav-link " href="{{url('/homepage')}}">
-          <i class="bi bi-house-door"></i>
-          <span>Home</span>
+        <a style="background-color: {{ Request::is('homepage') ? '#700117' : '#c9c7c8' }};
+                  color: {{ Request::is('homepage') ? 'white' : 'black' }}" 
+           class="nav-link" href="{{ url('/homepage') }}">
+            <i class="bi bi-house-door" style="color: {{ Request::is('homepage') ? 'white' : '#700117' }}"></i>
+            <span>Home</span>
         </a>
       </li>
+    
       <li class="nav-item">
         <a class="nav-link " href="{{url('/dashboard')}}">
           <i class="bi bi-grid"></i>
@@ -495,16 +498,20 @@
   $(document).ready(function () {
     var SITEURL = "{{url('/')}}";
     $.ajaxSetup({
-      headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
     });
 
     var calendar = $('#calendar').fullCalendar({
         editable: true,
         events: SITEURL + "/events",
         displayEventTime: false, // Set to false to hide the event time
-        editable: true,
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay,listWeek' // Add listWeek for list view
+        },
         eventRender: function (event, element, view) {
             if (event.allDay === 'true') {
                 event.allDay = true;
@@ -522,72 +529,47 @@
         selectable: true,
         selectHelper: true,
         eventDrop: function (event, delta) {
-                    var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
-                    var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-                    $.ajax({
-                        url: SITEURL + '/fullcalendars/update',
-                        data: 'title=' + event.title + '&start=' + start + '&end=' + end + '&id=' + event.id,
-                        type: "POST",
-                        success: function (response) {
-                          setTimeout(function() {
-                              window.location.href = '/events';
-                          }, 1500);
-                              Swal.fire(
-                                  'Updated!',
-                                  'Event Updated.',
-                                  'success'
-                              )
-                        }
-                    });
+            var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+            var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+            $.ajax({
+                url: SITEURL + '/fullcalendars/update',
+                data: 'title=' + event.title + '&start=' + start + '&end=' + end + '&id=' + event.id,
+                type: "POST",
+                success: function (response) {
+                    setTimeout(function() {
+                        window.location.href = '/events';
+                    }, 1500);
+                    Swal.fire(
+                        'Updated!',
+                        'Event Updated.',
+                        'success'
+                    )
+                }
+            });
         },
         eventClick: function (event) {
-                  Swal.fire({
-                      title: 'Are you sure?',
-                      text: "You won't be able to delete this!",
-                      icon: 'warning',
-                      showCancelButton: true,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      confirmButtonText: 'Yes, delete it!'
-                  }).then((result) => {
-                      if (result.isConfirmed) {
-                          $.ajax({
-                              type: "DELETE",
-                              url: SITEURL + '/fullcalendars/delete',
-                              data: "&id=" + event.id,
-                              success: function (response) {
-                                      setTimeout(function() {
-                                          window.location.href = '/events';
-                                      }, 1500);
-                                      Swal.fire(
-                                          'Deleted!',
-                                          'Your file has been deleted.',
-                                          'success'
-                                      )
-                              }
-                          });
-                      }
-                  });
-        },
-        eventClick: function (event) {
+            if (event.url) {
+                window.open(event.url);
+                return false;
+            }
+            var eventData = "Event Title: " + event.title + "<br>" +
+                "Start Time: " + event.start.format("YYYY-MM-DD HH:mm:ss") + "<br>" +
+                "End Time: " + event.end.format("YYYY-MM-DD HH:mm:ss");
 
-                    var eventData = "Event Title: " + event.title + "<br>" +
-                    "Start Time: " + event.start.format("YYYY-MM-DD HH:mm:ss") + "<br>" +
-                    "End Time: " + event.end.format("YYYY-MM-DD HH:mm:ss");
-
-                    Swal.fire({
-                        title: 'Event Details',
-                        html: eventData,
-                        icon: 'info',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'OK'
-                    });
+            Swal.fire({
+                title: 'Event Details',
+                html: eventData,
+                icon: 'info',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
         }
     });
-  });
+});
 
-  function displayMessage(message) {
-  $(".response").html("<div class='success'>"+message+"</div>");
-  setInterval(function() { $(".success").fadeOut(); }, 1000);
-  }
+function displayMessage(message) {
+    $(".response").html("<div class='success'>"+message+"</div>");
+    setInterval(function() { $(".success").fadeOut(); }, 1000);
+}
+
 </script>

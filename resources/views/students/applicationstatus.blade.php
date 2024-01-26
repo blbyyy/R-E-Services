@@ -30,13 +30,11 @@
                 <div class="icon">
                   <i class="bi bi-file-earmark-pdf"></i>
                 </div>
-                
                 <center>
-                  <button type="button" class="btn btn-outline-dark student-view-details-button" data-bs-toggle="modal" data-bs-target="#studentviewInfo" data-id="{{ $stats->id }}">
+                  <button type="button" class="btn btn-outline-dark studentViewDetails" data-bs-toggle="modal" data-bs-target="#studentViewInfo" data-id="{{ $stats->id }}">
                     <i class="bi bi-info-circle"> View Details</i>
                   </button>
                 </center>
-
               </div>
           </div>
       </div>
@@ -57,7 +55,7 @@
     </div>
   @endif
 
-    <div class="modal fade" id="studentviewInfo" tabindex="-1">
+    <div class="modal fade" id="studentViewInfo" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header" >
@@ -69,9 +67,8 @@
               <div class="row">
                 <div class="col-xl-4">
                 </div>
-        
+    
                 <div class="col-xl-12">
-        
                   <div class="card">
                     <div class="card-body pt-3">
                       <div class="tab-content pt-2">
@@ -109,12 +106,12 @@
         
                           <div class="row">
                             <div class="col-lg-3 col-md-4 label">Research Specialist</div>
-                            <div id="research_specialist" class="col-lg-9 col-md-8">tba</div>
+                            <div id="research_specialist" class="col-lg-9 col-md-8"></div>
                           </div>
 
                           <div class="row">
                             <div class="col-lg-3 col-md-4 label">Research Staff</div>
-                            <div id="research_staff" class="col-lg-9 col-md-8">tba</div>
+                            <div id="research_staff" class="col-lg-9 col-md-8"></div>
                           </div>
         
                           <div class="row">
@@ -216,7 +213,6 @@
                       </div>
                     </div>
                   </div>
-        
                 </div>
               </div>
             </section>

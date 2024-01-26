@@ -80,6 +80,7 @@
                     createeventForm.style.display = 'none';
                 }
             }
+            
 </script>
 
 

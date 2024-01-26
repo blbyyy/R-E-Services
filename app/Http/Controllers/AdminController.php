@@ -524,6 +524,14 @@ class AdminController extends Controller
         ->select('requestingform.*','files.*')
         ->where('requestingform.id',$id)
         ->first();
+
+        $staff = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $specialist = $staff->fname .' '. $staff->mname .' '. $staff->lname;
         
         if ($request->hasFile('certification_file')) {
             $pdfFile = $request->file('certification_file');
@@ -546,25 +554,11 @@ class AdminController extends Controller
             $form->save();
         }
         
-        // $file = Files::find($id);
-        // $file->status = $request->status;
-        // $file->simmilarity_percentage_results = $request->simmilarity_percentage_results;
-        // $file->date_processing_end = now();
-        // $file->save();
-
-        $staff = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        $specialist = $staff->fname .' '. $staff->mname .' '. $staff->lname;
-        
         $form = RequestingForm::find($id);
         $form->status = $request->status;
         $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
         $form->date_processing_end = now();
-        $form->research_speacialist = $specialist;
+        $form->research_specialist = $specialist;
         $form->research_staff = $specialist;
         $form->save();
 

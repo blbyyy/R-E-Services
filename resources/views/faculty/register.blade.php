@@ -69,15 +69,15 @@
 
             <div class="col-md-6">
                 <div class="form-floating">
-                <input type="text" class="form-control" id="department" @error('department') is-invalid @enderror name="department" value="{{ old('department') }}" required autocomplete="department" autofocus placeholder="Department">
-                    @error('department')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                <label for="department">Department</label>
+                  <select name="department" class="form-select" id="department" aria-label="State">
+                    <option value="">Select Department.....</option>
+                    @foreach($department as $departments)
+                      <option value="{{$departments->id}}">{{$departments->department_name}} ({{$departments->department_code}})</option>
+                    @endforeach
+                  </select>
+                  <label for="department">Department</label>
                 </div>
-            </div>
+              </div>
 
             <div class="col-md-6">
                 <div class="form-floating">

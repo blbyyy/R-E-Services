@@ -16,7 +16,7 @@ use App\Http\Controllers\PdfController;
 */
 Route::get('/homepage', [
     'uses' => 'AdminController@showannouncement',
-          'as' => 'show.announcement'
+          'as' => 'homepage'
   ]);
 
 Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
@@ -216,7 +216,10 @@ Route::get('/staff/show/history/{id}', [
 //END OF STAFF POV
 
 //START FACULTY POV
-Route::view('/Register/Faculty', 'faculty.register');
+Route::get('/Register/Faculty', [
+  'uses' => 'FacultyController@registration_page',
+        'as' => 'faculty.registration'
+]);
 
 Route::post('Faculty/Registered',[
     'uses' => 'FacultyController@register',

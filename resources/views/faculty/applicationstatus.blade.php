@@ -30,13 +30,11 @@
                 <div class="icon">
                   <i class="bi bi-file-earmark-pdf"></i>
                 </div>
-                
-                <center>
-                <button type="button" class="btn btn-outline-dark faculty-view-details-button" data-bs-toggle="modal" data-bs-target="#facultyviewInfo" data-id="{{ $stats->id }}">
-                  <i class="bi bi-info-circle"> View Details</i>
-                </button>
-                </center>
-
+                  <center>
+                    <button type="button" class="btn btn-outline-dark facultyViewDetails" data-bs-toggle="modal" data-bs-target="#facultyViewInfo" data-id="{{ $stats->id }}">
+                      <i class="bi bi-info-circle"> View Details</i>
+                    </button>
+                  </center>
               </div>
           </div>
       </div>
@@ -57,7 +55,7 @@
     </div>
   @endif
 
-    <div class="modal fade" id="facultyviewInfo" tabindex="-1">
+    <div class="modal fade" id="facultyViewInfo" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header" >

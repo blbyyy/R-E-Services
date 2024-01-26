@@ -38,7 +38,7 @@
             <div class="icon">
               <i class="bi bi-question-lg"></i>
             </div>
-            <div class="body">a
+            <div class="body">
                 <h2>There's no view selected.</h2>
             </div>
         </div>
@@ -71,7 +71,7 @@
                       </center>
                     @else
                       <center>
-                        <button type="button" class="btn btn-outline-dark admincertification" data-bs-toggle="modal" data-bs-target="#viewapplicationInfo" data-id="{{ $applications->id }}">
+                        <button type="button" class="btn btn-outline-dark adminCertification" data-bs-toggle="modal" data-bs-target="#viewApplicationInfo" data-id="{{ $applications->id }}">
                           <i class="bi bi-info-circle"></i> See More
                         </button>
                       </center>
@@ -110,7 +110,7 @@
                       @elseif ($applications->status == 'Returned')
                         <button data-id="{{$applications->id}}" type="button" class="btn btn-danger " data-bs-toggle="modal" disabled><i class="bi bi-patch-exclamation"></i></button>
                       @elseif ($applications->status == 'Pending')
-                        <button data-id="{{$applications->id}}" type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#viewapplicationInfo"><i class="bi bi-patch-question"></i></button>
+                        <button data-id="{{$applications->id}}" type="button" class="btn btn-warning adminCertification" data-bs-toggle="modal" data-bs-target="#viewApplicationInfo"><i class="bi bi-patch-question"></i></button>
                       @endif
                     </td>
                     <td>{{$applications->requestor_name}}</td>
@@ -137,7 +137,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="viewapplicationInfo" tabindex="-1">
+  <div class="modal fade" id="viewApplicationInfo" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -161,7 +161,7 @@
             </div>
         
             <div class="col-md-6">
-              <form class="row g-3" style="padding-top: 20px" id="certificationform" enctype="multipart/form-data">
+              <form class="row g-3" style="padding-top: 20px" id="certificationForm" enctype="multipart/form-data">
                 @csrf
 
                 <input name="file_id" type="hidden" class="form-control" id="file_id">
@@ -194,7 +194,7 @@
                   <div class="col-12" style="padding-top: 20px">
                     <div class="d-flex justify-content-end">
                       {{-- {{$applications->file_id}} --}}
-                    <button type="submit" class="btn btn-outline-dark certificationBtn">Send</button>
+                    <button type="button" class="btn btn-outline-dark" id="certificationBtn">Send</button>
                     </div>
                   </div>
 
@@ -234,66 +234,38 @@
               $('#certificationFileContainer').hide();
           });
   });
-
-  // var currentViewId = '';  // Variable to store the ID of the currently visible view
-
-  // function showOrToggleView(viewId) {
-  //     var targetView = document.getElementById(viewId);
-
-  //     if (currentViewId !== viewId) {
-  //         // Hide the currently visible view
-  //         if (currentViewId !== '') {
-  //             document.getElementById(currentViewId).style.display = 'none';
-  //         }
-
-  //         // Show the new view
-  //         targetView.style.display = 'block';
-  //         currentViewId = viewId;
-  //     } else {
-  //         // Toggle the display if it's the same view
-  //         if (targetView.style.display === 'none' || targetView.style.display === '') {
-  //             targetView.style.display = 'block';
-  //         } else {
-  //             targetView.style.display = 'none';
-  //             currentViewId = '';  // No view is currently visible
-              
-  //         }
-  //     }
-  // }
-
+  
   var currentViewId = '';  // Variable to store the ID of the currently visible view
 
-// Get the default card by ID
-var defaultCard = document.getElementById('default');
+  // Get the default card by ID
+  var defaultCard = document.getElementById('default');
 
-function showOrToggleView(viewId) {
-    var targetView = document.getElementById(viewId);
+  function showOrToggleView(viewId) {
+      var targetView = document.getElementById(viewId);
 
-    // Hide the default card initially
-    defaultCard.style.display = 'none';
+      // Hide the default card initially
+      defaultCard.style.display = 'none';
 
-    if (currentViewId !== viewId) {
-        // Hide the currently visible view
-        if (currentViewId !== '') {
-            document.getElementById(currentViewId).style.display = 'none';
-        }
+      if (currentViewId !== viewId) {
+          // Hide the currently visible view
+          if (currentViewId !== '') {
+              document.getElementById(currentViewId).style.display = 'none';
+          }
 
-        // Show the new view
-        targetView.style.display = 'block';
-        currentViewId = viewId;
-    } else {
-        // Toggle the display if it's the same view
-        if (targetView.style.display === 'none' || targetView.style.display === '') {
-            targetView.style.display = 'block';
-        } else {
-            targetView.style.display = 'none';
-            currentViewId = '';  // No view is currently visible
+          // Show the new view
+          targetView.style.display = 'block';
+          currentViewId = viewId;
+      } else {
+          // Toggle the display if it's the same view
+          if (targetView.style.display === 'none' || targetView.style.display === '') {
+              targetView.style.display = 'block';
+          } else {
+              targetView.style.display = 'none';
+              currentViewId = '';  // No view is currently visible
 
-            // Show the default card when no view is selected
-            defaultCard.style.display = 'block';
-        }
-    }
-}
-
-
+              // Show the default card when no view is selected
+              defaultCard.style.display = 'block';
+          }
+      }
+  }
 </script>

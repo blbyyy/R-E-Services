@@ -762,7 +762,7 @@ $(document).ready(function () {
         });
 
         //admin manipulation for certification
-        $(".admincertification").click(function() {
+        $(".adminCertification").click(function() {
             var id = $(this).data('id');
             console.log(id)
             $.ajax({
@@ -787,11 +787,12 @@ $(document).ready(function () {
             });
         });
 
-        $(".certificationBtn").on("click", function (e) {
+        //admin sending certification
+        $("#certificationBtn").on("click", function (e) {
             e.preventDefault();
             // var id = $(this).data("id");
             var id = $("#file_id").val();
-            let editformData = new FormData($("#certificationform")[0]);
+            let editformData = new FormData($("#certificationForm")[0]);
             for(var pair of editformData.entries()){
                 console.log(pair[0] + ',' + pair[1]);
             }
@@ -1064,12 +1065,13 @@ $(document).ready(function () {
                             }
                             var row = '<tr>' +
                             '<th scope="row">' + entry.submission_frequency + '</th>' +
-                                '<td>' + entry.date + '</td>' +
-                                '<td>' + entry.date_processing_end + '</td>' +
-                                '<td style="color: ' + color + ';">' + entry.status + '</td>' +
-                                '<td>' + entry.initial_simmilarity_percentage + '%' + '</td>' +
-                                '<td>' + entry.simmilarity_percentage_results + '%' + '</td>' +
-                                '</tr>';
+                            '<td>' + entry.date + '</td>' +
+                            '<td>' + (entry.date_processing_end === null ? 'tba' : entry.date_processing_end) + '</td>' +
+                            '<td style="color: ' + color + ';">' + entry.status + '</td>' +
+                            '<td>' + entry.initial_simmilarity_percentage + '%' + '</td>' +
+                            '<td>' + entry.simmilarity_percentage_results + '%' + '</td>' +
+                            '</tr>';
+
                             tbody.append(row);
                         });
 
@@ -1083,7 +1085,7 @@ $(document).ready(function () {
         });
         
         //student fetching file id to apply certification
-        $(".studentapplycert").click(function() {
+        $(".applyGetId").click(function() {
             var id = $(this).data("id");
             $.ajax({
                 type: "GET",
@@ -1105,10 +1107,10 @@ $(document).ready(function () {
         });
 
         //student applying certification
-        $(".studentcertification").on("click", function (e) {
+        $("#studentApplyCertification").on("click", function (e) {
             e.preventDefault();
             var id = $(this).data("id");
-            let editformData = new FormData($("#studentcertificationform")[0]);
+            let editformData = new FormData($("#studentApplyCertificationForm")[0]);
             for(var pair of editformData.entries()){
                 console.log(pair[0] + ',' + pair[1]);
             }
@@ -1142,7 +1144,7 @@ $(document).ready(function () {
         });
 
         //student fetching file id to re-apply certification
-        $(".fetch_id").click(function() {
+        $(".reApplyGetId").click(function() {
             var id = $(this).data("id");
             $.ajax({
                 type: "GET",
@@ -1154,7 +1156,7 @@ $(document).ready(function () {
                 success: function(data) {
                     console.log(id);
         
-                    $('#re_apply_research_id').val(id);
+                    $('#reApplyResearchId').val(id);
         
                 },
                 error: function(error) {
@@ -1164,10 +1166,11 @@ $(document).ready(function () {
         });
 
         //student re-apply certification
-        $(".studentreapplycert").on("click", function (e) {
+        $(".studentReApplyCertification").on("click", function (e) {
             e.preventDefault();
             var id = $(this).data("id");
-            let editformData = new FormData($("#studentreapplycertificationform")[0]);
+            console.log(id)
+            let editformData = new FormData($("#studentReApplyCertificationForm")[0]);
             for(var pair of editformData.entries()){
                 console.log(pair[0] + ',' + pair[1]);
             }
@@ -1201,7 +1204,7 @@ $(document).ready(function () {
         });
         
         //student view application status
-        $(".student-view-details-button").click(function() {
+        $(".studentViewDetails").click(function() {
             var id = $(this).data('id');
             console.log(id)
             $.ajax({
@@ -1877,7 +1880,7 @@ $(document).ready(function () {
         });
 
         //faculty view application status
-        $(".faculty-view-details-button").click(function() {
+        $(".facultyViewDetails").click(function() {
             var id = $(this).data('id');
             console.log(id)
             $.ajax({
@@ -1991,18 +1994,18 @@ $(document).ready(function () {
                     $("#thesis_type").text(data.thesis_type);
                     $("#submission_frequency").text(data.submission_frequency);
                     $("#adviser_name").text(data.adviser_name);
-                    $("#adviser_email").text(data.adviser_email);
+                    // $("#adviser_email").text(data.adviser_email);
 
-                    if (data.research_specialist === null) {
-                        $("#research_specialist").text("tba");
-                    } else {
-                        $("#research_specialist").text(data.research_specialist);
-                    }
-                    if (data.research_staff === null) {
-                        $("#research_staff").text("tba");
-                    } else {
-                        $("#research_staff").text(data.research_staff);
-                    }
+                    // if (data.research_specialist === null) {
+                    //     $("#research_specialist").text("tba");
+                    // } else {
+                    //     $("#research_specialist").text(data.research_specialist + 'safffa');
+                    // }
+                    // if (data.research_staff === null) {
+                    //     $("#research_staff").text("tba");
+                    // } else {
+                    //     $("#research_staff").text(data.research_staff + 'safffa');
+                    // }
                     
                     if (data.status === "Pending") {
                         $("#status").html('<span class="badge border-success border-1 text-success"><h5>Pending</h5></span>');

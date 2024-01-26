@@ -392,7 +392,8 @@ class StudentController extends Controller
             ->value('email');
 
             $form->adviser_email = $adviser_email;
-           
+            $form->research_specialist = 'tba';
+            $form->research_staff = 'tba';
             $form->tup_id = $student->tup_id;
             $form->requestor_name = $studentfullname;
             $form->tup_mail = $student->email;
@@ -436,7 +437,7 @@ class StudentController extends Controller
             ->join('users', 'users.id', 'requestingform.user_id')
             ->join('files', 'files.id', 'requestingform.research_id')
             ->select('requestingform.*')
-            ->where('requestingform.research_id', $request->re_apply_research_id)
+            ->where('requestingform.research_id', $request->reApplyResearchId)
             ->orderBy('requestingform.created_at', 'desc') 
             ->first();
         
@@ -444,14 +445,14 @@ class StudentController extends Controller
             ->join('users', 'users.id', 'requestingform.user_id')
             ->join('files', 'files.id', 'requestingform.research_id')
             ->select('requestingform.simmilarity_percentage_results')
-            ->where('requestingform.research_id', $request->re_apply_research_id)
+            ->where('requestingform.research_id', $request->reApplyResearchId)
             ->orderBy('requestingform.id', 'desc') 
             ->value('simmilarity_percentage_results');
 
         $submission = DB::table('requestingform')
             ->join('users', 'users.id', 'requestingform.user_id')
             ->join('files', 'files.id', 'requestingform.research_id')
-            ->where('requestingform.research_id', $request->re_apply_research_id)
+            ->where('requestingform.research_id', $request->reApplyResearchId)
             ->selectRaw(
                 'CASE 
                     WHEN COUNT(*) = 0 THEN "First Submission"
@@ -480,7 +481,7 @@ class StudentController extends Controller
 
             $form->adviser_email = $adviser_email;
             
-            $form->research_specialist = $latestApplication->research_specialist;
+            $form->research_specialist = 'tba';
             $form->tup_id = $latestApplication->tup_id;
             $form->requestor_name = $latestApplication->requestor_name;
             $form->tup_mail = $latestApplication->tup_mail;
@@ -499,14 +500,14 @@ class StudentController extends Controller
             $form->researchers_name8 = $latestApplication->researchers_name8;
             $form->agreement = $latestApplication->agreement;
             $form->score = 0;
-            $form->research_staff = $latestApplication->research_staff;
+            $form->research_staff = 'tba';
             $form->research_id = $latestApplication->research_id;
             $form->user_id = $latestApplication->user_id;
             $form->status = 'Pending';
             $form->save();
 
             if ($submission === 'First Submission') {
-                $file = Files::find($request->re_apply_research_id);
+                $file = Files::find($request->reApplyResearchId);
                 $file->file_status = 'Pending';
                 $file->save();
             } else {
@@ -514,7 +515,7 @@ class StudentController extends Controller
                     'research_file' => 'required|mimes:pdf|max:10240', // PDF file validation with a maximum size of 10MB
                 ]);
                 
-                $file = Files::find($request->re_apply_research_id);
+                $file = Files::find($request->reApplyResearchId);
                 $file->file_status = 'Pending';
 
                 $pdfFile = $request->file('research_file');
