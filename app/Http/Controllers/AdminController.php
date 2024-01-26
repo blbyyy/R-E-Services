@@ -22,7 +22,6 @@ use DB;
 use File;
 use Auth;
 
-
 class AdminController extends Controller
 {
     public function dashboard()
@@ -568,5 +567,145 @@ class AdminController extends Controller
 
         return response()->json($file);
     }
+
+    //MOBILE START
+    public function dashboardmobile(Request $request)
+    {
+        $usersCount = DB::table('users')->count();
+        $studentCount = DB::table('users')->where('role', 'Student')->count();
+        $staffCount = DB::table('users')->where('role', 'Staff')->count();
+        $facultyCount = DB::table('users')->where('role', 'Faculty')->count();
+        $applicationCount = DB::table('requestingform')->count();
+
+        $pendingCount = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.status', '=', 'Pending')
+            ->count();
+
+        $passedCount = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.status', '=', 'Passed')
+            ->count();
+
+        $returnedCount = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.status', '=', 'Returned')
+            ->count();
+
+        $admin = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $data = [
+            'usersCount' => $usersCount,
+            'studentCount' => $studentCount,
+            'staffCount' => $staffCount,
+            'facultyCount' => $facultyCount,
+            'applicationCount' => $applicationCount,
+            'admin' => $admin,
+            'pendingCount' => $pendingCount,
+            'passedCount' => $passedCount,
+            'returnedCount' => $returnedCount,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function addAnnouncements(Request $request)
+    {  
+        // Your existing code for creating an announcement
+        $announcement = new Announcement();
+        $announcement->title = $request->title; 
+        $announcement->content = $request->content;
+        $announcement->user_id = $request->user_id; // Assuming this is a placeholder value
+        $announcement->save();
+        $announcement_id = $announcement->id;
+
+        // Fetching images from the request
+        $images = $request->file('images');
+
+        if ($images) {
+            foreach ($images as $index => $file) {
+                $multi = [];
+
+                // Assuming $this->announcement_img_upload() and other functions are defined elsewhere
+                $this->announcement_img_upload($file);
+
+                $multi['img_path'] = time() . $file->getClientOriginalName();
+                $multi['announcements_id'] = $announcement_id;
+
+                // You can adjust the method of storage or retrieval based on your requirements.
+                DB::table('announcementsphoto')->insert($multi);
+            }
+        }
+
+        // Prepare JSON response
+        $response = [
+            'success' => true,
+            'message' => 'Announcement added successfully',
+            'announcement_id' => $announcement_id,
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listAnnouncement()
+    {
+        return Announcement::all();
+    }
+
+    public function mobileshowannouncement()
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        $staff = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        $admin = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+    
+        $announcements = DB::table('announcements')
+            ->join('announcementsphoto', 'announcementsphoto.announcements_id', 'announcements.id')
+            ->join('users', 'announcements.user_id', 'users.id')
+            ->select(
+                'users.fname',
+                'users.lname',
+                'users.mname',
+                'users.role',
+                'announcementsphoto.id as photo_id',
+                'announcements.id as announcement_id',
+                'announcements.title',
+                'announcements.content',
+                'announcementsphoto.img_path',
+                DB::raw('TIME(announcements.created_at) as created_time')
+            )
+            ->orderBy('announcements.id')
+            ->get()
+            ->groupBy('announcement_id');
+    
+        $data = compact('admin', 'student', 'staff', 'faculty', 'announcements');
+    
+        // Return the data as JSON response
+        return response()->json($data);
+    }
+    //MOBILE END
     
 }

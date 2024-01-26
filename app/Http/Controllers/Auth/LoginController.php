@@ -16,9 +16,10 @@ use DB;
 use File;
 use Auth;
 
-//MOBILE
+//MOBILE START
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
+//MOBILE END
 
 class LoginController extends Controller
 {
@@ -93,7 +94,7 @@ class LoginController extends Controller
         return redirect()->to('/homepage');
     }
 
-    //MOBILE
+    //MOBILE START
     public function LoginMobile(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -112,5 +113,6 @@ class LoginController extends Controller
             "status" => 200,
         ]);
     }
+    //MOBILE END
 
 }

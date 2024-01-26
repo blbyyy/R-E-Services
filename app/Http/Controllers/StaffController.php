@@ -366,4 +366,17 @@ class StaffController extends Controller
         $file = RequestingForm::find($id);
         return response()->json($file);
     }
+
+    //MOBILE START
+    public function getProfile($id)
+    {
+            $staff = DB::table('staff')
+                ->join('users', 'users.id', 'staff.user_id')
+                ->select('staff.*', 'users.*')
+                ->where('user_id', $id)
+                ->first();   
+
+        return response()->json($staff);
+    }
+    //MOBILE END
 }
