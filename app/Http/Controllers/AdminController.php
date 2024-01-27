@@ -57,7 +57,13 @@ class AdminController extends Controller
             ->where('user_id',Auth::id())
             ->first();
 
-        return View::make('admin.dashboard',compact('usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount'));
+        $researchCount = DB::table('research_list')->count();
+        $eaadResearchCount = DB::table('research_list')->where('department', 'EAAD')->count();
+        $maadResearchCount = DB::table('research_list')->where('department', 'MAAD')->count();
+        $basdResearchCount = DB::table('research_list')->where('department', 'BASD')->count();
+        $caadResearchCount = DB::table('research_list')->where('department', 'CAAD')->count();
+
+        return View::make('admin.dashboard',compact('usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount'));
     }
 
     public function administration()

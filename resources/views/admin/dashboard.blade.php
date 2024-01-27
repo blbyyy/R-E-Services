@@ -71,21 +71,22 @@
                             <li class="dropdown-header text-start">
                                 <h6>Filter</h6>
                             </li>
-                            <li><a class="dropdown-item filter-option" data-filter="all" href="#">All</a></li>
-                            <li><a class="dropdown-item filter-option" data-filter="student" href="#">Student</a></li>
-                            <li><a class="dropdown-item filter-option" data-filter="staff" href="#">Staff</a></li>
-                            <li><a class="dropdown-item filter-option" data-filter="faculty" href="#">Faculty Member</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="departments" href="#">All</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="eaad" href="#">EAAD</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="caad" href="#">CAAD</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="maad" href="#">MAAD</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="basd" href="#">BASD</a></li>
                         </ul>
                     </div>
             
-                    <div id="users-table" class="card-body">
-                      <h5 class="card-title">Researchs <span id="filterText">| All</span></h5>
+                    <div id="departments-table" class="card-body">
+                      <h5 class="card-title">Researchs <span id="filterTextss">| All</span></h5>
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bi bi-file-earmark-text"></i>
                             </div>
                             <div class="ps-3">
-                                <h6 id="userCount">{{$usersCount}}</h6>
+                                <h6 id="researchCount">{{$researchCount}}</h6>
                             </div>
                         </div>
                     </div>
@@ -209,6 +210,68 @@
               filterText = '';
       }
       $('#filterTexts').text('| ' + filterText);
+  }
+
+  $(document).ready(function() {
+      // Initial display (All users count)
+      displayDepartmentCount('departments');
+
+      // Event handler for filter options
+      $('.filter-optionss').click(function() {
+          var filterValue = $(this).data('filter');
+          displayDepartmentCount(filterValue);
+      });
+  });
+
+  function displayDepartmentCount(filter) {
+      var count;
+
+      // Determine the count based on the selected filter
+      switch (filter) {
+          case 'departments':
+              count = {{$researchCount}};
+              break;
+          case 'eaad':
+              count = {{$eaadResearchCount}};
+              break;
+          case 'maad':
+              count = {{$maadResearchCount}};
+              break;
+          case 'caad':
+              count = {{$caadResearchCount}};
+              break;
+          case 'basd':
+              count = {{$basdResearchCount}};
+              break;
+          default:
+              count = 0;
+      }
+
+      // Update the user count
+      $('#researchCount').text(count);
+
+      // Update the filter text
+      var filterTexts;
+      switch (filter) {
+        case 'departments':
+              filterText = 'All';
+              break;
+        case 'eaad':
+              filterText = 'EAAD';
+              break;
+        case 'caad':
+              filterText = 'CAAD';
+              break;
+        case 'maad':
+              filterText = 'MAAD';
+              break;
+        case 'basd':
+              filterText = 'BASD';
+              break;
+          default:
+              filterText = '';
+      }
+      $('#filterTextss').text('| ' + filterText);
   }
 </script>
 
