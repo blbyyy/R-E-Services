@@ -37,8 +37,13 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
+    <div class="col-12">
+      <button type="button" class="btn btn-dark" onclick="toggleCertificationGuide()"><i class="bi bi-book"></i> Certification Usage Guide</button>
+    </div>
+    <br>
+
     @if (Auth::user()->role !== 'Admin' && Auth::user()->role !== 'Moderator' && Auth::user()->role !== 'Super Admin')
-      <div class="card">
+      <div class="card" id="certificationUsageGuise" style="display: none">
         <div class="card-header">R&E-Services (Certification Usage Guide)</div>
         <div class="card-body">
           <h5 class="card-title">How can your application be certified?</h5>
@@ -253,3 +258,17 @@
   @endforeach
   
 </main>
+<script>
+  function showCertificationGuide() {
+      document.getElementById('certificationUsageGuise').style.display = 'block';
+  }
+
+  function toggleCertificationGuide() {
+              var certificaGuide = document.getElementById('certificationUsageGuise');
+              if (certificaGuide.style.display === 'none' || certificaGuide.style.display === '') {
+                certificaGuide.style.display = 'block';
+              } else {
+                certificaGuide.style.display = 'none';
+              }
+          }
+</script>
