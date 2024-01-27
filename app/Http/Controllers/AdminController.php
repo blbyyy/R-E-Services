@@ -660,7 +660,7 @@ class AdminController extends Controller
             $form = RequestingForm::find($id);
             $form->status = $request->status;
             $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
-            $form->research_speacialist = $specialist;
+            $form->research_specialist = $specialist;
             $form->research_staff = $specialist;
             $form->date_processing_end = now();
             $form->certificate_id = $last;
@@ -680,6 +680,72 @@ class AdminController extends Controller
         $file->save();
 
         return response()->json($file);
+    }
+
+    public function certificate_tracking()
+    {
+        $admin = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
+        $certificates = DB::table('certificates')  
+            ->join('requestingform', 'requestingform.certificate_id', 'certificates.id')
+            ->join('files', 'files.id', 'requestingform.research_id')  
+            ->select(
+                'requestingform.*', 
+                'files.*', 
+                'certificates.id as certid', 
+                'certificates.control_id',
+                'certificates.certificate_file')  
+            ->get(); 
+        
+        return View::make('certificate.tracking',compact('admin','certificates'));
+    }
+
+    public function show_certificate($id)
+    {
+        $specificData = DB::table('requestingform')
+        ->join('files', 'files.id', 'requestingform.research_id')
+        ->join('users', 'users.id', 'requestingform.user_id')
+        ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+        ->select(
+            'requestingform.*', 
+            'files.*',
+            'certificates.id as certid',
+            "certificates.control_id",
+            'certificates.certificate_file')
+        ->where('requestingform.certificate_id', 3)
+        ->first();
+
+        return response()->json($specificData);
+    }
+
+    public function fetchSpecificCertificate(Request $request)
+    {
+        $admin = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
+        $controlNumber = $request->input('controlId');
+        
+        $certificates = DB::table('certificates')  
+            ->join('requestingform', 'requestingform.certificate_id', 'certificates.id')
+            ->join('files', 'files.id', 'requestingform.research_id')  
+            ->select(
+                'requestingform.*', 
+                'files.*', 
+                'certificates.id as certid', 
+                'certificates.control_id',
+                'certificates.certificate_file') 
+            ->where('certificates.control_id', 'like', "%$controlNumber%") 
+            ->get(); 
+
+            return View::make('certificate.tracking',compact('admin','certificates'));
+
     }
 
     //MOBILE START

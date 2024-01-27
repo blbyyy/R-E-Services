@@ -622,3 +622,18 @@ Route::post('/administration/add', [
       'uses' => 'AdminController@addAdministration',
             'as' => 'addAdministration'
     ]);
+
+Route::get('/certificate/tracking', [
+      'uses' => 'AdminController@certificate_tracking',
+            'as' => 'certificateTracking'
+    ]);
+
+Route::get('/certificate/tracking/{id}', [
+      'uses' => 'AdminController@show_certificate',
+            'as' => 'certificate.get-specific-data'
+    ]);
+
+Route::post('/certificate/fetch-data', [
+      'uses' => 'AdminController@fetchSpecificCertificate',
+            'as' => 'certificateFetchData'
+    ]);

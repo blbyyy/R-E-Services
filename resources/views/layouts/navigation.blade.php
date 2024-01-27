@@ -389,26 +389,8 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="{{url('/admin/departmentlist')}}">
-          <i class="bi bi-person-lines-fill"></i>
-          <span>Departments</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('announcements')}}">
-          <i class="bi bi-megaphone"></i>
-          <span>Announcements</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/events')}}">
-          <i class="bi bi-calendar-event"></i>
-          <span>Events</span>
-        </a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-people"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-people-fill"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -429,9 +411,33 @@
         </ul>
       </li>
       <li class="nav-item">
+        <a class="nav-link " href="{{url('/admin/departmentlist')}}">
+          <i class="bi bi-person-lines-fill"></i>
+          <span>Departments</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('announcements')}}">
+          <i class="bi bi-megaphone"></i>
+          <span>Announcements</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/events')}}">
+          <i class="bi bi-calendar-event"></i>
+          <span>Events</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link " href="{{url('/applicationlist')}}">
           <i class="bi bi-journal-bookmark"></i>
           <span>Research Applications</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('certificate/tracking')}}">
+          <i class="bi bi-ui-checks"></i>
+          <span>Certificate Tracking</span>
         </a>
       </li>
       <li class="nav-item">
