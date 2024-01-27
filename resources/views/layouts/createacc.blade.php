@@ -28,5 +28,5 @@
         with your old credentials.
     </div>
 
-  </div>
+</div>
 </main>

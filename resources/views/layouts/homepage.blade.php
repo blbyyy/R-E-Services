@@ -33,12 +33,83 @@
   @auth
     <div class="alert alert-success alert-dismissible fade show" role="alert">
       <i class="bi bi-check-circle me-1"></i>
-        Hello Welcome back!!  {{Auth::user()->fname .' '. Auth::user()->lname .' '. Auth::user()->mname}}
+        Hello Welcome back,  {{Auth::user()->fname .' '. Auth::user()->lname .' '. Auth::user()->mname}}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
+    @if (Auth::user()->role !== 'Admin' && Auth::user()->role !== 'Moderator' && Auth::user()->role !== 'Super Admin')
+      <div class="card">
+        <div class="card-header">R&E-Services (Certification Usage Guide)</div>
+        <div class="card-body">
+          <h5 class="card-title">How can your application be certified?</h5>
+          <hr class="thick-hr">
+          <span style="font-size: large; color:maroon; font-weight: bold;">Step 1:</span>
+          <p style="padding-top: 10px">
+            Select the
+            @if (Auth::user()->role === 'Student')
+              <a href="{{ url('student/myfiles') }}">
+                <span>"My Files"</span>
+              </a> 
+            @elseif (Auth::user()->role === 'Faculty')
+              <a href="{{ url('faculty/myfiles') }}">
+                <span>"My Files"</span>
+              </a> 
+            @endif 
+            tab and upload the files that you would like certified. 
+            Make sure the files you upload are only 10 MB in size and are only in PDF format.
+          </p>
+
+          <hr class="thick-hr">
+          <span style="font-size: large; color:maroon; font-weight: bold;">Step 2:</span>
+          <p style="padding-top: 10px">
+            Next select the 
+            @if (Auth::user()->role === 'Student')
+              <a href="{{ url('apply/certification') }}">
+                <span>"Certification"</span>
+              </a> 
+            @elseif (Auth::user()->role === 'Faculty')
+              <a href="{{ url('faculty/apply/certification') }}">
+                <span>"Certification"</span>
+              </a> 
+            @endif 
+            tab, where you will find the file you uploaded. 
+            Click on Apply Certification and complete all of the required fields.
+            and if your application is marked as "Returned" 
+            simply click "Re-Apply" and send in your revised application.
+          </p>
+
+          <hr class="thick-hr">
+          <span style="font-size: large; color:maroon; font-weight: bold;">Step 3:</span>
+          <p style="padding-top: 10px; padding-bottom: 30px;">
+            Right now, your application is being considered. 
+            Please wait for a staff member or administrator to process it. 
+            Under the 
+            @if (Auth::user()->role === 'Student')
+              <a href="{{ url('application/status') }}">
+                <span>"Application Status"</span>
+              </a> 
+            @elseif (Auth::user()->role === 'Faculty')
+              <a href="{{ url('faculty/application/status') }}">
+                <span>"Application Status"</span>
+              </a> 
+            @endif
+            tab, you can see its current state. and after the procedure is over, 
+            it will email you or alert the system itself.
+          </p>
+
+          <hr class="thick-hr">
+          <p style="font-style: italic">
+            "Thank you for choosing R&E-Services! We're grateful for your support. 
+            We're here to help, so feel free to reach out anytime. 
+            We look forward to serving you again soon!"
+          </p>
+
+        </div>
+      </div>
+    @else
+    @endif
   @endauth
 
-  
   @foreach($announcements as $announcementId => $photos)
   <div class="card">
       <div class="card-body" style="padding-top: 20px">

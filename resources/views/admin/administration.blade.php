@@ -63,7 +63,7 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <div class="form-floating mb-3">
+                        <div class="form-floating">
                           <select name="admin_role" class="form-select" id="admin_role" aria-label="State">
                             <option selected>.....</option>
                             <option value="Moderator">Moderator</option>
@@ -107,7 +107,7 @@
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <div class="form-floating mb-3">
+                        <div class="form-floating">
                           <select name="admin_gender" class="form-select" id="admin_gender" aria-label="State">
                             <option selected>.....</option>
                             <option value="Male">Male</option>

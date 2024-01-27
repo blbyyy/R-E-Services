@@ -167,7 +167,7 @@
                 <input name="file_id" type="hidden" class="form-control" id="file_id">
 
                 <div class="col-md-12">
-                  <div class="form-floating mb-3">
+                  <div class="form-floating">
                       <select name="status" class="form-select" id="status" aria-label="State">
                           <option selected>Choose....</option>
                           <option value="Passed">Passed</option>
@@ -179,7 +179,7 @@
 
                   <div class="col-12">
                       <div class="form-floating">
-                          <input name="simmilarity_percentage_results" type="text" class="form-control" id="simmilarity_percentage_results" placeholder="Similarity Result">
+                          <input name="simmilarity_percentage_results" type="number" class="form-control" id="simmilarity_percentage_results" placeholder="Similarity Result">
                           <label for="simmilarity_percentage_results">Similarity Result</label>
                       </div>
                   </div>
@@ -193,7 +193,6 @@
 
                   <div class="col-12" style="padding-top: 20px">
                     <div class="d-flex justify-content-end">
-                      {{-- {{$applications->file_id}} --}}
                     <button type="button" class="btn btn-outline-dark" id="certificationBtn">Send</button>
                     </div>
                   </div>
