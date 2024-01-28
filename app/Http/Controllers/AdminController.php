@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CertificationComplete;
+use App\Mail\CertificationPassed;
 use RealRashid\SweetAlert\Facades\Alert;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Storage;
@@ -668,7 +671,7 @@ class AdminController extends Controller
             'certification_file' => 'nullable|mimes:pdf|max:2048', 
         ]);
 
-        $file_id = DB::table('files')
+        $fileId = DB::table('files')
         ->join('requestingform','requestingform.research_id','files.id')
         ->select('requestingform.*','files.*')
         ->where('requestingform.id',$id)
@@ -681,8 +684,11 @@ class AdminController extends Controller
         ->first();
 
         $specialist = $staff->fname .' '. $staff->mname .' '. $staff->lname;
+        $userEmail = $fileId->tup_mail;
+        $userName = $fileId->requestor_name;
         
         if ($request->hasFile('certification_file')) {
+
             $pdfFile = $request->file('certification_file');
             $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
             $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
@@ -691,7 +697,7 @@ class AdminController extends Controller
             $cert->certificate_file = $pdfFileName;
             $cert->control_id = uniqid();
             $cert->save();
-            $last = DB::getPdo()->lastInsertId();
+            $lastId = DB::getPdo()->lastInsertId();
 
             $form = RequestingForm::find($id);
             $form->status = $request->status;
@@ -699,21 +705,59 @@ class AdminController extends Controller
             $form->research_specialist = $specialist;
             $form->research_staff = $specialist;
             $form->date_processing_end = now();
-            $form->certificate_id = $last;
+            $form->certificate_id = $lastId;
             $form->save();
-        }
-        
-        $form = RequestingForm::find($id);
-        $form->status = $request->status;
-        $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
-        $form->date_processing_end = now();
-        $form->research_specialist = $specialist;
-        $form->research_staff = $specialist;
-        $form->save();
 
-        $file = Files::find($file_id->id);
-        $file->file_status = $request->status;
-        $file->save();
+            $file = Files::find($fileId->id);
+            $file->file_status = $request->status;
+            $file->save();
+
+            $controlId = DB::table('certificates')
+            ->where('id', $lastId)
+            ->value('control_id');
+
+            $researchTitle = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->where('certificate_id', $lastId)
+            ->value('research_title');
+        
+            $data = [
+                'researchTitle' => $researchTitle,
+                'controlId' => $controlId,
+                'userName' => $userName,
+                'status' => $request->status,
+                'percentage_results' => $request->simmilarity_percentage_results,
+            ];
+        
+            Mail::to($userEmail)->send(new CertificationPassed($data));
+        }else {  
+
+            $researchTitle = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->where('requestingform.id', $id)
+            ->value('research_title');
+
+            $form = RequestingForm::find($id);
+            $form->status = $request->status;
+            $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
+            $form->date_processing_end = now();
+            $form->research_specialist = $specialist;
+            $form->research_staff = $specialist;
+            $form->save();
+
+            $file = Files::find($fileId->id);
+            $file->file_status = $request->status;
+            $file->save();
+
+            $data = [
+                'researchTitle' => $researchTitle,
+                'userName' => $userName,
+                'status' => $request->status,
+                'percentage_results' => $request->simmilarity_percentage_results,
+            ];
+        
+            Mail::to($userEmail)->send(new CertificationComplete($data));
+        }
 
         return response()->json($file);
     }
