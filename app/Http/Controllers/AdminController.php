@@ -28,6 +28,36 @@ class AdminController extends Controller
     {
         $usersCount = DB::table('users')->count();
 
+        $rolesCount = DB::table('users')
+        ->select('role', DB::raw('count(*) as count'))
+        ->groupBy('role')
+        ->get();
+
+        $applicationsCount = DB::table('requestingform')
+        ->select('status', DB::raw('count(*) as count'))
+        ->groupBy('status')
+        ->get();
+
+        $thesisTypeCount = DB::table('requestingform')
+        ->select('thesis_type', DB::raw('count(*) as count'))
+        ->groupBy('thesis_type')
+        ->get();
+
+        $courseCount = DB::table('requestingform')
+        ->select('course', DB::raw('count(*) as count'))
+        ->groupBy('course')
+        ->get();
+
+        $researchDepartmentCount = DB::table('research_list')
+        ->select('department', DB::raw('count(*) as count'))
+        ->groupBy('department')
+        ->get();
+
+        $researchCourseCount = DB::table('research_list')
+        ->select('course', DB::raw('count(*) as count'))
+        ->groupBy('course')
+        ->get();
+
         $studentCount = DB::table('users')->where('role', 'Student')->count();
 
         $staffCount = DB::table('users')->where('role', 'Staff')->count();
@@ -63,7 +93,7 @@ class AdminController extends Controller
         $basdResearchCount = DB::table('research_list')->where('department', 'BASD')->count();
         $caadResearchCount = DB::table('research_list')->where('department', 'CAAD')->count();
 
-        return View::make('admin.dashboard',compact('usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount'));
+        return View::make('admin.dashboard',compact('usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount'));
     }
 
     public function administration()

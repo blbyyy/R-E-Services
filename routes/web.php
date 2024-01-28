@@ -637,3 +637,4 @@ Route::post('/certificate/fetch-data', [
       'uses' => 'AdminController@fetchSpecificCertificate',
             'as' => 'certificateFetchData'
     ]);
+

@@ -13,10 +13,10 @@
                             <li class="dropdown-header text-start">
                                 <h6>Filter</h6>
                             </li>
-                            <li><a class="dropdown-item filter-option" data-filter="all" href="#">All</a></li>
-                            <li><a class="dropdown-item filter-option" data-filter="student" href="#">Student</a></li>
-                            <li><a class="dropdown-item filter-option" data-filter="staff" href="#">Staff</a></li>
-                            <li><a class="dropdown-item filter-option" data-filter="faculty" href="#">Faculty Member</a></li>
+                            <li><a class="dropdown-item filter-option" data-filter="all">All</a></li>
+                            <li><a class="dropdown-item filter-option" data-filter="student">Student</a></li>
+                            <li><a class="dropdown-item filter-option" data-filter="staff">Staff</a></li>
+                            <li><a class="dropdown-item filter-option" data-filter="faculty">Faculty Member</a></li>
                         </ul>
                     </div>
             
@@ -42,10 +42,10 @@
                           <li class="dropdown-header text-start">
                               <h6>Filter</h6>
                           </li>
-                          <li><a class="dropdown-item filter-options" data-filter="applications" href="#">All</a></li>
-                          <li><a class="dropdown-item filter-options" data-filter="pending" href="#">Pending</a></li>
-                          <li><a class="dropdown-item filter-options" data-filter="passed" href="#">Passed</a></li>
-                          <li><a class="dropdown-item filter-options" data-filter="returned" href="#">Returned</a></li>
+                          <li><a class="dropdown-item filter-options" data-filter="applications">All</a></li>
+                          <li><a class="dropdown-item filter-options" data-filter="pending">Pending</a></li>
+                          <li><a class="dropdown-item filter-options" data-filter="passed">Passed</a></li>
+                          <li><a class="dropdown-item filter-options" data-filter="returned">Returned</a></li>
                       </ul>
                   </div>
           
@@ -71,11 +71,11 @@
                             <li class="dropdown-header text-start">
                                 <h6>Filter</h6>
                             </li>
-                            <li><a class="dropdown-item filter-optionss" data-filter="departments" href="#">All</a></li>
-                            <li><a class="dropdown-item filter-optionss" data-filter="eaad" href="#">EAAD</a></li>
-                            <li><a class="dropdown-item filter-optionss" data-filter="caad" href="#">CAAD</a></li>
-                            <li><a class="dropdown-item filter-optionss" data-filter="maad" href="#">MAAD</a></li>
-                            <li><a class="dropdown-item filter-optionss" data-filter="basd" href="#">BASD</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="departments">All</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="eaad">EAAD</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="caad">CAAD</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="maad">MAAD</a></li>
+                            <li><a class="dropdown-item filter-optionss" data-filter="basd">BASD</a></li>
                         </ul>
                     </div>
             
@@ -92,11 +92,278 @@
                     </div>
                 </div>
             </div>
-          
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Users</h5>
+        
+                        <canvas id="rolesChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const rolesCount = <?php echo json_encode($rolesCount); ?>;
+                                const labels = rolesCount.map(data => data.role);
+                                const counts = rolesCount.map(data => data.count);
+                                const admin = <?php echo json_encode($admin); ?>;
+            
+                                new Chart(document.querySelector('#rolesChart'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Users Count by Role',
+                                            data: counts,
+                                            fill: false,
+                                            borderColor: 'rgb(75, 192, 192)',
+                                            tension: 0.1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+            
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Applications</h5>
+
+                        <!-- Bar Chart -->
+                        <canvas id="applicationsChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const applicationsCount = <?php echo json_encode($applicationsCount); ?>;
+                                const labels = applicationsCount.map(data => data.status);
+                                const counts = applicationsCount.map(data => data.count);
+                                new Chart(document.querySelector('#applicationsChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Applications',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Shortened Applications by Thesis Type</h5>
+
+                        <!-- Pie Chart -->
+                        <canvas id="thesisTypeChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const thesisTypeCount = <?php echo json_encode($thesisTypeCount); ?>;
+                                const labels = thesisTypeCount.map(data => data.thesis_type);
+                                const counts = thesisTypeCount.map(data => data.count);
+                                new Chart(document.querySelector('#thesisTypeChart'), {
+                                    type: 'pie',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Thesis Type',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(255, 205, 86)'
+                                                // Add more colors if needed
+                                            ],
+                                            hoverOffset: 4
+                                        }]
+                                    }
+                                });
+                            });
+                        </script>
+                        <!-- End Pie Chart -->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Shortened Applications by Course</h5>
+
+                        <!-- Doughnut Chart -->
+                        <canvas id="applicationCourseChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const courseCount = <?php echo json_encode($courseCount); ?>;
+                                const labels = courseCount.map(data => data.course);
+                                const counts = courseCount.map(data => data.count);
+                                new Chart(document.querySelector('#applicationCourseChart'), {
+                                    type: 'doughnut',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Course',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(255, 205, 86)'
+                                                // Add more colors if needed
+                                            ],
+                                            hoverOffset: 4
+                                        }]
+                                    }
+                                });
+                            });
+                        </script>
+                        <!-- End Doughnut Chart -->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Department-Based Research Count Report</h5>
+
+                        <!-- Bar Chart -->
+                        <canvas id="researchDepartmentChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const researchDepartmentCount = <?= json_encode($researchDepartmentCount) ?>;
+                                const labels = researchDepartmentCount.map(data => data.department);
+                                const counts = researchDepartmentCount.map(data => data.count);
+                                
+                                new Chart(document.querySelector('#researchDepartmentChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Department',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+                        <!-- End Bar Chart -->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Course-Based Research Count Report</h5>
+
+                        <!-- Line Chart -->
+                        <canvas id="lineChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const researchCourseCount = <?= json_encode($researchCourseCount) ?>;
+                                const labels = researchCourseCount.map(data => data.course);
+                                const counts = researchCourseCount.map(data => data.count);
+
+                                new Chart(document.querySelector('#lineChart'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Course',
+                                            data: counts,
+                                            fill: false,
+                                            borderColor: 'rgb(75, 192, 192)',
+                                            tension: 0.1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+                        <!-- End Line Chart -->
+
+                    </div>
+                </div>
+            </div>
+
             </div>
           </div>
         </div>
-      </section>
+    </section>
 </main>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
