@@ -414,7 +414,7 @@ class AdminController extends Controller
             $student->user_id = $lastid; 
             $student->save();
             
-            return redirect()->to('/studentlist');
+            return redirect()->to('/studentlist')->with('success', 'Student Added');
     }
 
     public function showstudentinfo($id)

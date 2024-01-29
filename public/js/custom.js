@@ -560,23 +560,23 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) { 
                     console.log(data);
-                    $('#research_edit_id').val(data.id);
-                    $('#research_title').val(data.research_title);
-                    $('#abstract').val(data.abstract);
-                    $('#department').val(data.department);
-                    $('#course').val(data.course);
-                    $('#faculty_adviser1').val(data.faculty_adviser1);
-                    $('#faculty_adviser2').val(data.faculty_adviser2);
-                    $('#faculty_adviser3').val(data.faculty_adviser3);
-                    $('#faculty_adviser4').val(data.faculty_adviser4);
-                    $('#researcher1').val(data.researcher1);
-                    $('#researcher2').val(data.researcher2);
-                    $('#researcher3').val(data.researcher3);
-                    $('#researcher4').val(data.researcher4);
-                    $('#researcher5').val(data.researcher5);
-                    $('#researcher6').val(data.researcher6);
-                    $('#time_frame').val(data.time_frame);
-                    $('#date_completion').val(data.date_completion);
+                    $('#researchEditId').val(data.id);
+                    $('#researchTitle').val(data.research_title);
+                    $('#abstracts').val(data.abstract);
+                    $('#dept').val(data.department);
+                    $('#researchCourse').val(data.course);
+                    $('#facultyAdviser1').val(data.faculty_adviser1);
+                    $('#facultyAdviser2').val(data.faculty_adviser2);
+                    $('#facultyAdviser3').val(data.faculty_adviser3);
+                    $('#facultyAdviser4').val(data.faculty_adviser4);
+                    $('#Researcher1').val(data.researcher1);
+                    $('#Researcher2').val(data.researcher2);
+                    $('#Researcher3').val(data.researcher3);
+                    $('#Researcher4').val(data.researcher4);
+                    $('#Researcher5').val(data.researcher5);
+                    $('#Researcher6').val(data.researcher6);
+                    $('#timeFrame').val(data.time_frame);
+                    $('#dateCompletion').val(data.date_completion);
                 },
                 error: function (error) {
                     console.log(error);
@@ -587,7 +587,7 @@ $(document).ready(function () {
         //update research info
         $(".researchupdateBtn").on("click", function (e) {
             e.preventDefault();
-            var id = $("#research_edit_id").val();
+            var id = $("#researchEditId").val();
             let editformData = new FormData($("#researchinfoform")[0]);
             for(var pair of editformData.entries()){
                 console.log(pair[0] + ',' + pair[1]);

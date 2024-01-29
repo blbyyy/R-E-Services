@@ -47,11 +47,14 @@
                     <h5 class="card-title">{{$files->research_title}}</h5>
                     <div class="icon">
                         <i class="bi bi-file-earmark-pdf"></i>
+                    </div>
+
                     <center>
                         <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="This file is already passed the certification.">
                           Apply Certification
                         </button>
                     </center>
+
                 </div>
             </div>
           </div>
