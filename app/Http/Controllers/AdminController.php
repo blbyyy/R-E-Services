@@ -996,6 +996,134 @@ class AdminController extends Controller
         // Return the data as JSON response
         return response()->json($data);
     }
+
+    public function mobileadministration()
+    {
+        $admin = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $adminlist = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.id as userid', 'users.role')
+            ->get();
+
+        $data = [
+            'admin' => $admin,
+            'adminlist' => $adminlist,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function mobileaddAdministration(Request $request)
+    {
+        $users = new User();
+        $users->fname = $request->admin_fname;
+        $users->lname = $request->admin_lname;
+        $users->mname = $request->admin_mname;
+        $users->role = $request->admin_role;
+        $users->email = $request->admin_email;
+        $users->password = bcrypt($request->admin_password);
+        $users->save();
+        $lastid = DB::getPdo()->lastInsertId();
+
+        $staff = new Staff();
+        $staff->fname = $request->admin_fname;
+        $staff->lname = $request->admin_lname;
+        $staff->mname = $request->admin_mname;
+        $staff->position = $request->admin_position;
+        $staff->designation = $request->admin_designation;
+        $staff->tup_id = $request->admin_id;
+        $staff->email = $request->admin_email;
+        $staff->gender = $request->admin_gender;
+        $staff->phone = $request->admin_phone;
+        $staff->address = $request->admin_address;
+        $staff->birthdate = $request->admin_birthdate;
+        $staff->user_id = $lastid;
+        $staff->save();
+
+        $response = [
+            'message' => 'Administrator Added',
+            'admin' => $users,
+            'staff' => $staff,
+        ];
+
+        return response()->json($response);
+    }
+
+    public function mobileeditAdministration($id)
+    {
+        $staff = Staff::find($id);
+
+        if (!$staff) {
+            return response()->json(['error' => 'Staff not found'], 404);
+        }
+
+        return response()->json($staff);
+    }
+
+    public function mobileupdateAdministration(Request $request, $id)
+    {
+        $staff = Staff::find($id);
+        $staff->fname = $request->fname;
+        $staff->lname = $request->lname;
+        $staff->mname = $request->mname;
+        $staff->position = $request->position;
+        $staff->designation = $request->designation;
+        $staff->tup_id = $request->staffid;
+        $staff->email = $request->email;
+        $staff->gender = $request->gender;
+        $staff->phone = $request->phone;
+        $staff->address = $request->address;
+        $staff->birthdate = $request->birthdate;
+        $staff->save();
+
+        $user_id = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('users.id')
+        ->where('staff.id',$id)
+        ->first();
+
+        $user = User::find($user_id->id);
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->mname = $request->mname;
+        $user->email = $request->email;
+        $user->save();
+
+        return response()->json(["staff" => $staff, "user" => $user],201);
+    }
+
+    public function mobileeditAdministrationRole($id)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.id as userid','users.role')
+        ->where('staff.id', $id)
+        ->first();
+
+        return response()->json($admin);
+    }
+
+    public function mobileupdateAdministrationRole(Request $request, $id)
+    {
+        $user = User::find($request->roleId);
+        $user->role = $request->role;
+        $user->save();
+
+        return response()->json($user);
+    }
+
+    public function mobiledeleteAdministration(string $id)
+    {
+        $staff = Staff::findOrFail($id);
+        $staff->delete();
+        $data = array('success' =>'deleted','code'=>'200');
+        return response()->json($data);
+    }
     //MOBILE END
     
 }
