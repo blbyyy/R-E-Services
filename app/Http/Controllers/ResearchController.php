@@ -49,7 +49,7 @@ class ResearchController extends Controller
             $research->course = $request->course;
             $research->save();
                 
-            return redirect()->to('/researchlist');
+            return redirect()->to('/researchlist')->with('success', 'Research Added');
     }
 
     public function showresearchinfo($id)
@@ -67,22 +67,22 @@ class ResearchController extends Controller
     public function updateresearchinfo(Request $request, $id)
     {
         $research = Research::find($id);
-        $research->research_title = $request->research_title;
-        $research->faculty_adviser1 = $request->faculty_adviser1;
-        $research->faculty_adviser2 = $request->faculty_adviser2;
-        $research->faculty_adviser3 = $request->faculty_adviser3;
-        $research->faculty_adviser4 = $request->faculty_adviser4;
-        $research->researcher1 = $request->researcher1;
-        $research->researcher2 = $request->researcher2;
-        $research->researcher3 = $request->researcher3;
-        $research->researcher4 = $request->researcher4;
-        $research->researcher5 = $request->researcher5;
-        $research->researcher6 = $request->researcher5;
-        $research->time_frame = $request->time_frame;
-        $research->date_completion = $request->date_completion;
-        $research->abstract = $request->abstract;
-        $research->department = $request->department;
-        $research->course = $request->course;
+        $research->research_title = $request->researchTitle;
+        $research->faculty_adviser1 = $request->facultyAdviser1;
+        $research->faculty_adviser2 = $request->facultyAdviser2;
+        $research->faculty_adviser3 = $request->facultyAdviser3;
+        $research->faculty_adviser4 = $request->facultyAdviser4;
+        $research->researcher1 = $request->Researcher1;
+        $research->researcher2 = $request->Researcher2;
+        $research->researcher3 = $request->Researcher3;
+        $research->researcher4 = $request->Researcher4;
+        $research->researcher5 = $request->Researcher5;
+        $research->researcher6 = $request->Researcher6;
+        $research->time_frame = $request->timeFrame;
+        $research->date_completion = $request->dateCompletion;
+        $research->abstract = $request->abstracts;
+        $research->department = $request->dept;
+        $research->course = $request->researchCourse;
         $research->save();
 
         return response()->json(["research" => $research]);

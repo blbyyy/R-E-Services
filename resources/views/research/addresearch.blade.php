@@ -123,7 +123,7 @@
               <button type="submit" class="btn btn-primary">Add</button>
               <button type="reset" class="btn btn-secondary">Reset</button>
             </div>
-          </form><!-- End floating Labels Form -->
+          </form>
 
         </div>
       </div>

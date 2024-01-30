@@ -1,5 +1,8 @@
 @extends('layouts.navigation')
 <main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+      </div>
     <section class="section dashboard">
         <div class="row">
           <div class="col-lg-12">
