@@ -832,44 +832,74 @@ class AdminController extends Controller
     public function dashboardmobile(Request $request)
     {
         $usersCount = DB::table('users')->count();
+    
+        $rolesCount = DB::table('users')
+            ->select('role', DB::raw('count(*) as count'))
+            ->groupBy('role')
+            ->get();
+    
+        $applicationsCount = DB::table('requestingform')
+            ->select('status', DB::raw('count(*) as count'))
+            ->groupBy('status')
+            ->get();
+    
+        $thesisTypeCount = DB::table('requestingform')
+            ->select('thesis_type', DB::raw('count(*) as count'))
+            ->groupBy('thesis_type')
+            ->get();
+    
+        $courseCount = DB::table('requestingform')
+            ->select('course', DB::raw('count(*) as count'))
+            ->groupBy('course')
+            ->get();
+    
+        $researchDepartmentCount = DB::table('research_list')
+            ->select('department', DB::raw('count(*) as count'))
+            ->groupBy('department')
+            ->get();
+    
+        $researchCourseCount = DB::table('research_list')
+            ->select('course', DB::raw('count(*) as count'))
+            ->groupBy('course')
+            ->get();
+    
         $studentCount = DB::table('users')->where('role', 'Student')->count();
+    
         $staffCount = DB::table('users')->where('role', 'Staff')->count();
+    
         $facultyCount = DB::table('users')->where('role', 'Faculty')->count();
+    
         $applicationCount = DB::table('requestingform')->count();
-
+    
         $pendingCount = DB::table('requestingform')
-            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('files','files.id','requestingform.research_id')
             ->where('requestingform.status', '=', 'Pending')
             ->count();
-
+    
         $passedCount = DB::table('requestingform')
-            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('files','files.id','requestingform.research_id')
             ->where('requestingform.status', '=', 'Passed')
             ->count();
-
+    
         $returnedCount = DB::table('requestingform')
-            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('files','files.id','requestingform.research_id')
             ->where('requestingform.status', '=', 'Returned')
             ->count();
-
+    
         $admin = DB::table('staff')
-            ->join('users', 'users.id', 'staff.user_id')
-            ->select('staff.*', 'users.*')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
             ->where('user_id', Auth::id())
             ->first();
-
-        $data = [
-            'usersCount' => $usersCount,
-            'studentCount' => $studentCount,
-            'staffCount' => $staffCount,
-            'facultyCount' => $facultyCount,
-            'applicationCount' => $applicationCount,
-            'admin' => $admin,
-            'pendingCount' => $pendingCount,
-            'passedCount' => $passedCount,
-            'returnedCount' => $returnedCount,
-        ];
-
+    
+        $researchCount = DB::table('research_list')->count();
+        $eaadResearchCount = DB::table('research_list')->where('department', 'EAAD')->count();
+        $maadResearchCount = DB::table('research_list')->where('department', 'MAAD')->count();
+        $basdResearchCount = DB::table('research_list')->where('department', 'BASD')->count();
+        $caadResearchCount = DB::table('research_list')->where('department', 'CAAD')->count();
+    
+        $data = compact('usersCount', 'studentCount', 'staffCount', 'facultyCount', 'applicationCount', 'admin', 'pendingCount', 'passedCount', 'returnedCount', 'eaadResearchCount', 'maadResearchCount', 'caadResearchCount', 'basdResearchCount', 'researchCount', 'rolesCount', 'applicationsCount', 'thesisTypeCount', 'courseCount', 'researchDepartmentCount', 'researchCourseCount');
+    
         return response()->json($data);
     }
 
@@ -964,6 +994,134 @@ class AdminController extends Controller
         $data = compact('admin', 'student', 'staff', 'faculty', 'announcements');
     
         // Return the data as JSON response
+        return response()->json($data);
+    }
+
+    public function mobileadministration()
+    {
+        $admin = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $adminlist = DB::table('staff')
+            ->join('users', 'users.id', 'staff.user_id')
+            ->select('staff.*', 'users.id as userid', 'users.role')
+            ->get();
+
+        $data = [
+            'admin' => $admin,
+            'adminlist' => $adminlist,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function mobileaddAdministration(Request $request)
+    {
+        $users = new User();
+        $users->fname = $request->admin_fname;
+        $users->lname = $request->admin_lname;
+        $users->mname = $request->admin_mname;
+        $users->role = $request->admin_role;
+        $users->email = $request->admin_email;
+        $users->password = bcrypt($request->admin_password);
+        $users->save();
+        $lastid = DB::getPdo()->lastInsertId();
+
+        $staff = new Staff();
+        $staff->fname = $request->admin_fname;
+        $staff->lname = $request->admin_lname;
+        $staff->mname = $request->admin_mname;
+        $staff->position = $request->admin_position;
+        $staff->designation = $request->admin_designation;
+        $staff->tup_id = $request->admin_id;
+        $staff->email = $request->admin_email;
+        $staff->gender = $request->admin_gender;
+        $staff->phone = $request->admin_phone;
+        $staff->address = $request->admin_address;
+        $staff->birthdate = $request->admin_birthdate;
+        $staff->user_id = $lastid;
+        $staff->save();
+
+        $response = [
+            'message' => 'Administrator Added',
+            'admin' => $users,
+            'staff' => $staff,
+        ];
+
+        return response()->json($response);
+    }
+
+    public function mobileeditAdministration($id)
+    {
+        $staff = Staff::find($id);
+
+        if (!$staff) {
+            return response()->json(['error' => 'Staff not found'], 404);
+        }
+
+        return response()->json($staff);
+    }
+
+    public function mobileupdateAdministration(Request $request, $id)
+    {
+        $staff = Staff::find($id);
+        $staff->fname = $request->fname;
+        $staff->lname = $request->lname;
+        $staff->mname = $request->mname;
+        $staff->position = $request->position;
+        $staff->designation = $request->designation;
+        $staff->tup_id = $request->staffid;
+        $staff->email = $request->email;
+        $staff->gender = $request->gender;
+        $staff->phone = $request->phone;
+        $staff->address = $request->address;
+        $staff->birthdate = $request->birthdate;
+        $staff->save();
+
+        $user_id = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('users.id')
+        ->where('staff.id',$id)
+        ->first();
+
+        $user = User::find($user_id->id);
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->mname = $request->mname;
+        $user->email = $request->email;
+        $user->save();
+
+        return response()->json(["staff" => $staff, "user" => $user],201);
+    }
+
+    public function mobileeditAdministrationRole($id)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.id as userid','users.role')
+        ->where('staff.id', $id)
+        ->first();
+
+        return response()->json($admin);
+    }
+
+    public function mobileupdateAdministrationRole(Request $request, $id)
+    {
+        $user = User::find($request->roleId);
+        $user->role = $request->role;
+        $user->save();
+
+        return response()->json($user);
+    }
+
+    public function mobiledeleteAdministration(string $id)
+    {
+        $staff = Staff::findOrFail($id);
+        $staff->delete();
+        $data = array('success' =>'deleted','code'=>'200');
         return response()->json($data);
     }
     //MOBILE END

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\AdminController;
 
 
 /*
@@ -113,4 +114,12 @@ Route::delete('/delete_file/{file}', 'StudentController@deleteFile');
 Route::get('/get_files/{id}', 'App\Http\Controllers\StudentController@get_files')->name('get_files');
 
 Route::post('/apply-certification', 'App\Http\Controllers\RequestingFormController@apply_certifications');
+
+Route::get('/mobileadministration', [AdminController::class, 'mobileadministration']);
+Route::post('/mobileaddadministration', [AdminController::class, 'mobileaddAdministration']);
+Route::get('/mobileeditadministration/{id}', [AdminController::class, 'mobileeditAdministration']);
+Route::put('/mobileupdateadministration/{id}', [AdminController::class, 'mobileupdateAdministration']);
+Route::get('/mobileeditadministrationrole/{id}', [AdminController::class, 'mobileeditAdministrationRole']);
+Route::put('/mobileupdateadministrationrole/{id}', [AdminController::class, 'mobileupdateAdministrationRole']);
+Route::delete('/mobiledeleteadministration/{id}', [AdminController::class, 'mobiledeleteAdministration']);
 //MOBILE END
