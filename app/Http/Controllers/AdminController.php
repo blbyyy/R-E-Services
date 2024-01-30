@@ -770,6 +770,12 @@ class AdminController extends Controller
             ->where('user_id',Auth::id())
             ->first();
 
+        $staff = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
         $certificates = DB::table('certificates')  
             ->join('requestingform', 'requestingform.certificate_id', 'certificates.id')
             ->join('files', 'files.id', 'requestingform.research_id')  
@@ -781,7 +787,7 @@ class AdminController extends Controller
                 'certificates.certificate_file')  
             ->get(); 
         
-        return View::make('certificate.tracking',compact('admin','certificates'));
+        return View::make('certificate.tracking',compact('admin','certificates','staff'));
     }
 
     public function show_certificate($id)

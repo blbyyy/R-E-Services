@@ -117,7 +117,7 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Department</div>
-                    <div class="col-lg-9 col-md-8">{{$faculty->department}}</div>
+                    <div class="col-lg-9 col-md-8">{{$faculty->department_name}}</div>
                   </div>
 
                   <div class="row">
@@ -205,9 +205,9 @@
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Department</label>
                       <div class="col-md-8 col-lg-9">
-                        {{ Form::text('department',null,array('class'=>'form-control','id'=>'department')) }}
-                            @if($errors->has('department'))
-                              <small>{{ $errors->first('department') }}</small>
+                        {{ Form::text('department_id',null,array('class'=>'form-control','id'=>'department_id')) }}
+                            @if($errors->has('department_id'))
+                              <small>{{ $errors->first('department_id') }}</small>
                             @endif  
                       </div>
                     </div>

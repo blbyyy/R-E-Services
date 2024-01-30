@@ -96,17 +96,7 @@
                             <div class="col-lg-3 col-md-4 label ">Thesis Type</div>
                             <div id="thesis_type" class="col-lg-9 col-md-8"></div>
                           </div>
-        
-                          <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Adviser Name</div>
-                            <div id="adviser_name" class="col-lg-9 col-md-8"></div>
-                          </div>
-        
-                          <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Adviser Email</div>
-                            <div id="adviser_email" class="col-lg-9 col-md-8"></div>
-                          </div>
-        
+                          
                           <div class="row">
                             <div class="col-lg-3 col-md-4 label">Research Specialist</div>
                             <div id="research_specialist" class="col-lg-9 col-md-8"></div>
@@ -147,7 +137,7 @@
                           </div>
         
                           <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Student ID</div>
+                            <div class="col-lg-3 col-md-4 label">Tup ID</div>
                             <div id="student_id" class="col-lg-9 col-md-8"></div>
                           </div>
         

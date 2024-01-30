@@ -96,16 +96,6 @@
                           </div>
         
                           <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Adviser Name</div>
-                            <div id="adviser_name" class="col-lg-9 col-md-8"></div>
-                          </div>
-        
-                          <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Adviser Email</div>
-                            <div id="adviser_email" class="col-lg-9 col-md-8"></div>
-                          </div>
-        
-                          <div class="row">
                             <div class="col-lg-3 col-md-4 label">Research Specialist</div>
                             <div id="research_specialist" class="col-lg-9 col-md-8"></div>
                           </div>

@@ -80,6 +80,11 @@ Route::delete('/faculty/citation/{id}/deleted', [
           'as' => 'facultyDeleteCitation'
   ]);
 
+Route::delete('/staff/citation/{id}/deleted', [
+    'uses' => 'CitationController@staffDeleteCitation',
+          'as' => 'staffDeleteCitation'
+  ]);
+
 //MOBILE START
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
 Route::get('/dashboardmobile', 'App\Http\Controllers\AdminController@dashboardmobile');

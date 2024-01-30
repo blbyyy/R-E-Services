@@ -333,6 +333,24 @@
           <span>Application Status</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/staff/citation')}}">
+          <i class="bi bi-chat-quote-fill"></i>
+          <span>Citation References</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/applicationlist')}}">
+          <i class="bi bi-journal-bookmark"></i>
+          <span>Research Applications</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('certificate/tracking')}}">
+          <i class="bi bi-ui-checks"></i>
+          <span>Certificate Tracking</span>
+        </a>
+      </li>
 
       @elseif(Auth::user()->role == 'Faculty')
       <li class="nav-item">

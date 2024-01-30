@@ -199,6 +199,16 @@ Route::post('/staff/apply/certification/requested/{id}',[
     'as' => 'StaffRequested'
 ]);
 
+Route::get('/staff/reapply/get/file/{id}', [
+  'uses' => 'StaffController@re_apply_getfile_id',
+        'as' => 'staff_reapply_get-file-id'
+]);
+
+Route::post('/staff/re-apply/certification/requested/{id}', [
+  'uses' => 'StaffController@reApply',
+        'as' => 'staff.reapply.certification'
+]);
+
 Route::get('/staff/application/status', [
     'uses' => 'StaffController@application_status',
           'as' => 'staff.application.status'
@@ -212,6 +222,31 @@ Route::get('/staff/application/status/{id}', [
 Route::get('/staff/show/history/{id}', [
     'uses' => 'StaffController@history',
           'as' => 'staff_pdf_history'
+  ]);
+
+Route::get('/staff/citation', [
+    'uses' => 'CitationController@staffCitationCount',
+          'as' => 'staffCitationCount'
+  ]);
+
+Route::post('/staff/citation/added', [
+    'uses' => 'CitationController@staffAddCitation',
+          'as' => 'staffAddCitation'
+  ]);
+
+Route::get('/staff/citation/{id}', [
+    'uses' => 'CitationController@staffShowCitationInfo',
+          'as' => 'staffSpecificCitation'
+  ]);
+
+Route::get('/staff/citation/{id}/edit', [
+    'uses' => 'CitationController@staffEditCitationInfo',
+          'as' => 'staffSpecificCitationEdit'
+  ]);
+
+Route::post('/staff/citation/{id}/edit/updated', [
+    'uses' => 'CitationController@staffUpdateCitation',
+          'as' => 'staffSpecificCitationUpdated'
   ]);
 //END OF STAFF POV
 
@@ -284,6 +319,16 @@ Route::get('/faculty/apply/certification', [
 Route::post('/faculty/apply/certification/requested/{id}',[
     'uses' => 'FacultyController@apply_certification',
     'as' => 'FacultyRequested'
+]);
+
+Route::get('/faculty/reapply/get/file/{id}', [
+  'uses' => 'FacultyController@re_apply_getfile_id',
+        'as' => 'faculty_reapply_get-file-id'
+]);
+
+Route::post('/faculty/re-apply/certification/requested/{id}', [
+  'uses' => 'FacultyController@reApply',
+        'as' => 'faculty.reapply.certification'
 ]);
 
 Route::get('/faculty/application/status', [
