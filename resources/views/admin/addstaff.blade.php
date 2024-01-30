@@ -25,19 +25,24 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="form-floating">
                 <input type="text" name="staff_id" class="form-control" id="staff_id" placeholder="Staff ID">
                 <label for="staff_id">Staff ID</label>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="form-floating">
-                <input type="text" name="profession" class="form-control" id="profession" placeholder="Profession">
-                <label for="profession">Profession</label>
+                <input type="text" name="position" class="form-control" id="position" placeholder="Position">
+                <label for="position">Position</label>
               </div>
             </div>
-
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" name="designation" class="form-control" id="designation" placeholder="Designation">
+                <label for="designation">Designation</label>
+              </div>
+            </div>
 
             <div class="col-12">
               <div class="form-floating">

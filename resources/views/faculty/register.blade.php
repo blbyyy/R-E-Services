@@ -77,7 +77,7 @@
                   </select>
                   <label for="department">Department</label>
                 </div>
-              </div>
+            </div>
 
             <div class="col-md-6">
                 <div class="form-floating">

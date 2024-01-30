@@ -128,7 +128,7 @@ $(document).ready(function () {
             var id = $(this).data("id");
             console.log(id);
             Swal.fire({
-                title: 'Are you sure you want to delete this venue?',
+                title: 'Are you sure you want to delete this student?',
                 text: "You won't be able to undo this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -155,7 +155,7 @@ $(document).ready(function () {
                             console.log(data);
                             Swal.fire(
                                 'Deleted!',
-                                'Your file has been deleted.',
+                                'Student has been deleted.',
                                 'success'
                             )
                         },

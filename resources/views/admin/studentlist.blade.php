@@ -163,10 +163,12 @@
                           </div>
                         </div>
                        
-                        <div >
-                          <button data-id="{{$studentlists->id}}" type="submit" class="btn btn-primary studentupdateBtn">Save Changes</button>
-                          <button type="reset" class="btn btn-secondary">Reset</button>
-                        </div>
+                        <div class="col-12" style="padding-top: 20px">
+                          <div class="d-flex justify-content-end">
+                            <button data-id="{{$studentlists->id}}" type="submit" class="btn btn-outline-dark studentupdateBtn">Save Changes</button>
+                            <button type="reset" class="btn btn-outline-dark  ms-2">Reset</button>
+                          </div>
+                      </div>
                       </form><!-- End floating Labels Form -->
         
                     </div>

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PdfController;
+use App\Models\Department;
 
 /*
 |--------------------------------------------------------------------------
@@ -556,7 +557,9 @@ Route::get('/add/faculty', function () {
         ->where('user_id',Auth::id())
         ->first();
 
-    return View::make('admin.addfaculty',compact('admin'));
+    $department = Department::orderBy('id')->get();
+
+    return View::make('admin.addfaculty',compact('admin','department'));
 
 });
 

@@ -497,7 +497,8 @@ class AdminController extends Controller
             $staff->fname = $request->fname;
             $staff->lname = $request->lname;
             $staff->mname = $request->mname;
-            $staff->profession = $request->profession;
+            $staff->position = $request->position;
+            $staff->designation = $request->designation;
             $staff->staff_id = $request->staff_id;
             $staff->email = $request->email;
             $staff->gender = $request->gender;
@@ -570,6 +571,7 @@ class AdminController extends Controller
         ->first();
 
         $facultylist = Faculty::orderBy('id')->get();
+
         return View::make('admin.facultylist',compact('facultylist','admin'));
     }
 
@@ -589,6 +591,8 @@ class AdminController extends Controller
             $faculty->fname = $request->fname;
             $faculty->lname = $request->lname;
             $faculty->mname = $request->mname;
+            $faculty->position = $request->position;
+            $faculty->designation = $request->designation;
             $faculty->department = $request->department;
             $faculty->tup_id = $request->tup_id;
             $faculty->email = $request->email;
