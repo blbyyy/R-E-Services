@@ -832,44 +832,74 @@ class AdminController extends Controller
     public function dashboardmobile(Request $request)
     {
         $usersCount = DB::table('users')->count();
+    
+        $rolesCount = DB::table('users')
+            ->select('role', DB::raw('count(*) as count'))
+            ->groupBy('role')
+            ->get();
+    
+        $applicationsCount = DB::table('requestingform')
+            ->select('status', DB::raw('count(*) as count'))
+            ->groupBy('status')
+            ->get();
+    
+        $thesisTypeCount = DB::table('requestingform')
+            ->select('thesis_type', DB::raw('count(*) as count'))
+            ->groupBy('thesis_type')
+            ->get();
+    
+        $courseCount = DB::table('requestingform')
+            ->select('course', DB::raw('count(*) as count'))
+            ->groupBy('course')
+            ->get();
+    
+        $researchDepartmentCount = DB::table('research_list')
+            ->select('department', DB::raw('count(*) as count'))
+            ->groupBy('department')
+            ->get();
+    
+        $researchCourseCount = DB::table('research_list')
+            ->select('course', DB::raw('count(*) as count'))
+            ->groupBy('course')
+            ->get();
+    
         $studentCount = DB::table('users')->where('role', 'Student')->count();
+    
         $staffCount = DB::table('users')->where('role', 'Staff')->count();
+    
         $facultyCount = DB::table('users')->where('role', 'Faculty')->count();
+    
         $applicationCount = DB::table('requestingform')->count();
-
+    
         $pendingCount = DB::table('requestingform')
-            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('files','files.id','requestingform.research_id')
             ->where('requestingform.status', '=', 'Pending')
             ->count();
-
+    
         $passedCount = DB::table('requestingform')
-            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('files','files.id','requestingform.research_id')
             ->where('requestingform.status', '=', 'Passed')
             ->count();
-
+    
         $returnedCount = DB::table('requestingform')
-            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('files','files.id','requestingform.research_id')
             ->where('requestingform.status', '=', 'Returned')
             ->count();
-
+    
         $admin = DB::table('staff')
-            ->join('users', 'users.id', 'staff.user_id')
-            ->select('staff.*', 'users.*')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
             ->where('user_id', Auth::id())
             ->first();
-
-        $data = [
-            'usersCount' => $usersCount,
-            'studentCount' => $studentCount,
-            'staffCount' => $staffCount,
-            'facultyCount' => $facultyCount,
-            'applicationCount' => $applicationCount,
-            'admin' => $admin,
-            'pendingCount' => $pendingCount,
-            'passedCount' => $passedCount,
-            'returnedCount' => $returnedCount,
-        ];
-
+    
+        $researchCount = DB::table('research_list')->count();
+        $eaadResearchCount = DB::table('research_list')->where('department', 'EAAD')->count();
+        $maadResearchCount = DB::table('research_list')->where('department', 'MAAD')->count();
+        $basdResearchCount = DB::table('research_list')->where('department', 'BASD')->count();
+        $caadResearchCount = DB::table('research_list')->where('department', 'CAAD')->count();
+    
+        $data = compact('usersCount', 'studentCount', 'staffCount', 'facultyCount', 'applicationCount', 'admin', 'pendingCount', 'passedCount', 'returnedCount', 'eaadResearchCount', 'maadResearchCount', 'caadResearchCount', 'basdResearchCount', 'researchCount', 'rolesCount', 'applicationsCount', 'thesisTypeCount', 'courseCount', 'researchDepartmentCount', 'researchCourseCount');
+    
         return response()->json($data);
     }
 
