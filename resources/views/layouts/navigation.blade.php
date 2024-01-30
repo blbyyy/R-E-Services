@@ -365,6 +365,12 @@
           <span>Students Application</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/faculty/citation')}}">
+          <i class="bi bi-chat-quote-fill"></i>
+          <span>Citation References</span>
+        </a>
+      </li>
 
       @elseif(Auth::user()->role == 'Admin')
       <li class="nav-item">

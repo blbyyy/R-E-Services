@@ -310,6 +310,31 @@ Route::get('/faculty/student-applications/{id}', [
     'uses' => 'FacultyController@students_application_specific',
           'as' => 'faculty_student_applications-specific'
   ]);
+
+Route::get('/faculty/citation', [
+    'uses' => 'CitationController@facultyCitationCount',
+          'as' => 'facultyCitationCount'
+  ]);
+
+Route::post('/faculty/citation/added', [
+    'uses' => 'CitationController@facultyAddCitation',
+          'as' => 'facultyAddCitation'
+  ]);
+
+Route::get('/faculty/citation/{id}', [
+    'uses' => 'CitationController@facultyShowCitationInfo',
+          'as' => 'facultySpecificCitation'
+  ]);
+
+Route::get('/faculty/citation/{id}/edit', [
+    'uses' => 'CitationController@facultyEditCitationInfo',
+          'as' => 'facultySpecificCitationEdit'
+  ]);
+
+Route::post('/faculty/citation/{id}/edit/updated', [
+    'uses' => 'CitationController@facultyUpdateCitation',
+          'as' => 'facultySpecificCitationUpdated'
+  ]);
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [
