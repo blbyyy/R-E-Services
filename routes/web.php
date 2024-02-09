@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PdfController;
+use App\Models\Department;
 
 /*
 |--------------------------------------------------------------------------
@@ -199,6 +200,16 @@ Route::post('/staff/apply/certification/requested/{id}',[
     'as' => 'StaffRequested'
 ]);
 
+Route::get('/staff/reapply/get/file/{id}', [
+  'uses' => 'StaffController@re_apply_getfile_id',
+        'as' => 'staff_reapply_get-file-id'
+]);
+
+Route::post('/staff/re-apply/certification/requested/{id}', [
+  'uses' => 'StaffController@reApply',
+        'as' => 'staff.reapply.certification'
+]);
+
 Route::get('/staff/application/status', [
     'uses' => 'StaffController@application_status',
           'as' => 'staff.application.status'
@@ -212,6 +223,31 @@ Route::get('/staff/application/status/{id}', [
 Route::get('/staff/show/history/{id}', [
     'uses' => 'StaffController@history',
           'as' => 'staff_pdf_history'
+  ]);
+
+Route::get('/staff/citation', [
+    'uses' => 'CitationController@staffCitationCount',
+          'as' => 'staffCitationCount'
+  ]);
+
+Route::post('/staff/citation/added', [
+    'uses' => 'CitationController@staffAddCitation',
+          'as' => 'staffAddCitation'
+  ]);
+
+Route::get('/staff/citation/{id}', [
+    'uses' => 'CitationController@staffShowCitationInfo',
+          'as' => 'staffSpecificCitation'
+  ]);
+
+Route::get('/staff/citation/{id}/edit', [
+    'uses' => 'CitationController@staffEditCitationInfo',
+          'as' => 'staffSpecificCitationEdit'
+  ]);
+
+Route::post('/staff/citation/{id}/edit/updated', [
+    'uses' => 'CitationController@staffUpdateCitation',
+          'as' => 'staffSpecificCitationUpdated'
   ]);
 //END OF STAFF POV
 
@@ -286,6 +322,16 @@ Route::post('/faculty/apply/certification/requested/{id}',[
     'as' => 'FacultyRequested'
 ]);
 
+Route::get('/faculty/reapply/get/file/{id}', [
+  'uses' => 'FacultyController@re_apply_getfile_id',
+        'as' => 'faculty_reapply_get-file-id'
+]);
+
+Route::post('/faculty/re-apply/certification/requested/{id}', [
+  'uses' => 'FacultyController@reApply',
+        'as' => 'faculty.reapply.certification'
+]);
+
 Route::get('/faculty/application/status', [
     'uses' => 'FacultyController@application_status',
           'as' => 'faculty.application.status'
@@ -309,6 +355,31 @@ Route::get('/faculty/student-applications', [
 Route::get('/faculty/student-applications/{id}', [
     'uses' => 'FacultyController@students_application_specific',
           'as' => 'faculty_student_applications-specific'
+  ]);
+
+Route::get('/faculty/citation', [
+    'uses' => 'CitationController@facultyCitationCount',
+          'as' => 'facultyCitationCount'
+  ]);
+
+Route::post('/faculty/citation/added', [
+    'uses' => 'CitationController@facultyAddCitation',
+          'as' => 'facultyAddCitation'
+  ]);
+
+Route::get('/faculty/citation/{id}', [
+    'uses' => 'CitationController@facultyShowCitationInfo',
+          'as' => 'facultySpecificCitation'
+  ]);
+
+Route::get('/faculty/citation/{id}/edit', [
+    'uses' => 'CitationController@facultyEditCitationInfo',
+          'as' => 'facultySpecificCitationEdit'
+  ]);
+
+Route::post('/faculty/citation/{id}/edit/updated', [
+    'uses' => 'CitationController@facultyUpdateCitation',
+          'as' => 'facultySpecificCitationUpdated'
   ]);
 //END OF FACULTY POV
 
@@ -486,7 +557,9 @@ Route::get('/add/faculty', function () {
         ->where('user_id',Auth::id())
         ->first();
 
-    return View::make('admin.addfaculty',compact('admin'));
+    $department = Department::orderBy('id')->get();
+
+    return View::make('admin.addfaculty',compact('admin','department'));
 
 });
 

@@ -239,27 +239,35 @@
     <ul class="sidebar-nav" id="sidebar-nav">
       @guest
       <li class="nav-item">
-        <a class="nav-link " href="{{url('/homepage')}}">
-          <i class="bi bi-house-door"></i>
-          <span>Home</span>
+        <a style="background-color: {{ Request::is('homepage') ? '#700117' : '#c9c7c8' }};
+                  color: {{ Request::is('homepage') ? 'white' : 'black' }}" 
+           class="nav-link" href="{{ url('/homepage') }}">
+            <i class="bi bi-house-door" style="color: {{ Request::is('homepage') ? 'white' : '#700117' }}"></i>
+            <span>Home</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="{{ route('login') }}">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
+        <a style="background-color: {{ Request::is('login') ? '#700117' : '#c9c7c8' }};
+                  color: {{ Request::is('login') ? 'white' : 'black' }}" 
+           class="nav-link" href="{{ url('/login') }}">
+            <i class="bi bi-box-arrow-in-right" style="color: {{ Request::is('login') ? 'white' : '#700117' }}"></i>
+            <span>Login</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="{{ url('/CreateAccount')}}">
-          <i class="bi bi-person-plus"></i>
-          <span>Create Account</span>
+        <a style="background-color: {{ Request::is('CreateAccount') ? '#700117' : '#c9c7c8' }};
+                  color: {{ Request::is('CreateAccount') ? 'white' : 'black' }}" 
+           class="nav-link" href="{{ url('/CreateAccount') }}">
+            <i class="bi bi-person-plus" style="color: {{ Request::is('CreateAccount') ? 'white' : '#700117' }}"></i>
+            <span>Create Account</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="{{ url('/Contact')}}">
-          <i class="bi bi-patch-question"></i>
-          <span>About Us</span>
+        <a style="background-color: {{ Request::is('Contact') ? '#700117' : '#c9c7c8' }};
+                  color: {{ Request::is('Contact') ? 'white' : 'black' }}" 
+           class="nav-link" href="{{ url('/Contact') }}">
+            <i class="bi bi-patch-question" style="color: {{ Request::is('Contact') ? 'white' : '#700117' }}"></i>
+            <span>About Us</span>
         </a>
       </li>
       <li class="nav-item">
@@ -333,6 +341,24 @@
           <span>Application Status</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/staff/citation')}}">
+          <i class="bi bi-chat-quote-fill"></i>
+          <span>Citation References</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/applicationlist')}}">
+          <i class="bi bi-journal-bookmark"></i>
+          <span>Research Applications</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('certificate/tracking')}}">
+          <i class="bi bi-ui-checks"></i>
+          <span>Certificate Tracking</span>
+        </a>
+      </li>
 
       @elseif(Auth::user()->role == 'Faculty')
       <li class="nav-item">
@@ -363,6 +389,12 @@
         <a class="nav-link " href="{{url('/faculty/student-applications')}}">
           <i class="bi bi-file-earmark-person"></i>
           <span>Students Application</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/faculty/citation')}}">
+          <i class="bi bi-chat-quote-fill"></i>
+          <span>Citation References</span>
         </a>
       </li>
 

@@ -128,7 +128,7 @@ $(document).ready(function () {
             var id = $(this).data("id");
             console.log(id);
             Swal.fire({
-                title: 'Are you sure you want to delete this venue?',
+                title: 'Are you sure you want to delete this student?',
                 text: "You won't be able to undo this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -155,7 +155,7 @@ $(document).ready(function () {
                             console.log(data);
                             Swal.fire(
                                 'Deleted!',
-                                'Your file has been deleted.',
+                                'Student has been deleted.',
                                 'success'
                             )
                         },
@@ -1762,7 +1762,7 @@ $(document).ready(function () {
         });
         
         //staff fetching file id to apply certification
-        $(".staffapplycert").click(function() {
+        $(".staffApplyGetId").click(function() {
             var id = $(this).data("id");
             $.ajax({
                 type: "GET",
@@ -1811,7 +1811,7 @@ $(document).ready(function () {
         });
 
         //staff applying certification
-        $(".staffapplycertification").on("click", function (e) {
+        $(".staffApplyCertification").on("click", function (e) {
             e.preventDefault();
             var id = $(this).data("id");
             let editformData = new FormData($("#staffcertificationform")[0]);
@@ -1821,6 +1821,66 @@ $(document).ready(function () {
             $.ajax({
                 type: "POST",
                 url: "/staff/apply/certification/requested/" + id ,
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/staff/apply/certification';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Request Sent',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //staff fetching file id to re-apply certification
+        $(".staffReApplyGetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/staff/reapply/get/file/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+        
+                    $('#reApplyResearchId').val(id);
+        
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //staff re-apply certification
+        $(".staffReApplyCertification").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            console.log(id)
+            let editformData = new FormData($("#staffReApplyCertificationForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/staff/re-apply/certification/requested/" + id ,
                 data: editformData,
                 contentType: false,
                 processData: false,
@@ -1948,6 +2008,227 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //staff view specific citation
+        $(".staffCitationShowBtn").click(function() {
+            var id = $(this).data('id');
+            console.log(id)
+            $.ajax({
+                url: '/staff/citation/' + id, 
+                type: 'GET',
+                success: function(data) {
+                    console.log(data);
+
+                    $("#citationResearchTitle").text(data.researchTitle);
+                    $("#citationConferenceForum").text(data.conferenceForum);
+                    $("#citationDate").text(data.date);
+                    $("#citationVenue").text(data.venue);
+                    $("#citationCountry").text(data.country);
+                    $("#citationPresentation").text(data.presentation);
+                    $("#citationPublication").text(data.publication);
+                    $("#citationDocument").text(data.document);
+                    
+                    if (data.presentor1 !== null) {
+                        $("#p1").show();
+                        $("#citationPresentor1").text(data.presentor1);
+                    } else {
+                        $("#p1").hide();
+                    }
+                    if (data.presentor2 !== null) {
+                        $("#p2").show();
+                        $("#citationPresentor2").text(data.presentor2);
+                    } else {
+                        $("#p2").hide();
+                    }
+                    if (data.presentor3 !== null) {
+                        $("#p3").show();
+                        $("#citationPresentor3").text(data.presentor3);
+                    } else {
+                        $("#p3").hide();
+                    }
+                    if (data.presentor4 !== null) {
+                        $("#p4").show();
+                        $("#citationPresentor4").text(data.presentor4);
+                    } else {
+                        $("#p4").hide();
+                    }
+                    if (data.presentor5 !== null) {
+                        $("#p5").show();
+                        $("#citationPresentor5").text(data.presentor5);
+                    } else {
+                        $("#p5").hide();
+                    }
+
+                    if (data.author1 !== null) {
+                        $("#a1").show();
+                        $("#citationAuthor1").text(data.author1);
+                    } else {
+                        $("#a1").hide();
+                    }
+                    if (data.author2 !== null) {
+                        $("#a2").show();
+                        $("#citationAuthor2").text(data.author2);
+                    } else {
+                        $("#a2").hide();
+                    }
+                    if (data.author3 !== null) {
+                        $("#a3").show();
+                        $("#citationAuthor3").text(data.author3);
+                    } else {
+                        $("#a3").hide();
+                    }
+                    if (data.author4 !== null) {
+                        $("#a4").show();
+                        $("#citationAuthor4").text(data.author4);
+                    } else {
+                        $("#a4").hide();
+                    }
+                    if (data.author5 !== null) {
+                        $("#a5").show();
+                        $("#citationAuthor5").text(data.author5);
+                    } else {
+                        $("#a5").hide();
+                    }
+
+
+                }, 
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+         //staff edit citation info
+         $(".staffcitationEditBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/staff/citation/" + id + "/edit",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $('#citationEditId').val(data.id);
+                    $('#citation_researchTitle').val(data.researchTitle);
+                    $('#citation_date').val(data.date);
+                    $('#citation_conferenceForum').val(data.conferenceForum);
+                    $('#citation_venue').val(data.venue);
+                    $('#citation_country').val(data.country);
+                    $('#citation_presentation').val(data.presentation);
+                    $('#citation_publication').val(data.publication);
+                    $('#citation_presentor1').val(data.presentor1);
+                    $('#citation_presentor2').val(data.presentor2);
+                    $('#citation_presentor3').val(data.presentor3);
+                    $('#citation_presentor4').val(data.presentor4);
+                    $('#citation_presentor5').val(data.presentor5);
+                    $('#citation_author1').val(data.author1);
+                    $('#citation_author2').val(data.author2);
+                    $('#citation_author3').val(data.author3);
+                    $('#citation_author4').val(data.author4);
+                    $('#citation_author5').val(data.author5);
+                    $('#citation_document').val(data.document);
+                    
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //staff update citation info
+        $(".staffCitationUpdateBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $("#citationEditId").val();
+            let editformData = new FormData($("#citationInfoForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            console.log(editformData)
+            $.ajax({
+                type: "POST",
+                url: "/staff/citation/" + id + "/edit/updated",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/staff/citation';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Citation Info Updated',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+         //staff delete citation info
+         $(".staffCitationDeleteBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Are you sure you want to delete this citation?',
+                text: "You won't be able to undo this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/staff/citation/" + id + "/deleted",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            setTimeout(function() {
+                                window.location.href = '/staff/citation';
+                            }, 1500);
+                            console.log(data);
+                            Swal.fire(
+                                'Deleted!',
+                                'Citation has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            console.log("error");
+                        },
+                    });
+
+                }
+            })
+
+        });
     //END OF STAFF POV
 
     //START OF FACULTY POV
@@ -2048,7 +2329,7 @@ $(document).ready(function () {
                         var tbody = $("#facultyhistoryTable tbody");
                         tbody.empty(); 
 
-                        $("#staffmessage").html("<br><p class='text-center'>No certification procedure exists.</p>");
+                        $("#facultymessage").html("<br><p class='text-center'>No certification procedure exists.</p>");
                     } else {
                         $("#facultytitle").empty();
                         $("#facultymessage").empty();
@@ -2095,7 +2376,7 @@ $(document).ready(function () {
         });
 
         //faculty fetching file id to apply certification
-        $(".facultyapplycert").click(function() {
+        $(".facultyApplyGetId").click(function() {
             var id = $(this).data("id");
             $.ajax({
                 type: "GET",
@@ -2109,33 +2390,6 @@ $(document).ready(function () {
 
                     $('#research_id').val(id);
 
-                    // if (data.length === 0) {
-                    //     $('#header').text('No Comments');
-                    //     $("#try").html("<br><p class='text-center'>Be the first to comment on this post.</p>");
-                    // } else {
-                    //     // If comments exist, display them
-                    //     data.forEach(function(item) {
-                    //         $('#header').text('All Comments');
-                    //         var card = $("<div>").addClass("d-flex align-items-center");
-                    //         var cardIcon = $("<div>").addClass("card-icon rounded-circle d-flex align-items-center justify-content-center");
-                    //         var img = $("<img>").attr("style", "width: 50px; height: 40px;").addClass("rounded-circle").attr("src", "https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180").attr("alt", "");
-                    //         var cardContent = $("<div>").addClass("ps-3");
-                    //         var h4 = $("<h4>").text(item.fname + ' ' + item.mname + ' ' + item.lname);
-                    //         var span = $("<span>").attr("style", "font-size: smaller").text("(" + item.role + ")" + " " + item.created_at);
-
-                    //         cardIcon.append(img);
-                    //         cardContent.append(h4, span);
-                    //         card.append(cardIcon, cardContent);
-
-                    //         $("#try").append(card);
-                            
-                    //         $("#try").append(
-                    //             "<br>",
-                    //             "<span>" + item.comment_content + "</span>",
-                    //             "<hr>"
-                    //         );
-                    //     });
-                    // }
                 },
                 error: function(error) {
                     console.log(error);
@@ -2154,6 +2408,66 @@ $(document).ready(function () {
             $.ajax({
                 type: "POST",
                 url: "/faculty/apply/certification/requested/" + id ,
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/faculty/apply/certification';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Request Sent',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //faculty fetching file id to re-apply certification
+        $(".facultyReApplyGetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/reapply/get/file/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+        
+                    $('#reApplyResearchId').val(id);
+        
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //faculty re-apply certification
+        $(".facuyltyReApplyCertification").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            console.log(id)
+            let editformData = new FormData($("#facultyReApplyCertificationForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/faculty/re-apply/certification/requested/" + id ,
                 data: editformData,
                 contentType: false,
                 processData: false,
@@ -2391,6 +2705,227 @@ $(document).ready(function () {
                     console.log(error);
                 },
             });
+        });
+
+        //faculty view specific citation
+        $(".citationShowBtn").click(function() {
+            var id = $(this).data('id');
+            console.log(id)
+            $.ajax({
+                url: '/faculty/citation/' + id, 
+                type: 'GET',
+                success: function(data) {
+                    console.log(data);
+
+                    $("#citationResearchTitle").text(data.researchTitle);
+                    $("#citationConferenceForum").text(data.conferenceForum);
+                    $("#citationDate").text(data.date);
+                    $("#citationVenue").text(data.venue);
+                    $("#citationCountry").text(data.country);
+                    $("#citationPresentation").text(data.presentation);
+                    $("#citationPublication").text(data.publication);
+                    $("#citationDocument").text(data.document);
+                    
+                    if (data.presentor1 !== null) {
+                        $("#p1").show();
+                        $("#citationPresentor1").text(data.presentor1);
+                    } else {
+                        $("#p1").hide();
+                    }
+                    if (data.presentor2 !== null) {
+                        $("#p2").show();
+                        $("#citationPresentor2").text(data.presentor2);
+                    } else {
+                        $("#p2").hide();
+                    }
+                    if (data.presentor3 !== null) {
+                        $("#p3").show();
+                        $("#citationPresentor3").text(data.presentor3);
+                    } else {
+                        $("#p3").hide();
+                    }
+                    if (data.presentor4 !== null) {
+                        $("#p4").show();
+                        $("#citationPresentor4").text(data.presentor4);
+                    } else {
+                        $("#p4").hide();
+                    }
+                    if (data.presentor5 !== null) {
+                        $("#p5").show();
+                        $("#citationPresentor5").text(data.presentor5);
+                    } else {
+                        $("#p5").hide();
+                    }
+
+                    if (data.author1 !== null) {
+                        $("#a1").show();
+                        $("#citationAuthor1").text(data.author1);
+                    } else {
+                        $("#a1").hide();
+                    }
+                    if (data.author2 !== null) {
+                        $("#a2").show();
+                        $("#citationAuthor2").text(data.author2);
+                    } else {
+                        $("#a2").hide();
+                    }
+                    if (data.author3 !== null) {
+                        $("#a3").show();
+                        $("#citationAuthor3").text(data.author3);
+                    } else {
+                        $("#a3").hide();
+                    }
+                    if (data.author4 !== null) {
+                        $("#a4").show();
+                        $("#citationAuthor4").text(data.author4);
+                    } else {
+                        $("#a4").hide();
+                    }
+                    if (data.author5 !== null) {
+                        $("#a5").show();
+                        $("#citationAuthor5").text(data.author5);
+                    } else {
+                        $("#a5").hide();
+                    }
+
+
+                }, 
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //faculty edit citation info
+        $(".citationEditBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/citation/" + id + "/edit",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $('#citationEditId').val(data.id);
+                    $('#citation_researchTitle').val(data.researchTitle);
+                    $('#citation_date').val(data.date);
+                    $('#citation_conferenceForum').val(data.conferenceForum);
+                    $('#citation_venue').val(data.venue);
+                    $('#citation_country').val(data.country);
+                    $('#citation_presentation').val(data.presentation);
+                    $('#citation_publication').val(data.publication);
+                    $('#citation_presentor1').val(data.presentor1);
+                    $('#citation_presentor2').val(data.presentor2);
+                    $('#citation_presentor3').val(data.presentor3);
+                    $('#citation_presentor4').val(data.presentor4);
+                    $('#citation_presentor5').val(data.presentor5);
+                    $('#citation_author1').val(data.author1);
+                    $('#citation_author2').val(data.author2);
+                    $('#citation_author3').val(data.author3);
+                    $('#citation_author4').val(data.author4);
+                    $('#citation_author5').val(data.author5);
+                    $('#citation_document').val(data.document);
+                    
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //update citation info
+        $(".citationUpdateBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $("#citationEditId").val();
+            let editformData = new FormData($("#citationInfoForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            console.log(editformData)
+            $.ajax({
+                type: "POST",
+                url: "/faculty/citation/" + id + "/edit/updated",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/faculty/citation';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Citation Info Updated',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+         //delete citation info
+         $(".citationDeleteBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Are you sure you want to delete this citation?',
+                text: "You won't be able to undo this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/faculty/citation/" + id + "/deleted",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            setTimeout(function() {
+                                window.location.href = '/faculty/citation';
+                            }, 1500);
+                            console.log(data);
+                            Swal.fire(
+                                'Deleted!',
+                                'Citation has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            console.log("error");
+                        },
+                    });
+
+                }
+            })
+
         });
     //END OF FACULTY POV
  

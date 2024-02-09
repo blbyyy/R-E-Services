@@ -37,10 +37,14 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div class="col-12">
-      <button type="button" class="btn btn-dark" onclick="toggleCertificationGuide()"><i class="bi bi-book"></i> Certification Usage Guide</button>
-    </div>
-    <br>
+    @if (Auth::user()->role !== 'Admin')
+      <div class="col-12">
+        <button type="button" class="btn btn-dark" onclick="toggleCertificationGuide()"><i class="bi bi-book"></i> Certification Usage Guide</button>
+      </div>
+      <br>
+    @else
+        
+    @endif
 
     @if (Auth::user()->role !== 'Admin' && Auth::user()->role !== 'Moderator' && Auth::user()->role !== 'Super Admin')
       <div class="card" id="certificationUsageGuise" style="display: none">

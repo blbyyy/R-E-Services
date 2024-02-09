@@ -11,7 +11,7 @@
         <div class="card-body">
           <h5 class="card-title">Create a New Faculty Member Profile</h5>
           <p>Note: All students must be enrolled in Technological University of
-            Philippines - Taguig Campus. please enter the student ID number.</p>
+            Philippines - Taguig Campus. please enter the student ID number and use TUP Email only.</p>
 
           <!-- Floating Labels Form -->
           <form class="row g-3" method="POST" action="{{ route('FacultyRegistered') }}">
@@ -77,7 +77,7 @@
                   </select>
                   <label for="department">Department</label>
                 </div>
-              </div>
+            </div>
 
             <div class="col-md-6">
                 <div class="form-floating">
@@ -187,9 +187,11 @@
                 </div>
             </div>
 
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary">Create Account</button>
-              <button type="reset" class="btn btn-secondary">Reset</button>
+            <div class="col-12" style="padding-top: 20px">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-outline-dark">Create Account</button>
+                    <button type="reset" class="btn btn-outline-dark ms-2">Reset</button>
+                </div>
             </div>
 
             

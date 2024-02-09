@@ -33,11 +33,28 @@
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" name="department" class="form-control" id="department" placeholder="Department">
+                <select name="department" class="form-select" id="department" aria-label="State">
+                  <option value="">Select Department.....</option>
+                  @foreach($department as $departments)
+                    <option value="{{$departments->id}}">{{$departments->department_name}} ({{$departments->department_code}})</option>
+                  @endforeach
+                </select>
                 <label for="department">Department</label>
               </div>
-            </div>
+          </div>
 
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" name="position" class="form-control" id="position" placeholder="Position">
+              <label for="position">Position</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" name="designation" class="form-control" id="designation" placeholder="Designation">
+              <label for="designation">Designation</label>
+            </div>
+          </div>
 
             <div class="col-12">
               <div class="form-floating">

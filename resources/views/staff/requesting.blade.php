@@ -58,6 +58,24 @@
                 </div>
             </div>
           </div>
+        @elseif($files->file_status == 'Returned')
+            <div class="col-md-4">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">{{$files->research_title}}</h5>
+                      <div class="icon">
+                          <i class="bi bi-file-earmark-pdf"></i>
+                      </div>
+
+                      <center>
+                        <button type="button" class="btn btn-outline-dark staffReApplyGetId" data-bs-toggle="modal" data-bs-target="#StaffReApplyCertification" data-id="{{$files->id}}">
+                            Re-Apply
+                        </button> 
+                      </center>
+
+                  </div>
+              </div>
+            </div>
         @else
           <div class="col-md-4">
             <div class="card">
@@ -66,12 +84,13 @@
                     <div class="icon">
                         <i class="bi bi-file-earmark-pdf"></i>
                     </div>
-                
+
                     <center>
-                        <button type="button" class="btn btn-outline-dark staffapplycert" data-bs-toggle="modal" data-bs-target="#staffapplycertification" data-id="{{$files->id}}">
-                            Apply Certification</i>
-                        </button>
+                      <button type="button" class="btn btn-outline-dark staffApplyGetId" data-bs-toggle="modal" data-bs-target="#staffapplycertification" data-id="{{$files->id}}">
+                            Apply
+                      </button> 
                     </center>
+
                 </div>
             </div>
           </div>
@@ -106,48 +125,10 @@
           <form id="staffcertificationform" class="row g-3" enctype="multipart/form-data">
             @csrf
 
-          <input type="hidden" class="form-control" id="research_id" name="research_id">
-    
-          <label>Is there an initial run of a similarity test (turnitin) by your research adviser?</label>
-            <div class="col-sm-12">
-                <div class="form-check">
-                    <input name="advisors_turnitin_precheck" class="form-check-input" type="radio" name="advisors_turnitin_precheck" id="advisors_turnitin_precheck_yes" value="Yes" onclick="toggleForms('yes')">
-                    <label class="form-check-label" for="advisors_turnitin_precheck_yes">
-                        Yes
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input name="advisors_turnitin_precheck" class="form-check-input" type="radio" name="advisors_turnitin_precheck" id="advisors_turnitin_precheck_no" value="No" onclick="toggleForms('no')">
-                    <label class="form-check-label" for="advisors_turnitin_precheck_no">
-                        No
-                    </label>
-                </div>
-            </div>
-
-              <div id="formContainer" style="display: none;">
-                <div class="col-md-12">
-                  <div class="form-floating mb-3">
-                      <select name="submission_frequency" class="form-select" id="submission_frequency" aria-label="State">
-                          <option value="First Submission">First Submission</option>
-                          <option value="Second Submission">Second Submission</option>
-                          <option value="Third Submission">Third Submission</option>
-                          <option value="Fourth Submission">Fourth Submission</option>
-                          <option value="Fifth Submission">Fifth Submission</option>
-                      </select>
-                      <label for="submission_frequency">Frequency of Submission</label>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="form-floating">
-                        <input name="initial_simmilarity_percentage" type="number" class="form-control" id="initial_simmilarity_percentage" placeholder="Enter the initial percentage of similarity for your paper">
-                        <label for="initial_simmilarity_percentage">Enter the initial percentage of similarity for your paper</label>
-                    </div>
-                </div>
-            </div>
+            <input type="hidden" class="form-control" id="research_id" name="research_id">
     
             <div class="col-md-6">
-              <div class="form-floating mb-3">
+              <div class="form-floating">
                 <select name="thesis_type" class="form-select" id="thesis_type" aria-label="State">
                   <option value=""></option>
                   <option value="Undergaduate Thesis">Undergraduate Thesis</option>
@@ -161,7 +142,7 @@
             </div>
     
             <div class="col-md-6">
-              <div class="form-floating mb-3">
+              <div class="form-floating">
                 <select name="requestor_type" class="form-select" id="requestor_type" aria-label="State">
                   <option value=""></option>
                   <option value="Graduate Student">Graduate Student</option>
@@ -171,52 +152,17 @@
                 <label for="requestor_type">Requestor Type</label>
               </div>
             </div>
-    
-            {{-- <hr class="thick-hr"> --}}
 
-            <div class="col-md-12">
-                <div class="form-floating">
-                  <input name="purpose" type="text" class="form-control" id="purpose" placeholder="Purpose">
-                  <label for="purpose">Purpose</label>
-                </div>
-            </div>
-    
             <div class="col-md-6">
               <div class="form-floating">
-                <input name="research_specialist" type="text" class="form-control" id="research_specialist" placeholder="Researcher Specialist">
-                <label for="research_specialist">Researcher Specialist</label>
+                  <input name="college" class="form-control" id="college" placeholder="College">
+                  <label for="college">College</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input name="research_staff" type="text" class="form-control" id="research_staff" placeholder="Research Staff">
-                <label for="research_staff">Research Staff</label>
-              </div>
-            </div>
-    
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="adviser_name" type="text" class="form-control" id="adviser_name" placeholder="Name of Adviser">
-                <label for="adviser_name">Name of Adviser</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="adviser_email" type="text" class="form-control" id="adviser_email" placeholder="Adviser Email">
-                <label for="adviser_email">Adviser Email</label>
-              </div>
-            </div>
-    
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="college" type="text" class="form-control" id="college" placeholder="College">
-                <label for="college">College</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input name="course" type="text" class="form-control" id="course" placeholder="Course">
-                <label for="course">Course</label>
+                  <input name="course" class="form-control" id="course" placeholder="Course">
+                  <label for="course">Course</label>
               </div>
             </div>
 
@@ -229,11 +175,11 @@
               </div>
             </div>
 
-            <div class="col-12">
-              <button type="button" class="btn btn-outline-dark" id="addResearcher">Add Researcher</button>
+            <div class="d-grid gap-2 mt-3">
+              <button type="button" class="btn btn-outline-dark" id="addResearcher"><i class="bi bi-plus-lg"></i> Add Researcher</button>
             </div>
     
-            <div class="col-12">
+            <div class="col-12" style="padding-top: 20px">
               <div class="form-check">
                 <input name="agreement" class="form-check-input" type="checkbox" id="agreement" value="I Agree" required>
                 <label class="form-check-label" for="agreement">
@@ -244,7 +190,7 @@
     
             <div class="col-12" style="padding-top: 20px">
               <div class="d-flex justify-content-end">
-              <button type="submit" class="btn btn-outline-dark staffapplycertification">Apply Certification</button>
+              <button type="submit" class="btn btn-outline-dark staffApplyCertification">Apply Certification</button>
               </div>
             </div>
     
@@ -254,6 +200,42 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="StaffReApplyCertification" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Apply for Certification</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <form id="staffReApplyCertificationForm" class="row g-3" enctype="multipart/form-data">
+            @csrf
+
+              <input type="hidden" class="form-control" id="reApplyResearchId" name="reApplyResearchId">
+
+              <div class="col-12">
+                  <label for="research_file" class="form-label">Enter the revised research file in this field:</label>
+                  <input type="file" class="form-control" id="research_file" name="research_file">
+                  <span style="font-size: small">(Note: The uploaded PDF file should not exceed 10mb in size.)</span>
+              </div>
+    
+            <div class="col-" style="padding-top: 20px">
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-dark staffReApplyCertification">Submit</button>
+              </div>
+            </div>
+    
+          </form>
+         
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
       </div>
     </div>
   </div>
