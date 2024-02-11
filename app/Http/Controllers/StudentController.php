@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TechnicalAdviserApproval;
 use RealRashid\SweetAlert\Facades\Alert;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Research;
 use App\Models\Faculty;
 use App\Models\RequestingForm;
 use App\Models\User;
@@ -222,6 +225,7 @@ class StudentController extends Controller
         $file = new Files;
         $file->file_status = 'Available';
         $file->research_title = $request->research_title;
+        $file->abstract = $request->abstract;
 
         $pdfFile = $request->file('research_file');
         $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
@@ -385,13 +389,19 @@ class StudentController extends Controller
                 $form->initial_simmilarity_percentage = $latestPercentage;
             } 
 
-            $form->adviser_id = $request->adviser_id;
-
-            $adviser_email = DB::table('faculty')
-            ->where('id', $request->adviser_id)
+            $form->technicalAdviser_id = $request->technicalAdviser_id;
+            $technicalAdviserEmail = DB::table('faculty')
+            ->where('id', $request->technicalAdviser_id)
             ->value('email');
 
-            $form->adviser_email = $adviser_email;
+            $form->subjectAdviser_id = $request->subjectAdviser_id;
+            $subjectAdviserEmail = DB::table('faculty')
+            ->where('id', $request->subjectAdviser_id)
+            ->value('email');
+
+            $form->technicalAdviserEmail = $technicalAdviserEmail;
+            $form->subjectAdviserEmail = $subjectAdviserEmail;
+
             $form->research_specialist = 'tba';
             $form->research_staff = 'tba';
             $form->tup_id = $student->tup_id;
@@ -414,12 +424,24 @@ class StudentController extends Controller
             $form->score = 0;
             $form->research_id = $request->research_id;
             $form->user_id = $student->user_id;
-            $form->status = 'Pending';
+            $form->status = 'Pending Technical Adviser Approval';
             $form->save();
 
             $file = Files::find($request->research_id);
-            $file->file_status = 'Pending';
+            $file->file_status = 'Pending Technical Adviser Approval';
             $file->save();
+
+            $technicalAdviser = DB::table('faculty')
+            ->where('id', $request->technicalAdviser_id)
+            ->first();
+
+            $technicalAdviserName = $technicalAdviser->fname .' '. $technicalAdviser->mname .' '. $technicalAdviser->lname;
+
+            $data = [
+                'technicalAdviserName' => $technicalAdviserName,
+            ];
+        
+            Mail::to($technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
 
             return response()->json(["form" => $form, "file" => $file ]);
 
@@ -574,6 +596,43 @@ class StudentController extends Controller
         return response()->json($specificData);
 
     }
+
+    public function titleCheckerPage()
+    {
+        $student = DB::table('students')
+        ->join('users','users.id','students.user_id')
+        ->select('students.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $researchList = Research::all();
+
+        $researchCount = Research::count();
+
+        return View::make('students.titlechecker',compact('student','researchList','researchCount'));
+
+    }
+
+    public function countTitleOccurrences(Request $request)
+    {
+        $student = DB::table('students')
+        ->join('users','users.id','students.user_id')
+        ->select('students.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $title = $request->input('research_title');
+
+        $researchList = DB::table('research_list')  
+        ->select('research_list.*') 
+        ->where('research_title', 'like', "%$title%") 
+        ->get(); 
+
+        $researchCount = Research::where('research_title', 'like', '%' . $title . '%')->count();
+
+        return View::make('students.titlechecker',compact('student','researchList','researchCount'));
+    }
+
 
     //MOBILE START
     public function getProfile($id)

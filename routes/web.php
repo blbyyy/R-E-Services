@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\QrCodeController;
 use App\Models\Department;
 
 /*
@@ -129,6 +130,16 @@ Route::get('/application/status', [
 Route::get('/application/status/{id}', [
   'uses' => 'StudentController@show_application',
         'as' => 'student.get-specific-data'
+]);
+
+Route::get('/student/title-checker', [
+  'uses' => 'StudentController@titleCheckerPage',
+        'as' => 'student.title.checker'
+]);
+
+Route::post('/student/title-checker/search', [
+  'uses' => 'StudentController@countTitleOccurrences',
+        'as' => 'studentTitleCheckerSearch'
 ]);
 //END OF STUDENT POV
 
@@ -356,6 +367,27 @@ Route::get('/faculty/student-applications/{id}', [
     'uses' => 'FacultyController@students_application_specific',
           'as' => 'faculty_student_applications-specific'
   ]);
+
+Route::get('/faculty/student-applications/technicalAdviser/approval/{id}', [
+    'uses' => 'FacultyController@technicalAdviserApproval',
+          'as' => 'technicalAdviserApproval'
+  ]);
+
+Route::post('/faculty/student-applications/technicalAdviser/approval/{id}/sent', [
+    'uses' => 'FacultyController@sendingTechnicalAdviserApproval',
+          'as' => 'technicalAdviserApprovalSent'
+  ]);
+
+Route::get('/faculty/student-applications/subjectAdviser/approval/{id}', [
+    'uses' => 'FacultyController@subjectAdviserApproval',
+          'as' => 'subjectAdviserApproval'
+  ]);
+
+Route::post('/faculty/student-applications/subjectAdviser/approval/{id}/sent', [
+    'uses' => 'FacultyController@sendingSubjectAdviserApproval',
+          'as' => 'subjectAdviserApprovalSent'
+  ]);
+
 
 Route::get('/faculty/citation', [
     'uses' => 'CitationController@facultyCitationCount',
@@ -629,9 +661,10 @@ Route::get('/tryupload', function () {
 
 // Route::post('/upload', 'ResearchController@upload')->name('tryuploads');
 
-
-
-Route::get('/application/status/certification/{id}', 'AdminController@admin_certification')->name('admin-certification');
+Route::get('/application/status/certification/{id}', [
+  'uses' => 'AdminController@admin_certification',
+        'as' => 'admin-certification'
+]);
 
 Route::post('/application/status/certification/{id}/sent', [
     'uses' => 'AdminController@certification',
@@ -711,3 +744,4 @@ Route::post('/certificate/fetch-data', [
             'as' => 'certificateFetchData'
     ]);
 
+Route::get('/qrcode', [QrCodeController::class, 'index']);

@@ -2608,25 +2608,21 @@ $(document).ready(function () {
                     $("#research_title").text(data.research_title);
                     $("#thesis_type").text(data.thesis_type);
                     $("#submission_frequency").text(data.submission_frequency);
-                    $("#adviser_name").text(data.adviser_name);
-                    // $("#adviser_email").text(data.adviser_email);
-
-                    // if (data.research_specialist === null) {
-                    //     $("#research_specialist").text("tba");
-                    // } else {
-                    //     $("#research_specialist").text(data.research_specialist + 'safffa');
-                    // }
-                    // if (data.research_staff === null) {
-                    //     $("#research_staff").text("tba");
-                    // } else {
-                    //     $("#research_staff").text(data.research_staff + 'safffa');
-                    // }
+                    $("#technicalAdviser").text(data.TechnicalAdviserName);
+                    $("#subjectAdviser").text(data.SubjectAdviserName);
+                    $("#technicalAdviserEmail").text(data.technicalAdviserEmail);
+                    $("#subjectAdviserEmail").text(data.subjectAdviserEmail);
                     
                     if (data.status === "Pending") {
                         $("#status").html('<span class="badge border-success border-1 text-success"><h5>Pending</h5></span>');
                     } else if (data.status === "Returned") {
                         $("#status").html('<span class="badge border-warning border-1 text-danger"><h5>Returned</h5></span>');
-                    } else if (data.status === "Passed") {
+                    } else if (data.status === "Pending Technical Adviser Approval") {
+                        $("#status").html('<span class="badge border-warning border-1 text-warning"><h5>Pending Technical Adviser Approval</h5></span>');
+                    } else if (data.status === "Pending Subject Adviser Approval") {
+                        $("#status").html('<span class="badge border-warning border-1 text-warning"><h5>Pending Subject Adviser Approval</h5></span>');
+                    }
+                    else if (data.status === "Passed") {
                         $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
 
                         var pdfLink = $('<a>', {
@@ -2701,6 +2697,134 @@ $(document).ready(function () {
                     }
 
                 }, 
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //faculty/technical adviser approval for certification
+        $(".taApproval").click(function() {
+            var id = $(this).data('id');
+            console.log(id)
+            $.ajax({
+                url: '/faculty/student-applications/technicalAdviser/approval/' + id, 
+                type: 'GET',
+                success: function(data) {
+                    console.log(data.research_id);
+
+                    $('#fileId1').val(data.research_id);
+                    $('#requestId1').val(id);
+
+                    var pdfLink = $('<a>', {
+                        href: "/uploads/pdf/" + encodeURIComponent(data.research_file),
+                        text: "Download File",
+                        target: "_blank"
+                    });
+                    $("#studentApplicationFile1").empty().append(pdfLink);
+                    
+                }, 
+                error: function() {
+                    console.log(error);
+                }
+            });
+        });
+
+        //faculty/technical adviser sending approval for certification
+        $("#technicalAdviserAprrovalBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $("#requestId1").val();
+            let editformData = new FormData($("#technicalAdviserApprovalForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/faculty/student-applications/technicalAdviser/approval/" + id + "/sent",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/faculty/student-applications';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Process Done',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //faculty/subject adviser approval for certification
+        $(".saApproval").click(function() {
+            var id = $(this).data('id');
+            console.log(id)
+            $.ajax({
+                url: '/faculty/student-applications/subjectAdviser/approval/' + id, 
+                type: 'GET',
+                success: function(data) {
+                    console.log(data.research_id);
+
+                    $('#fileId2').val(data.research_id);
+                    $('#requestId2').val(id);
+
+                    var pdfLink = $('<a>', {
+                        href: "/uploads/pdf/" + encodeURIComponent(data.research_file),
+                        text: "Download File",
+                        target: "_blank"
+                    });
+                    $("#studentApplicationFile2").empty().append(pdfLink);
+                    
+                }, 
+                error: function() {
+                    console.log(error);
+                }
+            });
+        });
+
+        //faculty/subject adviser sending approval for certification
+        $("#subjectAdviserAprrovalBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $("#requestId2").val();
+            let editformData = new FormData($("#subjectAdviserApprovalForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/faculty/student-applications/subjectAdviser/approval/" + id + "/sent",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/faculty/student-applications';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Process Done',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
                 error: function (error) {
                     console.log(error);
                 },

@@ -23,6 +23,7 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->increments('id');
             $table->text('research_title');
+            $table->string('abstract');
             $table->string('research_file');
             $table->text('file_status')->nullable();
             $table->integer('user_id')->unsigned()->nullable();
@@ -36,8 +37,12 @@ return new class extends Migration
             $table->string('email_address')->nullable();
             $table->string('thesis_type')->nullable();
             $table->string('advisors_turnitin_precheck')->nullable();
-            $table->integer('adviser_id')->unsigned()->nullable();
-            $table->foreign('adviser_id')->references('id')->on('faculty');
+            $table->integer('technicalAdviser_id')->unsigned()->nullable();
+            $table->foreign('technicalAdviser_id')->references('id')->on('faculty');
+            $table->integer('subjectAdviser_id')->unsigned()->nullable();
+            $table->foreign('subjectAdviser_id')->references('id')->on('faculty');
+            $table->string('technicalAdviserEmail')->nullable();
+            $table->string('subjectAdviserEmail')->nullable();
             $table->string('submission_frequency')->nullable();
             $table->string('research_specialist')->nullable();
             $table->string('tup_id')->nullable();
@@ -56,13 +61,13 @@ return new class extends Migration
             $table->string('researchers_name6')->nullable();
             $table->string('researchers_name7')->nullable();
             $table->string('researchers_name8')->nullable();
-            $table->string('adviser_email')->nullable();
             $table->string('status')->nullable();
             $table->string('initial_simmilarity_percentage')->nullable()->default('0');
             $table->string('simmilarity_percentage_results')->nullable()->default('0');
             $table->string('agreement')->nullable();
             $table->string('score')->nullable()->default('0');
             $table->string('research_staff')->nullable();
+            $table->string('remarks')->nullable();
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('research_id')->unsigned()->nullable();

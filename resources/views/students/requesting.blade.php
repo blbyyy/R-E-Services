@@ -76,6 +76,42 @@
                 </div>
             </div>
           </div>
+        @elseif($files->file_status == 'Pending Technical Adviser Approval')
+          <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{$files->research_title}}</h5>
+                    <div class="icon">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </div>
+
+                    <center>
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="This file is waiting for approval of technical adviser.">
+                          Apply 
+                        </button>
+                    </center>
+
+                </div>
+            </div>
+          </div>
+        @elseif($files->file_status == 'Pending Subject Adviser Approval')
+          <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{$files->research_title}}</h5>
+                    <div class="icon">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </div>
+
+                    <center>
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="This file is waiting for approval of subject adviser.">
+                          Apply 
+                        </button>
+                    </center>
+
+                </div>
+            </div>
+          </div>
         @else
           <div class="col-md-4">
             <div class="card">
@@ -153,15 +189,26 @@
               </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-6">
               <div class="form-floating">
-                <select name="adviser_id" class="form-select" id="adviser_id" aria-label="State">
-                  <option value="">Select Adviser.....</option>
+                <select name="technicalAdviser_id" class="form-select" id="technicalAdviser_id" aria-label="State">
+                  <option value="">Select.....</option>
                   @foreach($advisers as $adviser)
                     <option value="{{$adviser->id}}">{{$adviser->lname}}, {{$adviser->fname}} {{$adviser->mname}} ({{$adviser->department_name}})</option>
                   @endforeach
                 </select>
-                <label for="adviser_id">Adviser Name</label>
+                <label for="technicalAdviser_id">Technical Adviser</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select name="subjectAdviser_id" class="form-select" id="subjectAdviser_id" aria-label="State">
+                  <option value="">Select.....</option>
+                  @foreach($advisers as $adviser)
+                    <option value="{{$adviser->id}}">{{$adviser->lname}}, {{$adviser->fname}} {{$adviser->mname}} ({{$adviser->department_name}})</option>
+                  @endforeach
+                </select>
+                <label for="subjectAdviser_id">Subject Adviser</label>
               </div>
             </div>
 
@@ -218,9 +265,9 @@
               <input type="hidden" class="form-control" id="reApplyResearchId" name="reApplyResearchId">
 
               <div class="col-12">
-                  <label for="research_file" class="form-label">Enter the revised research file in this field:</label>
+                  <label for="research_file" class="form-label">Enter the revised application file in this field:</label>
                   <input type="file" class="form-control" id="research_file" name="research_file">
-                  <span style="font-size: small">(Note: The uploaded PDF file should not exceed 10mb in size.)</span>
+                  <span style="font-size: small">(Note: Make sure the uploaded applicatin file is under the pdf format and should not exceed 10mb in size.)</span>
               </div>
     
             <div class="col-" style="padding-top: 20px">

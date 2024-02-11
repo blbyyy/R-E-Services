@@ -18,33 +18,37 @@
 </style>
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>My Files</h1>
+        <h1>My Applications</h1>
     </div>
     <div class="row g-4">
         <div class="col-12">
-            <button type="button" class="btn btn-dark" onclick="toggleFileUploadForm()"><i class="bi bi-folder-plus"></i> Upload File</button>
+            <button type="button" class="btn btn-dark" onclick="toggleFileUploadForm()"><i class="bi bi-folder-plus"></i> Upload Application</button>
         </div>
         
         <div id="fileUploadForm" class="col-md-12" style="display: none;">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Upload a file</h5>
+                    <h5 class="card-title">Upload a Application</h5>
         
                     <form class="row g-3" method="POST" action="{{ route('student_upload_file') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="col-12">
-                            <label for="research_title" class="form-label">Research Title</label>
+                            <label for="research_title" class="form-label">Application Title</label>
                             <input type="text" class="form-control" id="research_title" name="research_title">
                         </div>
                         <div class="col-12">
-                            <label for="research_file" class="form-label">Research File</label>
+                            <label for="abstract" class="form-label">Application Abstract</label>
+                            <textarea name="abstract" class="form-control" id="abstract" style="height: 300px;"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="research_file" class="form-label">Application File</label>
                             <input type="file" class="form-control" id="research_file" name="research_file">
                             <span style="font-size: small">(Note: The uploaded PDF file should not exceed 10mb in size.)</span>
                         </div>
         
                         <div class="col-12" style="padding-top: 20px">
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-outline-dark">Upload file</button>
+                                <button type="submit" class="btn btn-outline-dark">Upload</button>
                                 <button type="reset" class="btn btn-outline-dark ms-2" onclick="toggleFileUploadForm()">Close</button>
                             </div>
                         </div>

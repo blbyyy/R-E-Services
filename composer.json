@@ -20,6 +20,7 @@
         "laravelcollective/html": "^6.4",
         "masbug/flysystem-google-drive-ext": "^2.2",
         "realrashid/sweet-alert": "^7.1",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
@@ -64,6 +65,7 @@
         }
     },
     "config": {
+        "platform-check": false,
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,

@@ -11,7 +11,7 @@
     <meta content="{{ csrf_token() }}" name="csrf-token" >
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" />
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Favicons -->
     <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
@@ -51,6 +51,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ url('/homepage')}}" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/img/TUP.png')}}" alt="">
         <img src="{{ asset('assets/img/RED.png')}}" alt="">
         <span class="d-none d-lg-block">  R&E-Services</span>
       </a> 
@@ -286,9 +287,15 @@
         </a>
       </li>   
       <li class="nav-item">
+        <a class="nav-link " href="{{url('/student/title-checker')}}">
+          <i class="bi bi-check-circle"></i>
+          <span>Title Checker</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link " href="{{url('/student/myfiles')}}">
           <i class="bi bi-folder"></i>
-          <span>My Files</span>
+          <span>My Applications</span>
         </a>
       </li>
       <li class="nav-item">

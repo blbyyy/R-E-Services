@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SubjectAdviserApproval;
+use App\Mail\TechnicalAdviserApprovalSuccess;
+use App\Mail\TechnicalAdviserApprovalReject;
+use App\Mail\SubjectAdviserApprovalSuccess;
+use App\Mail\SubjectAdviserApprovalReject;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
@@ -548,28 +554,236 @@ class FacultyController extends Controller
             ->join('students', 'users.id', 'students.user_id')
             ->join('files', 'files.id', 'requestingform.research_id')
             ->select('requestingform.*','files.id as file_id','files.research_title')
-            ->where('requestingform.adviser_id', $faculty_id)
+            ->where(function($query) use ($faculty_id) {
+                $query->where('requestingform.technicalAdviser_id', $faculty_id)
+                      ->where('requestingform.status', 'Pending Technical Adviser Approval');
+            })
+            ->orWhere(function($query) use ($faculty_id) {
+                $query->where('requestingform.subjectAdviser_id', $faculty_id)
+                      ->where('requestingform.status', 'Pending Subject Adviser Approval');
+            })
             ->get();
-
-        // dd($application);
+        
 
         return View::make('faculty.student_application',compact('application','faculty'));
     }
 
     public function students_application_specific($id)
     {
+        // $application = DB::table('requestingform')
+        // ->join('faculty', 'faculty.id', '=', 'requestingform.technicalAdviser_id')
+        // ->join('files', 'files.id', '=', 'requestingform.research_id')
+        // ->where('requestingform.id', $id)
+        // ->select(
+        //     'requestingform.*',
+        //     'files.id as files_id', 'files.research_file',
+        //     'faculty.id as faculty_id',
+        //     DB::raw("CONCAT(faculty.fname, ' ', faculty.lname, ' ', faculty.mname) as TechnicalAdviserName"),
+        //     DB::raw("CONCAT(faculty.fname, ' ', faculty.lname, ' ', faculty.mname) as SubjectAdviserName")
+        // )
+        // ->first();
         $application = DB::table('requestingform')
-        ->join('faculty', 'faculty.id', '=', 'requestingform.adviser_id')
-        ->join('files', 'files.id', '=', 'requestingform.research_id')
-        ->where('requestingform.id', $id)
-        ->select(
-            'requestingform.*',
-            'files.id as files_id', 'files.research_file',
-            'faculty.id as faculty_id',
-            DB::raw("CONCAT(faculty.fname, ' ', faculty.lname, ' ', faculty.mname) as adviser_name")
-        )
-        ->first();
+            ->join('faculty as technical_adviser', 'technical_adviser.id', '=', 'requestingform.technicalAdviser_id')
+            ->join('faculty as subject_adviser', 'subject_adviser.id', '=', 'requestingform.subjectAdviser_id')
+            ->join('files', 'files.id', '=', 'requestingform.research_id')
+            ->where('requestingform.id', $id)
+            ->select(
+                'requestingform.*',
+                'files.id as files_id',
+                'files.research_file',
+                'technical_adviser.id as technical_adviser_id',
+                'subject_adviser.id as subject_adviser_id',
+                DB::raw("CONCAT(technical_adviser.fname, ' ', technical_adviser.lname, ' ', technical_adviser.mname) as TechnicalAdviserName"),
+                DB::raw("CONCAT(subject_adviser.fname, ' ', subject_adviser.lname, ' ', subject_adviser.mname) as SubjectAdviserName")
+            )
+            ->first();
     
         return response()->json($application);
+    }
+
+    public function technicalAdviserApproval($id)
+    {
+        $specificData = DB::table('requestingform')
+        ->join('files', 'files.id', 'requestingform.research_id')
+        ->join('users', 'users.id', 'requestingform.user_id')
+        ->select('requestingform.*', 'files.*')
+        ->where('requestingform.id', $id)
+        ->first();
+
+        return response()->json($specificData);
+
+    }
+
+    public function sendingTechnicalAdviserApproval(Request $request, $id)
+    {
+        if ($request->technicalAdviserRemarks === null) {
+                
+                $form = RequestingForm::find($id);
+                $form->status = $request->technicalAdviserStatus;
+                $form->save();
+
+                $file = Files::find($request->fileId1);
+                $file->file_status = $request->technicalAdviserStatus;
+                $file->save();
+
+                $subjectAdviser = DB::table('requestingform')
+                ->where('id', $id)
+                ->first();
+
+                $research = DB::table('files')
+                ->where('id', $subjectAdviser->research_id)
+                ->first();
+
+                $subjectAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
+                ->where('id', $subjectAdviser->subjectAdviser_id)
+                ->value('subjectAdviserName');
+
+                $technicalAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
+                ->where('id', $subjectAdviser->technicalAdviser_id)
+                ->value('technicalAdviserName');
+
+                $data = [
+                    'subjectAdviserName' => $subjectAdviserName,
+                ];
+                Mail::to($subjectAdviser->subjectAdviserEmail)->send(new SubjectAdviserApproval($data));
+
+                $success = [
+                    'requestorName' => $subjectAdviser->requestor_name,
+                    'researchTitle' => $research->research_title,
+                    'technicalAdviserName' => $technicalAdviserName
+                ];
+                Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalSuccess($success));
+
+            return response()->json($form);
+
+        } else {
+
+                $form = RequestingForm::find($id);
+                $form->status = $request->technicalAdviserStatus;
+                $form->remarks = $request->technicalAdviserRemarks;
+                $form->save();
+
+                $file = Files::find($request->fileId1);
+                $file->file_status = $request->technicalAdviserStatus;
+                $file->save();
+
+                $subjectAdviser = DB::table('requestingform')
+                ->where('id', $id)
+                ->first();
+
+                $technicalAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
+                ->where('id', $subjectAdviser->technicalAdviser_id)
+                ->value('technicalAdviserName');
+
+                $research = DB::table('files')
+                ->where('id', $subjectAdviser->research_id)
+                ->first();
+
+                $reject = [
+                    'requestorName' => $subjectAdviser->requestor_name,
+                    'researchTitle' => $research->research_title,
+                    'remarks' => $request->technicalAdviserRemarks,
+                    'technicalAdviserName' => $technicalAdviserName
+                ];
+                Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalReject($reject));
+
+            return response()->json($form);
+            
+        }
+
+           
+
+            
+    }
+
+    public function subjectAdviserApproval($id)
+    {
+        $specificData = DB::table('requestingform')
+        ->join('files', 'files.id', 'requestingform.research_id')
+        ->join('users', 'users.id', 'requestingform.user_id')
+        ->select('requestingform.*', 'files.*')
+        ->where('requestingform.id', $id)
+        ->first();
+
+        return response()->json($specificData);
+
+    }
+
+    public function sendingSubjectAdviserApproval(Request $request, $id)
+    {
+        if ($request->subjectAdviserRemarks === null) {
+                
+                $form = RequestingForm::find($id);
+                $form->status = $request->subjectAdviserStatus;
+                $form->save();
+
+                $file = Files::find($request->fileId2);
+                $file->file_status = $request->subjectAdviserStatus;
+                $file->save();
+
+                $subjectAdviser = DB::table('requestingform')
+                ->where('id', $id)
+                ->first();
+
+                $research = DB::table('files')
+                ->where('id', $subjectAdviser->research_id)
+                ->first();
+
+                $subjectAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
+                ->where('id', $subjectAdviser->subjectAdviser_id)
+                ->value('subjectAdviserName');
+
+                $success = [
+                    'requestorName' => $subjectAdviser->requestor_name,
+                    'researchTitle' => $research->research_title,
+                    'subjectAdviserName' => $subjectAdviserName
+                ];
+                Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalSuccess($success));             
+
+            return response()->json($form);
+
+        } else {
+
+                $form = RequestingForm::find($id);
+                $form->status = $request->technicalAdviserStatus;
+                $form->remarks = $request->technicalAdviserRemarks;
+                $form->save();
+
+                $file = Files::find($request->fileId1);
+                $file->file_status = $request->technicalAdviserStatus;
+                $file->save();
+
+                $subjectAdviser = DB::table('requestingform')
+                ->where('id', $id)
+                ->first();
+
+                $technicalAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
+                ->where('id', $subjectAdviser->technicalAdviser_id)
+                ->value('technicalAdviserName');
+
+                $research = DB::table('files')
+                ->where('id', $subjectAdviser->research_id)
+                ->first();
+
+                $reject = [
+                    'requestorName' => $subjectAdviser->requestor_name,
+                    'researchTitle' => $research->research_title,
+                    'remarks' => $request->technicalAdviserRemarks,
+                    'technicalAdviserName' => $technicalAdviserName
+                ];
+                Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalReject($reject));
+
+            return response()->json($form);
+            
+        }
+
+           
+
+            
     }
 }
