@@ -495,13 +495,12 @@ class StudentController extends Controller
             $form->simmilarity_percentage_results = 0;
             $form->advisors_turnitin_precheck = 'Yes';
             $form->initial_simmilarity_percentage = $latestPercentage;
-            $form->adviser_id = $latestApplication->adviser_id;
 
-            $adviser_email = DB::table('faculty')
-            ->where('id', $latestApplication->adviser_id)
-            ->value('email');
+            $form->technicalAdviser_id = $latestApplication->technicalAdviser_id;
+            $form->subjectAdviser_id = $latestApplication->subjectAdviser_id;
 
-            $form->adviser_email = $adviser_email;
+            $form->technicalAdviserEmail = $latestApplication->technicalAdviserEmail;
+            $form->subjectAdviserEmail = $latestApplication->subjectAdviserEmail;
             
             $form->research_specialist = 'tba';
             $form->tup_id = $latestApplication->tup_id;
@@ -525,12 +524,12 @@ class StudentController extends Controller
             $form->research_staff = 'tba';
             $form->research_id = $latestApplication->research_id;
             $form->user_id = $latestApplication->user_id;
-            $form->status = 'Pending';
+            $form->status = 'Pending Technical Adviser Approval';
             $form->save();
 
             if ($submission === 'First Submission') {
                 $file = Files::find($request->reApplyResearchId);
-                $file->file_status = 'Pending';
+                $file->file_status = 'Pending Technical Adviser Approval';
                 $file->save();
             } else {
                 $request->validate([
@@ -538,7 +537,7 @@ class StudentController extends Controller
                 ]);
                 
                 $file = Files::find($request->reApplyResearchId);
-                $file->file_status = 'Pending';
+                $file->file_status = 'Pending Technical Adviser Approval';
 
                 $pdfFile = $request->file('research_file');
                 $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
@@ -548,6 +547,18 @@ class StudentController extends Controller
 
                 $file->save();
             } 
+
+            $technicalAdviser = DB::table('faculty')
+            ->where('id', $latestApplication->technicalAdviser_id)
+            ->first();
+
+            $technicalAdviserName = $technicalAdviser->fname .' '. $technicalAdviser->mname .' '. $technicalAdviser->lname;
+
+            $data = [
+                'technicalAdviserName' => $technicalAdviserName,
+            ];
+        
+            Mail::to($latestApplication->technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
 
             return response()->json(["form" => $form, "file" => $file ]);
 

@@ -112,6 +112,42 @@
                 </div>
             </div>
           </div>
+        @elseif($files->file_status == 'Rejected By Technical Adviser')
+          <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{$files->research_title}}</h5>
+                    <div class="icon">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </div>
+
+                    <center>
+                      <button type="button" class="btn btn-outline-dark reApplyGetId" data-bs-toggle="modal" data-bs-target="#StudentReApplyCertification" data-id="{{$files->id}}">
+                          Re-Apply
+                      </button> 
+                    </center>
+
+                </div>
+            </div>
+          </div>
+        @elseif($files->file_status == 'Rejected By Subject Adviser')
+          <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{$files->research_title}}</h5>
+                    <div class="icon">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </div>
+
+                    <center>
+                      <button type="button" class="btn btn-outline-dark reApplyGetId" data-bs-toggle="modal" data-bs-target="#StudentReApplyCertification" data-id="{{$files->id}}">
+                          Re-Apply
+                      </button> 
+                    </center>
+
+                </div>
+            </div>
+          </div>
         @else
           <div class="col-md-4">
             <div class="card">

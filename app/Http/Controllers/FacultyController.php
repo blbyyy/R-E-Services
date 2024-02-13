@@ -749,22 +749,22 @@ class FacultyController extends Controller
         } else {
 
                 $form = RequestingForm::find($id);
-                $form->status = $request->technicalAdviserStatus;
-                $form->remarks = $request->technicalAdviserRemarks;
+                $form->status = $request->subjectAdviserStatus;
+                $form->remarks = $request->subjectAdviserRemarks;
                 $form->save();
 
-                $file = Files::find($request->fileId1);
-                $file->file_status = $request->technicalAdviserStatus;
+                $file = Files::find($request->fileId2);
+                $file->file_status = $request->subjectAdviserRemarks;
                 $file->save();
 
                 $subjectAdviser = DB::table('requestingform')
                 ->where('id', $id)
                 ->first();
 
-                $technicalAdviserName = DB::table('faculty')
-                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
-                ->where('id', $subjectAdviser->technicalAdviser_id)
-                ->value('technicalAdviserName');
+                $subjectAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
+                ->where('id', $subjectAdviser->subjectAdviser_id)
+                ->value('subjectAdviserName');
 
                 $research = DB::table('files')
                 ->where('id', $subjectAdviser->research_id)
@@ -773,17 +773,14 @@ class FacultyController extends Controller
                 $reject = [
                     'requestorName' => $subjectAdviser->requestor_name,
                     'researchTitle' => $research->research_title,
-                    'remarks' => $request->technicalAdviserRemarks,
-                    'technicalAdviserName' => $technicalAdviserName
+                    'remarks' => $request->subjectAdviserRemarks,
+                    'subjectAdviserName' => $subjectAdviserName
                 ];
-                Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalReject($reject));
+                Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalReject($reject));
 
             return response()->json($form);
             
         }
-
-           
-
-            
+                   
     }
 }
