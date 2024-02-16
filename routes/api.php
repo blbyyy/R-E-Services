@@ -113,6 +113,7 @@ Route::post('/add/{id}/comment', [
 Route::get('/staffprofile/{id}', 'App\Http\Controllers\StaffController@getProfile');
 
 Route::get('/profile/{id}', 'App\Http\Controllers\StudentController@getProfile');
+Route::post('/mobilechangeavatar', 'App\Http\Controllers\StudentController@mobilechangeavatar');
 Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload_file');
 Route::get('/myfiles/{id}', 'App\Http\Controllers\StudentController@mobilemyfiles')->name('mobilemyfiles');
 Route::delete('/delete_file/{file}', 'StudentController@deleteFile');
