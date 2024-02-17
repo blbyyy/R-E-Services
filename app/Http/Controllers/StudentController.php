@@ -21,6 +21,9 @@ use DB;
 use File;
 use Auth;
 
+//MOBILE
+use Illuminate\Support\Facades\Log;
+
 class StudentController extends Controller
 {
     public function register(Request $request)
@@ -664,6 +667,58 @@ class StudentController extends Controller
                 ->first();   
 
         return response()->json($student);
+    }
+
+    public function mobilechangeavatar(Request $request)
+    {
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
+
+        // Retrieve the authenticated user's ID
+        $user_id = Auth::id();
+
+        // Find the associated student record
+        $student = Student::where('user_id', $user_id)->first();
+
+        // Check if the student record exists
+        if (!$student) {
+            return response()->json(['error' => 'Student not found'], 404);
+        }
+
+        // Check if the request contains the 'avatar' file
+        if (!$request->hasFile('avatar')) {
+            return response()->json(['error' => 'Avatar file not provided'], 400);
+        }
+
+        // Get the 'avatar' file from the request
+        $avatarFile = $request->file('avatar');
+
+        // Generate a unique filename for the avatar
+        $avatarFilename = 'images/' . time() . '-' . $avatarFile->getClientOriginalName();
+
+        try {
+            // Store the avatar file
+            Storage::put('public/' . $avatarFilename, file_get_contents($avatarFile));
+
+            // Update the student's avatar
+            $student->avatar = $avatarFilename;
+            $student->save();
+
+            // Construct response data
+            $data = [
+                'status' => 'success',
+                'message' => 'Avatar changed successfully',
+                'avatar_url' => asset('storage/' . $avatarFilename),
+            ];
+
+            // Return the response
+            return response()->json($data);
+        } catch (\Exception $e) {
+            // Return error response if an exception occurs
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function mobileupload_file(Request $request)
