@@ -11,6 +11,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Staff;
@@ -20,6 +21,7 @@ use App\Models\Certificate;
 use App\Models\Announcement;
 use App\Models\RequestingForm;
 use App\Models\Files;
+use App\Models\Research;
 use App\Http\Redirect;
 use View;
 use DB;
@@ -28,6 +30,7 @@ use Auth;
 
 class AdminController extends Controller
 {
+
     public function dashboard()
     {
         $usersCount = DB::table('users')->count();
@@ -373,6 +376,148 @@ class AdminController extends Controller
         }
 
         return redirect()->to('/announcements');
+    }
+
+    public function userlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $users = User::orderBy('id')->with(['student', 'faculty', 'staff'])->get();
+
+        return View::make('admin.userslist',compact('users','admin'));
+    }
+
+    public function selectedSpecificRole(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->userRole === 'Student') {
+            $users = DB::table('users')
+            ->join('students', 'users.id', '=', 'students.user_id')
+            ->select('users.*','students.*')
+            ->where('users.role', 'Student')
+            ->get();
+        } elseif ($request->userRole === 'Faculty') {
+            $users = DB::table('users')
+            ->join('faculty', 'users.id', '=', 'faculty.user_id')
+            ->select('users.*','faculty.*')
+            ->where('users.role', 'Faculty')
+            ->get();
+        } elseif ($request->userRole === 'Staff') {
+            $users = DB::table('users')
+            ->join('staff', 'users.id', '=', 'staff.user_id')
+            ->select('users.*','staff.*')
+            ->where('users.role', 'Staff')
+            ->get();
+        } elseif ($request->userRole === 'All') {
+            $users = User::orderBy('id')->with(['student', 'faculty', 'staff'])->get();
+        }
+
+        return View::make('admin.userslist',compact('users','admin'));
+    }
+
+    public function applicationlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $applications = DB::table('requestingform')
+        ->join('files','files.id','requestingform.research_id')
+        ->select('files.*','requestingform.*')
+        ->get();
+
+        return View::make('admin.applicationlist',compact('applications','admin'));
+    }
+
+    public function selectedSpecificStatus(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->applicationStatus === 'Pending') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Pending')
+            ->get();
+        } elseif ($request->applicationStatus === 'Passed') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Passed')
+            ->get();
+        } elseif ($request->applicationStatus === 'Returned') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Returned')
+            ->get();
+        } elseif ($request->applicationStatus === 'All') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->get();
+        }
+
+        return View::make('admin.applicationlist',compact('applications','admin'));
+    }
+
+    public function researchlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $researches = Research::orderBy('id')->get();
+
+        return View::make('admin.researchlist',compact('researches','admin'));
+    }
+
+    public function selectedSpecificDepartment(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->researchDepartment === 'EAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'EAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'MAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'MAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'CAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'CAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'BASD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'BASD')
+            ->get();
+        } elseif ($request->researchDepartment === 'All') {
+            $researches = Research::orderBy('id')->get();
+        }
+
+        return View::make('admin.researchlist',compact('researches','admin'));
     }
 
     public function studentlist()
@@ -838,6 +983,8 @@ class AdminController extends Controller
             return View::make('certificate.tracking',compact('admin','certificates'));
 
     }
+
+    
 
     //MOBILE START
     public function dashboardmobile(Request $request)

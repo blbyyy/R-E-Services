@@ -1239,6 +1239,8 @@ $(document).ready(function () {
                 },
             });
         });
+
+
     //END OF ADMIN POV
 
     //START OF STUDENT POV
@@ -1609,6 +1611,26 @@ $(document).ready(function () {
                     } else {
                         $("#r8").hide();
                     }
+                }, 
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //student view research details
+        $("#researchInfo").click(function() {
+            var id = $(this).data('id');
+            console.log(id)
+            $.ajax({
+                url: '/student/title-checker/search/show/' + id, 
+                type: 'GET',
+                success: function(data) {
+                    console.log(data);
+
+                    $("#researchTitle").text(data.research_title);
+                    $("#researchAbstract").text(data.abstract);
+
                 }, 
                 error: function (error) {
                     console.log(error);

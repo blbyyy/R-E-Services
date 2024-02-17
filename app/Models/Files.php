@@ -19,4 +19,5 @@ class Files extends Model
         "research_file",
         "user_id",
     ];
+
 }
