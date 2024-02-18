@@ -214,9 +214,14 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Shortened Applications by Thesis Type</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Thesis Type Applications</h5>
+                            <a href="{{url('/thesisTypeCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
-                        <!-- Pie Chart -->
                         <canvas id="thesisTypeChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
@@ -242,7 +247,6 @@
                                 });
                             });
                         </script>
-                        <!-- End Pie Chart -->
 
                     </div>
                 </div>
@@ -251,7 +255,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Shortened Applications by Course</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Course Application Counts</h5>
+                            <a href="{{url('/courseCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
                         <!-- Doughnut Chart -->
                         <canvas id="applicationCourseChart" style="max-height: 400px;"></canvas>
@@ -288,7 +298,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Department-Based Research Count Report</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Department Research Counts</h5>
+                            <a href="{{url('/researchesDepartmentCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
                         <!-- Bar Chart -->
                         <canvas id="researchDepartmentChart" style="max-height: 400px;"></canvas>
@@ -345,7 +361,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Course-Based Research Count Report</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Course Research Counts</h5>
+                            <a href="{{url('/researchesCourseCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
                         <!-- Line Chart -->
                         <canvas id="lineChart" style="max-height: 400px;"></canvas>

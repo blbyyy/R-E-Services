@@ -791,4 +791,22 @@ Route::get('/applicationsCountTable', [
         'as' => 'applicationsCountTable.pdf'
 ]);
 
+Route::get('/thesisTypeCountTable', [
+  'uses' => 'PdfController@thesisTypeCountTable',
+        'as' => 'thesisTypeCountTable.pdf'
+]);
 
+Route::get('/courseCountTable', [
+  'uses' => 'PdfController@courseCountTable',
+        'as' => 'courseCountTable.pdf'
+]);
+
+Route::get('/researchesDepartmentCountTable', [
+  'uses' => 'PdfController@departmentCountTable',
+        'as' => 'departmentCountTable.pdf'
+]);
+
+Route::get('/researchesCourseCountTable', [
+  'uses' => 'PdfController@researchesCourseCountTable',
+        'as' => 'researchesCourseCountTable.pdf'
+]);
