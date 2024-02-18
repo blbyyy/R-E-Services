@@ -141,6 +141,11 @@ Route::post('/student/title-checker/search', [
   'uses' => 'StudentController@countTitleOccurrences',
         'as' => 'studentTitleCheckerSearch'
 ]);
+
+Route::get('/student/title-checker/search/show/{id}', [
+  'uses' => 'StudentController@showResearchInfo',
+        'as' => 'student.title.checker.show'
+]);
 //END OF STUDENT POV
 
 //START STAFF POV
@@ -745,3 +750,63 @@ Route::post('/certificate/fetch-data', [
     ]);
 
 Route::get('/qrcode', [QrCodeController::class, 'index']);
+
+Route::get('/admin/userlist', [
+  'uses' => 'AdminController@userlist',
+        'as' => 'admin.userlist'
+]);
+
+Route::post('/admin/userlist/specific-role', [
+  'uses' => 'AdminController@selectedSpecificRole',
+        'as' => 'admin.userlist.specific-role'
+]);
+
+Route::get('/admin/applicationlist', [
+  'uses' => 'AdminController@applicationlist',
+        'as' => 'admin.applicationlist'
+]);
+
+Route::post('/admin/applicationlist/specific-status', [
+  'uses' => 'AdminController@selectedSpecificStatus',
+        'as' => 'admin.applicationlist.specific-status'
+]);
+
+Route::get('/admin/researchlist', [
+  'uses' => 'AdminController@researchlist',
+        'as' => 'admin.researchlist'
+]);
+
+Route::post('/admin/researchlist/specific-department', [
+  'uses' => 'AdminController@selectedSpecificDepartment',
+        'as' => 'admin.researchlist.specific-department'
+]);
+
+Route::get('/userCountTable', [
+  'uses' => 'PdfController@userCountTable',
+        'as' => 'userCountTable.pdf'
+]);
+
+Route::get('/applicationsCountTable', [
+  'uses' => 'PdfController@applicationsCountTable',
+        'as' => 'applicationsCountTable.pdf'
+]);
+
+Route::get('/thesisTypeCountTable', [
+  'uses' => 'PdfController@thesisTypeCountTable',
+        'as' => 'thesisTypeCountTable.pdf'
+]);
+
+Route::get('/courseCountTable', [
+  'uses' => 'PdfController@courseCountTable',
+        'as' => 'courseCountTable.pdf'
+]);
+
+Route::get('/researchesDepartmentCountTable', [
+  'uses' => 'PdfController@departmentCountTable',
+        'as' => 'departmentCountTable.pdf'
+]);
+
+Route::get('/researchesCourseCountTable', [
+  'uses' => 'PdfController@researchesCourseCountTable',
+        'as' => 'researchesCourseCountTable.pdf'
+]);

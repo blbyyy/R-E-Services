@@ -211,8 +211,8 @@ class StudentController extends Controller
 
         $myfiles = DB::table('files')
         ->join('users', 'users.id', '=', 'files.user_id')
-        ->join('students', 'students.user_id', '=', 'users.id') // Join with the students table
-        ->select('files.*') // Select columns from requestingform, users, and students
+        ->join('students', 'students.user_id', '=', 'users.id') 
+        ->select('files.*') 
         ->where('files.user_id', Auth::id())
         ->get();
 
@@ -645,6 +645,15 @@ class StudentController extends Controller
         $researchCount = Research::where('research_title', 'like', '%' . $title . '%')->count();
 
         return View::make('students.titlechecker',compact('student','researchList','researchCount'));
+    }
+
+    public function showResearchInfo($id)
+    {
+        $research = DB::table('research_list')
+        ->where('id', $id)
+        ->first();
+
+        return response()->json($research);
     }
 
 

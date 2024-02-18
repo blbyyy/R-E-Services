@@ -1,4 +1,10 @@
 @extends('layouts.navigation')
+<style>
+    #printData {
+        color: maroon;
+    }
+</style>
+
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Dashboard</h1>
@@ -22,18 +28,19 @@
                             <li><a class="dropdown-item filter-option" data-filter="faculty">Faculty Member</a></li>
                         </ul>
                     </div>
-            
-                    <div id="users-table" class="card-body">
-                      <h5 class="card-title">Users <span id="filterText">| All</span></h5>
-                        <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-people"></i>
-                            </div>
-                            <div class="ps-3">
-                                <h6 id="userCount">{{$usersCount}}</h6>
+                    <a href="{{url('admin/userlist')}}">
+                        <div id="users-table" class="card-body">
+                        <h5 class="card-title">Users <span id="filterText">| All</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-people"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6 id="userCount">{{$usersCount}}</h6>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -52,17 +59,19 @@
                       </ul>
                   </div>
           
+                <a href="{{url('/admin/applicationlist')}}">
                   <div id="application-table" class="card-body">
                     <h5 class="card-title">Applications <span id="filterTexts">| All</span></h5>
                       <div class="d-flex align-items-center">
                           <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-file-earmark-pdf"></i>
+                                <i class="bi bi-file-earmark-pdf"></i>
                           </div>
                           <div class="ps-3">
                               <h6 id="applicationCount">{{$applicationCount}}</h6>
                           </div>
                       </div>
                   </div>
+                </a>
               </div>
             </div>
 
@@ -81,26 +90,32 @@
                             <li><a class="dropdown-item filter-optionss" data-filter="basd">BASD</a></li>
                         </ul>
                     </div>
-            
-                    <div id="departments-table" class="card-body">
-                      <h5 class="card-title">Researchs <span id="filterTextss">| All</span></h5>
-                        <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </div>
-                            <div class="ps-3">
-                                <h6 id="researchCount">{{$researchCount}}</h6>
+                    <a href="{{url('/admin/researchlist')}}">
+                        <div id="departments-table" class="card-body">
+                        <h5 class="card-title">Researchs <span id="filterTextss">| All</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6 id="researchCount">{{$researchCount}}</h6>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Users</h5>
-        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Users</h5>
+                            <a href="{{url('/userCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div> 
                         <canvas id="rolesChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
@@ -131,7 +146,6 @@
                                 });
                             });
                         </script>
-            
                     </div>
                 </div>
             </div>
@@ -139,7 +153,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Applications</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Applications</h5>
+                            <a href="{{url('/applicationsCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
                         <!-- Bar Chart -->
                         <canvas id="applicationsChart" style="max-height: 400px;"></canvas>
@@ -194,9 +214,14 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Shortened Applications by Thesis Type</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Thesis Type Applications</h5>
+                            <a href="{{url('/thesisTypeCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
-                        <!-- Pie Chart -->
                         <canvas id="thesisTypeChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
@@ -222,7 +247,6 @@
                                 });
                             });
                         </script>
-                        <!-- End Pie Chart -->
 
                     </div>
                 </div>
@@ -231,7 +255,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Shortened Applications by Course</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Course Application Counts</h5>
+                            <a href="{{url('/courseCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
                         <!-- Doughnut Chart -->
                         <canvas id="applicationCourseChart" style="max-height: 400px;"></canvas>
@@ -268,7 +298,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Department-Based Research Count Report</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Department Research Counts</h5>
+                            <a href="{{url('/researchesDepartmentCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
                         <!-- Bar Chart -->
                         <canvas id="researchDepartmentChart" style="max-height: 400px;"></canvas>
@@ -325,7 +361,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Course-Based Research Count Report</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Course Research Counts</h5>
+                            <a href="{{url('/researchesCourseCountTable')}}" class="btn-sm" id="printData">
+                                Print Table
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                        </div>
 
                         <!-- Line Chart -->
                         <canvas id="lineChart" style="max-height: 400px;"></canvas>
