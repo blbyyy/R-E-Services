@@ -85,6 +85,11 @@ Route::delete('/staff/citation/{id}/deleted', [
           'as' => 'staffDeleteCitation'
   ]);
 
+Route::delete('/admin/userlist/{id}/deleted', [
+    'uses' => 'AdminController@deleteUserInfo',
+          'as' => 'admin.deleteUserInfo'
+  ]);
+
 //MOBILE START
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
 Route::get('/dashboardmobile', 'App\Http\Controllers\AdminController@dashboardmobile');

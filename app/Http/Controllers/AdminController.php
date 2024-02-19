@@ -378,52 +378,6 @@ class AdminController extends Controller
         return redirect()->to('/announcements');
     }
 
-    public function userlist()
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        $users = User::orderBy('id')->with(['student', 'faculty', 'staff'])->get();
-
-        return View::make('admin.userslist',compact('users','admin'));
-    }
-
-    public function selectedSpecificRole(Request $request)
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        if ($request->userRole === 'Student') {
-            $users = DB::table('users')
-            ->join('students', 'users.id', '=', 'students.user_id')
-            ->select('users.*','students.*')
-            ->where('users.role', 'Student')
-            ->get();
-        } elseif ($request->userRole === 'Faculty') {
-            $users = DB::table('users')
-            ->join('faculty', 'users.id', '=', 'faculty.user_id')
-            ->select('users.*','faculty.*')
-            ->where('users.role', 'Faculty')
-            ->get();
-        } elseif ($request->userRole === 'Staff') {
-            $users = DB::table('users')
-            ->join('staff', 'users.id', '=', 'staff.user_id')
-            ->select('users.*','staff.*')
-            ->where('users.role', 'Staff')
-            ->get();
-        } elseif ($request->userRole === 'All') {
-            $users = User::orderBy('id')->with(['student', 'faculty', 'staff'])->get();
-        }
-
-        return View::make('admin.userslist',compact('users','admin'));
-    }
-
     public function applicationlist()
     {
         $admin = DB::table('staff')
@@ -982,6 +936,281 @@ class AdminController extends Controller
 
             return View::make('certificate.tracking',compact('admin','certificates'));
 
+    }
+
+    public function userlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $users = User::orderBy('id')
+            ->select(
+                'users.id as user_id',
+                'users.fname',
+                'users.mname',
+                'users.lname',
+                'users.email',
+                'users.role',
+            )
+            ->get();
+
+        return View::make('admin.userslist',compact('users','admin'));
+    }
+
+    public function selectedSpecificRole(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->userRole === 'Student') {
+            $users = DB::table('users')
+            ->join('students', 'users.id', '=', 'students.user_id')
+            ->select('users.*','students.*')
+            ->where('users.role', 'Student')
+            ->get();
+        } elseif ($request->userRole === 'Faculty') {
+            $users = DB::table('users')
+            ->join('faculty', 'users.id', '=', 'faculty.user_id')
+            ->select('users.*','faculty.*')
+            ->where('users.role', 'Faculty')
+            ->get();
+        } elseif ($request->userRole === 'Staff') {
+            $users = DB::table('users')
+            ->join('staff', 'users.id', '=', 'staff.user_id')
+            ->select('users.*','staff.*')
+            ->where('users.role', 'Staff')
+            ->get();
+        } elseif ($request->userRole === 'All') {
+            $users = User::orderBy('id')->with(['student', 'faculty', 'staff'])->get();
+        }
+
+        return View::make('admin.userslist',compact('users','admin'));
+    }
+
+    public function showUserlistInfo($id)
+    {
+        $role = User::orderBy('id')
+            ->where('id', $id)
+            ->with(['student', 'faculty', 'staff'])
+            ->value('role');
+
+            if ($role === 'Student') {
+                $users = DB::table('users')
+                ->join('students','users.id','students.user_id')
+                ->select('students.*','users.*')
+                ->where('users.id', $id)
+                ->first();
+            } elseif ($role === 'Staff') {
+                $users = DB::table('users')
+                ->join('staff','users.id','staff.user_id')
+                ->select('staff.*','users.*')
+                ->where('users.id', $id)
+                ->first();
+            } elseif ($role === 'Faculty') {
+                $users = DB::table('users')
+                ->join('faculty','users.id','faculty.user_id')
+                ->join('departments','departments.id','faculty.department_id')
+                ->select('faculty.*','users.*','departments.id as deptId','departments.department_name')
+                ->where('users.id', $id)
+                ->first();
+            } elseif ($role === 'Admin') {
+                $users = DB::table('users')
+                ->join('staff','users.id','staff.user_id')
+                ->select('staff.*','users.*')
+                ->where('users.id', $id)
+                ->first();
+            }
+
+        return response()->json($users);
+    }
+
+    public function updateUserInfo(Request $request, $id)
+    {
+        $role = User::orderBy('id')
+            ->where('id', $id)
+            ->with(['student', 'faculty', 'staff'])
+            ->value('role');
+
+            if ($role === 'Student') {
+                $user = Student::find($id);
+                $user->fname = $request->fname;
+                $user->lname = $request->lname;
+                $user->mname = $request->mname;
+                $user->college = $request->college;
+                $user->course = $request->course;
+                $user->tup_id = $request->tup_id;
+                $user->email = $request->email;
+                $user->gender = $request->gender;
+                $user->phone = $request->phone;
+                $user->address = $request->address;
+                $user->birthdate = $request->birthdate;
+                $user->save();
+
+                $userId = DB::table('students')
+                ->join('users','users.id','students.user_id')
+                ->select('users.id')
+                ->where('students.id',$id)
+                ->first();
+
+                $users = User::find($userId->id);
+                $users->fname = $request->fname;
+                $users->lname = $request->lname;
+                $users->mname = $request->mname;
+                $users->email = $request->email;
+                $users->save();
+            } elseif ($role === 'Staff') {
+                $user = Staff::find($id);
+                $user->fname = $request->fname;
+                $user->lname = $request->lname;
+                $user->mname = $request->mname;
+                $user->position = $request->position;
+                $user->designation = $request->designation;
+                $user->tup_id = $request->tup_id;
+                $user->email = $request->email;
+                $user->gender = $request->gender;
+                $user->phone = $request->phone;
+                $user->address = $request->address;
+                $user->birthdate = $request->birthdate;
+                $user->save();
+
+                $userId = DB::table('staff')
+                ->join('users','users.id','staff.user_id')
+                ->select('users.id')
+                ->where('staff.id',$id)
+                ->first();
+
+                $users = User::find($userId->id);
+                $users->fname = $request->fname;
+                $users->lname = $request->lname;
+                $users->mname = $request->mname;
+                $users->email = $request->email;
+                $users->save();
+            } elseif ($role === 'Faculty') {
+                $user = Faculty::find($id);
+                $user->fname = $request->fname;
+                $user->lname = $request->lname;
+                $user->mname = $request->mname;
+                $user->position = $request->position;
+                $user->designation = $request->designation;
+                $user->tup_id = $request->tup_id;
+                $user->email = $request->email;
+                $user->gender = $request->gender;
+                $user->phone = $request->phone;
+                $user->address = $request->address;
+                $user->birthdate = $request->birthdate;
+                $user->save();
+
+                $userId = DB::table('faculty')
+                ->join('users','users.id','faculty.user_id')
+                ->select('users.id')
+                ->where('faculty.id',$id)
+                ->first();
+
+                $users = User::find($userId->id);
+                $users->fname = $request->fname;
+                $users->lname = $request->lname;
+                $users->mname = $request->mname;
+                $users->email = $request->email;
+                $users->save();
+
+            } elseif ($role === 'Admin') {
+                $user = Staff::find($id);
+                $user->fname = $request->fname;
+                $user->lname = $request->lname;
+                $user->mname = $request->mname;
+                $user->position = $request->position;
+                $user->designation = $request->designation;
+                $user->tup_id = $request->tup_id;
+                $user->email = $request->email;
+                $user->gender = $request->gender;
+                $user->phone = $request->phone;
+                $user->address = $request->address;
+                $user->birthdate = $request->birthdate;
+                $user->save();
+
+                $userId = DB::table('staff')
+                ->join('users','users.id','staff.user_id')
+                ->select('users.id')
+                ->where('staff.id',$id)
+                ->first();
+
+                $users = User::find($userId->id);
+                $users->fname = $request->fname;
+                $users->lname = $request->lname;
+                $users->mname = $request->mname;
+                $users->email = $request->email;
+                $users->save();
+            }
+            
+        return response()->json(["users" => $users, "user" => $user]);
+    }
+
+    public function deleteUserInfo(string $id)
+    {
+        $role = User::orderBy('id')
+            ->where('id', $id)
+            ->with(['student', 'faculty', 'staff'])
+            ->value('role');
+
+            if ($role === 'Student') {
+                $studentId = DB::table('users')
+                    ->join('students','users.id','students.user_id')
+                    ->select('students.id as studentId','students.user_id')
+                    ->where('students.user_id', $id)
+                    ->value('studentId');
+
+                $student = Student::findOrFail($studentId);
+                $student->delete();
+
+                $user = User::findOrFail($id);
+                $user->delete();
+            } elseif ($role === 'Staff') {
+                $staffId = DB::table('users')
+                    ->join('staff','users.id','staff.user_id')
+                    ->select('staff.id as staffId','staff.user_id')
+                    ->where('staff.user_id', $id)
+                    ->value('staffId');
+
+                $student = Staff::findOrFail($staffId);
+                $student->delete();
+
+                $user = User::findOrFail($id);
+                $user->delete();
+            } elseif ($role === 'Faculty') {
+                $facultyId = DB::table('users')
+                    ->join('faculty','users.id','faculty.user_id')
+                    ->select('faculty.id as facultyId','faculty.user_id')
+                    ->where('faculty.user_id', $id)
+                    ->value('facultyId');
+
+                $student = Faculty::findOrFail($staffId);
+                $student->delete();
+
+                $user = User::findOrFail($id);
+                $user->delete();
+
+            } elseif ($role === 'Admin') {
+                $staffId = DB::table('users')
+                    ->join('staff','users.id','staff.user_id')
+                    ->select('staff.id as staffId','staff.user_id')
+                    ->where('staff.user_id', $id)
+                    ->value('staffId');
+
+                $student = Staff::findOrFail($staffId);
+                $student->delete();
+
+                $user = User::findOrFail($id);
+                $user->delete();
+            }
+
+        $data = array('success' =>'deleted','code'=>'200');
+        return response()->json($data);
     }
 
     

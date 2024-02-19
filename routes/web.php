@@ -756,6 +756,16 @@ Route::get('/admin/userlist', [
         'as' => 'admin.userlist'
 ]);
 
+Route::get('/admin/userlist/{id}', [
+  'uses' => 'AdminController@showUserlistInfo',
+        'as' => 'admin.showUserlistInfo'
+]);
+
+Route::post('/admin/userlist/{id}/update', [
+  'uses' => 'AdminController@updateUserInfo',
+        'as' => 'admin.updateUserlistInfo'
+]);
+
 Route::post('/admin/userlist/specific-role', [
   'uses' => 'AdminController@selectedSpecificRole',
         'as' => 'admin.userlist.specific-role'
