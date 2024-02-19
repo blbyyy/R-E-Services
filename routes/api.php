@@ -120,6 +120,9 @@ Route::get('/staffprofile/{id}', 'App\Http\Controllers\StaffController@getProfil
 Route::get('/profile/{id}', 'App\Http\Controllers\StudentController@getProfile');
 Route::post('/mobilechangeavatar', 'App\Http\Controllers\StudentController@mobilechangeavatar');
 Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload_file');
+Route::get('/mobilecertification', 'App\Http\Controllers\StudentController@mobilecertification');
+Route::post('mobileapply_certification/{id}', 'App\Http\Controllers\StudentController@mobileapply_certification');
+Route::get('/mobileshowpdf/{fileName}', 'App\Http\Controllers\StudentController@mobileshowpdf');
 Route::get('/myfiles/{id}', 'App\Http\Controllers\StudentController@mobilemyfiles')->name('mobilemyfiles');
 Route::delete('/delete_file/{file}', 'StudentController@deleteFile');
 Route::get('/get_files/{id}', 'App\Http\Controllers\StudentController@get_files')->name('get_files');
