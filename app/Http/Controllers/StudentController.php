@@ -970,6 +970,169 @@ class StudentController extends Controller
             return response()->json(["form" => $form, "file" => $file ]);
 
     }
+
+    public function mobileapplication_status($id)
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $studentstats = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.*', 'files.research_title')
+            ->where('requestingform.user_id', $id)
+            ->get();
+
+        $staffstats = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->select('users.*', 'requestingform.*')
+            ->where('user_id', $id)
+            ->get();
+
+        $facultystats = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->select('users.*', 'requestingform.*')
+            ->where('user_id', $id)
+            ->get();
+
+        // Prepare data for JSON response
+        $data = [
+            'student' => $student,
+            'studentstats' => $studentstats,
+            'staffstats' => $staffstats,
+            'facultystats' => $facultystats,
+        ];
+
+        // Return JSON response
+        return response()->json($data);
+    }
+
+    public function mobileshow_application($id)
+    {
+        $specificData = DB::table('requestingform')
+        ->join('files', 'files.id', 'requestingform.research_id')
+        ->join('users', 'users.id', 'requestingform.user_id')
+        ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+        ->select('requestingform.*', 'files.*','certificates.certificate_file')
+        ->where('requestingform.id', $id)
+        ->first();
+
+        return response()->json($specificData);
+    }
+
+    public function mobilereApply(Request $request, $id)
+    {
+        $latestApplication = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.*')
+            ->where('requestingform.research_id', $request->reApplyResearchId)
+            ->orderBy('requestingform.created_at', 'desc') 
+            ->first();
+        
+        $latestPercentage = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.simmilarity_percentage_results')
+            ->where('requestingform.research_id', $request->reApplyResearchId)
+            ->orderBy('requestingform.id', 'desc') 
+            ->value('simmilarity_percentage_results');
+
+        $submission = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.research_id', $request->reApplyResearchId)
+            ->selectRaw(
+                'CASE 
+                    WHEN COUNT(*) = 0 THEN "First Submission"
+                    WHEN COUNT(*) = 1 THEN "Second Submission"
+                    WHEN COUNT(*) = 2 THEN "Third Submission"
+                    WHEN COUNT(*) = 3 THEN "Fourth Submission"
+                    WHEN COUNT(*) = 4 THEN "Fifth Submission"
+                    WHEN COUNT(*) = 5 THEN "Sixth Submission"
+                    ELSE "Other Submission" 
+                END as submission_frequency')
+            ->value('submission_frequency');
+
+            $form = new RequestingForm;
+            $form->date = now();
+            $form->email_address = $latestApplication->email_address;
+            $form->thesis_type = $latestApplication->thesis_type;
+            $form->submission_frequency = $submission;
+            $form->simmilarity_percentage_results = 0;
+            $form->advisors_turnitin_precheck = 'Yes';
+            $form->initial_simmilarity_percentage = $latestPercentage;
+
+            $form->technicalAdviser_id = $latestApplication->technicalAdviser_id;
+            $form->subjectAdviser_id = $latestApplication->subjectAdviser_id;
+
+            $form->technicalAdviserEmail = $latestApplication->technicalAdviserEmail;
+            $form->subjectAdviserEmail = $latestApplication->subjectAdviserEmail;
+            
+            $form->research_specialist = 'tba';
+            $form->tup_id = $latestApplication->tup_id;
+            $form->requestor_name = $latestApplication->requestor_name;
+            $form->tup_mail = $latestApplication->tup_mail;
+            $form->sex = $latestApplication->sex;
+            $form->requestor_type = $latestApplication->requestor_type;
+            $form->college = $latestApplication->college;
+            $form->course = $latestApplication->course;
+            $form->purpose = $latestApplication->purpose;
+            $form->researchers_name1 = $latestApplication->researchers_name1;
+            $form->researchers_name2 = $latestApplication->researchers_name2;
+            $form->researchers_name3 = $latestApplication->researchers_name3;
+            $form->researchers_name4 = $latestApplication->researchers_name4;
+            $form->researchers_name5 = $latestApplication->researchers_name5;
+            $form->researchers_name6 = $latestApplication->researchers_name6;
+            $form->researchers_name7 = $latestApplication->researchers_name7;
+            $form->researchers_name8 = $latestApplication->researchers_name8;
+            $form->agreement = $latestApplication->agreement;
+            $form->score = 0;
+            $form->research_staff = 'tba';
+            $form->research_id = $latestApplication->research_id;
+            $form->user_id = $latestApplication->user_id;
+            $form->status = 'Pending Technical Adviser Approval';
+            $form->save();
+
+            if ($submission === 'First Submission') {
+                $file = Files::find($request->reApplyResearchId);
+                $file->file_status = 'Pending Technical Adviser Approval';
+                $file->save();
+            } else {
+                $request->validate([
+                    'research_file' => 'required|mimes:pdf|max:10240', // PDF file validation with a maximum size of 10MB
+                ]);
+                
+                $file = Files::find($request->reApplyResearchId);
+                $file->file_status = 'Pending Technical Adviser Approval';
+
+                $pdfFile = $request->file('research_file');
+                $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
+                $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+                
+                $file->research_file = $pdfFileName;
+
+                $file->save();
+            } 
+
+            $technicalAdviser = DB::table('faculty')
+            ->where('id', $latestApplication->technicalAdviser_id)
+            ->first();
+
+            $technicalAdviserName = $technicalAdviser->fname .' '. $technicalAdviser->mname .' '. $technicalAdviser->lname;
+
+            $data = [
+                'technicalAdviserName' => $technicalAdviserName,
+            ];
+        
+            Mail::to($latestApplication->technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
+
+            return response()->json(["form" => $form, "file" => $file ]);
+
+    }
     //MOBILE END
 
 

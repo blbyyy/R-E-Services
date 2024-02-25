@@ -126,8 +126,11 @@ Route::get('/mobileshowpdf/{fileName}', 'App\Http\Controllers\StudentController@
 Route::get('/myfiles/{id}', 'App\Http\Controllers\StudentController@mobilemyfiles')->name('mobilemyfiles');
 Route::delete('/delete_file/{file}', 'StudentController@deleteFile');
 Route::get('/get_files/{id}', 'App\Http\Controllers\StudentController@get_files')->name('get_files');
+Route::get('/mobileapplication_status/status/{id}', 'App\Http\Controllers\StudentController@mobileapplication_status');
+Route::get('/mobileshow_application/{id}', 'App\Http\Controllers\StudentController@mobileshow_application');
+Route::post('mobilereApply/{id}', 'App\Http\Controllers\StudentController@mobilereApply');
 
-Route::post('/apply-certification', 'App\Http\Controllers\RequestingFormController@apply_certifications');
+// Route::post('/apply-certification', 'App\Http\Controllers\RequestingFormController@apply_certifications');
 
 Route::get('/mobileadministration', [AdminController::class, 'mobileadministration']);
 Route::post('/mobileaddadministration', [AdminController::class, 'mobileaddAdministration']);
