@@ -966,7 +966,7 @@ $(document).ready(function () {
             });
         });
 
-        //update student info
+        //update department info
         $(".departmentupdateBtn").on("click", function (e) {
             e.preventDefault();
             var id = $("#department_edit_id").val();
@@ -1006,7 +1006,7 @@ $(document).ready(function () {
             });
         });
 
-        //delete student info
+        //delete department info
         $(".departmentdeleteBtn").on("click", function (e) {
             var id = $(this).data("id");
             console.log(id);
@@ -1240,7 +1240,195 @@ $(document).ready(function () {
             });
         });
 
+        //show userlist info
+        $(".userlistShowBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/userlist/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    
+                    if (data.avatar === "avatar.jpg") {
+                        $("#userProfile").html('<img src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" class="img-fluid rounded-start" alt="..."></img>');
+                    } else {
+                        $("#userProfile").html('<img src="storage/' + data.avatar + '" class="img-fluid rounded-start" alt="...">');
+                    }
 
+                    $("#userName").text(data.fname + ' ' + data.mname + ' ' + data.lname);
+                    $("#userID").text( data.tup_id);
+                    $("#userEmail").text( data.email);
+                    $("#userCollege").text( data.college);
+                    $("#userCourse").text(data.course);
+                    $("#userPosition").text( data.position);
+                    $("#userDesignation").text( data.designation);
+                    $("#userDepartment").text( data.department_name);
+                    $("#userGender").text(data.gender);
+                    $("#userPhone").text(data.phone);
+                    $("#userAddress").text(data.address);
+                    $("#userBirthdate").text(data.birthdate);   
+
+                    $('#showUserInfo').on('hidden.bs.modal', function () {
+                        $("#userCollege").text('');
+                        $("#userCourse").text('');
+                        $("#userPosition").text('');
+                        $("#userDesignation").text('');
+                        $("#userDepartment").text('');
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //edit userlist info
+        $(".editUserBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/userlist/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+
+                    $("#userEditId").val(data.id);
+                    $("#fname").val(data.fname);
+                    $("#mname").val(data.mname);
+                    $("#lname").val(data.lname);
+                    $("#tup_id").val(data.tup_id);
+                    $("#email").val( data.email);
+                    $("#college").val(data.college);
+                    $("#course").val(data.course);
+                    $("#position").val(data.position);
+                    $("#designation").val(data.designation);
+
+                    if (data.role === "Student") {
+                        $("#positionForm").hide();
+                        $("#designationForm").hide();
+                        $("#collegeForm").show();
+                        $("#courseForm").show();
+                    } else if (data.role === "Faculty") {
+                        $("#positionForm").show();
+                        $("#designationForm").show();
+                        $("#collegeForm").hide();
+                        $("#courseForm").hide();
+                    }
+
+                    $("#gender").val(data.gender);
+                    $("#phone").val(data.phone);
+                    $("#address").val(data.address);
+                    $("#birthdate").val(data.birthdate);   
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //update userlist info
+        $(".userUpdateBtn").on("click", function (e) {
+            e.preventDefault();
+            var id = $("#userEditId").val();
+            let editformData = new FormData($("#userInfoForm")[0]);
+            for(var pair of editformData.entries()){
+                console.log(pair[0] + ',' + pair[1]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/admin/userlist/" + id + "/update",
+                data: editformData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function() {
+                        window.location.href = '/admin/userlist';
+                    }, 1500);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'User Info Updated',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //delete department info
+        $(".deleteUserBtn").on("click", function (e) {
+            var id = $(this).data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Are you sure you want to delete this user?',
+                text: "You won't be able to undo this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/admin/userlist/" + id + "/deleted",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            setTimeout(function() {
+                                window.location.href = '/admin/userlist';
+                            }, 1500);
+                            console.log(data);
+                            Swal.fire(
+                                'Deleted!',
+                                'User has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+
+                }
+            })
+
+        });
     //END OF ADMIN POV
 
     //START OF STUDENT POV
