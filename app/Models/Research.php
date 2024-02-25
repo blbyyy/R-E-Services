@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Research extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     public $table = "research_list";
     public $timestamps = false;
@@ -34,4 +35,13 @@ class Research extends Model
         "date_completion",
         "abstract",
     ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'research_title' => $this->research_title,
+            'department' => $this->department,
+            'course' => $this->course,
+        ];
+    }
 }

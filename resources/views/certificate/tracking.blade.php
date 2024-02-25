@@ -64,6 +64,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Actions</th>
+                            <th scope="col">QrCode</th>
                             <th scope="col">Control Number</th>
                             <th scope="col">Requestor Name</th>
                             <th scope="col">Research Title</th>
@@ -76,6 +77,7 @@
                             <td>
                                 <button data-id="{{$certificate->certid}}" type="button" class="btn btn-primary showCertificate" data-bs-toggle="modal" data-bs-target="#certificateInfo"><i class="bi bi-eye"></i></button>
                             </td>
+                            <td>{!! QrCode::size(50)->generate($certificate->control_id) !!}</td>
                             <td>{{$certificate->control_id}}</td>
                             <td>{{$certificate->requestor_name}}</td>
                             <td>{{$certificate->research_title}}</td>

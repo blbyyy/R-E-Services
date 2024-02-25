@@ -51,7 +51,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ url('/homepage')}}" class="logo d-flex align-items-center">
-        <img src="{{ asset('assets/img/TUP.png')}}" alt="">
+        {{-- <img src="{{ asset('assets/img/TUP.png')}}" alt=""> --}}
         <img src="{{ asset('assets/img/RED.png')}}" alt="">
         <span class="d-none d-lg-block">  R&E-Services</span>
       </a> 
@@ -399,11 +399,35 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link " href="{{url('/faculty/research-list')}}">
+          <i class="bi bi-card-list"></i>
+          <span>Researches</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-file-richtext"></i><span>Templates</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{url('/faculty/research/templates')}}">
+              <i class="bi bi-circle"></i><span>Research</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{url('/faculty/extension/templates')}}">
+              <i class="bi bi-circle"></i><span>Extension</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
         <a class="nav-link " href="{{url('/faculty/citation')}}">
           <i class="bi bi-chat-quote-fill"></i>
           <span>Citation References</span>
         </a>
       </li>
+
 
       @elseif(Auth::user()->role == 'Admin')
       <li class="nav-item">

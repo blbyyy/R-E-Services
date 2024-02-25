@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8">
-    <title>How to Generate QR Code in Laravel 9</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <title>Certificate</title>
+    <style>
+        /* Define your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .content {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .author {
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 50px;
+        }
+    </style>
 </head>
-
 <body>
-
-    <div class="container mt-4">
-
-        <div class="card">
-            <div class="card-header">
-                <h2>Simple QR Code</h2>
+    <div class="container">
+            <div class="page">
+                <div class="content">
+                    <img src="{{ $qrCodePath }}" alt="QR Code">
+                </div>
             </div>
-            <div class="card-body">
-                {{-- {!! QrCode::email('josephandrebalbada@gmail.com', 'This is the subject.', 'This is the message body.') !!} --}}
-                {!! QrCode::size(300)->generate('REDigitalize') !!}
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2>Color QR Code</h2>
-            </div>
-            <div class="card-body">
-                {!! QrCode::size(300)->backgroundColor(255,90,0)->generate('https://techvblogs.com/blog/generate-qr-code-laravel-9') !!}
-            </div>
-        </div>
-
     </div>
 </body>
 </html>

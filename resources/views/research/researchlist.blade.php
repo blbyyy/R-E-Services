@@ -190,9 +190,9 @@
                 </select>
               </div>
 
-              <div id="searchBar" style="display: block">
-                <div id="searchForm" class="d-flex justify-content-end">
-                  <div class="col-md-8 d-flex" style="height: 40px;">
+              <div id="searchBar" style="display: block;">
+                <div id="searchForm" class="d-flex justify-content-end" style="padding-top: 30px">
+                  <div class="col-md-6 d-flex" style="height: 40px;">
                     <input type="text" id="searchtype" name="searchtype" class="form-control">
                     <button type="submit" class="btn btn-outline-dark"><i class="bi bi-search"></i></button>
                   </div>
@@ -531,33 +531,25 @@
     //RADIO BUTTON CONDITION
     function handleRadioSelection() {
             var selectedValue = $("input[name='search']:checked").val();
-            var searchBar = document.getElementById('searchBar');
-            // Hide all forms
+
             $('#deptForm, #courseForm').hide();
 
-
-            // Show the corresponding form based on the selected radio button
             if (selectedValue === 'option2') {
                 $('#deptForm').show();
-                searchBar.style.display = 'none';
             } else if (selectedValue === 'option3') {
                 $('#courseForm').show();
-                searchBar.style.display = 'none';
             }
         }
 
-        // Attach the handleRadioSelection function to the change event of the radio buttons
         $('input[name="search"]').on('change', handleRadioSelection);
 
      // SEARCH BAR
      function liveSearch() {
             var searchTerm = $('#searchtype').val().toLowerCase();
 
-            // Loop through each row in the table body
             $('#researchTableBody tr').each(function () {
                 var rowText = $(this).text().toLowerCase();
 
-                // If the row contains the search term, show the row; otherwise, hide it
                 if (rowText.includes(searchTerm)) {
                     $(this).show();
                 } else {
@@ -565,7 +557,6 @@
                 }
             });
 
-            // Show or hide the "No Data" message based on the search results
             if ($('#researchTableBody tr:visible').length > 0) {
                 $('#noDataMessage').hide();
             } else {
@@ -573,7 +564,6 @@
             }
         }
 
-        // Attach the liveSearch function to the input event of the search input
         $('#searchtype').on('input', liveSearch);
 
       // SEARCH FROM DEPARTMENT

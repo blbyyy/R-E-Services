@@ -444,7 +444,7 @@ class StudentController extends Controller
                 'technicalAdviserName' => $technicalAdviserName,
             ];
         
-            Mail::to($technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
+            // Mail::to($technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
 
             return response()->json(["form" => $form, "file" => $file ]);
 
@@ -561,7 +561,7 @@ class StudentController extends Controller
                 'technicalAdviserName' => $technicalAdviserName,
             ];
         
-            Mail::to($latestApplication->technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
+            // Mail::to($latestApplication->technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
 
             return response()->json(["form" => $form, "file" => $file ]);
 
@@ -582,19 +582,7 @@ class StudentController extends Controller
         ->where('requestingform.user_id', Auth::id())
         ->get();
 
-        $staffstats = DB::table('requestingform')
-        ->join('users','users.id','requestingform.user_id')
-        ->select('users.*','requestingform.*')
-        ->where('user_id',Auth::id())
-        ->get();
-
-        $facultystats = DB::table('requestingform')
-        ->join('users','users.id','requestingform.user_id')
-        ->select('users.*','requestingform.*')
-        ->where('user_id',Auth::id())
-        ->get();
-
-        return View::make('students.applicationstatus',compact('student', 'studentstats', 'staffstats', 'facultystats'));
+        return View::make('students.applicationstatus',compact('student', 'studentstats'));
     }
 
     public function show_application($id)
@@ -602,13 +590,21 @@ class StudentController extends Controller
         $specificData = DB::table('requestingform')
         ->join('files', 'files.id', 'requestingform.research_id')
         ->join('users', 'users.id', 'requestingform.user_id')
+        ->join('faculty as technical_adviser', 'technical_adviser.id', '=', 'requestingform.technicalAdviser_id')
+        ->join('faculty as subject_adviser', 'subject_adviser.id', '=', 'requestingform.subjectAdviser_id')
         ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
-        ->select('requestingform.*', 'files.*','certificates.certificate_file')
+        ->select(
+            'requestingform.*', 
+            'files.*',
+            'certificates.certificate_file',
+            'technical_adviser.id as technical_adviser_id',
+            'subject_adviser.id as subject_adviser_id',
+            DB::raw("CONCAT(technical_adviser.fname, ' ', technical_adviser.lname, ' ', technical_adviser.mname) as TechnicalAdviserName"),
+            DB::raw("CONCAT(subject_adviser.fname, ' ', subject_adviser.lname, ' ', subject_adviser.mname) as SubjectAdviserName"))
         ->where('requestingform.id', $id)
         ->first();
 
         return response()->json($specificData);
-
     }
 
     public function titleCheckerPage()

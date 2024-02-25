@@ -95,13 +95,23 @@
                           </div>
         
                           <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Adviser Name</div>
-                            <div id="adviser_name" class="col-lg-9 col-md-8"></div>
+                            <div class="col-lg-3 col-md-4 label">Technical Adviser</div>
+                            <div id="technical_adviser" class="col-lg-9 col-md-8"></div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-lg-3 col-md-4 label">Technical Adviser Email</div>
+                            <div id="taEmail" class="col-lg-9 col-md-8"></div>
                           </div>
         
                           <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Adviser Email</div>
-                            <div id="adviser_email" class="col-lg-9 col-md-8"></div>
+                            <div class="col-lg-3 col-md-4 label">Subject Adviser</div>
+                            <div id="subject_adviser" class="col-lg-9 col-md-8"></div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-lg-3 col-md-4 label">Subject Adviser Email</div>
+                            <div id="saEmail" class="col-lg-9 col-md-8"></div>
                           </div>
         
                           <div class="row">
@@ -117,7 +127,6 @@
                           <div class="row">
                             <div class="col-lg-3 col-md-4 label">Status</div>
                               <div id="status" class="col-lg-9 col-md-8">
-                                {{-- <h4 id="status" ></h4> --}}
                               </div>
                           </div>
         

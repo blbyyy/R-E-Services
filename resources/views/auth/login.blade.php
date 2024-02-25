@@ -4,7 +4,6 @@
 <div class="form-container">
 
     <p class="title">
-      <img class="img" src="{{ asset('assets/img/TUP.png')}}" alt="">
       <img class="img" src="{{ asset('assets/img/RED.png')}}" alt="">
        R&E-Services
     </p>

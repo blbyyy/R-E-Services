@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Mail;
+use Algolia\AlgoliaSearch\SearchClient;
 use App\Mail\SubjectAdviserApproval;
 use App\Mail\TechnicalAdviserApprovalSuccess;
 use App\Mail\TechnicalAdviserApprovalReject;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
 use App\Models\RequestingForm;
+use App\Models\Research;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Models\Faculty;
@@ -570,18 +572,6 @@ class FacultyController extends Controller
 
     public function students_application_specific($id)
     {
-        // $application = DB::table('requestingform')
-        // ->join('faculty', 'faculty.id', '=', 'requestingform.technicalAdviser_id')
-        // ->join('files', 'files.id', '=', 'requestingform.research_id')
-        // ->where('requestingform.id', $id)
-        // ->select(
-        //     'requestingform.*',
-        //     'files.id as files_id', 'files.research_file',
-        //     'faculty.id as faculty_id',
-        //     DB::raw("CONCAT(faculty.fname, ' ', faculty.lname, ' ', faculty.mname) as TechnicalAdviserName"),
-        //     DB::raw("CONCAT(faculty.fname, ' ', faculty.lname, ' ', faculty.mname) as SubjectAdviserName")
-        // )
-        // ->first();
         $application = DB::table('requestingform')
             ->join('faculty as technical_adviser', 'technical_adviser.id', '=', 'requestingform.technicalAdviser_id')
             ->join('faculty as subject_adviser', 'subject_adviser.id', '=', 'requestingform.subjectAdviser_id')
@@ -647,14 +637,14 @@ class FacultyController extends Controller
                 $data = [
                     'subjectAdviserName' => $subjectAdviserName,
                 ];
-                Mail::to($subjectAdviser->subjectAdviserEmail)->send(new SubjectAdviserApproval($data));
+                // Mail::to($subjectAdviser->subjectAdviserEmail)->send(new SubjectAdviserApproval($data));
 
                 $success = [
                     'requestorName' => $subjectAdviser->requestor_name,
                     'researchTitle' => $research->research_title,
                     'technicalAdviserName' => $technicalAdviserName
                 ];
-                Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalSuccess($success));
+                // Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalSuccess($success));
 
             return response()->json($form);
 
@@ -688,7 +678,7 @@ class FacultyController extends Controller
                     'remarks' => $request->technicalAdviserRemarks,
                     'technicalAdviserName' => $technicalAdviserName
                 ];
-                Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalReject($reject));
+                // Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalReject($reject));
 
             return response()->json($form);
             
@@ -742,7 +732,7 @@ class FacultyController extends Controller
                     'researchTitle' => $research->research_title,
                     'subjectAdviserName' => $subjectAdviserName
                 ];
-                Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalSuccess($success));             
+                // Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalSuccess($success));             
 
             return response()->json($form);
 
@@ -776,11 +766,48 @@ class FacultyController extends Controller
                     'remarks' => $request->subjectAdviserRemarks,
                     'subjectAdviserName' => $subjectAdviserName
                 ];
-                Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalReject($reject));
+                // Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalReject($reject));
 
             return response()->json($form);
             
         }
                    
     }
+
+    public function searchResearchList(Request $request)
+    {
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $query = $request->input('query');
+        $researchlist = Research::search($query)->paginate(10);
+
+        return view('faculty.researchlist', compact('researchlist', 'faculty'));
+    }
+
+    public function researchTemplates()
+    {
+        $faculty = DB::table('faculty')
+        ->join('users','users.id','faculty.user_id')
+        ->select('faculty.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        return View::make('faculty.researchTemplates',compact('faculty'));
+    }
+
+    public function extensionTemplates()
+    {
+        $faculty = DB::table('faculty')
+        ->join('users','users.id','faculty.user_id')
+        ->select('faculty.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        return View::make('faculty.extensionTemplates',compact('faculty'));
+    }
+
 }

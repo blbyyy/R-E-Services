@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <title>Applications Count Table</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,7 +26,7 @@
     <div style="text-align: center;">
         <h3>Applications Count Table</h3>
     </div>
-    
+    <img src="{{ asset('uploads/qrcode/65da3fde9bc54.svg') }}" alt="Your SVG Image">
     <table class="table table-hover">
         <thead>
             <tr>
@@ -57,7 +59,7 @@
             @foreach ($applications as $application)
                 <tr>
                     <td>{{ $application->id }}</td>
-                    <td>{{ $application->requestor_name}}</td>>
+                    <td>{{ $application->requestor_name}}</td>
                     <td>{{ $application->requestor_type }}</td>
                     <td>{{ $application->thesis_type }}</td>
                     <td>{{ $application->submission_frequency }}</td>
