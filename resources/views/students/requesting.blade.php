@@ -202,12 +202,12 @@
             <div class="col-md-6">
               <div class="form-floating">
                 <select name="thesis_type" class="form-select" id="thesis_type" aria-label="State">
-                  <option value=""></option>
-                  <option value="Undergaduate Thesis">Undergraduate Thesis</option>
-                  <option value="Masters Thesis">Capstone</option>
-                  <option value="Special Project">Special Project</option>
-                  <option value="Master's Thesis">Master's Thesis</option>
-                  <option value="Doctoral Disertation">Doctoral Disertation</option>
+                  <option value="">--- Select Thesis Type ---</option>
+                  <option value="Thesis">Thesis</option>
+                  <option value="Capstone Project">Capstone Project</option>
+                  <option value="Project study">Project Study</option>
+                  <option value="Special Research Project">Special Research Project</option>
+                  <option value="Feasibility Study">Feasibility Study</option>
                 </select>
                 <label for="thesis_type">Type of Thesis</label>
               </div>
@@ -216,8 +216,7 @@
             <div class="col-md-6">
               <div class="form-floating">
                 <select name="requestor_type" class="form-select" id="requestor_type" aria-label="State">
-                  <option value=""></option>
-                  <option value="Graduate Student">Graduate Student</option>
+                  <option value="">--- Select Requestor Type ---</option>
                   <option value="Undergraduate Student">Undergraduate Student</option>
                   <option value="Faculty">Faculty</option>
                 </select>

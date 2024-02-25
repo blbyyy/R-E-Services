@@ -1702,13 +1702,15 @@ $(document).ready(function () {
                 url: '/application/status/' + id, 
                 type: 'GET',
                 success: function(data) {
-                    console.log(data.certificate_file);
+                    console.log(data);
 
                     $("#research_title").text(data.research_title);
                     $("#thesis_type").text(data.thesis_type);
                     $("#submission_frequency").text(data.submission_frequency);
-                    $("#adviser_name").text(data.adviser_name);
-                    $("#adviser_email").text(data.adviser_email);
+                    $("#technical_adviser").text(data.TechnicalAdviserName);
+                    $("#taEmail").text(data.technicalAdviserEmail);
+                    $("#subject_adviser").text(data.SubjectAdviserName);
+                    $("#saEmail").text(data.subjectAdviserEmail);
 
                     if (data.research_specialist === null) {
                         $("#research_specialist").text('tba');
@@ -1723,11 +1725,15 @@ $(document).ready(function () {
                     }
 
                     if (data.status === "Pending") {
-                        $("#status").html('<span class="badge border-success border-1 text-success"><h5>Pending</h5></span>');
+                        $("#status").html('<span class="badge border-success border-1 text-warning"><h5>Pending</h5></span>');
                     } else if (data.status === "Returned") {
                         $("#status").html('<span class="badge border-warning border-1 text-danger"><h5>Returned</h5></span>');
+                    } else if (data.status === "Pending Technical Adviser Approval") {
+                        $("#status").html('<span class="badge border-warning border-1 text-warning"><h5>Pending Technical Adviser Approval</h5></span>');
+                    } else if (data.status === "Pending Subject Adviser Approval") {
+                        $("#status").html('<span class="badge border-warning border-1 text-warning"><h5>Pending Subject Adviser Approval</h5></span>');
                     } else if (data.status === "Passed") {
-                        $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
+                        $("#status").html('<span class="badge border-primary border-1 text-success"><h5>Passed</h5></span>');
 
                         var pdfLink = $('<a>', {
                             href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
@@ -1736,9 +1742,6 @@ $(document).ready(function () {
                         });
                         $("#certificate").empty().append(pdfLink);
 
-                        $('#studentviewInfo').on('hidden.bs.modal', function () {
-                            $("#certificate").empty();
-                        });
                     }
 
                     $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
@@ -1804,6 +1807,11 @@ $(document).ready(function () {
                     console.log(error);
                 },
             });
+        });
+
+        //if modal is hidden or close it will refresh 
+        $('#studentViewInfo').on('hidden.bs.modal', function () {
+            $("#certificate").empty();
         });
 
         //student view research details

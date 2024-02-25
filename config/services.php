@@ -43,4 +43,10 @@ return [
         'api_secret' => env('-5UAKC_qreWtSMCKgrdS4OXjv5s'),
     ],
 
+    'algolia' => [
+        'application_id' => env('ALGOLIA_APP_ID'),
+        'secret' => env('ALGOLIA_SECRET'),
+    ],
+    
+
 ];

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Algolia\AlgoliaSearch\SearchClient;
 use App\Models\Student;
 use App\Models\Staff;
 use App\Models\Faculty;

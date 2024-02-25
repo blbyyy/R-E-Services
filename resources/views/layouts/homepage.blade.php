@@ -38,9 +38,11 @@
     </div>
 
     @if (Auth::user()->role !== 'Admin')
-      <div class="col-12">
-        <button type="button" class="btn btn-dark" onclick="toggleCertificationGuide()"><i class="bi bi-book"></i> Certification Usage Guide</button>
+    <div class="row">
+      <div class="col-4">
+          <button type="button" class="btn btn-dark" onclick="toggleCertificationGuide()"><i class="bi bi-book"></i> Certification Usage Guide</button>
       </div>
+    </div>
       <br>
     @else
         

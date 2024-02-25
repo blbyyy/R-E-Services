@@ -824,6 +824,28 @@ class AdminController extends Controller
             ->join('files','files.id','requestingform.research_id')
             ->where('certificate_id', $lastId)
             ->value('research_title');
+
+            $qrCodeName = $controlId;
+            $qrCodeSvgPath = public_path("uploads/certificate/{$qrCodeName}.svg");
+            QrCode::format('svg')->size(50)->generate($qrCodeName, $qrCodeSvgPath);
+            $pdf = PDF::loadView('certificate.try', [
+                'qrCode' => $qrCodeSvgPath,
+                'controlNumber' => $controlId,
+                'validator' => $specialist,
+                'title' => $researchTitle,
+                'researcher1' => $fileId->researchers_name1,
+                'researcher2' => $fileId->researchers_name2,
+                'researcher3' => $fileId->researchers_name3,
+                'researcher4' => $fileId->researchers_name4,
+                'researcher5' => $fileId->researchers_name5,
+                'researcher6' => $fileId->researchers_name6,
+                'researcher7' => $fileId->researchers_name7,
+                'researcher8' => $fileId->researchers_name8,
+            ]);
+
+            $pdf->setPaper('a4');
+
+            $pdf->save(public_path("uploads/certificate/{$qrCodeName}.pdf"));
         
             $data = [
                 'researchTitle' => $researchTitle,
@@ -833,7 +855,7 @@ class AdminController extends Controller
                 'percentage_results' => $request->simmilarity_percentage_results,
             ];
         
-            Mail::to($userEmail)->send(new CertificationPassed($data));
+            // Mail::to($userEmail)->send(new CertificationPassed($data));
         }else {  
 
             $researchTitle = DB::table('requestingform')
@@ -860,7 +882,7 @@ class AdminController extends Controller
                 'percentage_results' => $request->simmilarity_percentage_results,
             ];
         
-            Mail::to($userEmail)->send(new CertificationComplete($data));
+            // Mail::to($userEmail)->send(new CertificationComplete($data));
         }
 
         return response()->json($file);
@@ -1212,6 +1234,7 @@ class AdminController extends Controller
         $data = array('success' =>'deleted','code'=>'200');
         return response()->json($data);
     }
+
 
     
 
