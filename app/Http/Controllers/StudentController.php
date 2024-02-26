@@ -622,26 +622,6 @@ class StudentController extends Controller
         return view('students.titlechecker', compact('researchlist', 'student'));
     }
 
-    public function countTitleOccurrences(Request $request)
-    {
-        $student = DB::table('students')
-        ->join('users','users.id','students.user_id')
-        ->select('students.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        $title = $request->input('research_title');
-
-        $researchList = DB::table('research_list')  
-        ->select('research_list.*') 
-        ->where('research_title', 'like', "%$title%") 
-        ->get(); 
-
-        $researchCount = Research::where('research_title', 'like', '%' . $title . '%')->count();
-
-        return View::make('students.titlechecker',compact('student','researchList','researchCount'));
-    }
-
     public function showResearchInfo($id)
     {
         $research = DB::table('research_list')
@@ -1133,7 +1113,7 @@ class StudentController extends Controller
 
     }
 
-    public function mobiletitleCheckerPage()
+    public function mobiletitleChecker(Request $request)
     {
         $student = DB::table('students')
             ->join('users', 'users.id', 'students.user_id')
@@ -1141,47 +1121,14 @@ class StudentController extends Controller
             ->where('user_id', Auth::id())
             ->first();
 
-        $researchList = Research::all();
+        $query = $request->input('query');
+        $researchlist = Research::search($query)->get(); // Remove paginate(10)
 
-        $researchCount = Research::count();
-
-        // Constructing the data to return as JSON
-        $data = [
-            'student' => $student,
-            'researchList' => $researchList,
-            'researchCount' => $researchCount
-        ];
-
-        // Returning JSON response
-        return response()->json($data);
-    }
-
-    public function mobilecountTitleOccurrences(Request $request)
-    {
-        $student = DB::table('students')
-            ->join('users', 'users.id', 'students.user_id')
-            ->select('students.*', 'users.*')
-            ->where('user_id', Auth::id())
-            ->first();
-
-        $title = $request->input('research_title');
-
-        $researchList = DB::table('research_list')
-            ->select('research_list.*')
-            ->where('research_title', 'like', "%$title%")
-            ->get();
-
-        $researchCount = Research::where('research_title', 'like', '%' . $title . '%')->count();
-
-        // Constructing the data to return as JSON
-        $data = [
-            'student' => $student,
-            'researchList' => $researchList,
-            'researchCount' => $researchCount
-        ];
-
-        // Returning JSON response
-        return response()->json($data);
+        // Return JSON response
+        return response()->json([
+            'researchlist' => $researchlist,
+            'student' => $student
+        ]);
     }
 
     public function mobileshowResearchInfo($id)
