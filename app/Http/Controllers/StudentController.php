@@ -1022,13 +1022,13 @@ class StudentController extends Controller
         return response()->json($specificData);
     }
 
-    public function mobilereApply(Request $request, $id)
+    public function mobilereApply(Request $request)
     {
         $latestApplication = DB::table('requestingform')
             ->join('users', 'users.id', 'requestingform.user_id')
             ->join('files', 'files.id', 'requestingform.research_id')
             ->select('requestingform.*')
-            ->where('requestingform.research_id', $request->reApplyResearchId)
+            ->where('requestingform.research_id', $request->research_id)
             ->orderBy('requestingform.created_at', 'desc') 
             ->first();
         
@@ -1036,14 +1036,14 @@ class StudentController extends Controller
             ->join('users', 'users.id', 'requestingform.user_id')
             ->join('files', 'files.id', 'requestingform.research_id')
             ->select('requestingform.simmilarity_percentage_results')
-            ->where('requestingform.research_id', $request->reApplyResearchId)
+            ->where('requestingform.research_id', $request->research_id)
             ->orderBy('requestingform.id', 'desc') 
             ->value('simmilarity_percentage_results');
 
         $submission = DB::table('requestingform')
             ->join('users', 'users.id', 'requestingform.user_id')
             ->join('files', 'files.id', 'requestingform.research_id')
-            ->where('requestingform.research_id', $request->reApplyResearchId)
+            ->where('requestingform.research_id', $request->research_id)
             ->selectRaw(
                 'CASE 
                     WHEN COUNT(*) = 0 THEN "First Submission"
@@ -1097,7 +1097,7 @@ class StudentController extends Controller
             $form->save();
 
             if ($submission === 'First Submission') {
-                $file = Files::find($request->reApplyResearchId);
+                $file = Files::find($request->research_id);
                 $file->file_status = 'Pending Technical Adviser Approval';
                 $file->save();
             } else {
@@ -1105,7 +1105,7 @@ class StudentController extends Controller
                     'research_file' => 'required|mimes:pdf|max:10240', // PDF file validation with a maximum size of 10MB
                 ]);
                 
-                $file = Files::find($request->reApplyResearchId);
+                $file = Files::find($request->research_id);
                 $file->file_status = 'Pending Technical Adviser Approval';
 
                 $pdfFile = $request->file('research_file');
@@ -1131,6 +1131,66 @@ class StudentController extends Controller
 
             return response()->json(["form" => $form, "file" => $file ]);
 
+    }
+
+    public function mobiletitleCheckerPage()
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $researchList = Research::all();
+
+        $researchCount = Research::count();
+
+        // Constructing the data to return as JSON
+        $data = [
+            'student' => $student,
+            'researchList' => $researchList,
+            'researchCount' => $researchCount
+        ];
+
+        // Returning JSON response
+        return response()->json($data);
+    }
+
+    public function mobilecountTitleOccurrences(Request $request)
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $title = $request->input('research_title');
+
+        $researchList = DB::table('research_list')
+            ->select('research_list.*')
+            ->where('research_title', 'like', "%$title%")
+            ->get();
+
+        $researchCount = Research::where('research_title', 'like', '%' . $title . '%')->count();
+
+        // Constructing the data to return as JSON
+        $data = [
+            'student' => $student,
+            'researchList' => $researchList,
+            'researchCount' => $researchCount
+        ];
+
+        // Returning JSON response
+        return response()->json($data);
+    }
+
+    public function mobileshowResearchInfo($id)
+    {
+        $research = DB::table('research_list')
+        ->where('id', $id)
+        ->first();
+
+        return response()->json($research);
     }
     //MOBILE END
 
