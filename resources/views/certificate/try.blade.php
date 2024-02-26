@@ -33,7 +33,5 @@
     {{ $title }}
     {{ $researcher1 }} --}}
 
-
-  
 </body>
 </html>

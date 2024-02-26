@@ -133,19 +133,15 @@ Route::get('/application/status/{id}', [
 ]);
 
 Route::get('/student/title-checker', [
-  'uses' => 'StudentController@titleCheckerPage',
-        'as' => 'student.title.checker'
-]);
-
-Route::post('/student/title-checker/search', [
-  'uses' => 'StudentController@countTitleOccurrences',
-        'as' => 'studentTitleCheckerSearch'
+  'uses' => 'StudentController@titleChecker',
+        'as' => 'student.titleChecker'
 ]);
 
 Route::get('/student/title-checker/search/show/{id}', [
   'uses' => 'StudentController@showResearchInfo',
         'as' => 'student.title.checker.show'
 ]);
+
 //END OF STUDENT POV
 
 //START STAFF POV
@@ -417,6 +413,11 @@ Route::get('/faculty/citation/{id}/edit', [
 Route::post('/faculty/citation/{id}/edit/updated', [
     'uses' => 'CitationController@facultyUpdateCitation',
           'as' => 'facultySpecificCitationUpdated'
+  ]);
+
+Route::get('/faculty/research-list', [
+    'uses' => 'FacultyController@searchResearchList',
+          'as' => 'searchResearchList'
   ]);
 //END OF FACULTY POV
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TechnicalAdviserApproval;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -607,20 +608,18 @@ class StudentController extends Controller
         return response()->json($specificData);
     }
 
-    public function titleCheckerPage()
+    public function titleChecker(Request $request)
     {
         $student = DB::table('students')
-        ->join('users','users.id','students.user_id')
-        ->select('students.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
 
-        $researchList = Research::all();
+        $query = $request->input('query');
+        $researchlist = Research::search($query)->paginate(10);
 
-        $researchCount = Research::count();
-
-        return View::make('students.titlechecker',compact('student','researchList','researchCount'));
-
+        return view('students.titlechecker', compact('researchlist', 'student'));
     }
 
     public function countTitleOccurrences(Request $request)
