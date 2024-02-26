@@ -22,9 +22,30 @@ class QrCodeController extends Controller
 {
     public function index()
     {
-      $qrCodeName = uniqid();
-      $qrCodeSvgPath = public_path("uploads/certificate/{$qrCodeName}.png");
-      QrCode::format('png')->size(50)->generate($qrCodeName, $qrCodeSvgPath);
+
+      $fileId = DB::table('files')
+        ->join('requestingform','requestingform.research_id','files.id')
+        ->select('requestingform.*','files.*')
+        ->where('requestingform.id', 21)
+        ->first();
+
+      $certificateReCount = DB::table('certificates')->count();
+      $certificateCount = ++$certificateReCount;
+
+      $currentYearMonth = date('Ym');
+
+      if ($certificateCount >= 1 && $certificateCount <= 9) {
+        $qrCodeName = $currentYearMonth . 0 . 0 . 0 . $certificateCount;
+      } else if ($certificateCount >= 10 && $certificateCount <= 99) {
+        $qrCodeName = $currentYearMonth . 0 . 0 . $certificateCount;
+      } else if ($certificateCount >= 100 && $certificateCount <= 999) {
+        $qrCodeName = $currentYearMonth . 0 . $certificateCount;
+      } else if ($certificateCount >= 1000) {
+        $qrCodeName = $currentYearMonth . $certificateCount;
+      }
+
+      $qrCodePath = public_path("uploads/certificate/image/{$qrCodeName}.png");
+      QrCode::format('png')->size(300)->generate($qrCodeName, $qrCodePath);
 
       $existingPdfPath = public_path("uploads/certificate/CertificateFormat.pdf");
 
@@ -38,60 +59,60 @@ class QrCodeController extends Controller
           $pdf->useTemplate($templateId);
      
           $pdf->SetFont('Arial', '', 12);
-          $pdf->SetXY(10, 80); 
+          $pdf->SetXY(10, 65); 
           $pdf->MultiCell(0, 10, ' This is to certify that the manuscript entitled ', 0, 'C');
 
           $pdf->SetFont('Arial', 'B', 12);
-          $pdf->SetXY(10, 90); 
-          $pdf->MultiCell(0, 10, ' "The Study on the Effectiveness of Coconut (Cocos nucifera) Shell
-          Powder as a Full Substitute in Wood Component of Wood-Plastic
-          Composite (WPC) Board"
-          ', 0, 'C');
+          $pdf->SetXY(10, 75); 
+          $pdf->MultiCell(0, 10, $fileId->research_title, 0, 'C');
 
           $pdf->SetFont('Arial', '', 12);
-          $pdf->SetXY(10, 130); 
+          $pdf->SetXY(10, 115); 
           $pdf->MultiCell(0, 10, ' authored by ', 0, 'C');
 
           $pdf->SetFont('Arial', 'B', 12);
+          $pdf->SetXY(10, 130); 
+          $pdf->MultiCell(0, 10, $fileId->researchers_name1, 0, 'C');
+          $pdf->SetXY(10, 135); 
+          $pdf->MultiCell(0, 10, $fileId->researchers_name2, 0, 'C');
           $pdf->SetXY(10, 140); 
-          $pdf->MultiCell(0, 10, ' Balbada, Joseph Andre B. ', 0, 'C');
-          $pdf->SetXY(10, 145); 
-          $pdf->MultiCell(0, 10, ' Dejan Ron Michael E. ', 0, 'C');
-          $pdf->SetXY(10, 150); 
-          $pdf->MultiCell(0, 10, ' Pedrozo, Aimer Jay G. ', 0, 'C');
+          $pdf->MultiCell(0, 10, $fileId->researchers_name3, 0, 'C');
 
           $pdf->SetFont('Arial', '', 12);
-          $pdf->SetXY(10, 160); 
-          $pdf->MultiCell(0, 5, ' has been subjected to similarity check on February 25, 2024
-          using Turnitin with generated similarity index of 15% ', 0, 'C');
-          $pdf->SetXY(10, 180); 
+          $pdf->SetXY(10, 150); 
+          $pdf->MultiCell(0, 5, 'has been subjected to similarity check on ' . $fileId->date_processing_end . 
+          ' using Turnitin with generated similarity index of ' . $fileId->simmilarity_percentage_results . '%', 0, 'C');
+          $pdf->SetXY(10, 170); 
           $pdf->MultiCell(0, 10, ' Processed by: ', 0, 'C');
 
           $pdf->SetFont('Arial', 'B', 12);
-          $pdf->SetXY(10, 190); 
-          $pdf->MultiCell(0, 10, ' Rico S. Santos, DIT ', 0, 'C');
+          $pdf->SetXY(10, 180); 
+          $pdf->MultiCell(0, 10, $fileId->research_staff, 0, 'C');
 
           $pdf->SetFont('Arial', 'I', 12);
-          $pdf->SetXY(10, 195); 
+          $pdf->SetXY(10, 185); 
           $pdf->MultiCell(0, 10, ' Head of Research & Development Services ', 0, 'C');
 
           $pdf->SetFont('Arial', '', 12);
-          $pdf->SetXY(10, 210); 
+          $pdf->SetXY(10, 200); 
           $pdf->MultiCell(0, 10, ' Certified Correct by: ', 0, 'C');
 
           $pdf->SetFont('Arial', 'B', 12);
-          $pdf->SetXY(10, 220); 
+          $pdf->SetXY(10, 210); 
           $pdf->MultiCell(0, 10, ' Laarnie D. Macapagal, DMS ', 0, 'C');
 
           $pdf->SetFont('Arial', 'I', 12);
-          $pdf->SetXY(10, 225); 
+          $pdf->SetXY(10, 215); 
           $pdf->MultiCell(0, 10, ' Assistant Director of Research & Extension Services ', 0, 'C');
 
-          $pdf->Image($qrCodeSvgPath, 18, 53, 25, 0, 'PNG');
+          $pdf->Image($qrCodePath, 18, 230, 20, 0, 'PNG');
+          $pdf->SetFont('Arial', 'I', 11);
+          $pdf->SetXY(16, 248); 
+          $pdf->MultiCell(0, 10, $qrCodeName, 0, 0);
         
       }
 
-      $pdf->Output('F', public_path("uploads/certificate/{$qrCodeName}.pdf"));
+      $pdf->Output('F', public_path("uploads/certificate/pdf/{$qrCodeName}.pdf"));
 
       return response()->json(['message' => 'PDF saved successfully']);
     }

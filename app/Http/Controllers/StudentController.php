@@ -622,26 +622,6 @@ class StudentController extends Controller
         return view('students.titlechecker', compact('researchlist', 'student'));
     }
 
-    public function countTitleOccurrences(Request $request)
-    {
-        $student = DB::table('students')
-        ->join('users','users.id','students.user_id')
-        ->select('students.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        $title = $request->input('research_title');
-
-        $researchList = DB::table('research_list')  
-        ->select('research_list.*') 
-        ->where('research_title', 'like', "%$title%") 
-        ->get(); 
-
-        $researchCount = Research::where('research_title', 'like', '%' . $title . '%')->count();
-
-        return View::make('students.titlechecker',compact('student','researchList','researchCount'));
-    }
-
     public function showResearchInfo($id)
     {
         $research = DB::table('research_list')

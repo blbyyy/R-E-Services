@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Spatie\Svg\Converter;
+use Spatie\Browsershot\Browsershot;
 use App\Models\Student;
 use App\Models\Staff;
 use App\Models\Faculty;
@@ -23,6 +25,11 @@ use App\Models\RequestingForm;
 use App\Models\Files;
 use App\Models\Research;
 use App\Http\Redirect;
+use setasign\Fpdi\Fpdi;
+use Dompdf\Dompdf;
+use Imagick;
+use TCPDF;
+use FPDF;
 use View;
 use DB;
 use File;
@@ -793,13 +800,27 @@ class AdminController extends Controller
         
         if ($request->hasFile('certification_file')) {
 
+            $certificateReCount = DB::table('certificates')->count();
+            $certificateCount = ++$certificateReCount;
+            $currentYearMonth = date('Ym');
+
+            if ($certificateCount >= 1 && $certificateCount <= 9) {
+                $qrCodeName = $currentYearMonth . 0 . 0 . 0 . $certificateCount;
+            } else if ($certificateCount >= 10 && $certificateCount <= 99) {
+                $qrCodeName = $currentYearMonth . 0 . 0 . $certificateCount;
+            } else if ($certificateCount >= 100 && $certificateCount <= 999) {
+                $qrCodeName = $currentYearMonth . 0 . $certificateCount;
+            } else if ($certificateCount >= 1000) {
+                $qrCodeName = $currentYearMonth . $certificateCount;
+            }
+
             $pdfFile = $request->file('certification_file');
             $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
             $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
             
             $cert = new Certificate();
             $cert->certificate_file = $pdfFileName;
-            $cert->control_id = uniqid();
+            $cert->control_id = $qrCodeName;
             $cert->save();
             $lastId = DB::getPdo()->lastInsertId();
 
@@ -825,27 +846,83 @@ class AdminController extends Controller
             ->where('certificate_id', $lastId)
             ->value('research_title');
 
-            $qrCodeName = $controlId;
-            $qrCodeSvgPath = public_path("uploads/certificate/{$qrCodeName}.svg");
-            QrCode::format('svg')->size(50)->generate($qrCodeName, $qrCodeSvgPath);
-            $pdf = PDF::loadView('certificate.try', [
-                'qrCode' => $qrCodeSvgPath,
-                'controlNumber' => $controlId,
-                'validator' => $specialist,
-                'title' => $researchTitle,
-                'researcher1' => $fileId->researchers_name1,
-                'researcher2' => $fileId->researchers_name2,
-                'researcher3' => $fileId->researchers_name3,
-                'researcher4' => $fileId->researchers_name4,
-                'researcher5' => $fileId->researchers_name5,
-                'researcher6' => $fileId->researchers_name6,
-                'researcher7' => $fileId->researchers_name7,
-                'researcher8' => $fileId->researchers_name8,
-            ]);
+            $latestFile = DB::table('files')
+            ->join('requestingform','requestingform.research_id','files.id')
+            ->select('requestingform.*','files.*')
+            ->where('requestingform.id',$id)
+            ->first();
 
-            $pdf->setPaper('a4');
+            $certificate = 'http://localhost:8000/certificate/' . $qrCodeName;
 
-            $pdf->save(public_path("uploads/certificate/{$qrCodeName}.pdf"));
+            $qrCodePath = public_path("uploads/certificate/image/{$qrCodeName}.png");
+            QrCode::format('png')->size(300)->generate($certificate, $qrCodePath);
+
+            $existingPdfPath = public_path("uploads/certificate/CertificateFormat.pdf");
+
+            $pdf = new Fpdi();
+            $pageCount = $pdf->setSourceFile($existingPdfPath);
+
+            for ($pageNumber = 1; $pageNumber <= $pageCount; $pageNumber++) {
+                $pdf->AddPage();
+      
+                $templateId = $pdf->importPage($pageNumber);
+                $pdf->useTemplate($templateId);
+           
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->SetXY(10, 65); 
+                $pdf->MultiCell(0, 10, ' This is to certify that the manuscript entitled ', 0, 'C');
+      
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->SetXY(10, 75); 
+                $pdf->MultiCell(0, 10, $latestFile->research_title, 0, 'C');
+      
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->SetXY(10, 115); 
+                $pdf->MultiCell(0, 10, ' authored by ', 0, 'C');
+      
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->SetXY(10, 130); 
+                $pdf->MultiCell(0, 10, $latestFile->researchers_name1, 0, 'C');
+                $pdf->SetXY(10, 135); 
+                $pdf->MultiCell(0, 10, $latestFile->researchers_name2, 0, 'C');
+                $pdf->SetXY(10, 140); 
+                $pdf->MultiCell(0, 10, $latestFile->researchers_name3, 0, 'C');
+      
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->SetXY(10, 150); 
+                $pdf->MultiCell(0, 5, 'has been subjected to similarity check on ' . $latestFile->date_processing_end . 
+                ' using Turnitin with generated similarity index of ' . $latestFile->simmilarity_percentage_results . '%', 0, 'C');
+                $pdf->SetXY(10, 170); 
+                $pdf->MultiCell(0, 10, ' Processed by: ', 0, 'C');
+      
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->SetXY(10, 180); 
+                $pdf->MultiCell(0, 10, $latestFile->research_staff, 0, 'C');
+      
+                $pdf->SetFont('Arial', 'I', 12);
+                $pdf->SetXY(10, 185); 
+                $pdf->MultiCell(0, 10, ' Head of Research & Development Services ', 0, 'C');
+      
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->SetXY(10, 200); 
+                $pdf->MultiCell(0, 10, ' Certified Correct by: ', 0, 'C');
+      
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->SetXY(10, 210); 
+                $pdf->MultiCell(0, 10, ' Laarnie D. Macapagal, DMS ', 0, 'C');
+      
+                $pdf->SetFont('Arial', 'I', 12);
+                $pdf->SetXY(10, 215); 
+                $pdf->MultiCell(0, 10, ' Assistant Director of Research & Extension Services ', 0, 'C');
+      
+                $pdf->Image($qrCodePath, 18, 230, 20, 0, 'PNG');
+                $pdf->SetFont('Arial', 'I', 11);
+                $pdf->SetXY(16, 248); 
+                $pdf->MultiCell(0, 10, $qrCodeName, 0, 0);
+              
+            }
+
+            $pdf->Output('F', public_path("uploads/certificate/pdf/{$qrCodeName}.pdf"));
         
             $data = [
                 'researchTitle' => $researchTitle,
