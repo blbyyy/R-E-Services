@@ -130,6 +130,10 @@ Route::get('/mobileapplication_status/status/{id}', 'App\Http\Controllers\Studen
 Route::get('/mobileshow_application/{id}', 'App\Http\Controllers\StudentController@mobileshow_application');
 Route::post('/mobilereApply', 'App\Http\Controllers\StudentController@mobilereApply');
 
+Route::get('/mobile/title-checker-page', 'App\Http\Controllers\StudentController@mobiletitleCheckerPage');
+Route::post('/mobile/count-title-occurrences', 'App\Http\Controllers\StudentController@mobilecountTitleOccurrences');
+Route::get('/mobile/show-research-info/{id}', 'App\Http\Controllers\StudentController@mobileshowResearchInfo');
+
 // Route::post('/apply-certification', 'App\Http\Controllers\RequestingFormController@apply_certifications');
 
 Route::get('/mobileadministration', [AdminController::class, 'mobileadministration']);

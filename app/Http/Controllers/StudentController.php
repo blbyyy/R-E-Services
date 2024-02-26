@@ -1133,6 +1133,66 @@ class StudentController extends Controller
             return response()->json(["form" => $form, "file" => $file ]);
 
     }
+
+    public function mobiletitleCheckerPage()
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $researchList = Research::all();
+
+        $researchCount = Research::count();
+
+        // Constructing the data to return as JSON
+        $data = [
+            'student' => $student,
+            'researchList' => $researchList,
+            'researchCount' => $researchCount
+        ];
+
+        // Returning JSON response
+        return response()->json($data);
+    }
+
+    public function mobilecountTitleOccurrences(Request $request)
+    {
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $title = $request->input('research_title');
+
+        $researchList = DB::table('research_list')
+            ->select('research_list.*')
+            ->where('research_title', 'like', "%$title%")
+            ->get();
+
+        $researchCount = Research::where('research_title', 'like', '%' . $title . '%')->count();
+
+        // Constructing the data to return as JSON
+        $data = [
+            'student' => $student,
+            'researchList' => $researchList,
+            'researchCount' => $researchCount
+        ];
+
+        // Returning JSON response
+        return response()->json($data);
+    }
+
+    public function mobileshowResearchInfo($id)
+    {
+        $research = DB::table('research_list')
+        ->where('id', $id)
+        ->first();
+
+        return response()->json($research);
+    }
     //MOBILE END
 
 
