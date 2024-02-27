@@ -821,3 +821,8 @@ Route::get('/researchesCourseCountTable', [
   'uses' => 'PdfController@researchesCourseCountTable',
         'as' => 'researchesCourseCountTable.pdf'
 ]);
+
+Route::get('/certificate/{control_id}', [
+  'uses' => 'QrCodeController@landingPage',
+        'as' => 'certificate.landingPage'
+]);
