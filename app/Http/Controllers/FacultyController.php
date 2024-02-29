@@ -610,6 +610,7 @@ class FacultyController extends Controller
                 
                 $form = RequestingForm::find($id);
                 $form->status = $request->technicalAdviserStatus;
+                $form->remarks = 'Your paper has been processed. Please wait for approval from your subject adviser.';
                 $form->save();
 
                 $file = Files::find($request->fileId1);
@@ -708,6 +709,7 @@ class FacultyController extends Controller
                 
                 $form = RequestingForm::find($id);
                 $form->status = $request->subjectAdviserStatus;
+                $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
                 $form->save();
 
                 $file = Files::find($request->fileId2);

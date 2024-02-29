@@ -429,6 +429,7 @@ class StudentController extends Controller
             $form->research_id = $request->research_id;
             $form->user_id = $student->user_id;
             $form->status = 'Pending Technical Adviser Approval';
+            $form->remarks = 'Your paper has been processed. Please wait for approval from your technical adviser.';
             $form->save();
 
             $file = Files::find($request->research_id);

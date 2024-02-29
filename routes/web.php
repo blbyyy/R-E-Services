@@ -740,7 +740,7 @@ Route::get('/certificate/tracking', [
             'as' => 'certificateTracking'
     ]);
 
-Route::get('/certificate/tracking/{id}', [
+Route::get('/certificate/tracking/{certId}', [
       'uses' => 'AdminController@show_certificate',
             'as' => 'certificate.get-specific-data'
     ]);

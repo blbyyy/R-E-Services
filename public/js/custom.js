@@ -859,19 +859,12 @@ $(document).ready(function () {
                         $("#status").html('<span class="badge border-warning border-1 text-danger"><h5>Returned</h5></span>');
                     } else if (data.status === "Passed") {
                         $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
-
-                        var pdfLink = $('<a>', {
-                            href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
-                            text: "Download PDF",
-                            target: "_blank"
-                        });
-                        $("#certificate").empty().append(pdfLink);
-
-                        $('#studentviewInfo').on('hidden.bs.modal', function () {
-                            $("#certificate").empty();
-                        });
                     }
 
+                    $("#technicalAdviser").text(data.TechnicalAdviserName);
+                    $("#taEmail").text(data.technicalAdviserEmail);
+                    $("#subjectAdviser").text(data.SubjectAdviserName);
+                    $("#saEmail").text(data.subjectAdviserEmail);
                     $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
                     $("#simmilarity_percentage_results").text(data.simmilarity_percentage_results + " %");
                     $("#requestor_name").text(data.requestor_name);
@@ -881,6 +874,7 @@ $(document).ready(function () {
                     $("#sex").text(data.sex);
                     $("#course").text(data.course);
                     $("#college").text(data.college);
+
 
                     if (data.researchers_name1 !== null) {
                         $("#r1").show();
@@ -1551,6 +1545,18 @@ $(document).ready(function () {
                                 case "Pending":
                                     color = "orange";
                                     break;
+                                case "Pending Technical Adviser Approval":
+                                    color = "orange";
+                                    break;
+                                case "Pending Subject Adviser Approval":
+                                        color = "orange";
+                                        break;
+                                case "Reject By Technical Adviser":
+                                            color = "red";
+                                            break;
+                                case "Reject By Subject Adviser":
+                                            color = "red";
+                                            break;
                                 default:
                                     color = "black";
                             }
@@ -1735,15 +1741,15 @@ $(document).ready(function () {
                     } else if (data.status === "Passed") {
                         $("#status").html('<span class="badge border-primary border-1 text-success"><h5>Passed</h5></span>');
 
-                        var pdfLink = $('<a>', {
-                            href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
-                            text: "Download PDF",
-                            target: "_blank"
-                        });
-                        $("#certificate").empty().append(pdfLink);
+                        // var pdfLink = $('<a>', {
+                        //     href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
+                        //     text: "Download PDF",
+                        //     target: "_blank"
+                        // });
+                        // $("#certificate").empty().append(pdfLink);
 
                     }
-
+                    $("#remarks").text(data.remarks);
                     $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
                     $("#simmilarity_percentage_results").text(data.simmilarity_percentage_results + " %");
                     $("#requestor_name").text(data.requestor_name);

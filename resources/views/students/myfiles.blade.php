@@ -20,8 +20,8 @@
     <div class="pagetitle">
         <h1>My Applications</h1>
     </div>
-    <div class="row g-4">
-        <div class="col-12">
+    <div class="row">
+        <div class="col-12" style="padding-bottom: 20px;">
             <button type="button" class="btn btn-dark" onclick="toggleFileUploadForm()"><i class="bi bi-folder-plus"></i> Upload Application</button>
         </div>
         
@@ -59,43 +59,43 @@
         
         @if(count($myfiles) > 0)
             @foreach($myfiles as $files)
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$files->research_title}}</h5>
-                            <div class="icon">
-                                <i class="bi bi-file-earmark-pdf"></i>
-                            </div>
-                        
-                            <center>
-                                <button type="button" class="btn btn-outline-dark studentshowpdfinfo" data-bs-toggle="modal" data-bs-target="#studentshowfiles" data-id="{{$files->id}}">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-dark studentfiledeleteBtn" data-id="{{$files->id}}">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-dark studentfilehistory" data-bs-toggle="modal" data-bs-target="#studentshowhistory" data-id="{{$files->id}}">
-                                    <i class="bi bi-clock-history"></i>
-                                </button>
-                            </center>
+                <div class="card mb-3">
+                    <div class="row">
+                      <div class="col-md-10 d-flex justify-content-center align-items-center">
+                          <div class="card-body">
+                              <h5 class="card-title">{{$files->research_title}}</h5>     
+                          </div>
+                      </div>
+                      <div class="col-md-2 d-flex justify-content-center align-items-center">
+                          <div>
+                            <button type="button" class="btn btn-outline-dark studentshowpdfinfo" data-bs-toggle="modal" data-bs-target="#studentshowfiles" data-id="{{$files->id}}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-dark studentfiledeleteBtn" data-id="{{$files->id}}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-dark studentfilehistory" data-bs-toggle="modal" data-bs-target="#studentshowhistory" data-id="{{$files->id}}">
+                                <i class="bi bi-clock-history"></i>
+                            </button>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+            @endforeach
+        @else
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <div class="icon">
+                            <i class="bi bi-folder2-open"></i>
+                        </div>
+                        <div class="body">
+                            <h2>Nothing has been uploaded here.</h2>
                         </div>
                     </div>
                 </div>
-            @endforeach
-        @else
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"></h5>
-                    <div class="icon">
-                        <i class="bi bi-folder2-open"></i>
-                    </div>
-                    <div class="body">
-                        <h2>Nothing has been uploaded here.</h2>
-                    </div>
-                </div>
             </div>
-        </div>
         @endif
     
         <div class="modal fade" id="studentshowfiles" tabindex="-1">
