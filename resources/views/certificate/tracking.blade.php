@@ -145,22 +145,22 @@
                                   <div id="thesis_type" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
+                                <div class="row" id="t1">
                                   <div class="col-lg-3 col-md-4 label">Technical Adviser</div>
                                   <div id="technicalAdviser" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
+                                <div class="row" id="t2">
                                   <div class="col-lg-3 col-md-4 label">Technical Adviser Email</div>
                                   <div id="taEmail" class="col-lg-9 col-md-8"></div>
                                 </div>
                                 
-                                <div class="row">
+                                <div class="row" id="s1">
                                   <div class="col-lg-3 col-md-4 label">Subject Adviser</div>
                                   <div id="subjectAdviser" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
+                                <div class="row" id="s2">
                                   <div class="col-lg-3 col-md-4 label">Subject Adviser Email</div>
                                   <div id="saEmail" class="col-lg-9 col-md-8"></div>
                                 </div>
@@ -202,7 +202,7 @@
                                   <div id="sex" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
+                                <div class="row" id="c1">
                                   <div class="col-lg-3 col-md-4 label">Course</div>
                                   <div id="course" class="col-lg-9 col-md-8"></div>
                                 </div>

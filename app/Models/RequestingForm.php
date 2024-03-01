@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class RequestingForm extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     public $table = "requestingform";
     public $timestamps = false;
@@ -52,5 +53,12 @@ class RequestingForm extends Model
         "date_processing_end",
         "user_id"
     ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'status' => $this->status,
+        ];
+    }
 
 }

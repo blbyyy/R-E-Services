@@ -215,6 +215,7 @@ class StudentController extends Controller
         ->join('students', 'students.user_id', '=', 'users.id') 
         ->select('files.*') 
         ->where('files.user_id', Auth::id())
+        ->orderBy('files.id', 'desc') 
         ->get();
 
         return View::make('students.myfiles',compact('student','myfiles'));
@@ -329,6 +330,8 @@ class StudentController extends Controller
         ->join('students', 'students.user_id', '=', 'users.id')
         ->select('files.*') 
         ->where('files.user_id', Auth::id())
+        ->orderByRaw("CASE WHEN files.file_status = 'Available' THEN 0 ELSE 1 END")
+        ->orderBy('files.file_status') 
         ->get();
 
         $advisers = DB::table('faculty')
@@ -582,6 +585,7 @@ class StudentController extends Controller
         ->join('files', 'files.id', 'requestingform.research_id')
         ->select('requestingform.*', 'files.research_title')
         ->where('requestingform.user_id', Auth::id())
+        ->orderBy('requestingform.id', 'desc')
         ->get();
 
         return View::make('students.applicationstatus',compact('student', 'studentstats'));

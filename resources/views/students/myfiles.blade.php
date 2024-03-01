@@ -80,7 +80,7 @@
                           </div>
                       </div>
                     </div>
-                  </div>
+                </div>
             @endforeach
         @else
             <div class="col-md-12">

@@ -389,7 +389,6 @@ Route::post('/faculty/student-applications/subjectAdviser/approval/{id}/sent', [
           'as' => 'subjectAdviserApprovalSent'
   ]);
 
-
 Route::get('/faculty/citation', [
     'uses' => 'CitationController@facultyCitationCount',
           'as' => 'facultyCitationCount'
@@ -418,6 +417,16 @@ Route::post('/faculty/citation/{id}/edit/updated', [
 Route::get('/faculty/research-list', [
     'uses' => 'FacultyController@searchResearchList',
           'as' => 'searchResearchList'
+  ]);
+
+Route::get('/faculty/research/templates', [
+    'uses' => 'FacultyController@researchTemplates',
+          'as' => 'researchTemplates'
+  ]);
+
+Route::get('/faculty/extension/templates', [
+    'uses' => 'FacultyController@extensionTemplates',
+          'as' => 'extensionTemplates'
   ]);
 //END OF FACULTY POV
 

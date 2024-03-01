@@ -20,8 +20,8 @@
     <div class="pagetitle">
         <h1>My Files</h1>
     </div>
-    <div class="row g-4">
-        <div class="col-12">
+    <div class="row">
+        <div class="col-12" style="padding-bottom: 20px;">
             <button type="button" class="btn btn-dark" onclick="toggleFileUploadForm()"><i class="bi bi-folder-plus"></i> Upload File</button>
         </div>
         
@@ -35,6 +35,10 @@
                         <div class="col-12">
                             <label for="research_title" class="form-label">Research Title</label>
                             <input type="text" class="form-control" id="research_title" name="research_title">
+                        </div>
+                        <div class="col-12">
+                            <label for="abstract" class="form-label">Research Abstract</label>
+                            <textarea name="abstract" class="form-control" id="abstract" style="height: 300px;"></textarea>
                         </div>
                         <div class="col-12">
                             <label for="research_file" class="form-label">Research File</label>
@@ -54,26 +58,26 @@
         
         @if(count($myfiles) > 0)
             @foreach($myfiles as $files)
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$files->research_title}}</h5>
-                            <div class="icon">
-                                <i class="bi bi-file-earmark-pdf"></i>
-                            </div>
-                        
-                            <center>
-                                <button type="button" class="btn btn-outline-dark facultyshowpdfinfo" data-bs-toggle="modal" data-bs-target="#facultyshowfiles" data-id="{{$files->id}}">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-dark facultyfiledeleteBtn" data-id="{{$files->id}}">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-dark facultyfilehistory" data-bs-toggle="modal" data-bs-target="#facultyshowhistory" data-id="{{$files->id}}">
-                                    <i class="bi bi-clock-history"></i>
-                                </button>
-                            </center>
-                        </div>
+                <div class="card mb-3">
+                    <div class="row">
+                      <div class="col-md-10 d-flex justify-content-center align-items-center">
+                          <div class="card-body">
+                              <h5 class="card-title">{{$files->research_title}}</h5>     
+                          </div>
+                      </div>
+                      <div class="col-md-2 d-flex justify-content-center align-items-center">
+                          <div>
+                            <button type="button" class="btn btn-outline-dark facultyshowpdfinfo" data-bs-toggle="modal" data-bs-target="#facultyshowfiles" data-id="{{$files->id}}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-dark facultyfiledeleteBtn" data-id="{{$files->id}}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-dark facultyfilehistory" data-bs-toggle="modal" data-bs-target="#facultyshowhistory" data-id="{{$files->id}}">
+                                <i class="bi bi-clock-history"></i>
+                            </button>
+                          </div>
+                      </div>
                     </div>
                 </div>
             @endforeach

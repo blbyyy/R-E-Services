@@ -20,23 +20,35 @@
   <div class="pagetitle">
     <h1>Applications Status</h1>
 </div>
-<div class="row g-4">
+<div class="row">
   @if(count($facultystats) > 0)
     @foreach($facultystats as $stats)
-      <div class="col-md-4">
-          <div class="card">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-10 d-flex justify-content-center align-items-center">
               <div class="card-body">
-                <h5 class="card-title">{{$stats->research_title}}<span>({{$stats->status}})</span></h5>
-                <div class="icon">
-                  <i class="bi bi-file-earmark-pdf"></i>
-                </div>
-                  <center>
-                    <button type="button" class="btn btn-outline-dark facultyViewDetails" data-bs-toggle="modal" data-bs-target="#facultyViewInfo" data-id="{{ $stats->id }}">
-                      <i class="bi bi-info-circle"> View Details</i>
-                    </button>
-                  </center>
+                  <h5 class="card-title">{{$stats->research_title}} 
+                    <span>({{$stats->submission_frequency}})</span>
+                  </h5>
+                  
+                  @if ($stats->status === 'Passed')
+                    <span class="badge rounded-pill bg-success">{{$stats->status}}</span>
+                  @elseif ($stats->status === 'Returned')
+                    <span class="badge rounded-pill bg-danger">{{$stats->status}}</span>
+                  @else 
+                    <span class="badge rounded-pill bg-warning">{{$stats->status}}</span>
+                  @endif
+                    
               </div>
           </div>
+          <div class="col-md-2 d-flex justify-content-center align-items-center">
+              <div>
+                  <button type="button" class="btn btn-outline-dark facultyViewDetails" data-bs-toggle="modal" data-bs-target="#facultyViewInfo" data-id="{{ $stats->id }}">
+                    <i class="bi bi-info-circle"> View Details</i>
+                  </button>
+              </div>
+          </div>
+        </div>
       </div>
     @endforeach
   @else
@@ -118,8 +130,8 @@
                           </div>
 
                           <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Certificate</div>
-                            <div id="certificate" class="col-lg-9 col-md-8"></div>
+                            <div class="col-lg-3 col-md-4 label">Remarks</div>
+                            <div id="remarks" class="col-lg-9 col-md-8"></div>
                           </div>
 
                           <h5 class="card-title">Researchers Details</h5>
@@ -147,11 +159,6 @@
                           <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Gender</div>
                             <div id="sex" class="col-lg-9 col-md-8"></div>
-                          </div>
-        
-                          <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Course</div>
-                            <div id="course" class="col-lg-9 col-md-8"></div>
                           </div>
         
                           <div class="row">

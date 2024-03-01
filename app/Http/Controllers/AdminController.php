@@ -988,29 +988,47 @@ class AdminController extends Controller
                 'certificates.control_id',
                 'certificates.certificate_file')  
             ->get();
-        
+
         return View::make('certificate.tracking',compact('admin','certificates','staff'));
     }
 
     public function show_certificate($certId)
     {
-        $specificData = DB::table('requestingform')
-        ->join('files', 'files.id', 'requestingform.research_id')
-        ->join('users', 'users.id', 'requestingform.user_id')
-        ->join('faculty as technical_adviser', 'technical_adviser.id', '=', 'requestingform.technicalAdviser_id')
-        ->join('faculty as subject_adviser', 'subject_adviser.id', '=', 'requestingform.subjectAdviser_id')
-        ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
-        ->select(
-            'requestingform.*', 
-            'files.*',
-            'certificates.certificate_file',
-            'certificates.control_id',
-            'technical_adviser.id as technical_adviser_id',
-            'subject_adviser.id as subject_adviser_id',
-            DB::raw("CONCAT(technical_adviser.fname, ' ', technical_adviser.lname, ' ', technical_adviser.mname) as TechnicalAdviserName"),
-            DB::raw("CONCAT(subject_adviser.fname, ' ', subject_adviser.lname, ' ', subject_adviser.mname) as SubjectAdviserName"))
-        ->where('requestingform.certificate_id', $certId)
-        ->first();
+        $checker = DB::table('requestingform')
+            ->where('certificate_id', $certId)
+            ->value('requestor_type');
+
+        if ($checker === 'Faculty') {
+            $specificData = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->select(
+                'requestingform.*', 
+                'files.*',
+                'certificates.certificate_file',
+                'certificates.control_id',)
+            ->where('requestingform.certificate_id', $certId)
+            ->first();
+        } else {
+            $specificData = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('faculty as technical_adviser', 'technical_adviser.id', '=', 'requestingform.technicalAdviser_id')
+            ->join('faculty as subject_adviser', 'subject_adviser.id', '=', 'requestingform.subjectAdviser_id')
+            ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->select(
+                'requestingform.*', 
+                'files.*',
+                'certificates.certificate_file',
+                'certificates.control_id',
+                'technical_adviser.id as technical_adviser_id',
+                'subject_adviser.id as subject_adviser_id',
+                DB::raw("CONCAT(technical_adviser.fname, ' ', technical_adviser.lname, ' ', technical_adviser.mname) as TechnicalAdviserName"),
+                DB::raw("CONCAT(subject_adviser.fname, ' ', subject_adviser.lname, ' ', subject_adviser.mname) as SubjectAdviserName"))
+            ->where('requestingform.certificate_id', $certId)
+            ->first();
+        }
 
         return response()->json($specificData);
     }

@@ -24,7 +24,6 @@
           </div>
         </form>
 
-
         @if($applications->isEmpty())
           <table class="table table-hover">
               <thead>

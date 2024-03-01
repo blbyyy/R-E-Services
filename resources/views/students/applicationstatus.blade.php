@@ -27,7 +27,10 @@
         <div class="row g-0">
           <div class="col-md-10 d-flex justify-content-center align-items-center">
               <div class="card-body">
-                  <h5 class="card-title">{{$stats->research_title}}</h5>
+                  <h5 class="card-title">{{$stats->research_title}} 
+                    <span>({{$stats->submission_frequency}})</span>
+                  </h5>
+                  
                   @if ($stats->status === 'Passed')
                     <span class="badge rounded-pill bg-success">{{$stats->status}}</span>
                   @elseif ($stats->status === 'Returned')

@@ -834,6 +834,24 @@ $(document).ready(function () {
                 success: function(data) {
                     console.log(data);
 
+                    if (data.requestor_type === 'Faculty') {
+                        $("#t1").hide();
+                        $("#t2").hide();
+                        $("#s1").hide();
+                        $("#s2").hide();
+                        $("#c1").hide();
+                    } else {
+                        $("#t1").show();
+                        $("#t2").show();
+                        $("#s1").show();
+                        $("#s2").show();
+                        $("#c1").show();
+                        $("#technicalAdviser").text(data.TechnicalAdviserName);
+                        $("#taEmail").text(data.technicalAdviserEmail);
+                        $("#subjectAdviser").text(data.SubjectAdviserName);
+                        $("#saEmail").text(data.subjectAdviserEmail);
+                    }
+
                     $("#research_title").text(data.research_title);
                     $("#thesis_type").text(data.thesis_type);
                     $("#submission_frequency").text(data.submission_frequency);
@@ -861,10 +879,6 @@ $(document).ready(function () {
                         $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
                     }
 
-                    $("#technicalAdviser").text(data.TechnicalAdviserName);
-                    $("#taEmail").text(data.technicalAdviserEmail);
-                    $("#subjectAdviser").text(data.SubjectAdviserName);
-                    $("#saEmail").text(data.subjectAdviserEmail);
                     $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
                     $("#simmilarity_percentage_results").text(data.simmilarity_percentage_results + " %");
                     $("#requestor_name").text(data.requestor_name);
@@ -872,9 +886,7 @@ $(document).ready(function () {
                     $("#email").text(data.tup_mail);
                     $("#requestor_type").text(data.requestor_type);
                     $("#sex").text(data.sex);
-                    $("#course").text(data.course);
                     $("#college").text(data.college);
-
 
                     if (data.researchers_name1 !== null) {
                         $("#r1").show();
@@ -2726,7 +2738,7 @@ $(document).ready(function () {
                 url: '/faculty/application/status/' + id, 
                 type: 'GET',
                 success: function(data) {
-                    console.log(data.certificate_file);
+                    console.log(data);
 
                     $("#research_title").text(data.research_title);
                     $("#thesis_type").text(data.thesis_type);
@@ -2741,20 +2753,8 @@ $(document).ready(function () {
                         $("#status").html('<span class="badge border-warning border-1 text-danger"><h5>Returned</h5></span>');
                     } else if (data.status === "Passed") {
                         $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
-
-                        var pdfLink = $('<a>', {
-                            href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
-                            text: "Download PDF",
-                            target: "_blank"
-                        });
-                    
-                        $("#certificate").empty().append(pdfLink);
-
-                        $('#staffviewInfo').on('hidden.bs.modal', function () {
-                            $("#certificate").empty();
-                        });
-
                     }
+
                     $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
                     $("#simmilarity_percentage_results").text(data.simmilarity_percentage_results + " %");
                     $("#requestor_name").text(data.requestor_name);
@@ -2762,8 +2762,9 @@ $(document).ready(function () {
                     $("#tup_mail").text(data.tup_mail);
                     $("#requestor_type").text(data.requestor_type);
                     $("#sex").text(data.sex);
-                    $("#course").text(data.course);
                     $("#college").text(data.college);
+                    $("#remarks").text(data.remarks);
+
                     if (data.researchers_name1 !== null) {
                         $("#r1").show();
                         $("#researchers_name1").text(data.researchers_name1);
