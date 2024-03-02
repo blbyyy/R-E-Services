@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\FacultyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,4 +142,11 @@ Route::put('/mobileupdateadministration/{id}', [AdminController::class, 'mobileu
 Route::get('/mobileeditadministrationrole/{id}', [AdminController::class, 'mobileeditAdministrationRole']);
 Route::put('/mobileupdateadministrationrole/{id}', [AdminController::class, 'mobileupdateAdministrationRole']);
 Route::delete('/mobiledeleteadministration/{id}', [AdminController::class, 'mobiledeleteAdministration']);
+
+Route::get('/mobile/students/application/{id}', [FacultyController::class, 'mobilestudents_application']);
+Route::get('/mobile/students/application/specific/{id}', [FacultyController::class, 'mobilestudents_application_specific']);
+Route::get('/mobile/technicalAdviser/approval/{id}', [FacultyController::class, 'mobiletechnicalAdviserApproval']);
+Route::post('/mobile/sending/technicalAdviser/approval/{id}', [FacultyController::class, 'mobilesendingTechnicalAdviserApproval']);
+Route::get('/mobile/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesubjectAdviserApproval']);
+Route::post('/mobile/sending/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesendingSubjectAdviserApproval']);
 //MOBILE END
