@@ -389,7 +389,6 @@ Route::post('/faculty/student-applications/subjectAdviser/approval/{id}/sent', [
           'as' => 'subjectAdviserApprovalSent'
   ]);
 
-
 Route::get('/faculty/citation', [
     'uses' => 'CitationController@facultyCitationCount',
           'as' => 'facultyCitationCount'
@@ -418,6 +417,16 @@ Route::post('/faculty/citation/{id}/edit/updated', [
 Route::get('/faculty/research-list', [
     'uses' => 'FacultyController@searchResearchList',
           'as' => 'searchResearchList'
+  ]);
+
+Route::get('/faculty/research/templates', [
+    'uses' => 'FacultyController@researchTemplates',
+          'as' => 'researchTemplates'
+  ]);
+
+Route::get('/faculty/extension/templates', [
+    'uses' => 'FacultyController@extensionTemplates',
+          'as' => 'extensionTemplates'
   ]);
 //END OF FACULTY POV
 
@@ -740,7 +749,7 @@ Route::get('/certificate/tracking', [
             'as' => 'certificateTracking'
     ]);
 
-Route::get('/certificate/tracking/{id}', [
+Route::get('/certificate/tracking/{certId}', [
       'uses' => 'AdminController@show_certificate',
             'as' => 'certificate.get-specific-data'
     ]);
@@ -782,9 +791,19 @@ Route::post('/admin/applicationlist/specific-status', [
         'as' => 'admin.applicationlist.specific-status'
 ]);
 
+Route::get('/admin/applicationlist/{id}', [
+  'uses' => 'AdminController@showApplicationlistInfo',
+        'as' => 'admin.applicationlist.show'
+]);
+
 Route::get('/admin/researchlist', [
   'uses' => 'AdminController@researchlist',
         'as' => 'admin.researchlist'
+]);
+
+Route::get('/admin/researchlist/{id}', [
+  'uses' => 'AdminController@showResearchInfo',
+        'as' => 'admin.researchlist.show'
 ]);
 
 Route::post('/admin/researchlist/specific-department', [
@@ -820,4 +839,9 @@ Route::get('/researchesDepartmentCountTable', [
 Route::get('/researchesCourseCountTable', [
   'uses' => 'PdfController@researchesCourseCountTable',
         'as' => 'researchesCourseCountTable.pdf'
+]);
+
+Route::get('/certificate/{control_id}', [
+  'uses' => 'QrCodeController@landingPage',
+        'as' => 'certificate.landingPage'
 ]);

@@ -385,102 +385,6 @@ class AdminController extends Controller
         return redirect()->to('/announcements');
     }
 
-    public function applicationlist()
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        $applications = DB::table('requestingform')
-        ->join('files','files.id','requestingform.research_id')
-        ->select('files.*','requestingform.*')
-        ->get();
-
-        return View::make('admin.applicationlist',compact('applications','admin'));
-    }
-
-    public function selectedSpecificStatus(Request $request)
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        if ($request->applicationStatus === 'Pending') {
-            $applications = DB::table('requestingform')
-            ->join('files','files.id','requestingform.research_id')
-            ->select('files.*','requestingform.*')
-            ->where('requestingform.status', 'Pending')
-            ->get();
-        } elseif ($request->applicationStatus === 'Passed') {
-            $applications = DB::table('requestingform')
-            ->join('files','files.id','requestingform.research_id')
-            ->select('files.*','requestingform.*')
-            ->where('requestingform.status', 'Passed')
-            ->get();
-        } elseif ($request->applicationStatus === 'Returned') {
-            $applications = DB::table('requestingform')
-            ->join('files','files.id','requestingform.research_id')
-            ->select('files.*','requestingform.*')
-            ->where('requestingform.status', 'Returned')
-            ->get();
-        } elseif ($request->applicationStatus === 'All') {
-            $applications = DB::table('requestingform')
-            ->join('files','files.id','requestingform.research_id')
-            ->select('files.*','requestingform.*')
-            ->get();
-        }
-
-        return View::make('admin.applicationlist',compact('applications','admin'));
-    }
-
-    public function researchlist()
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        $researches = Research::orderBy('id')->get();
-
-        return View::make('admin.researchlist',compact('researches','admin'));
-    }
-
-    public function selectedSpecificDepartment(Request $request)
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        if ($request->researchDepartment === 'EAAD') {
-            $researches = Research::orderBy('id')
-            ->where('department', 'EAAD')
-            ->get();
-        } elseif ($request->researchDepartment === 'MAAD') {
-            $researches = Research::orderBy('id')
-            ->where('department', 'MAAD')
-            ->get();
-        } elseif ($request->researchDepartment === 'CAAD') {
-            $researches = Research::orderBy('id')
-            ->where('department', 'CAAD')
-            ->get();
-        } elseif ($request->researchDepartment === 'BASD') {
-            $researches = Research::orderBy('id')
-            ->where('department', 'BASD')
-            ->get();
-        } elseif ($request->researchDepartment === 'All') {
-            $researches = Research::orderBy('id')->get();
-        }
-
-        return View::make('admin.researchlist',compact('researches','admin'));
-    }
-
     public function studentlist()
     {
         $admin = DB::table('staff')
@@ -798,7 +702,7 @@ class AdminController extends Controller
         $userEmail = $fileId->tup_mail;
         $userName = $fileId->requestor_name;
         
-        if ($request->hasFile('certification_file')) {
+        if ($request->status === 'Passed') {
 
             $certificateReCount = DB::table('certificates')->count();
             $certificateCount = ++$certificateReCount;
@@ -813,13 +717,8 @@ class AdminController extends Controller
             } else if ($certificateCount >= 1000) {
                 $qrCodeName = $currentYearMonth . $certificateCount;
             }
-
-            $pdfFile = $request->file('certification_file');
-            $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-            $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
             
             $cert = new Certificate();
-            $cert->certificate_file = $pdfFileName;
             $cert->control_id = $qrCodeName;
             $cert->save();
             $lastId = DB::getPdo()->lastInsertId();
@@ -830,6 +729,7 @@ class AdminController extends Controller
             $form->research_specialist = $specialist;
             $form->research_staff = $specialist;
             $form->date_processing_end = now();
+            $form->remarks = 'Your certificate is ready to be picked up. Please visit the R&E Services Office to collect it.';
             $form->certificate_id = $lastId;
             $form->save();
 
@@ -853,6 +753,8 @@ class AdminController extends Controller
             ->first();
 
             $certificate = 'http://localhost:8000/certificate/' . $qrCodeName;
+
+            $date = \Carbon\Carbon::parse($latestFile->date_processing_end)->format('F d, Y');
 
             $qrCodePath = public_path("uploads/certificate/image/{$qrCodeName}.png");
             QrCode::format('png')->size(300)->generate($certificate, $qrCodePath);
@@ -890,7 +792,7 @@ class AdminController extends Controller
       
                 $pdf->SetFont('Arial', '', 12);
                 $pdf->SetXY(10, 150); 
-                $pdf->MultiCell(0, 5, 'has been subjected to similarity check on ' . $latestFile->date_processing_end . 
+                $pdf->MultiCell(0, 5, 'has been subjected to similarity check on ' . $date . 
                 ' using Turnitin with generated similarity index of ' . $latestFile->simmilarity_percentage_results . '%', 0, 'C');
                 $pdf->SetXY(10, 170); 
                 $pdf->MultiCell(0, 10, ' Processed by: ', 0, 'C');
@@ -946,6 +848,7 @@ class AdminController extends Controller
             $form->date_processing_end = now();
             $form->research_specialist = $specialist;
             $form->research_staff = $specialist;
+            $form->remarks = 'The requirements for certifying your application as passed have not been met.';
             $form->save();
 
             $file = Files::find($fileId->id);
@@ -985,28 +888,51 @@ class AdminController extends Controller
             ->select(
                 'requestingform.*', 
                 'files.*', 
-                'certificates.id as certid', 
+                'certificates.id as certId', 
                 'certificates.control_id',
                 'certificates.certificate_file')  
-            ->get(); 
-        
+            ->get();
+
         return View::make('certificate.tracking',compact('admin','certificates','staff'));
     }
 
-    public function show_certificate($id)
+    public function show_certificate($certId)
     {
-        $specificData = DB::table('requestingform')
-        ->join('files', 'files.id', 'requestingform.research_id')
-        ->join('users', 'users.id', 'requestingform.user_id')
-        ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
-        ->select(
-            'requestingform.*', 
-            'files.*',
-            'certificates.id as certid',
-            "certificates.control_id",
-            'certificates.certificate_file')
-        ->where('requestingform.certificate_id', 3)
-        ->first();
+        $checker = DB::table('requestingform')
+            ->where('certificate_id', $certId)
+            ->value('requestor_type');
+
+        if ($checker === 'Faculty') {
+            $specificData = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->select(
+                'requestingform.*', 
+                'files.*',
+                'certificates.certificate_file',
+                'certificates.control_id',)
+            ->where('requestingform.certificate_id', $certId)
+            ->first();
+        } else {
+            $specificData = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('faculty as technical_adviser', 'technical_adviser.id', '=', 'requestingform.technicalAdviser_id')
+            ->join('faculty as subject_adviser', 'subject_adviser.id', '=', 'requestingform.subjectAdviser_id')
+            ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->select(
+                'requestingform.*', 
+                'files.*',
+                'certificates.certificate_file',
+                'certificates.control_id',
+                'technical_adviser.id as technical_adviser_id',
+                'subject_adviser.id as subject_adviser_id',
+                DB::raw("CONCAT(technical_adviser.fname, ' ', technical_adviser.lname, ' ', technical_adviser.mname) as TechnicalAdviserName"),
+                DB::raw("CONCAT(subject_adviser.fname, ' ', subject_adviser.lname, ' ', subject_adviser.mname) as SubjectAdviserName"))
+            ->where('requestingform.certificate_id', $certId)
+            ->first();
+        }
 
         return response()->json($specificData);
     }
@@ -1027,7 +953,7 @@ class AdminController extends Controller
             ->select(
                 'requestingform.*', 
                 'files.*', 
-                'certificates.id as certid', 
+                'certificates.id as certId', 
                 'certificates.control_id',
                 'certificates.certificate_file') 
             ->where('certificates.control_id', 'like', "%$controlNumber%") 
@@ -1312,7 +1238,164 @@ class AdminController extends Controller
         return response()->json($data);
     }
 
+    public function applicationlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
 
+        $applications = DB::table('requestingform')
+        ->join('files','files.id','requestingform.research_id')
+        ->select('files.*','requestingform.*')
+        ->get();
+
+        return View::make('admin.applicationlist',compact('applications','admin'));
+    }
+
+    public function selectedSpecificStatus(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->applicationStatus === 'Pending') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Pending')
+            ->get();
+        } elseif ($request->applicationStatus === 'Passed') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Passed')
+            ->get();
+        } elseif ($request->applicationStatus === 'Returned') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Returned')
+            ->get();
+        } elseif ($request->applicationStatus === 'All') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->get();
+        }
+
+        return View::make('admin.applicationlist',compact('applications','admin'));
+    }
+
+    public function showApplicationlistInfo($id)
+    {
+        $checker = DB::table('requestingform')
+            ->where('id', $id)
+            ->value('requestor_type');
+
+        if ($checker === 'Faculty') {
+            $specificData = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->select(
+                'requestingform.*', 
+                'files.*',
+                'certificates.certificate_file',
+                'certificates.control_id',)
+            ->where('requestingform.id', $id)
+            ->first();
+        } else {
+            $specificData = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('faculty as technical_adviser', 'technical_adviser.id', '=', 'requestingform.technicalAdviser_id')
+            ->join('faculty as subject_adviser', 'subject_adviser.id', '=', 'requestingform.subjectAdviser_id')
+            ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->select(
+                'requestingform.*', 
+                'files.*',
+                'certificates.certificate_file',
+                'certificates.control_id',
+                'technical_adviser.id as technical_adviser_id',
+                'subject_adviser.id as subject_adviser_id',
+                DB::raw("CONCAT(technical_adviser.fname, ' ', technical_adviser.lname, ' ', technical_adviser.mname) as TechnicalAdviserName"),
+                DB::raw("CONCAT(subject_adviser.fname, ' ', subject_adviser.lname, ' ', subject_adviser.mname) as SubjectAdviserName"))
+            ->where('requestingform.id', $id)
+            ->first();
+        }
+
+        return response()->json($specificData);
+    }
+
+    public function deleteApplicationInfo(string $id)
+    {
+        $application = RequestingForm::findOrFail($id);
+        $application->delete();
+        $data = array('success' =>'deleted','code'=>'200');
+        return response()->json($data);
+    }
+
+    public function researchlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $researches = Research::orderBy('id')->get();
+
+        return View::make('admin.researchlist',compact('researches','admin'));
+    }
+
+    public function selectedSpecificDepartment(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->researchDepartment === 'EAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'EAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'MAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'MAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'CAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'CAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'BASD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'BASD')
+            ->get();
+        } elseif ($request->researchDepartment === 'All') {
+            $researches = Research::orderBy('id')->get();
+        }
+
+        return View::make('admin.researchlist',compact('researches','admin'));
+    }
+
+    public function showResearchInfo($id)
+    {
+        $research = Research::find($id);
+        return response()->json($research);
+    }
+
+    public function deleteResearchInfo(string $id)
+    {
+        $research = Research::findOrFail($id);
+        $research->delete();
+        $data = array('success' =>'deleted','code'=>'200');
+        return response()->json($data);
+    }
     
 
     //MOBILE START

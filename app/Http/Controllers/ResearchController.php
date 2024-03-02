@@ -17,7 +17,7 @@ use Auth;
 
 class ResearchController extends Controller
 {
-    public function researchlist()
+    public function researchlist(Request $request)
     {
         $admin = DB::table('staff')
         ->join('users','users.id','staff.user_id')
@@ -25,7 +25,9 @@ class ResearchController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        $researchlist = Research::orderBy('id')->get();
+        $query = $request->input('query');
+        $researchlist = Research::search($query)->paginate(10);
+
         return View::make('research.researchlist',compact('researchlist','admin'));
     }
 

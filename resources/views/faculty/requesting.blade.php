@@ -21,45 +21,47 @@
     <h1>Apply for Certification</h1>
   </div>
 
-  <div class="row g-4">
+  <div class="row">
     @if(count($myfiles) > 0)
       @foreach($myfiles as $files)
       @if($files->file_status == 'Pending')
-          <div class="col-md-4">
-              <div class="card">
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-10 d-flex justify-content-center align-items-center">
                   <div class="card-body">
-                      <h5 class="card-title">{{$files->research_title}}</h5>
-                      <div class="icon">
-                          <i class="bi bi-file-earmark-pdf"></i>
-                      </div>
-                  
-                      <center>
-                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="This file is currently undergoing certification.">
-                            Apply Certification
-                          </button>
-                      </center>
+                      <h5 class="card-title">{{$files->research_title}}</h5>   
+                      <span class="badge rounded-pill bg-warning">{{$files->file_status}}</span>    
                   </div>
               </div>
+              <div class="col-md-2 d-flex justify-content-center align-items-center">
+                  <div>
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This file is currently undergoing certification.">
+                      Apply Certification
+                    </button>
+                  </div>
+              </div>
+            </div>
           </div>
       @elseif($files->file_status == 'Passed')
-          <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{$files->research_title}}</h5>
-                    <div class="icon">
-                        <i class="bi bi-file-earmark-pdf"></i>
-                    </div>
-                
-                    <center>
-                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="This file is already passed the certification.">
-                          Apply Certification
-                        </button>
-                    </center>
-                </div>
+          <div class="card mb-3">
+            <div class="row">
+              <div class="col-md-10 d-flex justify-content-center align-items-center">
+                  <div class="card-body">
+                      <h5 class="card-title">{{$files->research_title}}</h5>   
+                      <span class="badge rounded-pill bg-success">{{$files->file_status}}</span>    
+                  </div>
+              </div>
+              <div class="col-md-2 d-flex justify-content-center align-items-center">
+                  <div>
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This file is already passed the certification.">
+                      Apply Certification
+                    </button>
+                  </div>
+              </div>
             </div>
           </div>
       @elseif($files->file_status == 'Returned')
-          <div class="col-md-4">
+          {{-- <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{$files->research_title}}</h5>
@@ -75,9 +77,26 @@
 
                 </div>
             </div>
+          </div> --}}
+          <div class="card mb-3">
+            <div class="row">
+              <div class="col-md-10 d-flex justify-content-center align-items-center">
+                  <div class="card-body">
+                      <h5 class="card-title">{{$files->research_title}}</h5>   
+                      <span class="badge rounded-pill bg-danger">{{$files->file_status}}</span>    
+                  </div>
+              </div>
+              <div class="col-md-2 d-flex justify-content-center align-items-center">
+                  <div>
+                    <button type="button" class="btn btn-outline-dark facultyReApplyGetId" data-bs-toggle="modal" data-bs-target="#FacultyReApplyCertification" data-id="{{$files->id}}">
+                        Re-submit an Application
+                    </button>
+                  </div>
+              </div>
+            </div>
           </div>
       @else
-            <div class="col-md-4">
+            {{-- <div class="col-md-4">
               <div class="card">
                   <div class="card-body">
                       <h5 class="card-title">{{$files->research_title}}</h5>
@@ -92,6 +111,23 @@
                       </center>
 
                   </div>
+              </div>
+            </div> --}}
+            <div class="card mb-3">
+              <div class="row">
+                <div class="col-md-10 d-flex justify-content-center align-items-center">
+                    <div class="card-body">
+                        <h5 class="card-title">{{$files->research_title}}</h5>   
+                        <span class="badge rounded-pill bg-secondary">{{$files->file_status}}</span>    
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center align-items-center">
+                    <div>
+                      <button type="button" class="btn btn-outline-dark facultyApplyGetId" data-bs-toggle="modal" data-bs-target="#facultyapplycertification" data-id="{{$files->id}}">
+                        Apply Certification
+                      </button>  
+                    </div>
+                </div>
               </div>
             </div>
         @endif
@@ -130,12 +166,13 @@
             <div class="col-md-6">
               <div class="form-floating">
                 <select name="thesis_type" class="form-select" id="thesis_type" aria-label="State">
-                  <option value=""></option>
-                  <option value="Undergaduate Thesis">Undergraduate Thesis</option>
-                  <option value="Masters Thesis">Capstone</option>
-                  <option value="Special Project">Special Project</option>
-                  <option value="Master's Thesis">Master's Thesis</option>
-                  <option value="Doctoral Disertation">Doctoral Disertation</option>
+                  <option value="">--- Select Thesis Type ---</option>
+                  <option value="Research Study">Research Study</option>
+                  <option value="Thesis" disabled>Thesis</option>
+                  <option value="Capstone Project" disabled>Capstone Project</option>
+                  <option value="Project study" disabled>Project Study</option>
+                  <option value="Special Research Project" disabled>Special Research Project</option>
+                  <option value="Feasibility Study" disabled>Feasibility Study</option>
                 </select>
                 <label for="thesis_type">Type of Thesis</label>
               </div>
@@ -144,25 +181,18 @@
             <div class="col-md-6">
               <div class="form-floating">
                 <select name="requestor_type" class="form-select" id="requestor_type" aria-label="State">
-                  <option value=""></option>
-                  <option value="Graduate Student">Graduate Student</option>
-                  <option value="Undergraduate Student">Undergraduate Student</option>
+                  <option value="">--- Select Requestor Type ---</option>
+                  <option value="Undergraduate Student" disabled>Undergraduate Student</option>
                   <option value="Faculty">Faculty</option>
                 </select>
                 <label for="requestor_type">Requestor Type</label>
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="form-floating">
                   <input name="college" class="form-control" id="college" placeholder="College">
                   <label for="college">College</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                  <input name="course" class="form-control" id="course" placeholder="Course">
-                  <label for="course">Course</label>
               </div>
             </div>
 

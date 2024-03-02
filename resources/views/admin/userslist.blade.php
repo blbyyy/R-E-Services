@@ -57,7 +57,7 @@
             <tbody>
               @foreach ($users as $user)
                 <tr>
-                  <td>
+                  <td style="width: 152px">
                       <button data-id="{{$user->user_id}}" type="button" class="btn btn-info userlistShowBtn" data-bs-toggle="modal" data-bs-target="#showUserInfo"><i class="bi bi-eye"></i></button>
                       <button data-id="{{$user->user_id}}" type="button" class="btn btn-primary editUserBtn" data-bs-toggle="modal" data-bs-target="#editUserInfo"><i class="bi bi-pencil-square"></i></button>
                       <button data-id="{{$user->user_id}}" type="button" class="btn btn-danger deleteUserBtn"><i class="bi bi-trash"></i></button>

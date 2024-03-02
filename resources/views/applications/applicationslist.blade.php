@@ -166,16 +166,16 @@
 
                 <input name="file_id" type="hidden" class="form-control" id="file_id">
 
-                <div class="col-md-12">
-                  <div class="form-floating">
-                      <select name="status" class="form-select" id="status" aria-label="State">
-                          <option selected>Choose....</option>
-                          <option value="Passed">Passed</option>
-                          <option value="Returned">Returned</option>
-                      </select>
-                      <label for="status">Status</label>
+                  <div class="col-md-12">
+                    <div class="form-floating">
+                        <select name="status" class="form-select" id="status" aria-label="State">
+                            <option selected>Choose....</option>
+                            <option value="Passed">Passed</option>
+                            <option value="Returned">Returned</option>
+                        </select>
+                        <label for="status">Status</label>
+                    </div>
                   </div>
-                </div>
 
                   <div class="col-12">
                       <div class="form-floating">
@@ -184,12 +184,12 @@
                       </div>
                   </div>
 
-                  <div class="col-12" id="certificationFileContainer" style="display: none;">
+                  {{-- <div class="col-12" id="certificationFileContainer" style="display: none;">
                     <div class="form-floating">
                         <input name="certification_file" type="file" class="form-control" id="certification_file" placeholder="Certification File">
                         <label for="certification_file">Certification File</label>
                     </div>
-                  </div>
+                  </div> --}}
 
                   <div class="col-12" style="padding-top: 20px">
                     <div class="d-flex justify-content-end">
@@ -214,16 +214,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
-    document.getElementById('status').addEventListener('change', function () {
-          var certificationFileContainer = document.getElementById('certificationFileContainer');
+    // document.getElementById('status').addEventListener('change', function () {
+    //       var certificationFileContainer = document.getElementById('certificationFileContainer');
 
-          // Toggle the display of the certificationFileContainer based on the selected status
-          if (this.value === 'Passed') {
-              certificationFileContainer.style.display = 'block';
-          } else {
-              certificationFileContainer.style.display = 'none';
-          }
-      });
+    //       // Toggle the display of the certificationFileContainer based on the selected status
+    //       if (this.value === 'Passed') {
+    //           certificationFileContainer.style.display = 'block';
+    //       } else {
+    //           certificationFileContainer.style.display = 'none';
+    //       }
+    //   });
 
       $('#viewapplicationInfo').on('hidden.bs.modal', function () {
               // Assuming your form has an ID of certificationform

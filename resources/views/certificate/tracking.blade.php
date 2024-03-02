@@ -20,7 +20,7 @@
                 <form class="row g-3" method="POST" action="{{ route('certificateFetchData') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="col-12">
-                        <label for="controlId" class="form-label">Enter the unique control number in this field.</label>
+                        <label for="controlId" class="form-label">Enter the unique Control ID in this field.</label>
                         <input type="text" class="form-control" id="controlId" name="controlId">
                     </div>
     
@@ -63,25 +63,27 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Actions</th>
-                            <th scope="col">QrCode</th>
-                            <th scope="col">Control Number</th>
-                            <th scope="col">Requestor Name</th>
-                            <th scope="col">Research Title</th>
-                            <th scope="col">Processing End Date</th>
+                          <th scope="col">Actions</th>
+                          <th scope="col">Control ID</th>
+                          <th scope="col">Requestor Name</th>
+                          <th scope="col">Research Title</th>
+                          <th scope="col">Certificate</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($certificates as $certificate)
                         <tr>
                             <td>
-                                <button data-id="{{$certificate->certid}}" type="button" class="btn btn-primary showCertificate" data-bs-toggle="modal" data-bs-target="#certificateInfo"><i class="bi bi-eye"></i></button>
+                                <button data-id="{{$certificate->certId}}" type="button" class="btn btn-primary showCertificate" data-bs-toggle="modal" data-bs-target="#certificateInfo"><i class="bi bi-eye"></i></button>
                             </td>
-                            <td>{!! QrCode::size(50)->generate($certificate->control_id) !!}</td>
-                            <td>{{$certificate->control_id}}</td>
+                            <td><b>{{$certificate->control_id}}</b></td>
                             <td>{{$certificate->requestor_name}}</td>
                             <td>{{$certificate->research_title}}</td>
-                            <td>{{$certificate->date_processing_end}}</td>
+                            <td>
+                              <a href="{{ asset('uploads/certificate/pdf/' . $certificate->control_id . '.pdf') }}" target="_blank">
+                                  Print Certificate
+                              </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -135,11 +137,6 @@
                                     <div class="col-lg-3 col-md-4 label">Certification Control Number</div>
                                     <div id="control_id" class="col-lg-9 col-md-8"></div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label">Certificate</div>
-                                    <div id="certificate" class="col-lg-9 col-md-8"></div>
-                                </div>
                                 
                                 <h5 class="card-title">Research Details</h5>
               
@@ -148,14 +145,24 @@
                                   <div id="thesis_type" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
-                                  <div class="col-lg-3 col-md-4 label">Adviser Name</div>
-                                  <div id="adviser_name" class="col-lg-9 col-md-8"></div>
+                                <div class="row" id="t1">
+                                  <div class="col-lg-3 col-md-4 label">Technical Adviser</div>
+                                  <div id="technicalAdviser" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
-                                  <div class="col-lg-3 col-md-4 label">Adviser Email</div>
-                                  <div id="adviser_email" class="col-lg-9 col-md-8"></div>
+                                <div class="row" id="t2">
+                                  <div class="col-lg-3 col-md-4 label">Technical Adviser Email</div>
+                                  <div id="taEmail" class="col-lg-9 col-md-8"></div>
+                                </div>
+                                
+                                <div class="row" id="s1">
+                                  <div class="col-lg-3 col-md-4 label">Subject Adviser</div>
+                                  <div id="subjectAdviser" class="col-lg-9 col-md-8"></div>
+                                </div>
+              
+                                <div class="row" id="s2">
+                                  <div class="col-lg-3 col-md-4 label">Subject Adviser Email</div>
+                                  <div id="saEmail" class="col-lg-9 col-md-8"></div>
                                 </div>
               
                                 <div class="row">
@@ -195,7 +202,7 @@
                                   <div id="sex" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
+                                <div class="row" id="c1">
                                   <div class="col-lg-3 col-md-4 label">Course</div>
                                   <div id="course" class="col-lg-9 col-md-8"></div>
                                 </div>

@@ -23,7 +23,7 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->increments('id');
             $table->text('research_title');
-            $table->string('abstract');
+            $table->longText('abstract');
             $table->string('research_file');
             $table->text('file_status')->nullable();
             $table->integer('user_id')->unsigned()->nullable();

@@ -117,4 +117,40 @@ class QrCodeController extends Controller
       return response()->json(['message' => 'PDF saved successfully']);
     }
 
+    public function landingPage($control_id)
+    {
+        $admin = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+    
+        $student = DB::table('students')
+            ->join('users','users.id','students.user_id')
+            ->select('students.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+        
+        $staff = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+    
+        $faculty = DB::table('faculty')
+            ->join('users','users.id','faculty.user_id')
+            ->select('faculty.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
+        $certificate = DB::table('requestingform')
+            ->join('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.*', 'certificates.*','files.*')
+            ->where('certificates.control_id', $control_id)
+            ->first();
+    
+        return View::make('certificate.landingPage',compact('admin','student','staff','faculty','certificate'));
+    }
+
 }

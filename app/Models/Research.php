@@ -42,6 +42,7 @@ class Research extends Model
             'research_title' => $this->research_title,
             'department' => $this->department,
             'course' => $this->course,
+            'date_completion' => $this->date_completion,
         ];
     }
 }

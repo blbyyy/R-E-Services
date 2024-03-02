@@ -89,6 +89,16 @@ Route::delete('/admin/userlist/{id}/deleted', [
     'uses' => 'AdminController@deleteUserInfo',
           'as' => 'admin.deleteUserInfo'
   ]);
+  
+Route::delete('/admin/applicationlist/{id}/deleted', [
+    'uses' => 'AdminController@deleteApplicationInfo',
+          'as' => 'admin.deleteApplicationInfo'
+  ]);
+
+Route::delete('/admin/researchlist/{id}/deleted', [
+    'uses' => 'AdminController@deleteResearchInfo',
+          'as' => 'admin.deleteResearchInfo'
+  ]);
 
 //MOBILE START
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');

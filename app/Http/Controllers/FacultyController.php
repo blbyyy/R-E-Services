@@ -179,9 +179,10 @@ class FacultyController extends Controller
 
         $myfiles = DB::table('files')
         ->join('users', 'users.id', '=', 'files.user_id')
-        ->join('faculty', 'faculty.user_id', '=', 'users.id') // Join with the students table
-        ->select('files.*') // Select columns from requestingform, users, and students
+        ->join('faculty', 'faculty.user_id', '=', 'users.id')
+        ->select('files.*') 
         ->where('files.user_id', Auth::id())
+        ->orderBy('files.id', 'desc') 
         ->get();
 
         return View::make('faculty.myfiles',compact('faculty','myfiles'));
@@ -196,6 +197,7 @@ class FacultyController extends Controller
         $file = new Files;
         $file->file_status = 'Available';
         $file->research_title = $request->research_title;
+        $file->abstract = $request->abstract;
 
         $pdfFile = $request->file('research_file');
         $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
@@ -296,6 +298,8 @@ class FacultyController extends Controller
         ->join('faculty', 'faculty.user_id', '=', 'users.id')
         ->select('files.*') 
         ->where('files.user_id', Auth::id())
+        ->orderByRaw("CASE WHEN files.file_status = 'Available' THEN 0 ELSE 1 END")
+        ->orderBy('files.file_status') 
         ->get();
 
         $advisers = DB::table('faculty')
@@ -354,14 +358,6 @@ class FacultyController extends Controller
                 $form->initial_simmilarity_percentage = $latestPercentage;
             } 
 
-            // $form->adviser_id = $request->adviser_id;
-
-            // $adviser_email = DB::table('faculty')
-            // ->where('id', $request->adviser_id)
-            // ->value('email');
-
-            // $form->adviser_email = $adviser_email;
-
             $form->research_specialist = 'tba';
             $form->research_staff = 'tba';
             $form->tup_id = $faculty->email;
@@ -370,7 +366,6 @@ class FacultyController extends Controller
             $form->sex = $faculty->gender;
             $form->requestor_type = $request->requestor_type;
             $form->college = $request->college;
-            $form->course = $request->course;
             $form->purpose = 'Certification';
             $form->researchers_name1 = $request->researchers_name1;
             $form->researchers_name2 = $request->researchers_name2;
@@ -385,6 +380,7 @@ class FacultyController extends Controller
             $form->research_id = $request->research_id;
             $form->user_id = $faculty->user_id;
             $form->status = 'Pending';
+            $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
             $form->save();
 
             $file = Files::find($request->research_id);
@@ -443,13 +439,6 @@ class FacultyController extends Controller
             $form->simmilarity_percentage_results = 0;
             $form->advisors_turnitin_precheck = 'Yes';
             $form->initial_simmilarity_percentage = $latestPercentage;
-            $form->adviser_id = $latestApplication->adviser_id;
-
-            $adviser_email = DB::table('faculty')
-            ->where('id', $latestApplication->adviser_id)
-            ->value('email');
-
-            $form->adviser_email = $adviser_email;
             
             $form->research_specialist = 'tba';
             $form->tup_id = $latestApplication->tup_id;
@@ -458,7 +447,6 @@ class FacultyController extends Controller
             $form->sex = $latestApplication->sex;
             $form->requestor_type = $latestApplication->requestor_type;
             $form->college = $latestApplication->college;
-            $form->course = $latestApplication->course;
             $form->purpose = $latestApplication->purpose;
             $form->researchers_name1 = $latestApplication->researchers_name1;
             $form->researchers_name2 = $latestApplication->researchers_name2;
@@ -474,6 +462,7 @@ class FacultyController extends Controller
             $form->research_id = $latestApplication->research_id;
             $form->user_id = $latestApplication->user_id;
             $form->status = 'Pending';
+            $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
             $form->save();
 
             if ($submission === 'First Submission') {
@@ -514,6 +503,7 @@ class FacultyController extends Controller
         ->join('files', 'files.id', 'requestingform.research_id')
         ->select('requestingform.*', 'files.research_title')
         ->where('requestingform.user_id', Auth::id())
+        ->orderBy('requestingform.id', 'desc')
         ->get();
 
         return View::make('faculty.applicationstatus',compact('faculty', 'facultystats'));
@@ -530,7 +520,6 @@ class FacultyController extends Controller
         ->first();
 
         return response()->json($specificData);
-
     }
 
     public function getfile_id($id)
@@ -610,6 +599,7 @@ class FacultyController extends Controller
                 
                 $form = RequestingForm::find($id);
                 $form->status = $request->technicalAdviserStatus;
+                $form->remarks = 'Your paper has been processed. Please wait for approval from your subject adviser.';
                 $form->save();
 
                 $file = Files::find($request->fileId1);
@@ -708,6 +698,7 @@ class FacultyController extends Controller
                 
                 $form = RequestingForm::find($id);
                 $form->status = $request->subjectAdviserStatus;
+                $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
                 $form->save();
 
                 $file = Files::find($request->fileId2);
