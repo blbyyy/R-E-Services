@@ -138,7 +138,7 @@
 
           <table class="table table-hover">
             <thead>
-              <tr>
+              <tr class="text-center">
                 <th scope="col">Actions</th>
                 <th scope="col">Research Title</th>
                 <th scope="col">Date</th>
@@ -149,7 +149,7 @@
             </thead>
             <tbody>
                 @foreach ($facultyCitation as $facultyCitations)
-                    <tr>
+                    <tr class="text-center">
                         <td>
                             <button data-id="{{$facultyCitations->id}}" type="button" class="btn btn-info citationShowBtn" data-bs-toggle="modal" data-bs-target="#showCitaionInfo"><i class="bi bi-eye"></i></button>
                             <button data-id="{{$facultyCitations->id}}" type="button" class="btn btn-primary citationEditBtn" data-bs-toggle="modal" data-bs-target="#editCitationInfo"><i class="bi bi-pencil-square"></i></button>

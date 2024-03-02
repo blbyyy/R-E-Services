@@ -27,7 +27,7 @@
 
           <table class="table table-hover">
             <thead>
-              <tr>
+              <tr class="text-center">
                 <th scope="col">Actions</th>
                 <th scope="col">Student Name</th>
                 <th scope="col">Research Title</th>
@@ -36,7 +36,7 @@
             </thead>
             @foreach ($application as $applications)
             <tbody>
-              <tr>
+              <tr class="text-center">
                 <td> 
                   <button data-id="{{$applications->id}}" type="button" class="btn btn-info showStudentApplication" data-bs-toggle="modal" data-bs-target="#showStudentApplicationInfo"><i class="bi bi-info-lg"></i></button>
                   @if ($applications->status === 'Pending Technical Adviser Approval')

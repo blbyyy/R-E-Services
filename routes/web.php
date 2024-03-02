@@ -419,6 +419,11 @@ Route::get('/faculty/research-list', [
           'as' => 'searchResearchList'
   ]);
 
+Route::get('/faculty/research-list/{id}', [
+    'uses' => 'FacultyController@showResearchInfo',
+          'as' => 'showResearchInfo'
+  ]);
+
 Route::get('/faculty/research/templates', [
     'uses' => 'FacultyController@researchTemplates',
           'as' => 'researchTemplates'

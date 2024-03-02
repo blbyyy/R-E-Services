@@ -779,6 +779,12 @@ class FacultyController extends Controller
         return view('faculty.researchlist', compact('researchlist', 'faculty'));
     }
 
+    public function showResearchInfo($id)
+    {
+        $research = Research::find($id);
+        return response()->json($research);
+    }
+
     public function researchTemplates()
     {
         $faculty = DB::table('faculty')
