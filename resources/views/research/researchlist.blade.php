@@ -144,62 +144,23 @@
     </div>
   </div>
 
+    <form class="row g-3" action="{{ route('research.list') }}" method="GET">
+      <div class="col-9">
+          <input type="text" class="form-control" name="query">
+      </div>
+      <div class="col-1">
+          <button type="submit" class="btn btn-dark" style="height: 40px; width: 70px;"><i class="bi bi-search"></i></button>
+      </div>
+      <div class="col-2">
+          <a href="{{url('/researchlist')}}">
+              <button type="button" class="btn btn-dark"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+          </a>
+      </div>
+    </form>
+
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Research List</h5>
-
-            <div class="col-12">
-              <button type="button" class="btn btn-dark" onclick="toggleFilterBy()"><i class="bi bi-sliders"></i> Advance Filter</button>
-            </div>
-
-            <fieldset class="row mb-3" style="display: none; padding-top: 10px;" id="filterBy">
-              <div class="col-sm-12">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="search" id="departments" value="option2">
-                  <label class="form-check-label" for="departments">
-                    Department
-                  </label>
-                </div>
-                <div class="form-check disabled">
-                  <input class="form-check-input" type="radio" name="search" id="courses" value="option3">
-                  <label class="form-check-label" for="courses">
-                    Course
-                  </label>
-                </div>
-            </fieldset>
-
-              <div id="courseForm" class="col-md-6" style="display: none;">
-                <select name="coursesearch" class="form-select" id="coursesearch" aria-label="State">
-                        <option value="CHOOSE.....">Choose Course</option>
-                        <option value="All">All</option>
-                        <option value="BSIT">BSIT</option>
-                        <option value="ECE">ECE</option>
-                        <option value="BSCE">BSCE</option>
-                        <option value="BSME">BSME</option>
-                </select>
-              </div>
-
-              <div id="deptForm" class="col-md-6" style="display: none;">
-                <select name="deptsearch" class="form-select" id="deptsearch" aria-label="State">
-                        <option value="CHOOSE.....">Choose Department</option>
-                        <option value="All">All</option>
-                        <option value="EAAD">EAAD</option>
-                        <option value="CAAD">CAAD</option>
-                        <option value="MAAD">MAAD</option>
-                        <option value="BSAD">BSAD</option>
-                </select>
-              </div>
-
-              <div id="searchBar" style="display: block;">
-                <div id="searchForm" class="d-flex justify-content-end" style="padding-top: 30px">
-                  <div class="col-md-6 d-flex" style="height: 40px;">
-                    <input type="text" id="searchtype" name="searchtype" class="form-control">
-                    <button type="submit" class="btn btn-outline-dark"><i class="bi bi-search"></i></button>
-                  </div>
-                </div>
-              </div>
-
-            <hr>
 
           <table class="table table-bordered">
               <thead>
@@ -233,14 +194,6 @@
                       </tr>
                   @endforeach
               </tbody>
-              <!-- "No Data" message inside the table -->
-              <tfoot id="noDataMessage" style="display: none;">
-                  <tr>
-                    <td colspan="6" class="text-center" style="padding-top: 20px; padding-bottom: 20px">
-                      <h5 class="icon"><i class="bi bi-journal-x"></i> No Data</h5>
-                  </td>
-                  </tr>
-              </tfoot>
           </table>
           
           <div class="modal fade" id="showresearchinfo" tabindex="-1">

@@ -121,7 +121,7 @@
                                   <div id="simmilarity_percentage_results" class="col-lg-9 col-md-8"></div>
                               </div>
 
-                              <div class="row">
+                              <div class="row" id="controlId">
                                   <div class="col-lg-3 col-md-4 label">Certification Control Number</div>
                                   <div id="control_id" class="col-lg-9 col-md-8"></div>
                               </div>

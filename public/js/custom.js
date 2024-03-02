@@ -1471,8 +1471,14 @@ $(document).ready(function () {
                     $("#submission_frequency").text(data.submission_frequency);
                     $("#adviser_name").text(data.adviser_name);
                     $("#adviser_email").text(data.adviser_email);
-                    $("#control_id").text(data.control_id);
 
+                    if (data.control_id === null) {
+                        $("#controlId").hide();
+                    } else {
+                        $("#controlId").show();
+                        $("#control_id").text(data.control_id);
+                    }
+                    
                     if (data.research_specialist === null) {
                         $("#research_specialist").text('tba');
                     } else {
