@@ -26,7 +26,6 @@
     <div style="text-align: center;">
         <h3>Applications Count Table</h3>
     </div>
-    <img src="{{ asset('uploads/qrcode/65da3fde9bc54.svg') }}" alt="Your SVG Image">
     <table class="table table-hover">
         <thead>
             <tr>
