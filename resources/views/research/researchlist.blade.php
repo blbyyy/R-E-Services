@@ -223,12 +223,12 @@
                                   <div class="col-lg-3 col-md-4 label ">Abstract</div>
                                   <div id="researchabstract" class="col-lg-9 col-md-8"></div>
                                 </div>
-
+  
                                 <div class="row">
                                   <div class="col-lg-3 col-md-4 label ">Department</div>
                                   <div id="researchdepartment" class="col-lg-9 col-md-8"></div>
                                 </div>
-
+  
                                 <div class="row">
                                   <div class="col-lg-3 col-md-4 label ">Course</div>
                                   <div id="researchcourse" class="col-lg-9 col-md-8"></div>
@@ -236,52 +236,52 @@
                                 
                                 <h5 class="card-title">Research Details</h5>
               
-                                <div class="row">
+                                <div class="row" id="a1">
                                   <div class="col-lg-3 col-md-4 label ">Faculty Adviser 1</div>
                                   <div id="facultyadviser1" class="col-lg-9 col-md-8"></div>
                                 </div>
-
-                                <div class="row">
+  
+                                <div class="row" id="a2">
                                   <div class="col-lg-3 col-md-4 label ">Faculty Adviser 2</div>
                                   <div id="facultyadviser2" class="col-lg-9 col-md-8"></div>
                                 </div>
-
-                                <div class="row">
+  
+                                <div class="row" id="a3">
                                   <div class="col-lg-3 col-md-4 label ">Faculty Adviser 3</div>
                                   <div id="facultyadviser3" class="col-lg-9 col-md-8"></div>
                                 </div>
-
-                                <div class="row">
+  
+                                <div class="row" id="a4">
                                   <div class="col-lg-3 col-md-4 label ">Faculty Adviser 4</div>
                                   <div id="facultyadviser4" class="col-lg-9 col-md-8"></div>
                                 </div>
-
-                                <div class="row">
+  
+                                <div class="row" id="r1">
                                   <div class="col-lg-3 col-md-4 label ">Researcher 1</div>
                                   <div id="researchers1" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
+                                <div class="row" id="r2">
                                   <div class="col-lg-3 col-md-4 label">Researcher 2</div>
                                   <div id="researchers2" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
+                                <div class="row" id="r3">
                                   <div class="col-lg-3 col-md-4 label">Researcher 3</div>
                                   <div id="researchers3" class="col-lg-9 col-md-8"></div>
                                 </div>
                                 
-                                <div class="row">
+                                <div class="row" id="r4">
                                   <div class="col-lg-3 col-md-4 label ">Researcher 4</div>
                                   <div id="researchers4" class="col-lg-9 col-md-8"></div>
                                 </div>
               
-                                <div class="row">
+                                <div class="row" id="r5">
                                   <div class="col-lg-3 col-md-4 label">Researcher 5</div>
                                   <div id="researchers5" class="col-lg-9 col-md-8"></div>
                                 </div>
-
-                                <div class="row">
+  
+                                <div class="row" id="r6">
                                   <div class="col-lg-3 col-md-4 label">Researcher 6</div>
                                   <div id="researchers6" class="col-lg-9 col-md-8"></div>
                                 </div>

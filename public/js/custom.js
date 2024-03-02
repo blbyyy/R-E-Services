@@ -522,18 +522,71 @@ $(document).ready(function () {
                     $("#researchabstract").text( data.abstract);
                     $("#researchdepartment").text( data.department);
                     $("#researchcourse").text( data.course);
-                    $("#facultyadviser1").text(data.faculty_adviser1);
-                    $("#facultyadviser2").text(data.faculty_adviser2);
-                    $("#facultyadviser3").text(data.faculty_adviser3);
-                    $("#facultyadviser4").text(data.faculty_adviser4);
-                    $("#researchers1").text(data.researcher1);
-                    $("#researchers2").text(data.researcher2);
-                    $("#researchers3").text(data.researcher3);
-                    $("#researchers4").text(data.researcher4);
-                    $("#researchers5").text(data.researcher5);
-                    $("#researchers6").text(data.researcher6);
+
+                    if (data.faculty_adviser1 !== null) {
+                        $("#a1").show();
+                        $("#facultyadviser1").text(data.faculty_adviser1);
+                    } else {
+                        $("#a1").hide();
+                    }
+                    if (data.faculty_adviser2 !== null) {
+                        $("#a2").show();
+                        $("#facultyadviser2").text(data.faculty_adviser2);
+                    } else {
+                        $("#a2").hide();
+                    }
+                    if (data.faculty_adviser3 !== null) {
+                        $("#a3").show();
+                        $("#facultyadviser3").text(data.faculty_adviser3);
+                    } else {
+                        $("#a3").hide();
+                    }
+                    if (data.faculty_adviser4 !== null) {
+                        $("#a4").show();
+                        $("#facultyadviser4").text(data.faculty_adviser4);
+                    } else {
+                        $("#a4").hide();
+                    }
+
+                    if (data.researcher1 !== null) {
+                        $("#r1").show();
+                        $("#researchers1").text(data.researcher1);
+                    } else {
+                        $("#r1").hide();
+                    }
+                    if (data.researcher2 !== null) {
+                        $("#r2").show();
+                        $("#researchers2").text(data.researcher2);
+                    } else {
+                        $("#r2").hide();
+                    }
+                    if (data.researcher3 !== null) {
+                        $("#r3").show();
+                        $("#researchers3").text(data.researcher3);
+                    } else {
+                        $("#r3").hide();
+                    }
+                    if (data.researcher4 !== null) {
+                        $("#r4").show();
+                        $("#researchers4").text(data.researcher4);
+                    } else {
+                        $("#r4").hide();
+                    }
+                    if (data.researcher5 !== null) {
+                        $("#r5").show();
+                        $("#researchers5").text(data.researcher5);
+                    } else {
+                        $("#r5").hide();
+                    }
+                    if (data.researcher6 !== null) {
+                        $("#r6").show();
+                        $("#researchers6").text(data.researcher6);
+                    } else {
+                        $("#r6").hide();
+                    }
+
                     $("#timeframe").text(data.time_frame);
-                    $("#datecompletion").text(data.date_completion);      
+                    $("#datecompletion").text(data.date_completion);;      
                 },
                 error: function (error) {
                     console.log(error);
