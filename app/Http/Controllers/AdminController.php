@@ -385,102 +385,6 @@ class AdminController extends Controller
         return redirect()->to('/announcements');
     }
 
-    public function applicationlist()
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        $applications = DB::table('requestingform')
-        ->join('files','files.id','requestingform.research_id')
-        ->select('files.*','requestingform.*')
-        ->get();
-
-        return View::make('admin.applicationlist',compact('applications','admin'));
-    }
-
-    public function selectedSpecificStatus(Request $request)
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        if ($request->applicationStatus === 'Pending') {
-            $applications = DB::table('requestingform')
-            ->join('files','files.id','requestingform.research_id')
-            ->select('files.*','requestingform.*')
-            ->where('requestingform.status', 'Pending')
-            ->get();
-        } elseif ($request->applicationStatus === 'Passed') {
-            $applications = DB::table('requestingform')
-            ->join('files','files.id','requestingform.research_id')
-            ->select('files.*','requestingform.*')
-            ->where('requestingform.status', 'Passed')
-            ->get();
-        } elseif ($request->applicationStatus === 'Returned') {
-            $applications = DB::table('requestingform')
-            ->join('files','files.id','requestingform.research_id')
-            ->select('files.*','requestingform.*')
-            ->where('requestingform.status', 'Returned')
-            ->get();
-        } elseif ($request->applicationStatus === 'All') {
-            $applications = DB::table('requestingform')
-            ->join('files','files.id','requestingform.research_id')
-            ->select('files.*','requestingform.*')
-            ->get();
-        }
-
-        return View::make('admin.applicationlist',compact('applications','admin'));
-    }
-
-    public function researchlist()
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        $researches = Research::orderBy('id')->get();
-
-        return View::make('admin.researchlist',compact('researches','admin'));
-    }
-
-    public function selectedSpecificDepartment(Request $request)
-    {
-        $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        if ($request->researchDepartment === 'EAAD') {
-            $researches = Research::orderBy('id')
-            ->where('department', 'EAAD')
-            ->get();
-        } elseif ($request->researchDepartment === 'MAAD') {
-            $researches = Research::orderBy('id')
-            ->where('department', 'MAAD')
-            ->get();
-        } elseif ($request->researchDepartment === 'CAAD') {
-            $researches = Research::orderBy('id')
-            ->where('department', 'CAAD')
-            ->get();
-        } elseif ($request->researchDepartment === 'BASD') {
-            $researches = Research::orderBy('id')
-            ->where('department', 'BASD')
-            ->get();
-        } elseif ($request->researchDepartment === 'All') {
-            $researches = Research::orderBy('id')->get();
-        }
-
-        return View::make('admin.researchlist',compact('researches','admin'));
-    }
-
     public function studentlist()
     {
         $admin = DB::table('staff')
@@ -1334,7 +1238,164 @@ class AdminController extends Controller
         return response()->json($data);
     }
 
+    public function applicationlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
 
+        $applications = DB::table('requestingform')
+        ->join('files','files.id','requestingform.research_id')
+        ->select('files.*','requestingform.*')
+        ->get();
+
+        return View::make('admin.applicationlist',compact('applications','admin'));
+    }
+
+    public function selectedSpecificStatus(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->applicationStatus === 'Pending') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Pending')
+            ->get();
+        } elseif ($request->applicationStatus === 'Passed') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Passed')
+            ->get();
+        } elseif ($request->applicationStatus === 'Returned') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->where('requestingform.status', 'Returned')
+            ->get();
+        } elseif ($request->applicationStatus === 'All') {
+            $applications = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->select('files.*','requestingform.*')
+            ->get();
+        }
+
+        return View::make('admin.applicationlist',compact('applications','admin'));
+    }
+
+    public function showApplicationlistInfo($id)
+    {
+        $checker = DB::table('requestingform')
+            ->where('id', $id)
+            ->value('requestor_type');
+
+        if ($checker === 'Faculty') {
+            $specificData = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->select(
+                'requestingform.*', 
+                'files.*',
+                'certificates.certificate_file',
+                'certificates.control_id',)
+            ->where('requestingform.id', $id)
+            ->first();
+        } else {
+            $specificData = DB::table('requestingform')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('faculty as technical_adviser', 'technical_adviser.id', '=', 'requestingform.technicalAdviser_id')
+            ->join('faculty as subject_adviser', 'subject_adviser.id', '=', 'requestingform.subjectAdviser_id')
+            ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+            ->select(
+                'requestingform.*', 
+                'files.*',
+                'certificates.certificate_file',
+                'certificates.control_id',
+                'technical_adviser.id as technical_adviser_id',
+                'subject_adviser.id as subject_adviser_id',
+                DB::raw("CONCAT(technical_adviser.fname, ' ', technical_adviser.lname, ' ', technical_adviser.mname) as TechnicalAdviserName"),
+                DB::raw("CONCAT(subject_adviser.fname, ' ', subject_adviser.lname, ' ', subject_adviser.mname) as SubjectAdviserName"))
+            ->where('requestingform.id', $id)
+            ->first();
+        }
+
+        return response()->json($specificData);
+    }
+
+    public function deleteApplicationInfo(string $id)
+    {
+        $application = RequestingForm::findOrFail($id);
+        $application->delete();
+        $data = array('success' =>'deleted','code'=>'200');
+        return response()->json($data);
+    }
+
+    public function researchlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $researches = Research::orderBy('id')->get();
+
+        return View::make('admin.researchlist',compact('researches','admin'));
+    }
+
+    public function selectedSpecificDepartment(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->researchDepartment === 'EAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'EAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'MAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'MAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'CAAD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'CAAD')
+            ->get();
+        } elseif ($request->researchDepartment === 'BASD') {
+            $researches = Research::orderBy('id')
+            ->where('department', 'BASD')
+            ->get();
+        } elseif ($request->researchDepartment === 'All') {
+            $researches = Research::orderBy('id')->get();
+        }
+
+        return View::make('admin.researchlist',compact('researches','admin'));
+    }
+
+    public function showResearchInfo($id)
+    {
+        $research = Research::find($id);
+        return response()->json($research);
+    }
+
+    public function deleteResearchInfo(string $id)
+    {
+        $research = Research::findOrFail($id);
+        $research->delete();
+        $data = array('success' =>'deleted','code'=>'200');
+        return response()->json($data);
+    }
     
 
     //MOBILE START

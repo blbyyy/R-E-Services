@@ -586,7 +586,7 @@ class StudentController extends Controller
         ->select('requestingform.*', 'files.research_title')
         ->where('requestingform.user_id', Auth::id())
         ->orderBy('requestingform.id', 'desc')
-        ->get();
+        ->paginate(10);
 
         return View::make('students.applicationstatus',compact('student', 'studentstats'));
     }

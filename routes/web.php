@@ -791,9 +791,19 @@ Route::post('/admin/applicationlist/specific-status', [
         'as' => 'admin.applicationlist.specific-status'
 ]);
 
+Route::get('/admin/applicationlist/{id}', [
+  'uses' => 'AdminController@showApplicationlistInfo',
+        'as' => 'admin.applicationlist.show'
+]);
+
 Route::get('/admin/researchlist', [
   'uses' => 'AdminController@researchlist',
         'as' => 'admin.researchlist'
+]);
+
+Route::get('/admin/researchlist/{id}', [
+  'uses' => 'AdminController@showResearchInfo',
+        'as' => 'admin.researchlist.show'
 ]);
 
 Route::post('/admin/researchlist/specific-department', [

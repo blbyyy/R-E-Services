@@ -846,6 +846,7 @@ $(document).ready(function () {
                         $("#s1").show();
                         $("#s2").show();
                         $("#c1").show();
+                        $("#course").text(data.course);
                         $("#technicalAdviser").text(data.TechnicalAdviserName);
                         $("#taEmail").text(data.technicalAdviserEmail);
                         $("#subjectAdviser").text(data.SubjectAdviserName);
@@ -1391,7 +1392,7 @@ $(document).ready(function () {
             });
         });
 
-        //delete department info
+        //delete userlist info
         $(".deleteUserBtn").on("click", function (e) {
             var id = $(this).data("id");
             console.log(id);
@@ -1423,6 +1424,310 @@ $(document).ready(function () {
                             Swal.fire(
                                 'Deleted!',
                                 'User has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+
+                }
+            })
+
+        });
+
+        //show appliacationlist info
+        $(".applicationlistShowBtn").click(function() {
+            var id = $(this).data('id');
+            console.log(id)
+            $.ajax({
+                url: '/admin/applicationlist/' + id, 
+                type: 'GET',
+                success: function(data) {
+                    console.log(data);
+
+                    if (data.requestor_type === 'Faculty') {
+                        $("#t1").hide();
+                        $("#t2").hide();
+                        $("#s1").hide();
+                        $("#s2").hide();
+                        $("#c1").hide();
+                    } else {
+                        $("#t1").show();
+                        $("#t2").show();
+                        $("#s1").show();
+                        $("#s2").show();
+                        $("#c1").show();
+                        $("#course").text(data.course);
+                        $("#technicalAdviser").text(data.TechnicalAdviserName);
+                        $("#taEmail").text(data.technicalAdviserEmail);
+                        $("#subjectAdviser").text(data.SubjectAdviserName);
+                        $("#saEmail").text(data.subjectAdviserEmail);
+                    }
+
+                    $("#research_title").text(data.research_title);
+                    $("#thesis_type").text(data.thesis_type);
+                    $("#submission_frequency").text(data.submission_frequency);
+                    $("#adviser_name").text(data.adviser_name);
+                    $("#adviser_email").text(data.adviser_email);
+                    $("#control_id").text(data.control_id);
+
+                    if (data.research_specialist === null) {
+                        $("#research_specialist").text('tba');
+                    } else {
+                        $("#research_specialist").text(data.research_specialist);
+                    }
+
+                    if (data.research_staff === null) {
+                        $("#research_staff").text('tba');
+                    } else {
+                        $("#research_staff").text(data.research_staff);
+                    }
+
+                    if (data.status === "Pending") {
+                        $("#status").html('<span class="badge border-success border-1 text-success"><h5>Pending</h5></span>');
+                    } else if (data.status === "Returned") {
+                        $("#status").html('<span class="badge border-warning border-1 text-danger"><h5>Returned</h5></span>');
+                    } else if (data.status === "Passed") {
+                        $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
+                    }
+
+                    $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
+                    $("#simmilarity_percentage_results").text(data.simmilarity_percentage_results + " %");
+                    $("#requestor_name").text(data.requestor_name);
+                    $("#requestor_id").text(data.tup_id);
+                    $("#email").text(data.tup_mail);
+                    $("#requestor_type").text(data.requestor_type);
+                    $("#sex").text(data.sex);
+                    $("#college").text(data.college);
+
+                    if (data.researchers_name1 !== null) {
+                        $("#r1").show();
+                        $("#researchers_name1").text(data.researchers_name1);
+                    } else {
+                        $("#r1").hide();
+                    }
+                    if (data.researchers_name2 !== null) {
+                        $("#r2").show();
+                        $("#researchers_name2").text(data.researchers_name2);
+                    } else {
+                        $("#r2").hide();
+                    }
+                    if (data.researchers_name3 !== null) {
+                        $("#r3").show();
+                        $("#researchers_name3").text(data.researchers_name3);
+                    } else {
+                        $("#r3").hide();
+                    }
+                    if (data.researchers_name4 !== null) {
+                        $("#r4").show();
+                        $("#researchers_name4").text(data.researchers_name4);
+                    } else {
+                        $("#r4").hide();
+                    }
+                    if (data.researchers_name5 !== null) {
+                        $("#r5").show();
+                        $("#researchers_name5").text(data.researchers_name5);
+                    } else {
+                        $("#r5").hide();
+                    }
+                    if (data.researchers_name6 !== null) {
+                        $("#r6").show();
+                        $("#researchers_name6").text(data.researchers_name6);
+                    } else {
+                        $("#r6").hide();
+                    }
+                    if (data.researchers_name7 !== null) {
+                        $("#r7").show();
+                        $("#researchers_name7").text(data.researchers_name7);
+                    } else {
+                        $("#r7").hide();
+                    }
+                    if (data.researchers_name8 !== null) {
+                        $("#r8").show();
+                        $("#researchers_name8").text(data.researchers_name8);
+                    } else {
+                        $("#r8").hide();
+                    }
+                }, 
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //delete applicationlist info
+        $(".deleteApplicationBtn").on("click", function (e) {
+            var id = $(this).data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Are you sure you want to delete this application?',
+                text: "You won't be able to undo this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/admin/applicationlist/" + id + "/deleted",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            setTimeout(function() {
+                                window.location.href = '/admin/applicationlist';
+                            }, 1500);
+                            console.log(data);
+                            Swal.fire(
+                                'Deleted!',
+                                'Application has been deleted.',
+                                'success'
+                            )
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+
+                }
+            })
+
+        });
+
+        //show researchlist info
+        $(".showResearchInfoBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/researchlist/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#researchtitle").text(data.research_title);
+                    $("#researchabstract").text( data.abstract);
+                    $("#researchdepartment").text( data.department);
+                    $("#researchcourse").text( data.course);
+
+                    if (data.faculty_adviser1 !== null) {
+                        $("#a1").show();
+                        $("#facultyadviser1").text(data.faculty_adviser1);
+                    } else {
+                        $("#a1").hide();
+                    }
+                    if (data.faculty_adviser2 !== null) {
+                        $("#a2").show();
+                        $("#facultyadviser2").text(data.faculty_adviser2);
+                    } else {
+                        $("#a2").hide();
+                    }
+                    if (data.faculty_adviser3 !== null) {
+                        $("#a3").show();
+                        $("#facultyadviser3").text(data.faculty_adviser3);
+                    } else {
+                        $("#a3").hide();
+                    }
+                    if (data.faculty_adviser4 !== null) {
+                        $("#a4").show();
+                        $("#facultyadviser4").text(data.faculty_adviser4);
+                    } else {
+                        $("#a4").hide();
+                    }
+
+                    if (data.researcher1 !== null) {
+                        $("#r1").show();
+                        $("#researchers1").text(data.researcher1);
+                    } else {
+                        $("#r1").hide();
+                    }
+                    if (data.researcher2 !== null) {
+                        $("#r2").show();
+                        $("#researchers2").text(data.researcher2);
+                    } else {
+                        $("#r2").hide();
+                    }
+                    if (data.researcher3 !== null) {
+                        $("#r3").show();
+                        $("#researchers3").text(data.researcher3);
+                    } else {
+                        $("#r3").hide();
+                    }
+                    if (data.researcher4 !== null) {
+                        $("#r4").show();
+                        $("#researchers4").text(data.researcher4);
+                    } else {
+                        $("#r4").hide();
+                    }
+                    if (data.researcher5 !== null) {
+                        $("#r5").show();
+                        $("#researchers5").text(data.researcher5);
+                    } else {
+                        $("#r5").hide();
+                    }
+                    if (data.researcher6 !== null) {
+                        $("#r6").show();
+                        $("#researchers6").text(data.researcher6);
+                    } else {
+                        $("#r6").hide();
+                    }
+
+                    $("#timeframe").text(data.time_frame);
+                    $("#datecompletion").text(data.date_completion);      
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //delete researchlist info
+        $(".deleteResearchBtn").on("click", function (e) {
+            var id = $(this).data("id");
+            console.log(id);
+            Swal.fire({
+                title: 'Are you sure you want to delete this research?',
+                text: "You won't be able to undo this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/api/admin/researchlist/" + id + "/deleted",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            setTimeout(function() {
+                                window.location.href = '/admin/researchlist';
+                            }, 1500);
+                            console.log(data);
+                            Swal.fire(
+                                'Deleted!',
+                                'Research has been deleted.',
                                 'success'
                             )
                         },
@@ -1752,14 +2057,6 @@ $(document).ready(function () {
                         $("#status").html('<span class="badge border-warning border-1 text-warning"><h5>Pending Subject Adviser Approval</h5></span>');
                     } else if (data.status === "Passed") {
                         $("#status").html('<span class="badge border-primary border-1 text-success"><h5>Passed</h5></span>');
-
-                        // var pdfLink = $('<a>', {
-                        //     href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
-                        //     text: "Download PDF",
-                        //     target: "_blank"
-                        // });
-                        // $("#certificate").empty().append(pdfLink);
-
                     }
                     $("#remarks").text(data.remarks);
                     $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");

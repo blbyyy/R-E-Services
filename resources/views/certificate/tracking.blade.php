@@ -76,7 +76,7 @@
                             <td>
                                 <button data-id="{{$certificate->certId}}" type="button" class="btn btn-primary showCertificate" data-bs-toggle="modal" data-bs-target="#certificateInfo"><i class="bi bi-eye"></i></button>
                             </td>
-                            <td>{{$certificate->control_id}}</td>
+                            <td><b>{{$certificate->control_id}}</b></td>
                             <td>{{$certificate->requestor_name}}</td>
                             <td>{{$certificate->research_title}}</td>
                             <td>

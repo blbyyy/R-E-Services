@@ -92,7 +92,7 @@
                     </div>
                     <a href="{{url('/admin/researchlist')}}">
                         <div id="departments-table" class="card-body">
-                        <h5 class="card-title">Researchs <span id="filterTextss">| All</span></h5>
+                        <h5 class="card-title">Researches <span id="filterTextss">| All</span></h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                     <i class="bi bi-file-earmark-text"></i>

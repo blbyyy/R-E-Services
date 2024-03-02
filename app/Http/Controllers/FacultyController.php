@@ -520,7 +520,6 @@ class FacultyController extends Controller
         ->first();
 
         return response()->json($specificData);
-
     }
 
     public function getfile_id($id)
