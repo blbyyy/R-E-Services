@@ -164,10 +164,9 @@
 
           <table class="table table-bordered">
               <thead>
-                  <tr>
+                  <tr class="text-center">
                       <th scope="col">Actions</th>
                       <th scope="col">Research Title</th>
-                      <th scope="col">Abstract</th>
                       <th scope="col">Department</th>
                       <th scope="col">Course</th>
                       <th scope="col">Faculty Adviser</th>
@@ -175,14 +174,13 @@
               </thead>
               <tbody id="researchTableBody">
                   @foreach ($researchlist as $researchlists)
-                      <tr>
+                      <tr class="text-center">
                           <td style="width: 152px">
                               <button data-id="{{$researchlists->id}}" type="button" class="btn btn-info researchshowBtn" data-bs-toggle="modal" data-bs-target="#showresearchinfo"><i class="bi bi-eye"></i></button>
                               <button data-id="{{$researchlists->id}}" type="button" class="btn btn-primary researcheditBtn" data-bs-toggle="modal" data-bs-target="#editresearchinfo"><i class="bi bi-pencil-square"></i></button>
                               <button data-id="{{$researchlists->id}}" type="button" class="btn btn-danger researchdeleteBtn"><i class="bi bi-trash"></i></button>
                           </td>
                           <td>{{$researchlists->research_title}}</td>
-                          <td>{{$researchlists->abstract}}</td>
                           <td>{{$researchlists->department}}</td>
                           <td>{{$researchlists->course}}</td>
                           <td style="width: 220px">

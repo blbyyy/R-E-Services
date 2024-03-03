@@ -16,10 +16,10 @@ use App\Models\Department;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/homepage', [
-    'uses' => 'AdminController@showannouncement',
-          'as' => 'homepage'
-  ]);
+// Route::get('/homepage', [
+//     'uses' => 'AdminController@showannouncement',
+//           'as' => 'homepage'
+//   ]);
 
 Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
 
@@ -433,6 +433,22 @@ Route::get('/faculty/extension/templates', [
     'uses' => 'FacultyController@extensionTemplates',
           'as' => 'extensionTemplates'
   ]);
+
+Route::get('/homepage', [
+    'uses' => 'LayoutsController@homepage',
+          'as' => 'home'
+  ]);
+
+Route::get('/faculty/research-inventory', [
+    'uses' => 'FacultyController@researchInventory',
+          'as' => 'researchInventory'
+  ]);
+
+Route::post('/faculty/research-inventory/added', [
+    'uses' => 'FacultyController@addResearch',
+          'as' => 'faculty.addResearch'
+  ]);
+
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [

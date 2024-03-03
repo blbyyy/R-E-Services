@@ -9,7 +9,7 @@
       padding-bottom: 50px;
       padding-top: 10px;
     }
-  </style>
+</style>
 <main id="main" class="main">
 
   @if(session('success'))

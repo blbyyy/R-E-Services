@@ -423,8 +423,14 @@
       </li>
       <li class="nav-item">
         <a class="nav-link " href="{{url('/faculty/citation')}}">
-          <i class="bi bi-chat-quote-fill"></i>
+          <i class="bi bi-chat-quote"></i>
           <span>Citation References</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/faculty/research-inventory')}}">
+          <i class="bi bi-archive"></i>
+          <span>Research Inventory</span>
         </a>
       </li>
 

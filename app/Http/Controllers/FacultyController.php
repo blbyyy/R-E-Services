@@ -807,6 +807,42 @@ class FacultyController extends Controller
         return View::make('faculty.extensionTemplates',compact('faculty'));
     }
 
+    public function researchInventory()
+    {
+        $faculty = DB::table('faculty')
+        ->join('users','users.id','faculty.user_id')
+        ->select('faculty.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        return View::make('faculty.researchInventory',compact('faculty'));
+    }
+
+    public function addResearch(Request $request)
+    {
+            $research = new Research();
+            $research->research_title = $request->research_title;
+            $research->faculty_adviser1 = $request->faculty_adviser1;
+            $research->faculty_adviser2 = $request->faculty_adviser2;
+            $research->faculty_adviser3 = $request->faculty_adviser3;
+            $research->faculty_adviser4 = $request->faculty_adviser4;
+            $research->researcher1 = $request->researcher1;
+            $research->researcher2 = $request->researcher2;
+            $research->researcher3 = $request->researcher3;
+            $research->researcher4 = $request->researcher4;
+            $research->researcher5 = $request->researcher5;
+            $research->researcher6 = $request->researcher5;
+            $research->time_frame = $request->time_frame;
+            $research->date_completion = $request->date_completion;
+            $research->abstract = $request->abstract;
+            $research->department = $request->department;
+            $research->course = $request->course;
+            $research->save();
+                
+            return redirect()->to('/faculty/research-inventory')->with('success', 'Research was successfully uploaded');
+    
+    }
+
     //MOBILE START
     public function mobilestudents_application($id)
     {
