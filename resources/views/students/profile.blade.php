@@ -5,8 +5,8 @@
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>My Profile</h1>
-    </div><!-- End Page Title -->
-
+    </div>
+    
     @if(session('success'))
     <script>
       Swal.fire({

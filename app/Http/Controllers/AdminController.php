@@ -260,15 +260,47 @@ class AdminController extends Controller
             'users.role',
             'announcementsphoto.id as photo_id', 
             'announcements.id as announcement_id', 
-            'announcements.title', 'announcements.content', 
+            'announcements.title', 
+            'announcements.content', 
             'announcementsphoto.img_path', 
             DB::raw('TIME(announcements.created_at) as created_time')
-                )
+        )
+        ->where('viewer', 'Students') 
         ->orderBy('announcements.id') 
         ->get()
         ->groupBy('announcement_id');
 
         return View::make('layouts.homepage',compact('admin','student','staff','faculty','announcements'));
+    }
+
+    public function announcement_img_upload($filename)
+    {
+        $photo = array('photo' => $filename);
+        $destinationPath = public_path().'/images'; 
+        $original_filename = time().$filename->getClientOriginalName();
+        $extension = $filename->getClientOriginalExtension(); 
+        $filename->move($destinationPath, $original_filename); 
+    }
+
+    public function add_announcements(Request $request)
+    {  
+            $announcment = new Announcement();
+            $announcment->title = $request->title; 
+            $announcment->content = $request->content;
+            $announcment->viewer = $request->viewer;
+            $announcment->user_id = Auth::id();
+            $announcment->save();
+            $announcment_id = DB::getPdo()->lastInsertId();
+
+                $files = $request->file('img_path');
+                foreach ($files as $file) {
+                $this->announcement_img_upload($file);
+                $multi['img_path']=time().$file->getClientOriginalName();
+                $multi['announcements_id'] = $announcment_id ;
+                DB::table('announcementsphoto')->insert($multi);
+        }
+
+        return redirect()->to('/announcements')->with('success', 'Announcement was successfully created');
     }
 
     public function profile($id)
@@ -354,35 +386,6 @@ class AdminController extends Controller
 
         Alert::success('Success', 'Password changed successfully!');
         return redirect()->to('/Admin/Profile/{id}')->with('success', 'Password changed successfully.');
-    }
-
-    public function announcement_img_upload($filename)
-    {
-        $photo = array('photo' => $filename);
-        $destinationPath = public_path().'/images'; 
-        $original_filename = time().$filename->getClientOriginalName();
-        $extension = $filename->getClientOriginalExtension(); 
-        $filename->move($destinationPath, $original_filename); 
-    }
-
-    public function add_announcements(Request $request)
-    {  
-            $announcment = new Announcement();
-            $announcment->title = $request->title; 
-            $announcment->content = $request->content;
-            $announcment->user_id = Auth::id();
-            $announcment->save();
-            $announcment_id = DB::getPdo()->lastInsertId();
-
-                $files = $request->file('img_path');
-                foreach ($files as $file) {
-                $this->announcement_img_upload($file);
-                $multi['img_path']=time().$file->getClientOriginalName();
-                $multi['announcements_id'] = $announcment_id ;
-                DB::table('announcementsphoto')->insert($multi);
-        }
-
-        return redirect()->to('/announcements');
     }
 
     public function studentlist()

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->text('title');
             $table->string('content');
+            $table->text('viewer');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
