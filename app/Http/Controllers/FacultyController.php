@@ -911,88 +911,50 @@ class FacultyController extends Controller
 
     public function mobilesendingTechnicalAdviserApproval(Request $request, $id)
     {
-        if ($request->technicalAdviserRemarks === null) {
-                
-                $form = RequestingForm::find($id);
+        try {
+            $form = RequestingForm::find($id);
+            if (!$form) {
+                return response()->json(['error' => 'Requesting form not found'], 404);
+            }
+
+            if ($request->technicalAdviserRemarks === null) {
                 $form->status = $request->technicalAdviserStatus;
+                $form->remarks = 'Your paper has been processed. Please wait for approval from your subject adviser.';
                 $form->save();
 
                 $file = Files::find($request->fileId1);
-                $file->file_status = $request->technicalAdviserStatus;
-                $file->save();
+                if ($file) {
+                    $file->file_status = $request->technicalAdviserStatus;
+                    $file->save();
+                } else {
+                    return response()->json(['error' => 'File not found'], 404);
+                }
 
-                $subjectAdviser = DB::table('requestingform')
-                ->where('id', $id)
-                ->first();
+                // Additional code for sending emails or notifications
 
-                $research = DB::table('files')
-                ->where('id', $subjectAdviser->research_id)
-                ->first();
-
-                $subjectAdviserName = DB::table('faculty')
-                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
-                ->where('id', $subjectAdviser->subjectAdviser_id)
-                ->value('subjectAdviserName');
-
-                $technicalAdviserName = DB::table('faculty')
-                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
-                ->where('id', $subjectAdviser->technicalAdviser_id)
-                ->value('technicalAdviserName');
-
-                $data = [
-                    'subjectAdviserName' => $subjectAdviserName,
-                ];
-                // Mail::to($subjectAdviser->subjectAdviserEmail)->send(new SubjectAdviserApproval($data));
-
-                $success = [
-                    'requestorName' => $subjectAdviser->requestor_name,
-                    'researchTitle' => $research->research_title,
-                    'technicalAdviserName' => $technicalAdviserName
-                ];
-                // Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalSuccess($success));
-
-            return response()->json($form);
-
-        } else {
-
-                $form = RequestingForm::find($id);
+                return response()->json($form);
+            } else {
                 $form->status = $request->technicalAdviserStatus;
                 $form->remarks = $request->technicalAdviserRemarks;
                 $form->save();
 
                 $file = Files::find($request->fileId1);
-                $file->file_status = $request->technicalAdviserStatus;
-                $file->save();
+                if ($file) {
+                    $file->file_status = $request->technicalAdviserStatus;
+                    $file->save();
+                } else {
+                    return response()->json(['error' => 'File not found'], 404);
+                }
 
-                $subjectAdviser = DB::table('requestingform')
-                ->where('id', $id)
-                ->first();
+                // Additional code for sending emails or notifications
 
-                $technicalAdviserName = DB::table('faculty')
-                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
-                ->where('id', $subjectAdviser->technicalAdviser_id)
-                ->value('technicalAdviserName');
-
-                $research = DB::table('files')
-                ->where('id', $subjectAdviser->research_id)
-                ->first();
-
-                $reject = [
-                    'requestorName' => $subjectAdviser->requestor_name,
-                    'researchTitle' => $research->research_title,
-                    'remarks' => $request->technicalAdviserRemarks,
-                    'technicalAdviserName' => $technicalAdviserName
-                ];
-                // Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalReject($reject));
-
-            return response()->json($form);
-            
+                return response()->json($form);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-           
-
-            
     }
+
 
     public function mobilesubjectAdviserApproval($id)
     {
@@ -1009,74 +971,48 @@ class FacultyController extends Controller
 
     public function mobilesendingSubjectAdviserApproval(Request $request, $id)
     {
-        if ($request->subjectAdviserRemarks === null) {
-                
-                $form = RequestingForm::find($id);
+        try {
+            $form = RequestingForm::find($id);
+            if (!$form) {
+                return response()->json(['error' => 'Requesting form not found'], 404);
+            }
+
+            if ($request->subjectAdviserRemarks === null) {
                 $form->status = $request->subjectAdviserStatus;
+                $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
                 $form->save();
 
                 $file = Files::find($request->fileId2);
-                $file->file_status = $request->subjectAdviserStatus;
-                $file->save();
+                if ($file) {
+                    $file->file_status = $request->subjectAdviserStatus;
+                    $file->save();
+                } else {
+                    return response()->json(['error' => 'File not found'], 404);
+                }
 
-                $subjectAdviser = DB::table('requestingform')
-                ->where('id', $id)
-                ->first();
+                // Additional code for sending emails or notifications
 
-                $research = DB::table('files')
-                ->where('id', $subjectAdviser->research_id)
-                ->first();
-
-                $subjectAdviserName = DB::table('faculty')
-                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
-                ->where('id', $subjectAdviser->subjectAdviser_id)
-                ->value('subjectAdviserName');
-
-                $success = [
-                    'requestorName' => $subjectAdviser->requestor_name,
-                    'researchTitle' => $research->research_title,
-                    'subjectAdviserName' => $subjectAdviserName
-                ];
-                // Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalSuccess($success));             
-
-            return response()->json($form);
-
-        } else {
-
-                $form = RequestingForm::find($id);
+                return response()->json($form);
+            } else {
                 $form->status = $request->subjectAdviserStatus;
                 $form->remarks = $request->subjectAdviserRemarks;
                 $form->save();
 
                 $file = Files::find($request->fileId2);
-                $file->file_status = $request->subjectAdviserRemarks;
-                $file->save();
+                if ($file) {
+                    $file->file_status = $request->subjectAdviserRemarks;
+                    $file->save();
+                } else {
+                    return response()->json(['error' => 'File not found'], 404);
+                }
 
-                $subjectAdviser = DB::table('requestingform')
-                ->where('id', $id)
-                ->first();
+                // Additional code for sending emails or notifications
 
-                $subjectAdviserName = DB::table('faculty')
-                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
-                ->where('id', $subjectAdviser->subjectAdviser_id)
-                ->value('subjectAdviserName');
-
-                $research = DB::table('files')
-                ->where('id', $subjectAdviser->research_id)
-                ->first();
-
-                $reject = [
-                    'requestorName' => $subjectAdviser->requestor_name,
-                    'researchTitle' => $research->research_title,
-                    'remarks' => $request->subjectAdviserRemarks,
-                    'subjectAdviserName' => $subjectAdviserName
-                ];
-                // Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalReject($reject));
-
-            return response()->json($form);
-            
+                return response()->json($form);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-                   
     }
     //MOBILE END
 

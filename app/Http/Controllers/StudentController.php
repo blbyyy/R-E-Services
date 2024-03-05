@@ -780,7 +780,20 @@ class StudentController extends Controller
             ->where('files.user_id', $id)
             ->get();
 
-        return response()->json(['student' => $student, 'myfiles' => $myfiles]);
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $facultymyfiles = DB::table('files')
+            ->join('users', 'users.id', '=', 'files.user_id')
+            ->join('faculty', 'faculty.user_id', '=', 'users.id')
+            ->select('files.*')
+            ->where('files.user_id', $id)
+            ->get();
+
+        return response()->json(['student' => $student, 'myfiles' => $myfiles, 'facultymyfiles' => $facultymyfiles]);
     }
 
     public function deleteFile(Files $file)
@@ -805,6 +818,12 @@ class StudentController extends Controller
             ->select('students.*', 'users.*')
             ->where('user_id', $id)
             ->first();
+        
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', $id)
+            ->first();
 
         $files = DB::table('files')
             ->join('users', 'users.id', '=', 'files.user_id')
@@ -813,7 +832,14 @@ class StudentController extends Controller
             ->where('files.user_id', $id)
             ->get();
 
-        return response()->json(['student' => $student, 'files' => $files]);
+        $facultyfiles = DB::table('files')
+            ->join('users', 'users.id', '=', 'files.user_id')
+            ->join('faculty', 'faculty.user_id', '=', 'users.id')
+            ->select('files.*')
+            ->where('files.user_id', $id)
+            ->get();
+
+        return response()->json(['student' => $student, 'files' => $files, 'facultyfiles' => $facultyfiles ]);
     }
 
     public function mobilecertification()
