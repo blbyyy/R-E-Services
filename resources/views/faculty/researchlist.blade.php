@@ -1,8 +1,28 @@
 @extends('layouts.navigation')
+@include('sweetalert::alert')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Researches</h1>
     </div>
+
+    @if(session('success'))
+      <script>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: '{{ session('success') }}',
+          });
+      </script>
+    @elseif(session('error'))
+      <script>
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: '{{ session('error') }}',
+          });
+      </script>
+    @endif
 
     <form class="row g-3" action="{{ route('searchResearchList') }}" method="GET">
         <div class="col-9">
@@ -36,9 +56,10 @@
                 <tbody>
                     @foreach($researchlist as $research)
                     <tr class="text-center">
-                        <td>
+                        <td style="width: 150px">
                             <button data-id="{{ $research['id'] }}" type="button" class="btn btn-info researchShowInfoBtn" data-bs-toggle="modal" data-bs-target="#showResearchInfo"><i class="bi bi-eye"></i></button>
-                        </td>
+                            <button data-id="{{ $research['id'] }}" type="button" class="btn btn-dark facultyRequestAccessBtn" data-bs-toggle="modal" data-bs-target="#facultyRequestAccess"><i class="bi bi-lock-fill"></i></button>
+                          </td>
                         <td>{{ $research['research_title'] }}</td>
                         <td>{{ $research['department'] }}</td>
                         <td>{{ $research['course'] }}</td>
@@ -87,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="showResearchInfo" tabindex="-1">
+              <div class="modal fade" id="showResearchInfo" tabindex="-1">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header" >
@@ -199,6 +220,45 @@
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="facultyRequestAccess" tabindex="-1"> 
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Request Access</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+            
+                        <form class="row g-3" method="POST" action="{{ route('faculty.sending.request.access') }}">
+                          @csrf
+              
+                        <input type="hidden" class="form-control" id="titleResearch" name="titleResearch">
+  
+                        <b><p id="researchTitle" class="large fst-italic"></p></b>
+                  
+                        <div class="col-md-12">
+                          <div class="form-floating">
+                            <textarea class="form-control" id="purpose" name="purpose" style="height: 150px;"></textarea>
+                            <label for="purpose">Purpose</label>
+                          </div>
+                        </div>
+                
+                        <div class="col-" style="padding-top: 20px">
+                          <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-outline-dark">Send Request</button>
+                          </div>
+                        </div>
+                
+                      </form>
+                     
+                    </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
                   </div>
                 </div>
               </div>

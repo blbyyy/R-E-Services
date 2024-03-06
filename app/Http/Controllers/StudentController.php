@@ -637,34 +637,7 @@ class StudentController extends Controller
         return response()->json($research);
     }
 
-    public function sendRequestAccess($id)
-    {
-        $research = DB::table('research_list')
-        ->where('id', $id)
-        ->first();
-
-        return response()->json($research);
-    }
-
-    public function sendinRequestAccess(Request $request)
-    { 
-
-            $student = DB::table('students')
-                ->join('users', 'users.id', 'students.user_id')
-                ->select('students.*', 'users.*')
-                ->where('user_id', Auth::id())
-                ->first();
-
-            $users = new RequestAccess;
-            $users->requestor_id = $student->user_id;
-            $users->requestor_type = $student->role;
-            $users->research_title = $request->titleResearch;
-            $users->purpose = $request->purpose;
-            $users->status = 'Pending';
-            $users->save();
-
-            return redirect()->to('/student/title-checker')->with('success', 'Request was successfully sent');
-    }
+    
 
 
     //MOBILE START

@@ -1800,8 +1800,8 @@ $(document).ready(function () {
 
         });
 
-        //show researchlist info
-        $(".requestAccessBtn").click(function() {
+        //preparing to send access file for the requestor
+        $(".processAccessRequest").click(function() {
             var id = $(this).data("id");
             $.ajax({
                 type: "GET",
@@ -1809,7 +1809,7 @@ $(document).ready(function () {
                 processData: false, // Important!
                 contentType: false,
                 cache: false,
-                url: "/student/research/" + id + "/request-access",
+                url: "/research-access-requests/" + id,
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
                         "content"
@@ -1819,7 +1819,8 @@ $(document).ready(function () {
                 success: function (data) { 
                     console.log(data);
                     $("#researchTitle").text("'" + data.research_title + "'"); 
-                    $("#titleResearch").val(data.research_title); 
+                    $("#purpose").text("'" + data.purpose + "'"); 
+                    $("#requestId").val(id); 
                 },
                 error: function (error) {
                     console.log(error);
@@ -2294,6 +2295,33 @@ $(document).ready(function () {
                     $("#timeframe").text(data.time_frame);
                     $("#datecompletion").text(data.date_completion);      
                 }, 
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //student preparing to send request for access in specific research
+        $(".studentRequestAccessBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/student/research/" + id + "/request-access",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#researchTitle").text("'" + data.research_title + "'"); 
+                    $("#titleResearch").val(data.research_title); 
+                },
                 error: function (error) {
                     console.log(error);
                 },
@@ -3817,6 +3845,33 @@ $(document).ready(function () {
                 }
             })
 
+        });
+
+         //faculty preparing to send request for access in specific research
+         $(".facultyRequestAccessBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/research-list/" + id + "/request-access",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#researchTitle").text("'" + data.research_title + "'"); 
+                    $("#titleResearch").val(data.research_title); 
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
         });
     //END OF FACULTY POV
  

@@ -515,6 +515,12 @@
           <span>Research List</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{{url('/research-access-requests')}}">
+          <i class="bi bi-list-task"></i>
+          <span>Research Access Requests</span>
+        </a>
+      </li>
       @endif
       @endguest
 

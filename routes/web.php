@@ -143,12 +143,12 @@ Route::get('/student/title-checker/search/show/{id}', [
 ]);
 
 Route::get('/student/research/{id}/request-access', [
-  'uses' => 'StudentController@sendRequestAccess',
+  'uses' => 'ResearchController@studentSendRequestAccess',
         'as' => 'student.request.access'
 ]);
 
 Route::post('/student/research/request-access/sent', [
-  'uses' => 'StudentController@sendinRequestAccess',
+  'uses' => 'ResearchController@studentSendinRequestAccess',
         'as' => 'student.sending.request.access'
 ]);
 //END OF STUDENT POV
@@ -456,6 +456,16 @@ Route::get('/faculty/research-inventory', [
 Route::post('/faculty/research-inventory/added', [
     'uses' => 'FacultyController@addResearch',
           'as' => 'faculty.addResearch'
+  ]);
+
+Route::get('/faculty/research-list/{id}/request-access', [
+    'uses' => 'ResearchController@facultySendRequestAccess',
+          'as' => 'faculty.request.access'
+  ]);
+  
+Route::post('/faculty/research-list/request-access/sent', [
+    'uses' => 'ResearchController@facultySendinRequestAccess',
+          'as' => 'faculty.sending.request.access'
   ]);
 
 //END OF FACULTY POV
@@ -874,4 +884,19 @@ Route::get('/researchesCourseCountTable', [
 Route::get('/certificate/{control_id}', [
   'uses' => 'QrCodeController@landingPage',
         'as' => 'certificate.landingPage'
+]);
+
+Route::get('/research-access-requests', [
+  'uses' => 'ResearchController@researchAccessRequests',
+        'as' => 'research.access.requests'
+]);
+
+Route::get('/research-access-requests/{id}', [
+  'uses' => 'ResearchController@processingAccessFile',
+        'as' => 'processing.access.request'
+]);
+
+Route::post('/research-access-requests/sent', [
+  'uses' => 'ResearchController@sendingAccessFile',
+        'as' => 'sending.access.file'
 ]);

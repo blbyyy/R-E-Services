@@ -55,7 +55,7 @@
                     <tr class="text-center">
                         <td style="width: 150px">
                             <button data-id="{{ $research['id'] }}" type="button" class="btn btn-info researchViewInfoBtn" data-bs-toggle="modal" data-bs-target="#researchShowInfo"><i class="bi bi-eye"></i></button>
-                            <button data-id="{{ $research['id'] }}" type="button" class="btn btn-secondary requestAccessBtn" data-bs-toggle="modal" data-bs-target="#requestAccess">Request</button>
+                            <button data-id="{{ $research['id'] }}" type="button" class="btn btn-dark studentRequestAccessBtn" data-bs-toggle="modal" data-bs-target="#studentRequestAccess"><i class="bi bi-lock-fill"></i></button>
                           </td>
                         <td>{{ $research['research_title'] }}</td>
                     </tr>                    
@@ -218,7 +218,7 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="requestAccess" tabindex="-1"> 
+            <div class="modal fade" id="studentRequestAccess" tabindex="-1"> 
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header">

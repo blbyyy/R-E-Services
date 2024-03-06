@@ -9,6 +9,7 @@ use App\Models\Staff;
 use App\Models\Faculty;
 use App\Models\User;
 use App\Models\Research;
+use App\Models\RequestAccess;
 use App\Http\Redirect;
 use View;
 use DB;
@@ -97,6 +98,122 @@ class ResearchController extends Controller
         $research->delete();
         $data = array('success' =>'deleted','code'=>'200');
         return response()->json($data);
+    }
+
+    public function studentSendRequestAccess($id)
+    {
+        $research = DB::table('research_list')
+        ->where('id', $id)
+        ->first();
+
+        return response()->json($research);
+    }
+
+    public function studentSendinRequestAccess(Request $request)
+    { 
+
+            $student = DB::table('students')
+                ->join('users', 'users.id', 'students.user_id')
+                ->select('students.*', 'users.*')
+                ->where('user_id', Auth::id())
+                ->first();
+
+            $users = new RequestAccess;
+            $users->requestor_id = $student->user_id;
+            $users->requestor_type = $student->role;
+            $users->research_title = $request->titleResearch;
+            $users->purpose = $request->purpose;
+            $users->status = 'Pending';
+            $users->save();
+
+            return redirect()->to('/student/title-checker')->with('success', 'Request was successfully sent');
+    }
+
+    public function facultySendRequestAccess($id)
+    {
+        $research = DB::table('research_list')
+        ->where('id', $id)
+        ->first();
+
+        return response()->json($research);
+    }
+
+    public function facultySendinRequestAccess(Request $request)
+    { 
+
+            $faculty = DB::table('faculty')
+                ->join('users', 'users.id', 'faculty.user_id')
+                ->select('faculty.*', 'users.*')
+                ->where('user_id', Auth::id())
+                ->first();
+
+            $users = new RequestAccess;
+            $users->requestor_id = $faculty->user_id;
+            $users->requestor_type = $faculty->role;
+            $users->research_title = $request->titleResearch;
+            $users->purpose = $request->purpose;
+            $users->status = 'Pending';
+            $users->save();
+
+            return redirect()->to('/faculty/research-list')->with('success', 'Request was successfully sent');
+    }
+
+    public function researchAccessRequests()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $requestAccess = DB::table('request_access')
+        ->join('users','users.id','request_access.requestor_id')
+        ->select(
+            'request_access.*',
+            'users.fname',
+            'users.mname',
+            'users.lname',
+            'users.id as userID')
+        ->orderBy('request_access.id')
+        ->get();
+
+        return View::make('admin.researchAccessRequests',compact('admin','requestAccess'));
+    }
+
+    public function processingAccessFile($id)
+    {
+        $access = DB::table('request_access')
+        ->where('id', $id)
+        ->first();
+
+        return response()->json($access);
+    }
+
+    public function sendingAccessFile(Request $request)
+    {
+        $access = RequestAccess::find($request->requestId);
+
+        if ($request->status === 'Sent') {
+
+            $pdfFile = $request->file('research_file');
+            $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
+            $pdfFile->move(public_path('uploads/accessRequested'), $pdfFileName);
+            
+            $access->file = $pdfFileName;
+            $access->status = 'Sent';
+            $access->save();
+
+            return redirect()->to('/research-access-requests')->with('success', 'Accesss file successfully sent.');
+
+        } else {
+
+            $access->status = 'Rejected';
+            $access->save();
+
+            return redirect()->to('/research-access-requests')->with('error', 'The access file has not been sent.');
+        }
+        
+        
     }
 
     
