@@ -159,4 +159,6 @@ Route::get('/mobile/technicalAdviser/approval/{id}', [FacultyController::class, 
 Route::post('/mobile/sending/technicalAdviser/approval/{id}', [FacultyController::class, 'mobilesendingTechnicalAdviserApproval']);
 Route::get('/mobile/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesubjectAdviserApproval']);
 Route::post('/mobile/sending/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesendingSubjectAdviserApproval']);
+
+Route::get('/mobilehomepage/{id}', 'App\Http\Controllers\LayoutsController@mobilehomepage');
 //MOBILE END

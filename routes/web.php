@@ -142,6 +142,15 @@ Route::get('/student/title-checker/search/show/{id}', [
         'as' => 'student.title.checker.show'
 ]);
 
+Route::get('/student/research/{id}/request-access', [
+  'uses' => 'StudentController@sendRequestAccess',
+        'as' => 'student.request.access'
+]);
+
+Route::post('/student/research/request-access/sent', [
+  'uses' => 'StudentController@sendinRequestAccess',
+        'as' => 'student.sending.request.access'
+]);
 //END OF STUDENT POV
 
 //START STAFF POV

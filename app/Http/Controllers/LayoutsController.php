@@ -127,4 +127,133 @@ class LayoutsController extends Controller
 
         return View::make('layouts.home',compact('admin','student','staff','faculty','announcements'));
     }
+
+    public function mobilehomepage($id)
+    {
+        $student = DB::table('students')
+            ->join('users','users.id','students.user_id')
+            ->select('students.*','users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $staff = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $faculty = DB::table('faculty')
+            ->join('users','users.id','faculty.user_id')
+            ->select('faculty.*','users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $admin = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $role = DB::table('users')->where('id', $id)->value('role');
+
+        if ($role === 'Student') {
+            $announcements = DB::table('announcements')
+                ->join('announcementsphoto', 'announcementsphoto.announcements_id', 'announcements.id')
+                ->join('users', 'announcements.user_id', 'users.id')
+                ->select(
+                    'users.fname',
+                    'users.lname',
+                    'users.mname',
+                    'users.role',
+                    'announcementsphoto.id as photo_id', 
+                    'announcements.id as announcement_id', 
+                    'announcements.title', 
+                    'announcements.content', 
+                    'announcementsphoto.img_path', 
+                    DB::raw('TIME(announcements.created_at) as created_time')
+                )
+                ->where('viewer', 'Students') 
+                ->orderBy('announcements.id') 
+                ->get()
+                ->groupBy('announcement_id');
+        } elseif ($role === 'Faculty') {
+            $announcements = DB::table('announcements')
+                ->join('announcementsphoto', 'announcementsphoto.announcements_id', 'announcements.id')
+                ->join('users', 'announcements.user_id', 'users.id')
+                ->select(
+                    'users.fname',
+                    'users.lname',
+                    'users.mname',
+                    'users.role',
+                    'announcementsphoto.id as photo_id', 
+                    'announcements.id as announcement_id', 
+                    'announcements.title', 
+                    'announcements.content', 
+                    'announcementsphoto.img_path', 
+                    DB::raw('TIME(announcements.created_at) as created_time')
+                )
+                ->where('viewer', 'like', '%Faculty%')
+                ->orderBy('announcements.id') 
+                ->get()
+                ->groupBy('announcement_id');
+        } elseif ($role === 'Staff') {
+            $announcements = DB::table('announcements')
+                ->join('announcementsphoto', 'announcementsphoto.announcements_id', 'announcements.id')
+                ->join('users', 'announcements.user_id', 'users.id')
+                ->select(
+                    'users.fname',
+                    'users.lname',
+                    'users.mname',
+                    'users.role',
+                    'announcementsphoto.id as photo_id', 
+                    'announcements.id as announcement_id', 
+                    'announcements.title', 
+                    'announcements.content', 
+                    'announcementsphoto.img_path', 
+                    DB::raw('TIME(announcements.created_at) as created_time')
+                )
+                ->where('viewer', 'like', '%Staff%')
+                ->orderBy('announcements.id') 
+                ->get()
+                ->groupBy('announcement_id');
+        } else {
+            $announcements = DB::table('announcements')
+                ->join('announcementsphoto', 'announcementsphoto.announcements_id', 'announcements.id')
+                ->join('users', 'announcements.user_id', 'users.id')
+                ->select(
+                    'users.fname',
+                    'users.lname',
+                    'users.mname',
+                    'users.role',
+                    'announcementsphoto.id as photo_id', 
+                    'announcements.id as announcement_id', 
+                    'announcements.title', 
+                    'announcements.content', 
+                    'announcementsphoto.img_path', 
+                    DB::raw('TIME(announcements.created_at) as created_time')
+                )
+                ->orderBy('announcements.id') 
+                ->get()
+                ->groupBy('announcement_id');
+        }
+
+        if(request()->ajax())
+        {
+            $start = (!empty($_GET["start"])) ? ($_GET["start"]) : ('');
+            $end = (!empty($_GET["end"])) ? ($_GET["end"]) : ('');
+            $data = Event::whereDate('start', '>=', $start)->whereDate('end',   '<=', $end)->get(['id','title','start', 'end']);
+            return response()->json($data);
+        }
+
+        $responseData = [
+            'admin' => $admin,
+            'student' => $student,
+            'staff' => $staff,
+            'faculty' => $faculty,
+            'announcements' => $announcements,
+        ];
+
+        return response()->json($responseData);
+    }
+
 }

@@ -1799,6 +1799,33 @@ $(document).ready(function () {
             })
 
         });
+
+        //show researchlist info
+        $(".requestAccessBtn").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/student/research/" + id + "/request-access",
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#researchTitle").text("'" + data.research_title + "'"); 
+                    $("#titleResearch").val(data.research_title); 
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
     //END OF ADMIN POV
 
     //START OF STUDENT POV
