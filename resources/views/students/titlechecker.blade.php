@@ -54,8 +54,7 @@
                     @foreach($researchlist as $research)
                     <tr class="text-center">
                         <td style="width: 150px">
-                            <button data-id="{{ $research['id'] }}" type="button" class="btn btn-info researchViewInfoBtn" data-bs-toggle="modal" data-bs-target="#researchShowInfo"><i class="bi bi-eye"></i></button>
-                            <button data-id="{{ $research['id'] }}" type="button" class="btn btn-dark studentRequestAccessBtn" data-bs-toggle="modal" data-bs-target="#studentRequestAccess"><i class="bi bi-lock-fill"></i></button>
+                            <button data-id="{{ $research['id'] }}" type="button" class="btn btn-info studentRequestAccessBtn" data-bs-toggle="modal" data-bs-target="#studentRequestAccess"><i class="bi bi-eye"></i></button>
                           </td>
                         <td>{{ $research['research_title'] }}</td>
                     </tr>                    
@@ -102,142 +101,161 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="researchShowInfo" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header" >
-                      <h5 class="modal-title" ></h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <section class="section profile">
-                        <div class="row">
-                          <div class="col-xl-4">
-                          </div>
-                  
-                          <div class="col-xl-12">
-                  
-                            <div class="card">
-                              <div class="card-body pt-3">
-                                <div class="tab-content pt-2">
-                  
-                                  <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                    <h5 class="card-title">Research Title</h5>
-                                    <p id="researchtitle" class="large fst-italic"></p>
-          
-                                    <div class="row">
-                                      <div class="col-lg-3 col-md-4 label ">Abstract</div>
-                                      <div id="researchabstract" class="col-lg-9 col-md-8"></div>
-                                    </div>
-      
-                                    <div class="row">
-                                      <div class="col-lg-3 col-md-4 label ">Department</div>
-                                      <div id="researchdepartment" class="col-lg-9 col-md-8"></div>
-                                    </div>
-      
-                                    <div class="row">
-                                      <div class="col-lg-3 col-md-4 label ">Course</div>
-                                      <div id="researchcourse" class="col-lg-9 col-md-8"></div>
-                                    </div>
-                                    
-                                    <h5 class="card-title">Research Details</h5>
-                  
-                                    <div class="row" id="a1">
-                                      <div class="col-lg-3 col-md-4 label ">Faculty Adviser 1</div>
-                                      <div id="facultyadviser1" class="col-lg-9 col-md-8"></div>
-                                    </div>
-      
-                                    <div class="row" id="a2">
-                                      <div class="col-lg-3 col-md-4 label ">Faculty Adviser 2</div>
-                                      <div id="facultyadviser2" class="col-lg-9 col-md-8"></div>
-                                    </div>
-      
-                                    <div class="row" id="a3">
-                                      <div class="col-lg-3 col-md-4 label ">Faculty Adviser 3</div>
-                                      <div id="facultyadviser3" class="col-lg-9 col-md-8"></div>
-                                    </div>
-      
-                                    <div class="row" id="a4">
-                                      <div class="col-lg-3 col-md-4 label ">Faculty Adviser 4</div>
-                                      <div id="facultyadviser4" class="col-lg-9 col-md-8"></div>
-                                    </div>
-      
-                                    <div class="row" id="r1">
-                                      <div class="col-lg-3 col-md-4 label ">Researcher 1</div>
-                                      <div id="researchers1" class="col-lg-9 col-md-8"></div>
-                                    </div>
-                  
-                                    <div class="row" id="r2">
-                                      <div class="col-lg-3 col-md-4 label">Researcher 2</div>
-                                      <div id="researchers2" class="col-lg-9 col-md-8"></div>
-                                    </div>
-                  
-                                    <div class="row" id="r3">
-                                      <div class="col-lg-3 col-md-4 label">Researcher 3</div>
-                                      <div id="researchers3" class="col-lg-9 col-md-8"></div>
-                                    </div>
-                                    
-                                    <div class="row" id="r4">
-                                      <div class="col-lg-3 col-md-4 label ">Researcher 4</div>
-                                      <div id="researchers4" class="col-lg-9 col-md-8"></div>
-                                    </div>
-                  
-                                    <div class="row" id="r5">
-                                      <div class="col-lg-3 col-md-4 label">Researcher 5</div>
-                                      <div id="researchers5" class="col-lg-9 col-md-8"></div>
-                                    </div>
-      
-                                    <div class="row" id="r6">
-                                      <div class="col-lg-3 col-md-4 label">Researcher 6</div>
-                                      <div id="researchers6" class="col-lg-9 col-md-8"></div>
-                                    </div>
-                  
-                                    <div class="row">
-                                      <div class="col-lg-3 col-md-4 label">Time Frame</div>
-                                      <div id="timeframe" class="col-lg-9 col-md-8"></div>
-                                    </div>
-                  
-                                    <div class="row">
-                                      <div class="col-lg-3 col-md-4 label">Date Completion</div>
-                                      <div id="datecompletion" class="col-lg-9 col-md-8"></div>
-                                    </div>
-                  
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                  
-                          </div>
-                        </div>
-                      </section>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
             <div class="modal fade" id="studentRequestAccess" tabindex="-1"> 
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
+
                   <div class="modal-header">
-                    <h5 class="modal-title">Request Access</h5>
+                    <h5 class="modal-title">Research Information</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+
                   <div class="modal-body">
+
+                    <section class="section profile" id="ResearchInfo">
+                      <div class="row">
+                        <div class="col-xl-4">
+                        </div>
+                
+                        <div class="col-xl-12">
+                
+                          <div class="card">
+                            <div class="card-body pt-3">
+                              <div class="tab-content pt-2">
+                
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                  <h5 class="card-title">Research Title</h5>
+                                  <p id="researchtitle" class="large fst-italic"></p>
+        
+                                  <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Abstract</div>
+                                    <div id="researchabstract" class="col-lg-9 col-md-8"></div>
+                                  </div>
+    
+                                  <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Department</div>
+                                    <div id="researchdepartment" class="col-lg-9 col-md-8"></div>
+                                  </div>
+    
+                                  <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Course</div>
+                                    <div id="researchcourse" class="col-lg-9 col-md-8"></div>
+                                  </div>
+                                  
+                                  <h5 class="card-title">Research Details</h5>
+                
+                                  <div class="row" id="a1">
+                                    <div class="col-lg-3 col-md-4 label ">Faculty Adviser 1</div>
+                                    <div id="facultyadviser1" class="col-lg-9 col-md-8"></div>
+                                  </div>
+    
+                                  <div class="row" id="a2">
+                                    <div class="col-lg-3 col-md-4 label ">Faculty Adviser 2</div>
+                                    <div id="facultyadviser2" class="col-lg-9 col-md-8"></div>
+                                  </div>
+    
+                                  <div class="row" id="a3">
+                                    <div class="col-lg-3 col-md-4 label ">Faculty Adviser 3</div>
+                                    <div id="facultyadviser3" class="col-lg-9 col-md-8"></div>
+                                  </div>
+    
+                                  <div class="row" id="a4">
+                                    <div class="col-lg-3 col-md-4 label ">Faculty Adviser 4</div>
+                                    <div id="facultyadviser4" class="col-lg-9 col-md-8"></div>
+                                  </div>
+    
+                                  <div class="row" id="r1">
+                                    <div class="col-lg-3 col-md-4 label ">Researcher 1</div>
+                                    <div id="researchers1" class="col-lg-9 col-md-8"></div>
+                                  </div>
+                
+                                  <div class="row" id="r2">
+                                    <div class="col-lg-3 col-md-4 label">Researcher 2</div>
+                                    <div id="researchers2" class="col-lg-9 col-md-8"></div>
+                                  </div>
+                
+                                  <div class="row" id="r3">
+                                    <div class="col-lg-3 col-md-4 label">Researcher 3</div>
+                                    <div id="researchers3" class="col-lg-9 col-md-8"></div>
+                                  </div>
+                                  
+                                  <div class="row" id="r4">
+                                    <div class="col-lg-3 col-md-4 label ">Researcher 4</div>
+                                    <div id="researchers4" class="col-lg-9 col-md-8"></div>
+                                  </div>
+                
+                                  <div class="row" id="r5">
+                                    <div class="col-lg-3 col-md-4 label">Researcher 5</div>
+                                    <div id="researchers5" class="col-lg-9 col-md-8"></div>
+                                  </div>
+    
+                                  <div class="row" id="r6">
+                                    <div class="col-lg-3 col-md-4 label">Researcher 6</div>
+                                    <div id="researchers6" class="col-lg-9 col-md-8"></div>
+                                  </div>
+                
+                                  <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Time Frame</div>
+                                    <div id="timeframe" class="col-lg-9 col-md-8"></div>
+                                  </div>
+                
+                                  <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Date Completion</div>
+                                    <div id="datecompletion" class="col-lg-9 col-md-8"></div>
+                                  </div>
+                
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                
+                        </div>
+                      </div>
+                    </section>
+
+                    <div class="text-center" id="accessDeneid">
+                      <div class="col-md-12" >      
+                        <i class="bi bi-lock-fill" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                      </div>
+              
+                      <div class="col-md-12" style="padding-top: 20px">
+                        <h5>To gain access to the information, you need to send a permission request.</h5>
+                      </div>
+                      <br>
+                      <button type="button" class="btn btn-dark" onclick="toggleRequestAccessForm()"><i class="bi bi-key"></i> Request Access</button>
+                    </div>
+
+                    <div class="text-center" id="processingRequest">
+                      <div class="col-md-12" >      
+                        <i class="bi bi-hourglass-split" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                      </div>
+              
+                      <div class="col-md-12" style="padding-top: 20px">
+                        <h5>Request processing, Please wait.</h5>
+                      </div>
+                    </div>
+
+                    <div class="text-center" id="rejectRequest">
+                      <div class="col-md-12" >      
+                        <i class="bi bi-shield-x" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                      </div>
+              
+                      <div class="col-md-12" style="padding-top: 20px">
+                        <h5>The access you have requested has been denied.</h5>
+                      </div>
+                      <br>
+                      <button type="button" class="btn btn-dark" onclick="toggleRequestAccessForm()"><i class="bi bi-key"></i> Reapply for Permission</button>
+                    </div>
           
-                      <form class="row g-3" method="POST" action="{{ route('student.sending.request.access') }}">
+                    <form id="requestAccessForm" class="row g-3" method="POST" action="{{ route('student.sending.request.access') }}" style="display: none;">
                         @csrf
             
-                      <input type="hidden" class="form-control" id="titleResearch" name="titleResearch">
+                      <input type="hidden" class="form-control" id="researchId" name="researchId">
 
-                      <b><p id="researchTitle" class="large fst-italic"></p></b>
-                
-                      <div class="col-md-12">
-                        <div class="form-floating">
-                          <textarea class="form-control" id="purpose" name="purpose" style="height: 150px;"></textarea>
-                          <label for="purpose">Purpose</label>
+                      <div class="row mb-3">
+                        <label for="purpose" class="col-sm-12 col-form-label">Access request purpose?</label>
+                        <div class="col-sm-12">
+                          <textarea class="form-control" id="purpose" name="purpose" style="height: 100px"></textarea>
                         </div>
                       </div>
               
@@ -260,3 +278,17 @@
         </div>
     </div>
 </main>
+<script>
+  function showRequestAccessForm() {
+        document.getElementById('requestAccessForm').style.display = 'block';
+    }
+
+  function toggleRequestAccessForm() {
+              var requestAccessForm = document.getElementById('requestAccessForm');
+              if (requestAccessForm.style.display === 'none' || requestAccessForm.style.display === '') {
+                requestAccessForm.style.display = 'block';
+              } else {
+                requestAccessForm.style.display = 'none';
+              }
+          }
+</script>

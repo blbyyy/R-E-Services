@@ -9,7 +9,8 @@ use App\Models\Staff;
 use App\Models\Faculty;
 use App\Models\User;
 use App\Models\Research;
-use App\Models\RequestAccess;
+use App\Models\StudentRequestAccess;
+use App\Models\FacultyRequestAccess;
 use App\Http\Redirect;
 use View;
 use DB;
@@ -102,8 +103,12 @@ class ResearchController extends Controller
 
     public function studentSendRequestAccess($id)
     {
-        $research = DB::table('research_list')
-        ->where('id', $id)
+        $research = DB::table('student_request_access')
+        ->join('research_list', 'research_list.id', 'student_request_access.research_id')
+        ->join('users', 'users.id', 'student_request_access.requestor_id')
+        ->join('students', 'users.id', 'students.user_id')
+        ->select('student_request_access.*','research_list.*','students.*','users.*')
+        ->where('research_list.id', $id)
         ->first();
 
         return response()->json($research);
@@ -111,28 +116,36 @@ class ResearchController extends Controller
 
     public function studentSendinRequestAccess(Request $request)
     { 
-
             $student = DB::table('students')
                 ->join('users', 'users.id', 'students.user_id')
                 ->select('students.*', 'users.*')
                 ->where('user_id', Auth::id())
                 ->first();
 
-            $users = new RequestAccess;
-            $users->requestor_id = $student->user_id;
-            $users->requestor_type = $student->role;
-            $users->research_title = $request->titleResearch;
-            $users->purpose = $request->purpose;
-            $users->status = 'Pending';
-            $users->save();
+            $research = DB::table('research_list')
+                ->where('id', $request->researchId)
+                ->first();
+
+            $requests = new StudentRequestAccess;
+            $requests->requestor_id = Auth::id();
+            $requests->requestor_type = $student->role;
+            $requests->research_id = $research->id;
+            $requests->start_access_date = now();
+            $requests->purpose = $request->purpose;
+            $requests->status = 'Pending';
+            $requests->save();
 
             return redirect()->to('/student/title-checker')->with('success', 'Request was successfully sent');
     }
 
     public function facultySendRequestAccess($id)
     {
-        $research = DB::table('research_list')
-        ->where('id', $id)
+        $research = DB::table('faculty_request_access')
+        ->join('research_list', 'research_list.id', 'faculty_request_access.research_id')
+        ->join('users', 'users.id', 'faculty_request_access.requestor_id')
+        ->join('faculty', 'users.id', 'faculty.user_id')
+        ->select('faculty_request_access.*','research_list.*','faculty.*','users.*')
+        ->where('research_list.id', $id)
         ->first();
 
         return response()->json($research);
@@ -147,13 +160,18 @@ class ResearchController extends Controller
                 ->where('user_id', Auth::id())
                 ->first();
 
-            $users = new RequestAccess;
-            $users->requestor_id = $faculty->user_id;
-            $users->requestor_type = $faculty->role;
-            $users->research_title = $request->titleResearch;
-            $users->purpose = $request->purpose;
-            $users->status = 'Pending';
-            $users->save();
+                $research = DB::table('research_list')
+                ->where('id', $request->researchId)
+                ->first();
+
+            $requests = new FacultyRequestAccess;
+            $requests->requestor_id = Auth::id();
+            $requests->requestor_type = $faculty->role;
+            $requests->research_id = $research->id;
+            $requests->start_access_date = now();
+            $requests->purpose = $request->purpose;
+            $requests->status = 'Pending';
+            $requests->save();
 
             return redirect()->to('/faculty/research-list')->with('success', 'Request was successfully sent');
     }

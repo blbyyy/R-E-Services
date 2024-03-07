@@ -58,7 +58,7 @@
                     <tr class="text-center">
                         <td style="width: 150px">
                             <button data-id="{{ $research['id'] }}" type="button" class="btn btn-info researchShowInfoBtn" data-bs-toggle="modal" data-bs-target="#showResearchInfo"><i class="bi bi-eye"></i></button>
-                            <button data-id="{{ $research['id'] }}" type="button" class="btn btn-dark facultyRequestAccessBtn" data-bs-toggle="modal" data-bs-target="#facultyRequestAccess"><i class="bi bi-lock-fill"></i></button>
+                            <button data-id="{{ $research['id'] }}" type="button" class="btn btn-secondary facultyRequestAccessBtn" data-bs-toggle="modal" data-bs-target="#facultyRequestAccess"><i class="bi bi-file-earmark-pdf"></i></button>
                           </td>
                         <td>{{ $research['research_title'] }}</td>
                         <td>{{ $research['department'] }}</td>
@@ -232,18 +232,62 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-            
-                        <form class="row g-3" method="POST" action="{{ route('faculty.sending.request.access') }}">
+
+                      <div class="text-center" id="facultyRequestedFile">
+                        <div class="col-md-12" >      
+                          <i class="bi bi-file-earmark-pdf" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                        </div>
+                
+                        <div class="col-md-12" style="padding-top: 20px">
+                          <div id="researchFile"></div>
+                        </div>
+                      </div>
+
+                      <div class="text-center" id="facultyAccessDeneid">
+                        <div class="col-md-12" >      
+                          <i class="bi bi-lock-fill" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                        </div>
+                
+                        <div class="col-md-12" style="padding-top: 20px">
+                          <h5>To gain access to the file, you need to send a permission request.</h5>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-dark" onclick="toggleFacultyRequestAccessForm()"><i class="bi bi-key"></i> Request Access</button>
+                      </div>
+  
+                      <div class="text-center" id="facultyProcessingRequest">
+                        <div class="col-md-12" >      
+                          <i class="bi bi-hourglass-split" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                        </div>
+                
+                        <div class="col-md-12" style="padding-top: 20px">
+                          <h5>Request processing, Please wait.</h5>
+                        </div>
+                      </div>
+  
+                      <div class="text-center" id="facultyRejectRequest">
+                        <div class="col-md-12" >      
+                          <i class="bi bi-shield-x" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                        </div>
+                
+                        <div class="col-md-12" style="padding-top: 20px">
+                          <h5>The access you have requested has been denied.</h5>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-dark" onclick="toggleFacultyRequestAccessForm()"><i class="bi bi-key"></i> Reapply for Permission</button>
+                      </div>
+
+                      <form class="row g-3" id="facultyRequestAccessForm" method="POST" action="{{ route('faculty.sending.request.access') }}" style="display: none;">
                           @csrf
               
-                        <input type="hidden" class="form-control" id="titleResearch" name="titleResearch">
-  
+                        <input type="hidden" class="form-control" id="researchId" name="researchId">
+
                         <b><p id="researchTitle" class="large fst-italic"></p></b>
                   
-                        <div class="col-md-12">
-                          <div class="form-floating">
-                            <textarea class="form-control" id="purpose" name="purpose" style="height: 150px;"></textarea>
-                            <label for="purpose">Purpose</label>
+                        <div class="row mb-3">
+                          <label for="purpose" class="col-sm-12 col-form-label">Access request purpose?</label>
+                          <div class="col-sm-12">
+                            <textarea class="form-control" id="purpose" name="purpose" style="height: 100px"></textarea>
                           </div>
                         </div>
                 
@@ -266,3 +310,17 @@
         </div>
     </div>
 </main>
+<script>
+  function showFacultyRequestAccessForm() {
+        document.getElementById('facultyRequestAccessForm').style.display = 'block';
+    }
+
+  function toggleFacultyRequestAccessForm() {
+              var facultyRequestAccessForm = document.getElementById('facultyRequestAccessForm');
+              if (facultyRequestAccessForm.style.display === 'none' || facultyRequestAccessForm.style.display === '') {
+                facultyRequestAccessForm.style.display = 'block';
+              } else {
+                facultyRequestAccessForm.style.display = 'none';
+              }
+          }
+</script>

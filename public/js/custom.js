@@ -2216,92 +2216,7 @@ $(document).ready(function () {
             $("#certificate").empty();
         });
 
-        //student view research details
-        $(".researchViewInfoBtn").click(function() {
-            var id = $(this).data('id');
-            console.log(id)
-            $.ajax({
-                url: '/student/title-checker/search/show/' + id, 
-                type: 'GET',
-                success: function(data) {
-                    console.log(data);
-                    $("#researchtitle").text(data.research_title);
-                    $("#researchabstract").text( data.abstract);
-                    $("#researchdepartment").text( data.department);
-                    $("#researchcourse").text( data.course);
-
-                    if (data.faculty_adviser1 !== null) {
-                        $("#a1").show();
-                        $("#facultyadviser1").text(data.faculty_adviser1);
-                    } else {
-                        $("#a1").hide();
-                    }
-                    if (data.faculty_adviser2 !== null) {
-                        $("#a2").show();
-                        $("#facultyadviser2").text(data.faculty_adviser2);
-                    } else {
-                        $("#a2").hide();
-                    }
-                    if (data.faculty_adviser3 !== null) {
-                        $("#a3").show();
-                        $("#facultyadviser3").text(data.faculty_adviser3);
-                    } else {
-                        $("#a3").hide();
-                    }
-                    if (data.faculty_adviser4 !== null) {
-                        $("#a4").show();
-                        $("#facultyadviser4").text(data.faculty_adviser4);
-                    } else {
-                        $("#a4").hide();
-                    }
-
-                    if (data.researcher1 !== null) {
-                        $("#r1").show();
-                        $("#researchers1").text(data.researcher1);
-                    } else {
-                        $("#r1").hide();
-                    }
-                    if (data.researcher2 !== null) {
-                        $("#r2").show();
-                        $("#researchers2").text(data.researcher2);
-                    } else {
-                        $("#r2").hide();
-                    }
-                    if (data.researcher3 !== null) {
-                        $("#r3").show();
-                        $("#researchers3").text(data.researcher3);
-                    } else {
-                        $("#r3").hide();
-                    }
-                    if (data.researcher4 !== null) {
-                        $("#r4").show();
-                        $("#researchers4").text(data.researcher4);
-                    } else {
-                        $("#r4").hide();
-                    }
-                    if (data.researcher5 !== null) {
-                        $("#r5").show();
-                        $("#researchers5").text(data.researcher5);
-                    } else {
-                        $("#r5").hide();
-                    }
-                    if (data.researcher6 !== null) {
-                        $("#r6").show();
-                        $("#researchers6").text(data.researcher6);
-                    } else {
-                        $("#r6").hide();
-                    }
-
-                    $("#timeframe").text(data.time_frame);
-                    $("#datecompletion").text(data.date_completion);      
-                }, 
-                error: function (error) {
-                    console.log(error);
-                },
-            });
-        });
-
-        //student preparing to send request for access in specific research
+        //student viewing research info & requesting access
         $(".studentRequestAccessBtn").click(function() {
             var id = $(this).data("id");
             $.ajax({
@@ -2319,8 +2234,101 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) { 
                     console.log(data);
-                    $("#researchTitle").text("'" + data.research_title + "'"); 
-                    $("#titleResearch").val(data.research_title); 
+
+                    $("#researchId").val(id);
+
+                    if (data.status == null) {
+                        $("#ResearchInfo").hide(); 
+                        $("#processingRequest").hide();
+                        $("#rejectRequest").hide();
+                        $("#accessDeneid").show();
+                    } else if (data.status == 'Pending') {
+                        $("#ResearchInfo").hide();
+                        $("#accessDeneid").hide();
+                        $("#rejectRequest").hide();
+                        $("#processingRequest").show();
+                    } else if (data.status == 'Reject') {
+                        $("#ResearchInfo").hide();
+                        $("#accessDeneid").hide();
+                        $("#processingRequest").hide();
+                        $("#rejectRequest").show();
+                    } else {
+                        $("#accessDeneid").hide();
+                        $("#processingRequest").hide();
+                        $("#rejectRequest").hide();
+                        $("#ResearchInfo").show(); 
+                        
+                        $("#researchtitle").text(data.research_title);
+                        $("#researchabstract").text( data.abstract);
+                        $("#researchdepartment").text( data.department);
+                        $("#researchcourse").text( data.course);
+
+                        if (data.faculty_adviser1 !== null) {
+                            $("#a1").show();
+                            $("#facultyadviser1").text(data.faculty_adviser1);
+                        } else {
+                            $("#a1").hide();
+                        }
+                        if (data.faculty_adviser2 !== null) {
+                            $("#a2").show();
+                            $("#facultyadviser2").text(data.faculty_adviser2);
+                        } else {
+                            $("#a2").hide();
+                        }
+                        if (data.faculty_adviser3 !== null) {
+                            $("#a3").show();
+                            $("#facultyadviser3").text(data.faculty_adviser3);
+                        } else {
+                            $("#a3").hide();
+                        }
+                        if (data.faculty_adviser4 !== null) {
+                            $("#a4").show();
+                            $("#facultyadviser4").text(data.faculty_adviser4);
+                        } else {
+                            $("#a4").hide();
+                        }
+
+                        if (data.researcher1 !== null) {
+                            $("#r1").show();
+                            $("#researchers1").text(data.researcher1);
+                        } else {
+                            $("#r1").hide();
+                        }
+                        if (data.researcher2 !== null) {
+                            $("#r2").show();
+                            $("#researchers2").text(data.researcher2);
+                        } else {
+                            $("#r2").hide();
+                        }
+                        if (data.researcher3 !== null) {
+                            $("#r3").show();
+                            $("#researchers3").text(data.researcher3);
+                        } else {
+                            $("#r3").hide();
+                        }
+                        if (data.researcher4 !== null) {
+                            $("#r4").show();
+                            $("#researchers4").text(data.researcher4);
+                        } else {
+                            $("#r4").hide();
+                        }
+                        if (data.researcher5 !== null) {
+                            $("#r5").show();
+                            $("#researchers5").text(data.researcher5);
+                        } else {
+                            $("#r5").hide();
+                        }
+                        if (data.researcher6 !== null) {
+                            $("#r6").show();
+                            $("#researchers6").text(data.researcher6);
+                        } else {
+                            $("#r6").hide();
+                        }
+
+                        $("#timeframe").text(data.time_frame);
+                        $("#datecompletion").text(data.date_completion);
+                    }
+                    
                 },
                 error: function (error) {
                     console.log(error);
@@ -3847,7 +3855,7 @@ $(document).ready(function () {
 
         });
 
-         //faculty preparing to send request for access in specific research
+         //student viewing research info & requesting access
          $(".facultyRequestAccessBtn").click(function() {
             var id = $(this).data("id");
             $.ajax({
@@ -3865,8 +3873,38 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) { 
                     console.log(data);
-                    $("#researchTitle").text("'" + data.research_title + "'"); 
-                    $("#titleResearch").val(data.research_title); 
+                    $("#researchId").val(id);
+
+                    if (data.status == null) {
+                        $("#facultyRequestedFile").hide(); 
+                        $("#facultyProcessingRequest").hide();
+                        $("#facultyRejectRequest").hide();
+                        $("#facultyAccessDeneid").show();
+                    } else if (data.status == 'Pending') {
+                        $("#facultyRequestedFile").hide();
+                        $("#facultyAccessDeneid").hide();
+                        $("#facultyRejectRequest").hide();
+                        $("#facultyProcessingRequest").show();
+                    } else if (data.status == 'Reject') {
+                        $("#facultyRequestedFile").hide();
+                        $("#facultyAccessDeneid").hide();
+                        $("#facultyProcessingRequest").hide();
+                        $("#facultyRejectRequest").show();
+                    } else {
+                        $("#facultyAccessDeneid").hide();
+                        $("#facultyProcessingRequest").hide();
+                        $("#facultyRejectRequest").hide();
+                        $("#facultyRequestedFile").show(); 
+                        
+                        var pdfLink = $('<a>', {
+                            href: "/uploads/pdf/" + encodeURIComponent(data.research_file),
+                            text: "Download PDF",
+                            target: "_blank"
+                        });
+                    
+                        $("#researchFile").empty().append(pdfLink);
+                        
+                    } 
                 },
                 error: function (error) {
                     console.log(error);
