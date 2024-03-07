@@ -281,8 +281,6 @@
                           @csrf
               
                         <input type="hidden" class="form-control" id="researchId" name="researchId">
-
-                        <b><p id="researchTitle" class="large fst-italic"></p></b>
                   
                         <div class="row mb-3">
                           <label for="purpose" class="col-sm-12 col-form-label">Access request purpose?</label>

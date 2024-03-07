@@ -111,6 +111,7 @@
                   </div>
 
                   <div class="modal-body">
+                    <div id="spinner" class="spinner-border text-primary" role="status"></div>
 
                     <section class="section profile" id="ResearchInfo">
                       <div class="row">
@@ -268,6 +269,7 @@
                     </form>
                    
                   </div>
+
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
@@ -291,4 +293,20 @@
                 requestAccessForm.style.display = 'none';
               }
           }
+
+          // Assume you have a function to load data
+  function loadData() {
+    // Start the spinner when data loading begins
+    document.getElementById("spinner").style.display = "block";
+
+    // Simulating data loading with setTimeout
+    setTimeout(function() {
+      // Data loading is done, stop the spinner
+      document.getElementById("spinner").style.display = "none";
+      // Show your data content or perform other actions here
+    }, 2000); // Change 2000 to the time it takes to load your data
+  }
+
+  // Call the function to load data when needed
+  loadData();
 </script>
