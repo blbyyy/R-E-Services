@@ -1800,8 +1800,8 @@ $(document).ready(function () {
 
         });
 
-        //preparing to send access file for the requestor
-        $(".processAccessRequest").click(function() {
+        //preparing to send access file for the student
+        $(".studentProcessAccessRequest").click(function() {
             var id = $(this).data("id");
             $.ajax({
                 type: "GET",
@@ -1809,7 +1809,35 @@ $(document).ready(function () {
                 processData: false, // Important!
                 contentType: false,
                 cache: false,
-                url: "/research-access-requests/" + id,
+                url: "/student-research-access-requests/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#researchTitle").text("'" + data.research_title + "'"); 
+                    $("#purpose").text("'" + data.purpose + "'"); 
+                    $("#requestId").val(id); 
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //preparing to send access file for the faculty
+        $(".facultyProcessAccessRequest").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty-research-access-requests/" + id,
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
                         "content"
@@ -2247,7 +2275,7 @@ $(document).ready(function () {
                         $("#accessDeneid").hide();
                         $("#rejectRequest").hide();
                         $("#processingRequest").show();
-                    } else if (data.status == 'Reject') {
+                    } else if (data.status == 'Rejected') {
                         $("#ResearchInfo").hide();
                         $("#accessDeneid").hide();
                         $("#processingRequest").hide();
@@ -3856,7 +3884,7 @@ $(document).ready(function () {
 
         });
 
-         //student viewing research info & requesting access
+         //faculty viewing research info & requesting access
          $(".facultyRequestAccessBtn").click(function() {
             var id = $(this).data("id");
             $.ajax({
@@ -3886,7 +3914,7 @@ $(document).ready(function () {
                         $("#facultyAccessDeneid").hide();
                         $("#facultyRejectRequest").hide();
                         $("#facultyProcessingRequest").show();
-                    } else if (data.status == 'Reject') {
+                    } else if (data.status == 'Rejected') {
                         $("#facultyRequestedFile").hide();
                         $("#facultyAccessDeneid").hide();
                         $("#facultyProcessingRequest").hide();

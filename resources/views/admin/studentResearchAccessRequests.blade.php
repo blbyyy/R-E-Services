@@ -42,8 +42,13 @@
             @foreach($requestAccess as $request)
               <tr class="text-center">
                 <td>
-                    <button data-id="{{$request->id }}" type="button" class="btn btn-primary processAccessRequest" data-bs-toggle="modal" data-bs-target="#researchAccessRequest"><i class="bi bi-key-fill"></i></button>
-                </td>
+                  @if ($request->status === 'Access Approved')
+                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="At the moment, this request has access."><i class="bi bi-key-fill"></i></button>
+                  @elseif ($request->status === 'Rejected')
+                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="This request is not granted."><i class="bi bi-key-fill"></i></button>
+                  @else
+                    <button data-id="{{$request->id }}" type="button" class="btn btn-primary studentProcessAccessRequest" data-bs-toggle="modal" data-bs-target="#studentResearchAccessRequest"><i class="bi bi-key-fill"></i></button>
+                  @endif
                 <td>
                     {{$request->fname . ' ' . $request->mname . ' ' . $request->lname}}
                     <span style="font-size: small">({{$request->requestor_type}})</span>
@@ -64,7 +69,7 @@
             </tbody>
           </table>
 
-          <div class="modal fade" id="researchAccessRequest" tabindex="-1"> 
+          <div class="modal fade" id="studentResearchAccessRequest" tabindex="-1"> 
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
@@ -73,7 +78,7 @@
                 </div>
                 <div class="modal-body">
         
-                    <form class="row g-3" method="POST" action="{{ route('sending.access.file') }}" enctype="multipart/form-data">
+                    <form class="row g-3" method="POST" action="{{ route('student.sending.access.file') }}" enctype="multipart/form-data">
                       @csrf
           
                     <input type="hidden" class="form-control" id="requestId" name="requestId">

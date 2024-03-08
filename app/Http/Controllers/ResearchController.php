@@ -105,9 +105,10 @@ class ResearchController extends Controller
         ->join('research_list', 'research_list.id', 'student_request_access.research_id')
         ->join('users', 'users.id', 'student_request_access.requestor_id')
         ->join('students', 'users.id', 'students.user_id')
-        ->select('student_request_access.*','research_list.*','students.*','users.*')
+        ->select('student_request_access.*', 'research_list.*', 'students.*', 'users.*')
         ->where('research_list.id', $id)
-        ->first();
+        ->latest('student_request_access.created_at')
+        ->first(); 
 
         return response()->json($research);
     }
@@ -143,6 +144,7 @@ class ResearchController extends Controller
         ->join('users', 'users.id', 'faculty_request_access.requestor_id')
         ->join('faculty', 'users.id', 'faculty.user_id')
         ->select('faculty_request_access.*','research_list.*','faculty.*','users.*')
+        ->latest('faculty_request_access.created_at')
         ->where('research_list.id', $id)
         ->first();
 
@@ -174,7 +176,7 @@ class ResearchController extends Controller
             return redirect()->to('/faculty/research-list')->with('success', 'Request was successfully sent');
     }
 
-    public function researchAccessRequests()
+    public function studentResearchAccessRequests()
     {
         $admin = DB::table('staff')
         ->join('users','users.id','staff.user_id')
@@ -183,8 +185,8 @@ class ResearchController extends Controller
         ->first();
 
         $requestAccess = DB::table('student_request_access')
-        ->join('users','users.id','student_request_access.requestor_id')
-        ->join('research_list','research_list.id','student_request_access.research_id')
+        ->join('users', 'users.id', 'student_request_access.requestor_id')
+        ->join('research_list', 'research_list.id', 'student_request_access.research_id')
         ->select(
             'student_request_access.*',
             'research_list.id as researchId',
@@ -192,14 +194,20 @@ class ResearchController extends Controller
             'users.fname',
             'users.mname',
             'users.lname',
-            'users.id as userID')
-        ->orderBy('student_request_access.id')
+            'users.id as userID'
+        )
+        ->orderByRaw("CASE 
+                            WHEN student_request_access.status = 'Pending' THEN 0 
+                            WHEN student_request_access.status = 'Access Approved' THEN 1 
+                            ELSE 2 
+                    END")
+        ->orderBy('student_request_access.id') 
         ->get();
 
-        return View::make('admin.researchAccessRequests',compact('admin','requestAccess'));
+        return View::make('admin.studentResearchAccessRequests',compact('admin','requestAccess'));
     }
 
-    public function processingAccessFile($id)
+    public function studentProcessingAccessFile($id)
     {
         $access = DB::table('student_request_access')
         ->join('research_list','research_list.id','student_request_access.research_id')
@@ -213,12 +221,9 @@ class ResearchController extends Controller
         return response()->json($access);
     }
 
-    public function sendingAccessFile(Request $request)
+    public function studentSendingAccessFile(Request $request)
     {
-        $accessDate = DB::table('student_request_access')
-        ->where('student_request_access.id', $request->requestId)
-        ->value('start_access_date');
-
+        $accessDate = now();
         $accessDate = Carbon::parse($accessDate);
         $accessDate->addDays(3);
         $formattedDate = $accessDate->toDateString();
@@ -228,8 +233,67 @@ class ResearchController extends Controller
         $access->end_access_date = $formattedDate;
         $access->save();
 
-        return redirect()->to('/research-access-requests')->with('success', 'Accesss file successfully sent.');
+        return redirect()->to('/student-research-access-requests')->with('success', 'Accesss file successfully sent.');
+    }
 
+    public function facultyResearchAccessRequests()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $requestAccess = DB::table('faculty_request_access')
+        ->join('users', 'users.id', 'faculty_request_access.requestor_id')
+        ->join('research_list', 'research_list.id', 'faculty_request_access.research_id')
+        ->select(
+            'faculty_request_access.*',
+            'research_list.id as researchId',
+            'research_list.research_title',
+            'users.fname',
+            'users.mname',
+            'users.lname',
+            'users.id as userID'
+        )
+        ->orderByRaw("CASE 
+                            WHEN faculty_request_access.status = 'Pending' THEN 0 
+                            WHEN faculty_request_access.status = 'Access Approved' THEN 1 
+                            ELSE 2 
+                    END")
+        ->orderBy('faculty_request_access.id') 
+        ->get();
+
+        return View::make('admin.facultyResearchAccessRequests',compact('admin','requestAccess'));
+    }
+
+    public function facultyProcessingAccessFile($id)
+    {
+        $access = DB::table('faculty_request_access')
+        ->join('research_list','research_list.id','faculty_request_access.research_id')
+        ->select(
+            'faculty_request_access.*',
+            'research_list.id as researchId',
+            'research_list.research_title')
+        ->where('faculty_request_access.id', $id)
+        ->first();
+        
+        return response()->json($access);
+    }
+
+    public function facultySendingAccessFile(Request $request)
+    {
+        $accessDate = now();
+        $accessDate = Carbon::parse($accessDate);
+        $accessDate->addDays(3);
+        $formattedDate = $accessDate->toDateString();
+
+        $access = FacultyRequestAccess::find($request->requestId);
+        $access->status = $request->status;
+        $access->end_access_date = $formattedDate;
+        $access->save();
+
+        return redirect()->to('/faculty-research-access-requests')->with('success', 'Accesss file successfully sent.');
     }
 
     //MOBILE START

@@ -517,16 +517,16 @@
       </li>
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#accessRequest" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-people-fill"></i><span>Access Requests</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-question-square"></i><span>Access Requests</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="accessRequest" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{{url('/research-access-requests')}}">
+            <a href="{{url('/student-research-access-requests')}}">
               <i class="bi bi-circle"></i><span>Student</span>
             </a>
           </li>
           <li>
-            <a href="{{url('/facultylist')}}">
+            <a href="{{url('/faculty-research-access-requests')}}">
               <i class="bi bi-circle"></i><span>Faculty</span>
             </a>
           </li>

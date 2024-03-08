@@ -886,17 +886,32 @@ Route::get('/certificate/{control_id}', [
         'as' => 'certificate.landingPage'
 ]);
 
-Route::get('/research-access-requests', [
-  'uses' => 'ResearchController@researchAccessRequests',
-        'as' => 'research.access.requests'
+Route::get('/student-research-access-requests', [
+  'uses' => 'ResearchController@studentResearchAccessRequests',
+        'as' => 'student.research.access.requests'
 ]);
 
-Route::get('/research-access-requests/{id}', [
-  'uses' => 'ResearchController@processingAccessFile',
-        'as' => 'processing.access.request'
+Route::get('/student-research-access-requests/{id}', [
+  'uses' => 'ResearchController@studentProcessingAccessFile',
+        'as' => 'student.processing.access.request'
 ]);
 
-Route::post('/research-access-requests/sent', [
-  'uses' => 'ResearchController@sendingAccessFile',
-        'as' => 'sending.access.file'
+Route::post('/student-research-access-requests/sent', [
+  'uses' => 'ResearchController@studentSendingAccessFile',
+        'as' => 'student.sending.access.file'
+]);
+
+Route::get('/faculty-research-access-requests', [
+  'uses' => 'ResearchController@facultyResearchAccessRequests',
+        'as' => 'faculty.research.access.requests'
+]);
+
+Route::get('/faculty-research-access-requests/{id}', [
+  'uses' => 'ResearchController@facultyProcessingAccessFile',
+        'as' => 'faculty.processing.access.request'
+]);
+
+Route::post('/faculty-research-access-requests/sent', [
+  'uses' => 'ResearchController@facultySendingAccessFile',
+        'as' => 'faculty.sending.access.file'
 ]);
