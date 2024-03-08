@@ -119,11 +119,13 @@
                         </div>
                 
                         <div class="col-xl-12">
-                
+                          <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle me-1"></i>
+                            This information remains valid until <span id="endAccessDate"></span>
+                          </div>
                           <div class="card">
                             <div class="card-body pt-3">
                               <div class="tab-content pt-2">
-                
                                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                   <h5 class="card-title">Research Title</h5>
                                   <p id="researchtitle" class="large fst-italic"></p>

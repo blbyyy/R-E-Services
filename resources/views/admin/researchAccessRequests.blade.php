@@ -26,7 +26,7 @@
 
     <div class="card">
         <div class="card-body">
-          <h5 class="card-title">List of Access Requests</h5>
+          <h5 class="card-title">List of Student Access Requests</h5>
 
           <table class="table table-hover">
             <thead>
@@ -53,7 +53,7 @@
                 <td>
                     @if ($request->status === 'Rejected')
                         <span class="badge rounded-pill bg-danger">{{$request->status}}</span>
-                    @elseif ($request->status === 'Sent')
+                    @elseif ($request->status === 'Access Approved')
                         <span class="badge rounded-pill bg-success">{{$request->status}}</span>
                     @else
                         <span class="badge rounded-pill bg-warning">{{$request->status}}</span>
@@ -88,7 +88,7 @@
                         <div class="form-floating">
                             <select name="status" class="form-select" id="status" aria-label="State">
                                 <option selected>Select Status....</option>
-                                <option value="Sent">Approved</option>
+                                <option value="Access Approved">Approved</option>
                                 <option value="Rejected">Reject</option>
                             </select>
                             <label for="status">Status</label>

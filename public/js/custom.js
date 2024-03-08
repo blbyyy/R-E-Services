@@ -2258,6 +2258,7 @@ $(document).ready(function () {
                         $("#rejectRequest").hide();
                         $("#ResearchInfo").show(); 
                         
+                        $("#endAccessDate").text(data.end_access_date);
                         $("#researchtitle").text(data.research_title);
                         $("#researchabstract").text( data.abstract);
                         $("#researchdepartment").text( data.department);

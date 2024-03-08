@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\ResearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -161,4 +162,7 @@ Route::get('/mobile/subjectAdviser/approval/{id}', [FacultyController::class, 'm
 Route::post('/mobile/sending/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesendingSubjectAdviserApproval']);
 
 Route::get('/mobilehomepage/{id}', 'App\Http\Controllers\LayoutsController@mobilehomepage');
+
+Route::get('mobile/student/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilestudentSendRequestAccess');
+Route::post('/student/send-request-access', [ResearchController::class, 'mobilestudentSendinRequestAccess']);
 //MOBILE END

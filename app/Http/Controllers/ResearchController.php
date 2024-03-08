@@ -12,10 +12,8 @@ use App\Models\Research;
 use App\Models\StudentRequestAccess;
 use App\Models\FacultyRequestAccess;
 use App\Http\Redirect;
-use View;
-use DB;
-use File;
-use Auth;
+use Carbon\Carbon;
+use View, DB, File, Auth;
 
 class ResearchController extends Controller
 {
@@ -184,15 +182,18 @@ class ResearchController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        $requestAccess = DB::table('request_access')
-        ->join('users','users.id','request_access.requestor_id')
+        $requestAccess = DB::table('student_request_access')
+        ->join('users','users.id','student_request_access.requestor_id')
+        ->join('research_list','research_list.id','student_request_access.research_id')
         ->select(
-            'request_access.*',
+            'student_request_access.*',
+            'research_list.id as researchId',
+            'research_list.research_title',
             'users.fname',
             'users.mname',
             'users.lname',
             'users.id as userID')
-        ->orderBy('request_access.id')
+        ->orderBy('student_request_access.id')
         ->get();
 
         return View::make('admin.researchAccessRequests',compact('admin','requestAccess'));
@@ -200,39 +201,78 @@ class ResearchController extends Controller
 
     public function processingAccessFile($id)
     {
-        $access = DB::table('request_access')
-        ->where('id', $id)
+        $access = DB::table('student_request_access')
+        ->join('research_list','research_list.id','student_request_access.research_id')
+        ->select(
+            'student_request_access.*',
+            'research_list.id as researchId',
+            'research_list.research_title')
+        ->where('student_request_access.id', $id)
         ->first();
-
+        
         return response()->json($access);
     }
 
     public function sendingAccessFile(Request $request)
     {
-        $access = RequestAccess::find($request->requestId);
+        $accessDate = DB::table('student_request_access')
+        ->where('student_request_access.id', $request->requestId)
+        ->value('start_access_date');
 
-        if ($request->status === 'Sent') {
+        $accessDate = Carbon::parse($accessDate);
+        $accessDate->addDays(3);
+        $formattedDate = $accessDate->toDateString();
 
-            $pdfFile = $request->file('research_file');
-            $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-            $pdfFile->move(public_path('uploads/accessRequested'), $pdfFileName);
-            
-            $access->file = $pdfFileName;
-            $access->status = 'Sent';
-            $access->save();
+        $access = StudentRequestAccess::find($request->requestId);
+        $access->status = $request->status;
+        $access->end_access_date = $formattedDate;
+        $access->save();
 
-            return redirect()->to('/research-access-requests')->with('success', 'Accesss file successfully sent.');
+        return redirect()->to('/research-access-requests')->with('success', 'Accesss file successfully sent.');
 
-        } else {
-
-            $access->status = 'Rejected';
-            $access->save();
-
-            return redirect()->to('/research-access-requests')->with('error', 'The access file has not been sent.');
-        }
-        
-        
     }
+
+    //MOBILE START
+    public function mobilestudentSendRequestAccess($id)
+    {
+        $research = DB::table('student_request_access')
+        ->join('research_list', 'research_list.id', 'student_request_access.research_id')
+        ->join('users', 'users.id', 'student_request_access.requestor_id')
+        ->join('students', 'users.id', 'students.user_id')
+        ->select('student_request_access.*','research_list.*','students.*','users.*')
+        ->where('research_list.id', $id)
+        ->first();
+
+        return response()->json($research);
+    }
+
+    public function mobilestudentSendinRequestAccess(Request $request)
+    { 
+        $student = DB::table('students')
+            ->join('users', 'users.id', 'students.user_id')
+            ->select('students.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $research = DB::table('research_list')
+            ->where('id', $request->researchId)
+            ->first();
+
+        $requests = new StudentRequestAccess;
+        $requests->requestor_id = Auth::id();
+        $requests->requestor_type = $student->role;
+        $requests->research_id = $research->id;
+        $requests->start_access_date = now();
+        $requests->purpose = $request->purpose;
+        $requests->status = 'Pending';
+        $requests->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Request was successfully sent'
+        ]);
+    }
+    //MOBILE END
 
     
 }
