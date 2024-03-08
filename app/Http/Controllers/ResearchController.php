@@ -259,9 +259,9 @@ class ResearchController extends Controller
             ->first();
 
         $requests = new StudentRequestAccess;
-        $requests->requestor_id = Auth::id();
-        $requests->requestor_type = $student->role;
-        $requests->research_id = $research->id;
+        $requests->requestor_id = $request->requestor_id;
+        $requests->requestor_type = $request->requestor_type;
+        $requests->research_id = $request->research_id;
         $requests->start_access_date = now();
         $requests->purpose = $request->purpose;
         $requests->status = 'Pending';
