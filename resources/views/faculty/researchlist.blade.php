@@ -234,6 +234,10 @@
                     <div class="modal-body">
 
                       <div class="text-center" id="facultyRequestedFile">
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                          <i class="bi bi-check-circle me-1"></i>
+                          This information remains valid until <span id="facultyEndAccessDate"></span>
+                        </div>
                         <div class="col-md-12" >      
                           <i class="bi bi-file-earmark-pdf" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
                         </div>
@@ -274,7 +278,19 @@
                           <h5>The access you have requested has been denied.</h5>
                         </div>
                         <br>
-                        <button type="button" class="btn btn-dark" onclick="toggleFacultyRequestAccessForm()"><i class="bi bi-key"></i> Reapply for Permission</button>
+                        <button type="button" class="btn btn-dark" onclick="toggleFacultyRequestAccessForm()"><i class="bi bi-key"></i> Resubmit Permission</button>
+                      </div>
+
+                      <div class="text-center" id="facultyRequestExpired">
+                        <div class="col-md-12" >      
+                          <i class="bi bi-exclamation-triangle" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                        </div>
+                
+                        <div class="col-md-12" style="padding-top: 20px">
+                          <h5>The access you had expired.</h5>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-dark" onclick="toggleFacultyRequestAccessForm()"><i class="bi bi-key"></i> Resubmit Permission</button>
                       </div>
 
                       <form class="row g-3" id="facultyRequestAccessForm" method="POST" action="{{ route('faculty.sending.request.access') }}" style="display: none;">

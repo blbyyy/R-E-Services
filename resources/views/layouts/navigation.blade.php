@@ -63,84 +63,57 @@
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
         <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
+            <i class="bi bi-bell" style=""></i>
+            @if (Auth::user()->role === 'Admin')
+              <span class="badge bg-primary badge-number">{{$adminNotifCount}}</span>
+            @elseif (Auth::user()->role === 'Student')
+            @elseif (Auth::user()->role === 'Faculty')
+            @elseif (Auth::user()->role === 'Staff')
+            @endif
+          </a>
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
 
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
+            @if (Auth::user()->role === 'Admin')
+              <li class="dropdown-header">
+                You have {{$adminNotifCount}} notifications
+                <a href="{{url('admin/all/notifications')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              </li>
+            @else
+                
+            @endif
+            
 
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
+            @if (Auth::user()->role === 'Admin')
+              @foreach ($adminNotification as $notif)
+                <li class="notification-item">
+                  <i class="bi bi-info-circle text-primary"></i>
+                  <div>
+                    <h4>{{$notif->title}}</h4>
+                    <p>{{$notif->message}}</p>
+                    <p>{{ \Carbon\Carbon::parse($notif->date)->diffForHumans() }}</p>
+                  </div>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+              @endforeach
+            @elseif (Auth::user()->role === 'Student')
+            @elseif (Auth::user()->role === 'Faculty')
+            @elseif (Auth::user()->role === 'Staff')
+            @endif
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
             <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
             </li>
-
-          </ul><!-- End Notification Dropdown Items -->
+            
+          </ul>
 
         </li><!-- End Notification Nav -->
 

@@ -34,6 +34,16 @@ class LayoutsController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
         $role = DB::table('users')->where('id',Auth::id())->value('role');
 
         if ($role === 'Student') {
@@ -125,9 +135,66 @@ class LayoutsController extends Controller
          return Response::json($data);
         }
 
-        return View::make('layouts.home',compact('admin','student','staff','faculty','announcements'));
+        return View::make('layouts.home',compact('admin','student','staff','faculty','announcements','adminNotifCount','adminNotification'));
     }
 
+    public function navigation()
+    {
+        $admin = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
+        $student = DB::table('students')
+            ->join('users','users.id','students.user_id')
+            ->select('students.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+        
+        $staff = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
+        $faculty = DB::table('faculty')
+            ->join('users','users.id','faculty.user_id')
+            ->select('faculty.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+        
+        return View::make('layouts.navigation',compact('admin','student','staff','faculty'));
+    }
+
+    public function adminNotifications()
+    {
+        $admin = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+        
+        $notification = DB::table('notifications')
+            ->join('users', 'users.id', 'notifications.user_id')
+            ->where('type', 'Admin Notification')
+            ->orderBy('notifications.created_at', 'desc')
+            ->get();
+            
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('notifications.admin',compact('admin','notification','adminNotifCount','adminNotification'));
+    }
+
+    //mobile
     public function mobilehomepage($id)
     {
         $student = DB::table('students')

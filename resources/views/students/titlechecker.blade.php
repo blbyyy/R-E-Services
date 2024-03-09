@@ -249,13 +249,25 @@
                       <br>
                       <button type="button" class="btn btn-dark" onclick="toggleRequestAccessForm()"><i class="bi bi-key"></i> Reapply for Permission</button>
                     </div>
+
+                    <div class="text-center" id="requestExpired">
+                      <div class="col-md-12" >      
+                        <i class="bi bi-exclamation-triangle" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                      </div>
+              
+                      <div class="col-md-12" style="padding-top: 20px">
+                        <h5>The access you had expired.</h5>
+                      </div>
+                      <br>
+                      <button type="button" class="btn btn-dark" onclick="toggleRequestAccessForm()"><i class="bi bi-key"></i> Reapply for Permission</button>
+                    </div>
           
                     <form id="requestAccessForm" class="row g-3" method="POST" action="{{ route('student.sending.request.access') }}" style="display: none;">
                         @csrf
             
                       <input type="hidden" class="form-control" id="researchId" name="researchId">
 
-                      <div class="row mb-3">
+                      <div class="row mb-3" id="tryyy">
                         <label for="purpose" class="col-sm-12 col-form-label">Access request purpose?</label>
                         <div class="col-sm-12">
                           <textarea class="form-control" id="purpose" name="purpose" style="height: 100px"></textarea>

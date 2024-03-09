@@ -776,7 +776,17 @@ class FacultyController extends Controller
         $query = $request->input('query');
         $researchlist = Research::search($query)->paginate(10);
 
-        return view('faculty.researchlist', compact('researchlist', 'faculty'));
+        $adminNotifCount = DB::table('notifications')
+        ->where('type', 'Admin Notification')
+        ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('faculty.researchlist', compact('researchlist', 'faculty','adminNotifCount','adminNotification'));
     }
 
     public function showResearchInfo($id)

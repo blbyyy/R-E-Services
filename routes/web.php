@@ -475,35 +475,10 @@ Route::get('/applicationlist', [
           'as' => 'application.list'
   ]);
 
-Route::get('/', function () {
-
-    $admin = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-    $student = DB::table('students')
-        ->join('users','users.id','students.user_id')
-        ->select('students.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-    
-    $staff = DB::table('staff')
-        ->join('users','users.id','staff.user_id')
-        ->select('staff.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-    $faculty = DB::table('faculty')
-        ->join('users','users.id','faculty.user_id')
-        ->select('faculty.*','users.*')
-        ->where('user_id',Auth::id())
-        ->first();
-
-        return View::make('layouts.navigation',compact('admin','student','staff','faculty'));
-
-});
+Route::get('/', [
+    'uses' => 'LayoutsController@navigation',
+          'as' => 'navigation'
+  ]);
 
 Route::get('/old', function () {
     return view('welcome');
@@ -555,7 +530,17 @@ Route::get('/announcements', function () {
         ->where('user_id',Auth::id())
         ->first();
 
-    return View::make('admin.announcement',compact('admin','staff'));
+    $adminNotifCount = DB::table('notifications')
+        ->where('type', 'Admin Notification')
+        ->count();
+
+    $adminNotification = DB::table('notifications')
+        ->where('type', 'Admin Notification')
+        ->orderBy('date', 'desc')
+        ->take(5)
+        ->get();
+
+    return View::make('admin.announcement',compact('admin','staff','adminNotifCount','adminNotification'));
 
 });
 
@@ -914,4 +899,9 @@ Route::get('/faculty-research-access-requests/{id}', [
 Route::post('/faculty-research-access-requests/sent', [
   'uses' => 'ResearchController@facultySendingAccessFile',
         'as' => 'faculty.sending.access.file'
+]);
+
+Route::get('/admin/all/notifications', [
+  'uses' => 'LayoutsController@adminNotifications',
+        'as' => 'admin.all.notifications'
 ]);

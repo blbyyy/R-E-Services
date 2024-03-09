@@ -61,23 +61,6 @@
             </div>
           </div>
       @elseif($files->file_status == 'Returned')
-          {{-- <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{$files->research_title}}</h5>
-                    <div class="icon">
-                        <i class="bi bi-file-earmark-pdf"></i>
-                    </div>
-
-                    <center>
-                      <button type="button" class="btn btn-outline-dark facultyReApplyGetId" data-bs-toggle="modal" data-bs-target="#FacultyReApplyCertification" data-id="{{$files->id}}">
-                          Re-Apply
-                      </button> 
-                    </center>
-
-                </div>
-            </div>
-          </div> --}}
           <div class="card mb-3">
             <div class="row">
               <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -96,23 +79,6 @@
             </div>
           </div>
       @else
-            {{-- <div class="col-md-4">
-              <div class="card">
-                  <div class="card-body">
-                      <h5 class="card-title">{{$files->research_title}}</h5>
-                      <div class="icon">
-                          <i class="bi bi-file-earmark-pdf"></i>
-                      </div>
-
-                      <center>
-                        <button type="button" class="btn btn-outline-dark facultyApplyGetId" data-bs-toggle="modal" data-bs-target="#facultyapplycertification" data-id="{{$files->id}}">
-                              Apply
-                        </button> 
-                      </center>
-
-                  </div>
-              </div>
-            </div> --}}
             <div class="card mb-3">
               <div class="row">
                 <div class="col-md-10 d-flex justify-content-center align-items-center">

@@ -106,8 +106,18 @@ class AdminController extends Controller
         $maadResearchCount = DB::table('research_list')->where('department', 'MAAD')->count();
         $basdResearchCount = DB::table('research_list')->where('department', 'BASD')->count();
         $caadResearchCount = DB::table('research_list')->where('department', 'CAAD')->count();
+        
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
 
-        return View::make('admin.dashboard',compact('usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount'));
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount'));
     }
 
     public function administration()
@@ -123,9 +133,17 @@ class AdminController extends Controller
             ->select('staff.*', 'users.id as userid', 'users.role')  
             ->get(); 
 
-        // dd($adminlist);
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
         
-        return View::make('admin.administration',compact('admin','adminlist'));
+        return View::make('admin.administration',compact('admin','adminlist','adminNotifCount','adminNotification'));
     }
 
     public function addAdministration(Request $request)
@@ -398,7 +416,17 @@ class AdminController extends Controller
 
         $studentlist = Student::orderBy('id')->get();
         
-        return View::make('admin.studentlist',compact('studentlist','admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+        
+        return View::make('admin.studentlist',compact('studentlist','admin','adminNotifCount','adminNotification'));
     }
 
     public function addstudent(Request $request)
@@ -492,7 +520,18 @@ class AdminController extends Controller
         ->first();
 
         $stafflist = Staff::orderBy('id')->get();
-        return View::make('admin.stafflist',compact('stafflist','admin'));
+
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('admin.stafflist',compact('stafflist','admin','adminNotifCount','adminNotification'));
     }
 
     public function addstaff(Request $request)
@@ -586,7 +625,17 @@ class AdminController extends Controller
 
         $facultylist = Faculty::orderBy('id')->get();
 
-        return View::make('admin.facultylist',compact('facultylist','admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('admin.facultylist',compact('facultylist','admin','adminNotifCount','adminNotification'));
     }
 
     public function addfaculty(Request $request)
@@ -895,8 +944,18 @@ class AdminController extends Controller
                 'certificates.control_id',
                 'certificates.certificate_file')  
             ->get();
+        
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
 
-        return View::make('certificate.tracking',compact('admin','certificates','staff'));
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('certificate.tracking',compact('admin','certificates','staff','adminNotifCount','adminNotification'));
     }
 
     public function show_certificate($certId)

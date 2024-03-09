@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Algolia\AlgoliaSearch\SearchClient;
-use App\Models\Student;
-use App\Models\Staff;
-use App\Models\Faculty;
-use App\Models\User;
-use App\Models\Research;
 use App\Models\StudentRequestAccess;
 use App\Models\FacultyRequestAccess;
+use App\Models\Notifications;
+use Illuminate\Http\Request;
+use App\Models\Research;
+use App\Models\Student;
+use App\Models\Faculty;
 use App\Http\Redirect;
+use App\Models\Staff;
+use App\Models\User;
 use Carbon\Carbon;
 use View, DB, File, Auth;
 
@@ -25,10 +26,20 @@ class ResearchController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
         $query = $request->input('query');
         $researchlist = Research::search($query)->paginate(10);
 
-        return View::make('research.researchlist',compact('researchlist','admin'));
+        return View::make('research.researchlist',compact('researchlist','admin','adminNotifCount','adminNotification'));
     }
 
     public function addresearch(Request $request)
@@ -134,6 +145,14 @@ class ResearchController extends Controller
             $requests->status = 'Pending';
             $requests->save();
 
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Research Access Request for Information';
+            $notif->message = 'Someone requested access to the research information.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->save();
+
             return redirect()->to('/student/title-checker')->with('success', 'Request was successfully sent');
     }
 
@@ -144,8 +163,8 @@ class ResearchController extends Controller
         ->join('users', 'users.id', 'faculty_request_access.requestor_id')
         ->join('faculty', 'users.id', 'faculty.user_id')
         ->select('faculty_request_access.*','research_list.*','faculty.*','users.*')
-        ->latest('faculty_request_access.created_at')
         ->where('research_list.id', $id)
+        ->latest('faculty_request_access.created_at')
         ->first();
 
         return response()->json($research);
@@ -153,7 +172,6 @@ class ResearchController extends Controller
 
     public function facultySendinRequestAccess(Request $request)
     { 
-
             $faculty = DB::table('faculty')
                 ->join('users', 'users.id', 'faculty.user_id')
                 ->select('faculty.*', 'users.*')
@@ -172,6 +190,14 @@ class ResearchController extends Controller
             $requests->purpose = $request->purpose;
             $requests->status = 'Pending';
             $requests->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Research Access Request for Documents';
+            $notif->message = 'Someone requested access to the research documents.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->save();
 
             return redirect()->to('/faculty/research-list')->with('success', 'Request was successfully sent');
     }
@@ -204,7 +230,17 @@ class ResearchController extends Controller
         ->orderBy('student_request_access.id') 
         ->get();
 
-        return View::make('admin.studentResearchAccessRequests',compact('admin','requestAccess'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('admin.studentResearchAccessRequests',compact('admin','requestAccess','adminNotifCount','adminNotification'));
     }
 
     public function studentProcessingAccessFile($id)
@@ -264,7 +300,17 @@ class ResearchController extends Controller
         ->orderBy('faculty_request_access.id') 
         ->get();
 
-        return View::make('admin.facultyResearchAccessRequests',compact('admin','requestAccess'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('admin.facultyResearchAccessRequests',compact('admin','requestAccess','adminNotifCount','adminNotification'));
     }
 
     public function facultyProcessingAccessFile($id)

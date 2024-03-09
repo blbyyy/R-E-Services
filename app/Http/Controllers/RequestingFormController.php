@@ -39,14 +39,6 @@ class RequestingFormController extends Controller
         ->select('staff.*','users.*')
         ->where('user_id',Auth::id())
         ->first();
-
-        // $application = RequestingForm::orderBy('id')->get();
-
-        // $application = DB::table('requestingform')
-        // ->join('files', 'files.id', '=', 'requestingform.research_id')
-        // ->select('files.*', 'requestingform.*')
-        // ->orderByRaw("CASE WHEN requestingform.status = 'Pending' THEN 0 ELSE 1 END, requestingform.id")
-        // ->get();
         
         $application = DB::table('requestingform')
             ->join('files', 'files.id', '=', 'requestingform.research_id')
@@ -55,8 +47,17 @@ class RequestingFormController extends Controller
             ->orderBy('requestingform.id')
             ->get();
 
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
 
-        return View::make('applications.applicationslist',compact('student', 'staff', 'faculty', 'admin', 'application'));
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('applications.applicationslist',compact('student', 'staff', 'faculty', 'admin', 'application','adminNotifCount','adminNotification'));
     }
 
     // public function uploadPDF(Request $request)

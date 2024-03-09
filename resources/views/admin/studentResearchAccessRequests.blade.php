@@ -78,7 +78,7 @@
                 </div>
                 <div class="modal-body">
         
-                    <form class="row g-3" method="POST" action="{{ route('student.sending.access.file') }}" enctype="multipart/form-data">
+                  <form class="row g-3" method="POST" action="{{ route('student.sending.access.file') }}" enctype="multipart/form-data">
                       @csrf
           
                     <input type="hidden" class="form-control" id="requestId" name="requestId">
