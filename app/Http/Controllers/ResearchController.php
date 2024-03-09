@@ -379,6 +379,7 @@ class ResearchController extends Controller
         ->join('students', 'users.id', 'students.user_id')
         ->select('student_request_access.*','research_list.*','students.*','users.*')
         ->where('research_list.id', $id)
+        ->latest('student_request_access.created_at')
         ->first();
 
         return response()->json($research);
