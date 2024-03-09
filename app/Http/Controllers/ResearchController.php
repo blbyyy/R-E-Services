@@ -144,8 +144,8 @@ class ResearchController extends Controller
         ->join('users', 'users.id', 'faculty_request_access.requestor_id')
         ->join('faculty', 'users.id', 'faculty.user_id')
         ->select('faculty_request_access.*','research_list.*','faculty.*','users.*')
-        ->latest('faculty_request_access.created_at')
         ->where('research_list.id', $id)
+        ->latest('faculty_request_access.created_at')
         ->first();
 
         return response()->json($research);
@@ -153,7 +153,6 @@ class ResearchController extends Controller
 
     public function facultySendinRequestAccess(Request $request)
     { 
-
             $faculty = DB::table('faculty')
                 ->join('users', 'users.id', 'faculty.user_id')
                 ->select('faculty.*', 'users.*')
