@@ -175,7 +175,7 @@
               <tbody id="researchTableBody">
                   @foreach ($researchlist as $researchlists)
                       <tr class="text-center">
-                          <td style="width: 152px">
+                          <td style="width: 160px">
                               <button data-id="{{$researchlists->id}}" type="button" class="btn btn-info researchshowBtn" data-bs-toggle="modal" data-bs-target="#showresearchinfo"><i class="bi bi-eye"></i></button>
                               <button data-id="{{$researchlists->id}}" type="button" class="btn btn-primary researcheditBtn" data-bs-toggle="modal" data-bs-target="#editresearchinfo"><i class="bi bi-pencil-square"></i></button>
                               <button data-id="{{$researchlists->id}}" type="button" class="btn btn-danger researchdeleteBtn"><i class="bi bi-trash"></i></button>

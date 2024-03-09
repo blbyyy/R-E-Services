@@ -2,8 +2,8 @@
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Downloadable Templates Under Extension</h1>
-        
     </div>
+    
     <div class="card">
         <div class="card-body">
           <h5 class="card-title">List of Templates</h5>

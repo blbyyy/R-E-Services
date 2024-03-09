@@ -26,7 +26,17 @@ class DepartmentController extends Controller
 
         $departmentlists = Department::orderBy('id')->get();
 
-        return View::make('department.index',compact('admin','departmentlists'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return View::make('department.index',compact('admin','departmentlists','adminNotifCount','adminNotification'));
     }
 
     public function add_department(Request $request)
