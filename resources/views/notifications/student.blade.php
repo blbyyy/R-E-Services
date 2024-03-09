@@ -20,21 +20,13 @@
                     </h6>
                     
 
-                    @if ($notifications->title === 'Research Access Request for Documents')
+                    @if ($notifications->title === 'Research Access Request Made' || $notifications->title === 'Research Access Request Failed')
                         <div class="d-flex justify-content-end">
-                            <a href="{{url('/faculty-research-access-requests')}}">View</a>
+                            <a href="{{url('/student/title-checker')}}">View</a>
                         </div>
-                    @elseif ($notifications->title === 'Research Access Request for Information')
+                    @elseif ($notifications->title === 'Application Certification Failed')
                         <div class="d-flex justify-content-end">
-                            <a href="{{url('/student-research-access-requests')}}">View</a>
-                        </div>
-                    @elseif ($notifications->title === 'Faculty Application Certification Submitted')
-                        <div class="d-flex justify-content-end">
-                            <a href="{{url('/applicationlist')}}">View</a>
-                        </div>
-                    @elseif ($notifications->title === 'Student Application Certification Submitted')
-                        <div class="d-flex justify-content-end">
-                            <a href="{{url('/applicationlist')}}">View</a>
+                            <a href="{{url('/application/status')}}">View</a>
                         </div>
                     @endif
                 </div>

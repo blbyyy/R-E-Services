@@ -70,23 +70,32 @@
             @if (Auth::user()->role === 'Admin')
               <span class="badge bg-primary badge-number">{{$adminNotifCount}}</span>
             @elseif (Auth::user()->role === 'Student')
+              <span class="badge bg-primary badge-number">{{$studentNotifCount}}</span>
             @elseif (Auth::user()->role === 'Faculty')
+              <span class="badge bg-primary badge-number">{{$facultyNotifCount}}</span>
             @elseif (Auth::user()->role === 'Staff')
             @endif
           </a>
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style="width: 350px">
 
             @if (Auth::user()->role === 'Admin')
               <li class="dropdown-header">
                 You have {{$adminNotifCount}} notifications
                 <a href="{{url('admin/all/notifications')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
               </li>
-            @else
-                
+            @elseif (Auth::user()->role === 'Faculty')
+              <li class="dropdown-header">
+                You have {{$facultyNotifCount}} notifications
+                <a href="{{url('faculty/all/notifications')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              </li>
+            @elseif (Auth::user()->role === 'Student')
+              <li class="dropdown-header">
+                You have {{$studentNotifCount}} notifications
+                <a href="{{url('student/all/notifications')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              </li>
             @endif
             
-
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -106,7 +115,33 @@
                 </li>
               @endforeach
             @elseif (Auth::user()->role === 'Student')
+              @foreach ($studentNotification as $notif)
+                  <li class="notification-item">
+                    <i class="bi bi-info-circle text-primary"></i>
+                    <div>
+                      <h4>{{$notif->title}}</h4>
+                      <p>{{$notif->message}}</p>
+                      <p>{{ \Carbon\Carbon::parse($notif->date)->diffForHumans() }}</p>
+                    </div>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+              @endforeach
             @elseif (Auth::user()->role === 'Faculty')
+              @foreach ($facultyNotification as $notif)
+                <li class="notification-item">
+                  <i class="bi bi-info-circle text-primary"></i>
+                  <div>
+                    <h4>{{$notif->title}}</h4>
+                    <p>{{$notif->message}}</p>
+                    <p>{{ \Carbon\Carbon::parse($notif->date)->diffForHumans() }}</p>
+                  </div>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+              @endforeach
             @elseif (Auth::user()->role === 'Staff')
             @endif
 

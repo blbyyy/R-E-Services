@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Notifications;
 use App\Models\RequestAccess;
 use App\Models\Research;
 use App\Models\Faculty;
@@ -115,7 +116,19 @@ class StudentController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        return View::make('students.profile',compact('student'));
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('students.profile',compact('student','studentNotifCount','studentNotification'));
     }
 
     public function updateprofile(Request $request, $id)
@@ -218,8 +231,20 @@ class StudentController extends Controller
         ->where('files.user_id', Auth::id())
         ->orderBy('files.id', 'desc') 
         ->get();
+        
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
 
-        return View::make('students.myfiles',compact('student','myfiles'));
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('students.myfiles',compact('student','myfiles','studentNotifCount','studentNotification'));
     }
 
     public function upload_file(Request $request)
@@ -339,8 +364,20 @@ class StudentController extends Controller
         ->join('departments', 'departments.id', '=', 'faculty.department_id')
         ->select('faculty.*','departments.department_name','departments.id as department_id') 
         ->get();
+
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
         
-        return View::make('students.requesting',compact('student','myfiles','advisers'));
+        return View::make('students.requesting',compact('student','myfiles','advisers','studentNotifCount','studentNotification'));
     }
 
     public function getfile_id($id)
@@ -445,6 +482,15 @@ class StudentController extends Controller
             ->first();
 
             $technicalAdviserName = $technicalAdviser->fname .' '. $technicalAdviser->mname .' '. $technicalAdviser->lname;
+            
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Technical Adviser Certification Approval';
+            $notif->message = 'Someone submitting an application for approval.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $technicalAdviser->user_id;
+            $notif->save();
 
             $data = [
                 'technicalAdviserName' => $technicalAdviserName,
@@ -589,7 +635,19 @@ class StudentController extends Controller
         ->orderBy('requestingform.id', 'desc')
         ->paginate(10);
 
-        return View::make('students.applicationstatus',compact('student', 'studentstats'));
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('students.applicationstatus',compact('student', 'studentstats','studentNotifCount','studentNotification'));
     }
 
     public function show_application($id)
@@ -621,11 +679,23 @@ class StudentController extends Controller
             ->select('students.*', 'users.*')
             ->where('user_id', Auth::id())
             ->first();
+            
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
 
         $query = $request->input('query');
         $researchlist = Research::search($query)->paginate(10);
 
-        return view('students.titlechecker', compact('researchlist', 'student'));
+        return view('students.titlechecker', compact('researchlist', 'student','studentNotifCount','studentNotification'));
     }
 
     public function showResearchInfo($id)

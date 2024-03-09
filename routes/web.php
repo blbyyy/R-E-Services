@@ -151,6 +151,11 @@ Route::post('/student/research/request-access/sent', [
   'uses' => 'ResearchController@studentSendinRequestAccess',
         'as' => 'student.sending.request.access'
 ]);
+
+Route::get('/student/all/notifications', [
+  'uses' => 'LayoutsController@studentNotifications',
+        'as' => 'student.all.notifications'
+]);
 //END OF STUDENT POV
 
 //START STAFF POV
@@ -466,6 +471,11 @@ Route::get('/faculty/research-list/{id}/request-access', [
 Route::post('/faculty/research-list/request-access/sent', [
     'uses' => 'ResearchController@facultySendinRequestAccess',
           'as' => 'faculty.sending.request.access'
+  ]);
+
+Route::get('/faculty/all/notifications', [
+    'uses' => 'LayoutsController@facultyNotifications',
+          'as' => 'faculty.all.notifications'
   ]);
 
 //END OF FACULTY POV

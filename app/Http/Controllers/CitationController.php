@@ -27,8 +27,20 @@ class CitationController extends Controller
         ->select('faculty.*','users.*','citations.*')
         ->where('citations.user_id',Auth::id())
         ->get();
+
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
         
-        return View::make('faculty.citations',compact('faculty','facultyCitation'));
+        return View::make('faculty.citations',compact('faculty','facultyCitation','facultyNotifCount','facultyNotification'));
     }
 
     public function facultyAddCitation(Request $request)

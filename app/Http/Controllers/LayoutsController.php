@@ -43,6 +43,30 @@ class LayoutsController extends Controller
             ->orderBy('date', 'desc')
             ->take(5)
             ->get();
+        
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
 
         $role = DB::table('users')->where('id',Auth::id())->value('role');
 
@@ -135,7 +159,7 @@ class LayoutsController extends Controller
          return Response::json($data);
         }
 
-        return View::make('layouts.home',compact('admin','student','staff','faculty','announcements','adminNotifCount','adminNotification'));
+        return View::make('layouts.home',compact('admin','student','staff','faculty','announcements','adminNotifCount','adminNotification','facultyNotifCount','facultyNotification','studentNotifCount','studentNotification'));
     }
 
     public function navigation()
@@ -192,6 +216,66 @@ class LayoutsController extends Controller
             ->get();
 
         return View::make('notifications.admin',compact('admin','notification','adminNotifCount','adminNotification'));
+    }
+
+    public function facultyNotifications()
+    {
+        $faculty = DB::table('faculty')
+            ->join('users','users.id','faculty.user_id')
+            ->select('faculty.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+        
+        $notification = DB::table('notifications')
+            ->join('users', 'users.id', 'notifications.user_id')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('notifications.created_at', 'desc')
+            ->get();
+            
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('notifications.faculty',compact('faculty','notification','facultyNotifCount','facultyNotification'));
+    }
+
+    public function studentNotifications()
+    {
+        $student = DB::table('students')
+            ->join('users','users.id','students.user_id')
+            ->select('students.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+        
+        $notification = DB::table('notifications')
+            ->join('users', 'users.id', 'notifications.user_id')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('notifications.created_at', 'desc')
+            ->get();
+            
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('notifications.student',compact('student','notification','studentNotifCount','studentNotification'));
     }
 
     //mobile

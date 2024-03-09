@@ -3,28 +3,27 @@
 namespace App\Http\Controllers;
 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Mail;
-use Algolia\AlgoliaSearch\SearchClient;
-use App\Mail\SubjectAdviserApproval;
 use App\Mail\TechnicalAdviserApprovalSuccess;
 use App\Mail\TechnicalAdviserApprovalReject;
 use App\Mail\SubjectAdviserApprovalSuccess;
 use App\Mail\SubjectAdviserApprovalReject;
-use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
+use Laravel\Socialite\Facades\Socialite;
+use Algolia\AlgoliaSearch\SearchClient;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SubjectAdviserApproval;
 use Illuminate\Support\Facades\Hash;
 use App\Models\RequestingForm;
-use App\Models\Research;
-use App\Models\Department;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
+use App\Models\Department;
+use App\Models\Research;
 use App\Models\Faculty;
 use App\Models\User;
 use App\Models\Files; 
-use View;
-use DB;
-use File;
-use Auth;
+use View, DB, File, Auth;
+
 
 class FacultyController extends Controller
 {
@@ -77,8 +76,20 @@ class FacultyController extends Controller
         ->select('faculty.*','users.*','departments.*')
         ->where('user_id',Auth::id())
         ->first();
+
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
         
-        return View::make('faculty.profile',compact('faculty'));
+        return View::make('faculty.profile',compact('faculty','facultyNotifCount','facultyNotification'));
     }
 
     public function updateprofile(Request $request, $id)
@@ -185,7 +196,19 @@ class FacultyController extends Controller
         ->orderBy('files.id', 'desc') 
         ->get();
 
-        return View::make('faculty.myfiles',compact('faculty','myfiles'));
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('faculty.myfiles',compact('faculty','myfiles','facultyNotifCount','facultyNotification'));
     }
 
     public function upload_file(Request $request)
@@ -306,8 +329,20 @@ class FacultyController extends Controller
         ->join('departments', 'departments.id', '=', 'faculty.department_id')
         ->select('faculty.*','departments.department_name','departments.id as department_id') 
         ->get();
+
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
         
-        return View::make('faculty.requesting',compact('faculty','myfiles','advisers'));
+        return View::make('faculty.requesting',compact('faculty','myfiles','advisers','facultyNotifCount','facultyNotification'));
     }
 
     public function apply_certification(Request $request, $id)
@@ -386,6 +421,14 @@ class FacultyController extends Controller
             $file = Files::find($request->research_id);
             $file->file_status = 'Pending';
             $file->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Faculty Application Certification Submitted';
+            $notif->message = 'Someone submitted an application to certify.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->save();
 
             return response()->json(["form" => $form, "file" => $file ]);
 
@@ -486,6 +529,14 @@ class FacultyController extends Controller
                 $file->save();
             } 
 
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Faculty Application Certification Submitted';
+            $notif->message = 'Someone submitted an application to certify.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->save();
+
             return response()->json(["form" => $form, "file" => $file ]);
 
     }
@@ -506,7 +557,19 @@ class FacultyController extends Controller
         ->orderBy('requestingform.id', 'desc')
         ->get();
 
-        return View::make('faculty.applicationstatus',compact('faculty', 'facultystats'));
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('faculty.applicationstatus',compact('faculty', 'facultystats','facultyNotifCount','facultyNotification'));
     }
 
     public function show_application($id)
@@ -554,9 +617,20 @@ class FacultyController extends Controller
                       ->where('requestingform.status', 'Pending Subject Adviser Approval');
             })
             ->get();
-        
 
-        return View::make('faculty.student_application',compact('application','faculty'));
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+        
+        return View::make('faculty.student_application',compact('application','faculty','facultyNotifCount','facultyNotification'));
     }
 
     public function students_application_specific($id)
@@ -623,6 +697,21 @@ class FacultyController extends Controller
                 ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
                 ->where('id', $subjectAdviser->technicalAdviser_id)
                 ->value('technicalAdviserName');
+
+                $subjectAdviserId = DB::table('requestingform')
+                ->join('faculty','faculty.id','requestingform.subjectAdviser_id')
+                ->join('users','users.id','faculty.user_id')
+                ->where('requestingform.id', $id)
+                ->value('users.id');
+
+                $notif = new Notifications;
+                $notif->type = 'Faculty Notification';
+                $notif->title = 'Subject Adviser Certification Approval';
+                $notif->message = 'Someone submitting an application for approval.';
+                $notif->date = now();
+                $notif->user_id = $subjectAdviser->user_id;
+                $notif->reciever_id = $subjectAdviserId;
+                $notif->save();
 
                 $data = [
                     'subjectAdviserName' => $subjectAdviserName,
@@ -717,6 +806,15 @@ class FacultyController extends Controller
                 ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
                 ->where('id', $subjectAdviser->subjectAdviser_id)
                 ->value('subjectAdviserName');
+                
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Student Application Certification Submitted';
+                $notif->message = 'Someone submitted an application to certify.';
+                $notif->date = now();
+                $notif->user_id = $subjectAdviser->user_id;
+                $notif->reciever_id = '0';
+                $notif->save();
 
                 $success = [
                     'requestorName' => $subjectAdviser->requestor_name,
@@ -776,17 +874,19 @@ class FacultyController extends Controller
         $query = $request->input('query');
         $researchlist = Research::search($query)->paginate(10);
 
-        $adminNotifCount = DB::table('notifications')
-        ->where('type', 'Admin Notification')
-        ->count();
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
 
-        $adminNotification = DB::table('notifications')
-            ->where('type', 'Admin Notification')
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
             ->orderBy('date', 'desc')
-            ->take(5)
+            ->take(4)
             ->get();
 
-        return view('faculty.researchlist', compact('researchlist', 'faculty','adminNotifCount','adminNotification'));
+        return view('faculty.researchlist', compact('researchlist', 'faculty','facultyNotifCount','facultyNotification'));
     }
 
     public function showResearchInfo($id)
@@ -803,7 +903,19 @@ class FacultyController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        return View::make('faculty.researchTemplates',compact('faculty'));
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('faculty.researchTemplates',compact('faculty','facultyNotifCount','facultyNotification'));
     }
 
     public function extensionTemplates()
@@ -814,7 +926,19 @@ class FacultyController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        return View::make('faculty.extensionTemplates',compact('faculty'));
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('faculty.extensionTemplates',compact('faculty','facultyNotifCount','facultyNotification'));
     }
 
     public function researchInventory()
@@ -825,7 +949,19 @@ class FacultyController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        return View::make('faculty.researchInventory',compact('faculty'));
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('faculty.researchInventory',compact('faculty','facultyNotifCount','facultyNotification'));
     }
 
     public function addResearch(Request $request)

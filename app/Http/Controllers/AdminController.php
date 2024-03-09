@@ -22,6 +22,7 @@ use App\Models\User;
 use App\Models\Certificate;
 use App\Models\Announcement;
 use App\Models\RequestingForm;
+use App\Models\Notifications;
 use App\Models\Files;
 use App\Models\Research;
 use App\Http\Redirect;
@@ -894,18 +895,47 @@ class AdminController extends Controller
             ->where('requestingform.id', $id)
             ->value('research_title');
 
+            $userID = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->where('requestingform.id', $id)
+            ->value('requestingform.user_id');
+
+            $role = DB::table('users')
+            ->where('id', $userID)
+            ->value('role');
+
             $form = RequestingForm::find($id);
             $form->status = $request->status;
             $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
             $form->date_processing_end = now();
             $form->research_specialist = $specialist;
             $form->research_staff = $specialist;
-            $form->remarks = 'The requirements for certifying your application as passed have not been met.';
+            $form->remarks = $request->remarks;
             $form->save();
 
             $file = Files::find($fileId->id);
             $file->file_status = $request->status;
             $file->save();
+
+            if ($role === 'Student') {
+                $notif = new Notifications;
+                $notif->type = 'Student Notification';
+                $notif->title = 'Application Certification Failed';
+                $notif->message = 'Your application has been returned.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $userID;
+                $notif->save();
+            } elseif ($role === 'Faculty') {
+                $notif = new Notifications;
+                $notif->type = 'Faculty Notification';
+                $notif->title = 'Application Certification Failed';
+                $notif->message = 'Your application has been returned.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $userID;
+                $notif->save();
+            }
 
             $data = [
                 'researchTitle' => $researchTitle,
