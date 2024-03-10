@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Staff;
+use App\Models\Notifications;
 use App\Models\User;
 use App\Models\Files; 
 use App\Models\RequestingForm;
@@ -60,7 +61,19 @@ class StaffController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        return View::make('staff.profile',compact('staff'));
+        $staffNotifCount = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $staffNotification = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('staff.profile',compact('staff','staffNotifCount','staffNotification'));
     }
 
     public function updateprofile(Request $request, $id)
@@ -164,7 +177,19 @@ class StaffController extends Controller
         ->where('files.user_id', Auth::id())
         ->get();
 
-        return View::make('staff.myfiles',compact('staff','myfiles'));
+        $staffNotifCount = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $staffNotification = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('staff.myfiles',compact('staff','myfiles','staffNotifCount','staffNotification'));
     }
 
     public function upload_file(Request $request)
@@ -176,6 +201,7 @@ class StaffController extends Controller
         $file = new Files;
         $file->file_status = 'Available';
         $file->research_title = $request->research_title;
+        $file->abstract = $request->abstract;
 
         $pdfFile = $request->file('research_file');
         $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
@@ -185,7 +211,7 @@ class StaffController extends Controller
         $file->user_id = Auth::id();
         $file->save();
 
-        return redirect()->to('/staff/myfiles');
+        return redirect()->to('/staff/myfiles')->with('success', 'File successfully uploaded.');
     }
 
     public function showpdf($fileName)
@@ -276,8 +302,20 @@ class StaffController extends Controller
         ->select('files.*') 
         ->where('files.user_id', Auth::id())
         ->get();
+
+        $staffNotifCount = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $staffNotification = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
         
-        return View::make('staff.requesting',compact('staff','myfiles'));
+        return View::make('staff.requesting',compact('staff','myfiles','staffNotifCount','staffNotification'));
     }
 
     public function apply_certification(Request $request, $id)
@@ -334,7 +372,6 @@ class StaffController extends Controller
             $form->sex = $staff->gender;
             $form->requestor_type = $request->requestor_type;
             $form->college = $request->college;
-            $form->course = $request->course;
             $form->purpose = 'Certification';
             $form->researchers_name1 = $request->researchers_name1;
             $form->researchers_name2 = $request->researchers_name2;
@@ -349,11 +386,21 @@ class StaffController extends Controller
             $form->research_id = $request->research_id;
             $form->user_id = $staff->user_id;
             $form->status = 'Pending';
+            $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
             $form->save();
 
             $file = Files::find($request->research_id);
             $file->file_status = 'Pending';
             $file->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Staff Application Certification Submitted';
+            $notif->message = 'Someone submitted an application to certify.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = '0';
+            $notif->save();
 
             return response()->json(["form" => $form, "file" => $file ]);
 
@@ -406,15 +453,7 @@ class StaffController extends Controller
             $form->submission_frequency = $submission;
             $form->simmilarity_percentage_results = 0;
             $form->advisors_turnitin_precheck = 'Yes';
-            $form->initial_simmilarity_percentage = $latestPercentage;
-            $form->adviser_id = $latestApplication->adviser_id;
-
-            $adviser_email = DB::table('faculty')
-            ->where('id', $latestApplication->adviser_id)
-            ->value('email');
-
-            $form->adviser_email = $adviser_email;
-            
+            $form->initial_simmilarity_percentage = $latestPercentage;       
             $form->research_specialist = 'tba';
             $form->tup_id = $latestApplication->tup_id;
             $form->requestor_name = $latestApplication->requestor_name;
@@ -422,7 +461,6 @@ class StaffController extends Controller
             $form->sex = $latestApplication->sex;
             $form->requestor_type = $latestApplication->requestor_type;
             $form->college = $latestApplication->college;
-            $form->course = $latestApplication->course;
             $form->purpose = $latestApplication->purpose;
             $form->researchers_name1 = $latestApplication->researchers_name1;
             $form->researchers_name2 = $latestApplication->researchers_name2;
@@ -438,7 +476,17 @@ class StaffController extends Controller
             $form->research_id = $latestApplication->research_id;
             $form->user_id = $latestApplication->user_id;
             $form->status = 'Pending';
+            $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
             $form->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Staff Application Certification Submitted';
+            $notif->message = 'Someone submitted an application to certify.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = '0';
+            $notif->save();
 
             if ($submission === 'First Submission') {
                 $file = Files::find($request->reApplyResearchId);
@@ -480,7 +528,19 @@ class StaffController extends Controller
         ->where('requestingform.user_id', Auth::id())
         ->get();
 
-        return View::make('staff.applicationstatus',compact('staff', 'staffstats'));
+        $staffNotifCount = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $staffNotification = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('staff.applicationstatus',compact('staff', 'staffstats','staffNotifCount','staffNotification'));
     }
 
     public function show_application($id)

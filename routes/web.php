@@ -275,6 +275,11 @@ Route::post('/staff/citation/{id}/edit/updated', [
     'uses' => 'CitationController@staffUpdateCitation',
           'as' => 'staffSpecificCitationUpdated'
   ]);
+
+Route::get('/staff/all/notifications', [
+    'uses' => 'LayoutsController@staffNotifications',
+          'as' => 'staff.all.notifications'
+  ]);
 //END OF STAFF POV
 
 //START FACULTY POV
@@ -550,7 +555,19 @@ Route::get('/announcements', function () {
         ->take(5)
         ->get();
 
-    return View::make('admin.announcement',compact('admin','staff','adminNotifCount','adminNotification'));
+    $staffNotifCount = DB::table('notifications')
+        ->where('type', 'Staff Notification')
+        ->where('reciever_id', Auth::id())
+        ->count();
+
+    $staffNotification = DB::table('notifications')
+        ->where('type', 'Staff Notification')
+        ->where('reciever_id', Auth::id())
+        ->orderBy('date', 'desc')
+        ->take(4)
+        ->get();
+
+    return View::make('admin.announcement',compact('admin','staff','adminNotifCount','adminNotification','staffNotifCount','staffNotification'));
 
 });
 

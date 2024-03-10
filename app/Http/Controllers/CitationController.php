@@ -169,8 +169,20 @@ class CitationController extends Controller
         ->select('staff.*','users.*','citations.*')
         ->where('citations.user_id',Auth::id())
         ->get();
+
+        $staffNotifCount = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $staffNotification = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
         
-        return View::make('staff.citations',compact('staff','staffCitation'));
+        return View::make('staff.citations',compact('staff','staffCitation','staffNotifCount','staffNotification'));
     }
 
     public function staffAddCitation(Request $request)

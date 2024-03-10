@@ -66,7 +66,7 @@
         <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell" style=""></i>
+            <i class="bi bi-bell" style="font-size: 30px;"></i>
             @if (Auth::user()->role === 'Admin')
               <span class="badge bg-primary badge-number">{{$adminNotifCount}}</span>
             @elseif (Auth::user()->role === 'Student')
@@ -74,6 +74,7 @@
             @elseif (Auth::user()->role === 'Faculty')
               <span class="badge bg-primary badge-number">{{$facultyNotifCount}}</span>
             @elseif (Auth::user()->role === 'Staff')
+              <span class="badge bg-primary badge-number">{{$staffNotifCount}}</span>
             @endif
           </a>
 
@@ -93,6 +94,11 @@
               <li class="dropdown-header">
                 You have {{$studentNotifCount}} notifications
                 <a href="{{url('student/all/notifications')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              </li>
+            @elseif (Auth::user()->role === 'Staff')
+              <li class="dropdown-header">
+                You have {{$staffNotifCount}} notifications
+                <a href="{{url('staff/all/notifications')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
               </li>
             @endif
             
@@ -143,6 +149,19 @@
                 </li>
               @endforeach
             @elseif (Auth::user()->role === 'Staff')
+              @foreach ($staffNotification as $notif)
+                  <li class="notification-item">
+                    <i class="bi bi-info-circle text-primary"></i>
+                    <div>
+                      <h4>{{$notif->title}}</h4>
+                      <p>{{$notif->message}}</p>
+                      <p>{{ \Carbon\Carbon::parse($notif->date)->diffForHumans() }}</p>
+                    </div>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+              @endforeach
             @endif
 
             <li class="dropdown-footer">

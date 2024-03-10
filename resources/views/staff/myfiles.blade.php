@@ -1,4 +1,6 @@
 @extends('layouts.navigation')
+@include('sweetalert::alert')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
     .icon{
         font-size: 8em;
@@ -20,8 +22,27 @@
     <div class="pagetitle">
         <h1>My Files</h1>
     </div>
-    <div class="row g-4">
-        <div class="col-12">
+
+    @if(session('success'))
+        <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('success') }}',
+            });
+        </script>
+    @elseif(session('error'))
+        <script>
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: '{{ session('error') }}',
+          });
+        </script>
+    @endif
+
+    <div class="row">
+        <div class="col-12" style="padding-bottom: 20px;">
             <button type="button" class="btn btn-dark" onclick="toggleFileUploadForm()"><i class="bi bi-folder-plus"></i> Upload File</button>
         </div>
         
@@ -32,9 +53,14 @@
         
                     <form class="row g-3" method="POST" action="{{ route('staff_upload_file') }}" enctype="multipart/form-data">
                         @csrf
+
                         <div class="col-12">
                             <label for="research_title" class="form-label">Research Title</label>
                             <input type="text" class="form-control" id="research_title" name="research_title">
+                        </div>
+                        <div class="col-12">
+                            <label for="abstract" class="form-label">Application Abstract</label>
+                            <textarea name="abstract" class="form-control" id="abstract" style="height: 300px;"></textarea>
                         </div>
                         <div class="col-12">
                             <label for="research_file" class="form-label">Research File</label>
@@ -54,7 +80,7 @@
         
         @if(count($myfiles) > 0)
             @foreach($myfiles as $files)
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">{{$files->research_title}}</h5>
@@ -74,6 +100,28 @@
                                 </button>
                             </center>
                         </div>
+                    </div>
+                </div> --}}
+                <div class="card mb-3">
+                    <div class="row">
+                      <div class="col-md-10 d-flex justify-content-center align-items-center">
+                          <div class="card-body">
+                              <h5 class="card-title">{{$files->research_title}}</h5>     
+                          </div>
+                      </div>
+                      <div class="col-md-2 d-flex justify-content-center align-items-center">
+                          <div>
+                            <button type="button" class="btn btn-outline-dark staffshowpdfinfo" data-bs-toggle="modal" data-bs-target="#staffshowfiles" data-id="{{$files->id}}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-dark stafffiledeleteBtn" data-id="{{$files->id}}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-dark stafffilehistory" data-bs-toggle="modal" data-bs-target="#staffshowhistory" data-id="{{$files->id}}">
+                                <i class="bi bi-clock-history"></i>
+                            </button>
+                          </div>
+                      </div>
                     </div>
                 </div>
             @endforeach
