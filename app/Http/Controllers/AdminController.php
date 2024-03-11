@@ -22,6 +22,7 @@ use App\Models\User;
 use App\Models\Certificate;
 use App\Models\Announcement;
 use App\Models\RequestingForm;
+use App\Models\Notifications;
 use App\Models\Files;
 use App\Models\Research;
 use App\Http\Redirect;
@@ -329,7 +330,17 @@ class AdminController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        return View::make('admin.profile',compact('admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.profile',compact('admin','adminNotifCount','adminNotification'));
     }
 
     public function updateprofile(Request $request, $id)
@@ -789,6 +800,44 @@ class AdminController extends Controller
             $file->file_status = $request->status;
             $file->save();
 
+            $userID = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->where('requestingform.id', $id)
+            ->value('requestingform.user_id');
+
+            $role = DB::table('users')
+            ->where('id', $userID)
+            ->value('role');
+
+            if ($role === 'Student') {
+                $notif = new Notifications;
+                $notif->type = 'Student Notification';
+                $notif->title = 'Application Certification Passed';
+                $notif->message = 'Your application has been passed.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $userID;
+                $notif->save();
+            } elseif ($role === 'Faculty') {
+                $notif = new Notifications;
+                $notif->type = 'Faculty Notification';
+                $notif->title = 'Application Certification Passed';
+                $notif->message = 'Your application has been passed.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $userID;
+                $notif->save();
+            } elseif ($role === 'Staff') {
+                $notif = new Notifications;
+                $notif->type = 'Staff Notification';
+                $notif->title = 'Application Certification Passed';
+                $notif->message = 'Your application has been passed.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $userID;
+                $notif->save();
+            }
+
             $controlId = DB::table('certificates')
             ->where('id', $lastId)
             ->value('control_id');
@@ -894,18 +943,56 @@ class AdminController extends Controller
             ->where('requestingform.id', $id)
             ->value('research_title');
 
+            $userID = DB::table('requestingform')
+            ->join('files','files.id','requestingform.research_id')
+            ->where('requestingform.id', $id)
+            ->value('requestingform.user_id');
+
+            $role = DB::table('users')
+            ->where('id', $userID)
+            ->value('role');
+
             $form = RequestingForm::find($id);
             $form->status = $request->status;
             $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
             $form->date_processing_end = now();
             $form->research_specialist = $specialist;
             $form->research_staff = $specialist;
-            $form->remarks = 'The requirements for certifying your application as passed have not been met.';
+            $form->remarks = $request->remarks;
             $form->save();
 
             $file = Files::find($fileId->id);
             $file->file_status = $request->status;
             $file->save();
+
+            if ($role === 'Student') {
+                $notif = new Notifications;
+                $notif->type = 'Student Notification';
+                $notif->title = 'Application Certification Failed';
+                $notif->message = 'Your application has been returned.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $userID;
+                $notif->save();
+            } elseif ($role === 'Faculty') {
+                $notif = new Notifications;
+                $notif->type = 'Faculty Notification';
+                $notif->title = 'Application Certification Failed';
+                $notif->message = 'Your application has been returned.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $userID;
+                $notif->save();
+            } elseif ($role === 'Staff') {
+                $notif = new Notifications;
+                $notif->type = 'Staff Notification';
+                $notif->title = 'Application Certification Failed';
+                $notif->message = 'Your application has been returned.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $userID;
+                $notif->save();
+            }
 
             $data = [
                 'researchTitle' => $researchTitle,
@@ -955,7 +1042,19 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        return View::make('certificate.tracking',compact('admin','certificates','staff','adminNotifCount','adminNotification'));
+        $staffNotifCount = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $staffNotification = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('certificate.tracking',compact('admin','certificates','staff','adminNotifCount','adminNotification','staffNotifCount','staffNotification'));
     }
 
     public function show_certificate($certId)
@@ -1044,7 +1143,17 @@ class AdminController extends Controller
             )
             ->get();
 
-        return View::make('admin.userslist',compact('users','admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.userslist',compact('users','admin','adminNotifCount','adminNotification'));
     }
 
     public function selectedSpecificRole(Request $request)
@@ -1054,6 +1163,16 @@ class AdminController extends Controller
         ->select('staff.*','users.*')
         ->where('user_id',Auth::id())
         ->first();
+        
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
 
         if ($request->userRole === 'Student') {
             $users = DB::table('users')
@@ -1077,7 +1196,7 @@ class AdminController extends Controller
             $users = User::orderBy('id')->with(['student', 'faculty', 'staff'])->get();
         }
 
-        return View::make('admin.userslist',compact('users','admin'));
+        return View::make('admin.userslist',compact('users','admin','adminNotifCount','adminNotification'));
     }
 
     public function showUserlistInfo($id)
@@ -1313,7 +1432,17 @@ class AdminController extends Controller
         ->select('files.*','requestingform.*')
         ->get();
 
-        return View::make('admin.applicationlist',compact('applications','admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.applicationlist',compact('applications','admin','adminNotifCount','adminNotification'));
     }
 
     public function selectedSpecificStatus(Request $request)
@@ -1349,7 +1478,17 @@ class AdminController extends Controller
             ->get();
         }
 
-        return View::make('admin.applicationlist',compact('applications','admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.applicationlist',compact('applications','admin','adminNotifCount','adminNotification'));
     }
 
     public function showApplicationlistInfo($id)
@@ -1411,7 +1550,17 @@ class AdminController extends Controller
 
         $researches = Research::orderBy('id')->get();
 
-        return View::make('admin.researchlist',compact('researches','admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.researchlist',compact('researches','admin','adminNotifCount','adminNotification'));
     }
 
     public function selectedSpecificDepartment(Request $request)
@@ -1442,7 +1591,17 @@ class AdminController extends Controller
             $researches = Research::orderBy('id')->get();
         }
 
-        return View::make('admin.researchlist',compact('researches','admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.researchlist',compact('researches','admin','adminNotifCount','adminNotification'));
     }
 
     public function showResearchInfo($id)

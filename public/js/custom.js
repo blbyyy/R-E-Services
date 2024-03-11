@@ -2707,28 +2707,15 @@ $(document).ready(function () {
                         $("#status").html('<span class="badge border-warning border-1 text-danger"><h5>Returned</h5></span>');
                     } else if (data.status === "Passed") {
                         $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
-
-                        var pdfLink = $('<a>', {
-                            href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
-                            text: "Download PDF",
-                            target: "_blank"
-                        });
-                    
-                        $("#certificate").empty().append(pdfLink);
-
-                        $('#staffviewInfo').on('hidden.bs.modal', function () {
-                            $("#certificate").empty();
-                        });
-
                     }
                     $("#initial_simmilarity_percentage").text(data.initial_simmilarity_percentage + " %");
                     $("#simmilarity_percentage_results").text(data.simmilarity_percentage_results + " %");
                     $("#requestor_name").text(data.requestor_name);
+                    $("#remarks").text(data.remarks);
                     $("#student_id").text(data.tup_id);
                     $("#tup_mail").text(data.tup_mail);
                     $("#requestor_type").text(data.requestor_type);
                     $("#sex").text(data.sex);
-                    $("#course").text(data.course);
                     $("#college").text(data.college);
                     if (data.researchers_name1 !== null) {
                         $("#r1").show();

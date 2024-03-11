@@ -34,6 +34,18 @@ class CalendarController extends Controller
             ->take(5)
             ->get();
 
+        $staffNotifCount = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $staffNotification = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
         if(request()->ajax())
         {
          $start = (!empty($_GET["start"])) ? ($_GET["start"]) : ('');
@@ -41,7 +53,7 @@ class CalendarController extends Controller
          $data = Event::whereDate('start', '>=', $start)->whereDate('end',   '<=', $end)->get(['id','title','start', 'end']);
          return Response::json($data);
         }
-        return View::make('calendar.index',compact('admin','staff','adminNotifCount','adminNotification'));
+        return View::make('calendar.index',compact('admin','staff','adminNotifCount','adminNotification','staffNotifCount','staffNotification'));
     }
 
     public function create_event(Request $request)

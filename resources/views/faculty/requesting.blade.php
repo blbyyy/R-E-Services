@@ -24,81 +24,81 @@
   <div class="row">
     @if(count($myfiles) > 0)
       @foreach($myfiles as $files)
-      @if($files->file_status == 'Pending')
-          <div class="card mb-3">
-            <div class="row g-0">
-              <div class="col-md-10 d-flex justify-content-center align-items-center">
-                  <div class="card-body">
-                      <h5 class="card-title">{{$files->research_title}}</h5>   
-                      <span class="badge rounded-pill bg-warning">{{$files->file_status}}</span>    
-                  </div>
-              </div>
-              <div class="col-md-2 d-flex justify-content-center align-items-center">
-                  <div>
-                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This file is currently undergoing certification.">
-                      Apply Certification
-                    </button>
-                  </div>
-              </div>
-            </div>
-          </div>
-      @elseif($files->file_status == 'Passed')
-          <div class="card mb-3">
-            <div class="row">
-              <div class="col-md-10 d-flex justify-content-center align-items-center">
-                  <div class="card-body">
-                      <h5 class="card-title">{{$files->research_title}}</h5>   
-                      <span class="badge rounded-pill bg-success">{{$files->file_status}}</span>    
-                  </div>
-              </div>
-              <div class="col-md-2 d-flex justify-content-center align-items-center">
-                  <div>
-                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This file is already passed the certification.">
-                      Apply Certification
-                    </button>
-                  </div>
+        @if($files->file_status == 'Pending')
+            <div class="card mb-3">
+              <div class="row g-0">
+                <div class="col-md-10 d-flex justify-content-center align-items-center">
+                    <div class="card-body">
+                        <h5 class="card-title">{{$files->research_title}}</h5>   
+                        <span class="badge rounded-pill bg-warning">{{$files->file_status}}</span>    
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center align-items-center">
+                    <div>
+                      <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This file is currently undergoing certification.">
+                        Apply Certification
+                      </button>
+                    </div>
+                </div>
               </div>
             </div>
-          </div>
-      @elseif($files->file_status == 'Returned')
-          <div class="card mb-3">
-            <div class="row">
-              <div class="col-md-10 d-flex justify-content-center align-items-center">
-                  <div class="card-body">
-                      <h5 class="card-title">{{$files->research_title}}</h5>   
-                      <span class="badge rounded-pill bg-danger">{{$files->file_status}}</span>    
-                  </div>
-              </div>
-              <div class="col-md-2 d-flex justify-content-center align-items-center">
-                  <div>
-                    <button type="button" class="btn btn-outline-dark facultyReApplyGetId" data-bs-toggle="modal" data-bs-target="#FacultyReApplyCertification" data-id="{{$files->id}}">
-                        Re-submit an Application
-                    </button>
-                  </div>
-              </div>
-            </div>
-          </div>
-      @else
+        @elseif($files->file_status == 'Passed')
             <div class="card mb-3">
               <div class="row">
                 <div class="col-md-10 d-flex justify-content-center align-items-center">
                     <div class="card-body">
                         <h5 class="card-title">{{$files->research_title}}</h5>   
-                        <span class="badge rounded-pill bg-secondary">{{$files->file_status}}</span>    
+                        <span class="badge rounded-pill bg-success">{{$files->file_status}}</span>    
                     </div>
                 </div>
                 <div class="col-md-2 d-flex justify-content-center align-items-center">
                     <div>
-                      <button type="button" class="btn btn-outline-dark facultyApplyGetId" data-bs-toggle="modal" data-bs-target="#facultyapplycertification" data-id="{{$files->id}}">
+                      <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This file is already passed the certification.">
                         Apply Certification
-                      </button>  
+                      </button>
                     </div>
                 </div>
               </div>
             </div>
+        @elseif($files->file_status == 'Returned')
+            <div class="card mb-3">
+              <div class="row">
+                <div class="col-md-10 d-flex justify-content-center align-items-center">
+                    <div class="card-body">
+                        <h5 class="card-title">{{$files->research_title}}</h5>   
+                        <span class="badge rounded-pill bg-danger">{{$files->file_status}}</span>    
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center align-items-center">
+                    <div>
+                      <button type="button" class="btn btn-outline-dark facultyReApplyGetId" data-bs-toggle="modal" data-bs-target="#FacultyReApplyCertification" data-id="{{$files->id}}">
+                          Re-submit an Application
+                      </button>
+                    </div>
+                </div>
+              </div>
+            </div>
+        @else
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$files->research_title}}</h5>   
+                          <span class="badge rounded-pill bg-secondary">{{$files->file_status}}</span>    
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark facultyApplyGetId" data-bs-toggle="modal" data-bs-target="#facultyapplycertification" data-id="{{$files->id}}">
+                          Apply Certification
+                        </button>  
+                      </div>
+                  </div>
+                </div>
+              </div>
         @endif
       @endforeach
-      @else
+    @else
         <div class="col-md-12">
           <div class="card">
               <div class="card-body">
@@ -124,7 +124,7 @@
         </div>
         <div class="modal-body">
 
-          <form id="facultycertificationform" class="row g-3" enctype="multipart/form-data">
+        <form id="facultycertificationform" class="row g-3" enctype="multipart/form-data">
             @csrf
 
           <input type="hidden" class="form-control" id="research_id" name="research_id">
@@ -190,7 +190,7 @@
               </div>
             </div>
     
-          </form>
+        </form>
          
         </div>
         <div class="modal-footer">

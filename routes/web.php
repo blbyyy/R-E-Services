@@ -151,6 +151,11 @@ Route::post('/student/research/request-access/sent', [
   'uses' => 'ResearchController@studentSendinRequestAccess',
         'as' => 'student.sending.request.access'
 ]);
+
+Route::get('/student/all/notifications', [
+  'uses' => 'LayoutsController@studentNotifications',
+        'as' => 'student.all.notifications'
+]);
 //END OF STUDENT POV
 
 //START STAFF POV
@@ -269,6 +274,11 @@ Route::get('/staff/citation/{id}/edit', [
 Route::post('/staff/citation/{id}/edit/updated', [
     'uses' => 'CitationController@staffUpdateCitation',
           'as' => 'staffSpecificCitationUpdated'
+  ]);
+
+Route::get('/staff/all/notifications', [
+    'uses' => 'LayoutsController@staffNotifications',
+          'as' => 'staff.all.notifications'
   ]);
 //END OF STAFF POV
 
@@ -468,6 +478,11 @@ Route::post('/faculty/research-list/request-access/sent', [
           'as' => 'faculty.sending.request.access'
   ]);
 
+Route::get('/faculty/all/notifications', [
+    'uses' => 'LayoutsController@facultyNotifications',
+          'as' => 'faculty.all.notifications'
+  ]);
+
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [
@@ -540,7 +555,19 @@ Route::get('/announcements', function () {
         ->take(5)
         ->get();
 
-    return View::make('admin.announcement',compact('admin','staff','adminNotifCount','adminNotification'));
+    $staffNotifCount = DB::table('notifications')
+        ->where('type', 'Staff Notification')
+        ->where('reciever_id', Auth::id())
+        ->count();
+
+    $staffNotification = DB::table('notifications')
+        ->where('type', 'Staff Notification')
+        ->where('reciever_id', Auth::id())
+        ->orderBy('date', 'desc')
+        ->take(4)
+        ->get();
+
+    return View::make('admin.announcement',compact('admin','staff','adminNotifCount','adminNotification','staffNotifCount','staffNotification'));
 
 });
 

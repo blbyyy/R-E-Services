@@ -269,7 +269,35 @@ class ResearchController extends Controller
         $access->end_access_date = $formattedDate;
         $access->save();
 
-        return redirect()->to('/student-research-access-requests')->with('success', 'Accesss file successfully sent.');
+        $recieverId = DB::table('student_request_access')
+            ->where('id', $request->requestId)
+            ->value('requestor_id');
+
+        if ($request->status === 'Access Approved') {
+            $notif = new Notifications;
+            $notif->type = 'Student Notification';
+            $notif->title = 'Research Access Request Made';
+            $notif->message = 'You can now access the information you requested for a duration of three days.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $recieverId;
+            $notif->save();
+        } elseif ($request->status === 'Rejected') {
+            $notif = new Notifications;
+            $notif->type = 'Student Notification';
+            $notif->title = 'Research Access Request Failed';
+            $notif->message = 'Your request has been denied.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $recieverId;
+            $notif->save();
+        }
+        
+        
+
+
+
+        return redirect()->to('/student-research-access-requests')->with('success', 'Process Done');
     }
 
     public function facultyResearchAccessRequests()
