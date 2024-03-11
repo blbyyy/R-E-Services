@@ -121,15 +121,16 @@ Route::delete('/fullcalendars/delete', 'CalendarController@mobiledestroy');
 
 Route::get('/mobileshowannouncement', 'AdminController@mobileshowannouncement');
 Route::get('/show/comments/{id}', 'CommentController@mobileshowcomments');
-Route::post('/add/{id}/comment', [
-  'uses' => 'CommentController@mobileaddcomment',
-        'as' => 'mobileaddcomment'
-]);
+Route::post('/add-comment/{id}', 'CommentController@mobileaddcomment');
 
 Route::get('/staffprofile/{id}', 'App\Http\Controllers\StaffController@getProfile');
 
 Route::get('/profile/{id}', 'App\Http\Controllers\StudentController@getProfile');
-Route::post('/mobilechangeavatar', 'App\Http\Controllers\StudentController@mobilechangeavatar');
+
+Route::post('/mobilechangeavatar/{id}', 'App\Http\Controllers\StudentController@mobilechangeavatar');
+Route::get('/student/profile/{id}', 'App\Http\Controllers\StudentController@getStudentProfile');
+Route::put('/student/profile/{id}', 'App\Http\Controllers\StudentController@mobileupdateprofile');
+
 Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload_file');
 Route::get('/mobilecertification', 'App\Http\Controllers\StudentController@mobilecertification');
 Route::post('mobileapply_certification/{id}', 'App\Http\Controllers\StudentController@mobileapply_certification');

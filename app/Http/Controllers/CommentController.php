@@ -107,54 +107,22 @@ class CommentController extends Controller
     }
 
     public function mobileaddcomment(Request $request, $id)
-{
-    // Check if the user is authenticated
-    if (!Auth::check()) {
-        return response()->json(["error" => "User not authenticated"], 401);
-    }
-
-    // Fetch user information
-    $user = DB::table('users')
+    {
+        $user = DB::table('users')
         ->select('users.*')
-        ->where('id', Auth::id())
+        ->where('id', $request->user_id)
         ->first();
 
-    // Check if user information is available
-    if (!$user) {
-        return response()->json(["error" => "User not found"], 404);
+        $name = $request->fname . ' ' . $request->mname . ' ' . $request->lname;
+    
+        $comment = new Comment;
+        $comment->name = $name;
+        $comment->content = $request->content;
+        $comment->announcement_id = $request->announcement_id;
+        $comment->user_id =  $request->user_id;
+        $comment->save();
+
+        return response()->json(["comment" => $comment]);
     }
-
-    // Ensure required fields are present in the request
-    $content = $request->input('content');
-    $announcement_id = $request->input('announcement_id');
-
-    if (empty($content) || empty($announcement_id)) {
-        return response()->json(["error" => "Content or announcement ID missing"], 400);
-    }
-
-    // Create a formatted name using user's first, middle, and last name
-    $name = $user->fname . ' ' . $user->mname . ' ' . $user->lname;
-
-    // Create a new Comment instance
-    $comment = new Comment;
-    $comment->name = $name;
-    $comment->content = $content;
-    $comment->announcement_id = $announcement_id;
-    $comment->user_id = $request->user_id;
-    $comment->save();
-
-    // Include user information in the response
-    $commentWithUser = [
-        "comment" => $comment,
-        "user" => [
-            "id" => $user->id,
-            "name" => $name,
-            // Add other user information if needed
-        ],
-    ];
-
-    return response()->json($commentWithUser);
-}
-
     //MOBILE END
 }

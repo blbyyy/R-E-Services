@@ -122,7 +122,7 @@ class StudentController extends Controller
     {
         $student_id = DB::table('students')
         ->select('students.id')
-        ->where('user_id',Auth::id())
+        ->where('user_id', Auth::id())
         ->first();
 
         $student = Student::find($student_id->id);
@@ -652,56 +652,75 @@ class StudentController extends Controller
         return response()->json($student);
     }
 
-    public function mobilechangeavatar(Request $request)
+    public function mobilechangeavatar(Request $request, $id)
     {
-        // Check if the user is authenticated
-        if (!Auth::check()) {
-            return response()->json(['error' => 'User not authenticated'], 401);
-        }
+        $students = DB::table('students')
+            ->select('students.id')
+            ->where('user_id', $id)
+            ->first();
 
-        // Retrieve the authenticated user's ID
-        $user_id = Auth::id();
+        $student = Student::find($id);
+        $files = $request->file('avatar');
+        $student->avatar = 'images/' . time() . '-' . $files->getClientOriginalName();
+        $student->save();
 
-        // Find the associated student record
-        $student = Student::where('user_id', $user_id)->first();
+        $data = array('status' => 'saved');
+        Storage::put('public/images/' . time() . '-' . $files->getClientOriginalName(), file_get_contents($files));
 
-        // Check if the student record exists
-        if (!$student) {
-            return response()->json(['error' => 'Student not found'], 404);
-        }
+        $student->save();
 
-        // Check if the request contains the 'avatar' file
-        if (!$request->hasFile('avatar')) {
-            return response()->json(['error' => 'Avatar file not provided'], 400);
-        }
+        // Assuming you want to send some data back as JSON
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Avatar changed successfully!'
+        ]);
+    }
 
-        // Get the 'avatar' file from the request
-        $avatarFile = $request->file('avatar');
-
-        // Generate a unique filename for the avatar
-        $avatarFilename = 'images/' . time() . '-' . $avatarFile->getClientOriginalName();
-
+    public function getStudentProfile($id)
+    {
         try {
-            // Store the avatar file
-            Storage::put('public/' . $avatarFilename, file_get_contents($avatarFile));
+            $student = Student::find($id);
 
-            // Update the student's avatar
-            $student->avatar = $avatarFilename;
-            $student->save();
+            if (!$student) {
+                return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+            }
 
-            // Construct response data
-            $data = [
-                'status' => 'success',
-                'message' => 'Avatar changed successfully',
-                'avatar_url' => asset('storage/' . $avatarFilename),
-            ];
-
-            // Return the response
-            return response()->json($data);
+            return response()->json(['success' => true, 'student' => $student], 200);
         } catch (\Exception $e) {
-            // Return error response if an exception occurs
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
+    }
+    
+    public function mobileupdateprofile(Request $request, $id)
+    {
+        $student = Student::find($id);
+
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        }
+
+        $student->update($request->all());
+
+        $user = User::find($student->user_id);
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'User not found'], 404);
+        }
+
+        $user->update([
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'mname' => $request->mname
+        ]);
+
+        $responseData = [
+            'success' => true,
+            'message' => 'Profile was successfully updated',
+            'student' => $student,
+            'user' => $user
+        ];
+
+        return response()->json($responseData);
     }
 
     public function mobileupload_file(Request $request)
