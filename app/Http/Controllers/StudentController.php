@@ -707,15 +707,12 @@ class StudentController extends Controller
         return response()->json($research);
     }
 
-    
-
-
     //MOBILE START
     public function getProfile($id)
     {
-            $student = DB::table('students')
+        $student = DB::table('students')
                 ->join('users', 'users.id', 'students.user_id')
-                ->select('students.*', 'users.*')
+                ->select('students.*', 'students.id as student_id', 'users.*')
                 ->where('user_id', $id)
                 ->first();   
 
@@ -748,48 +745,44 @@ class StudentController extends Controller
 
     public function getStudentProfile($id)
     {
-        try {
             $student = Student::find($id);
 
-            if (!$student) {
-                return response()->json(['success' => false, 'message' => 'Student not found'], 404);
-            }
-
             return response()->json(['success' => true, 'student' => $student], 200);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
     }
-    
+
     public function mobileupdateprofile(Request $request, $id)
     {
+        $student_id = DB::table('students')
+            ->select('students.id')
+            ->where('user_id', $request->user_id)
+            ->first();
+
         $student = Student::find($id);
+        $student->fname = $request->fname;
+        $student->lname = $request->lname;
+        $student->mname = $request->mname;
+        $student->college = $request->college;
+        $student->course = $request->course;
+        $student->tup_id = $request->tup_id;
+        $student->gender = $request->gender;
+        $student->phone = $request->phone;
+        $student->address = $request->address;
+        $student->birthdate = $request->birthdate;
+        $student->save();
 
-        if (!$student) {
-            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
-        }
+        $user = User::find($request->user_id);
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->mname = $request->mname;
+        $user->save();
 
-        $student->update($request->all());
-
-        $user = User::find($student->user_id);
-
-        if (!$user) {
-            return response()->json(['success' => false, 'message' => 'User not found'], 404);
-        }
-
-        $user->update([
-            'fname' => $request->fname,
-            'lname' => $request->lname,
-            'mname' => $request->mname
-        ]);
-
+        // Prepare the response data
         $responseData = [
             'success' => true,
-            'message' => 'Profile was successfully updated',
-            'student' => $student,
-            'user' => $user
+            'message' => 'Profile was successfully updated'
         ];
 
+        // Return JSON response
         return response()->json($responseData);
     }
 
