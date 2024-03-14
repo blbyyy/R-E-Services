@@ -198,6 +198,7 @@ class ResearchController extends Controller
             $notif->message = 'Someone requested access to the research documents.';
             $notif->date = now();
             $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
             $notif->save();
 
             return redirect()->to('/faculty/research-list')->with('success', 'Request was successfully sent');
@@ -420,6 +421,62 @@ class ResearchController extends Controller
             'success' => true,
             'message' => 'Request was successfully sent'
         ]);
+    }
+
+    public function mobilefacultySendRequestAccess($id)
+    {
+        $research = DB::table('research_list')
+        ->where('id', $id)
+        ->first();
+
+        return response()->json($research);
+    }
+
+    public function mobilefacultySendRequestAccessFILE($id)
+    {
+        $research = DB::table('faculty_request_access')
+        ->join('research_list', 'research_list.id', 'faculty_request_access.research_id')
+        ->join('users', 'users.id', 'faculty_request_access.requestor_id')
+        ->join('faculty', 'users.id', 'faculty.user_id')
+        ->select('faculty_request_access.*','research_list.*','faculty.*','users.*')
+        ->where('research_list.id', $id)
+        ->latest('faculty_request_access.created_at')
+        ->first();
+
+        return response()->json($research);
+    }
+
+    public function mobilefacultySendinRequestAccess(Request $request)
+    { 
+            $faculty = DB::table('faculty')
+                ->join('users', 'users.id', 'faculty.user_id')
+                ->select('faculty.*', 'users.*')
+                ->where('user_id', Auth::id())
+                ->first();
+
+                $research = DB::table('research_list')
+                ->where('id', $request->researchId)
+                ->first();
+
+            $requests = new FacultyRequestAccess;
+            $requests->requestor_id = $request->requestor_id;
+            $requests->requestor_type = $request->requestor_type;
+            $requests->research_id = $request->research_id;
+            $requests->start_access_date = now();
+            $requests->purpose = $request->purpose;
+            $requests->status = 'Pending';
+            $requests->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Research Access Request for Documents';
+            $notif->message = 'Someone requested access to the research documents.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
+
+            return redirect()->to('/faculty/research-list')->with('success', 'Request was successfully sent');
     }
     //MOBILE END
 

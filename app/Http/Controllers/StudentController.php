@@ -960,7 +960,6 @@ class StudentController extends Controller
 
     public function mobileapply_certification(Request $request, $id)
     {
-        
         $submission = DB::table('requestingform')
         ->join('users', 'users.id', 'requestingform.user_id')
         ->join('files', 'files.id', 'requestingform.research_id')
@@ -1006,7 +1005,7 @@ class StudentController extends Controller
                 $form->advisors_turnitin_precheck = 'Yes';
                 $form->initial_simmilarity_percentage = $latestPercentage;
             } 
-            Log::info($request);
+
             $form->technicalAdviser_id = $request->technicalAdviser_id;
             $technicalAdviserEmail = DB::table('faculty')
             ->where('id', $request->technicalAdviser_id)
@@ -1038,11 +1037,12 @@ class StudentController extends Controller
             $form->researchers_name6 = $request->researchers_name6;
             $form->researchers_name7 = $request->researchers_name7;
             $form->researchers_name8 = $request->researchers_name8;
-            $form->agreement = $request->agreement;
+            $form->agreement = 'I Agree';
             $form->score = 0;
             $form->research_id = $request->research_id;
             $form->user_id = $student->user_id;
             $form->status = 'Pending Technical Adviser Approval';
+            $form->remarks = 'Your paper has been processed. Please wait for approval from your technical adviser.';
             $form->save();
 
             $file = Files::find($request->research_id);
@@ -1054,13 +1054,21 @@ class StudentController extends Controller
             ->first();
 
             $technicalAdviserName = $technicalAdviser->fname .' '. $technicalAdviser->mname .' '. $technicalAdviser->lname;
-            // Log::info($technicalAdviserName);
+            
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Technical Adviser Certification Approval';
+            $notif->message = 'Someone submitting an application for approval.';
+            $notif->date = now();
+            $notif->user_id = $id;
+            $notif->reciever_id = $technicalAdviser->user_id;
+            $notif->save();
 
             $data = [
                 'technicalAdviserName' => $technicalAdviserName,
             ];
         
-            Mail::to($technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
+            // Mail::to($technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
 
             return response()->json(["form" => $form, "file" => $file ]);
 

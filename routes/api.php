@@ -134,16 +134,26 @@ Route::put('/student/profile/{id}', 'App\Http\Controllers\StudentController@mobi
 Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload_file');
 Route::get('/mobilecertification', 'App\Http\Controllers\StudentController@mobilecertification');
 Route::post('mobileapply_certification/{id}', 'App\Http\Controllers\StudentController@mobileapply_certification');
+
+Route::post('mobilefacultyapply_certification/{id}', 'App\Http\Controllers\FacultyController@mobileapply_certification');
+
 Route::get('/mobileshowpdf/{fileName}', 'App\Http\Controllers\StudentController@mobileshowpdf');
 Route::get('/myfiles/{id}', 'App\Http\Controllers\StudentController@mobilemyfiles')->name('mobilemyfiles');
 Route::delete('/delete_file/{file}', 'StudentController@deleteFile');
 Route::get('/get_files/{id}', 'App\Http\Controllers\StudentController@get_files')->name('get_files');
 Route::get('/mobileapplication_status/status/{id}', 'App\Http\Controllers\StudentController@mobileapplication_status');
 Route::get('/mobileshow_application/{id}', 'App\Http\Controllers\StudentController@mobileshow_application');
+
+Route::get('/mobileapplication_statusfaculty/status/{id}', 'App\Http\Controllers\FacultyController@mobileapplication_status');
+Route::get('/mobileshow_applicationfaculty/{id}', 'App\Http\Controllers\FacultyController@mobileshow_application');
+
 Route::post('/mobilereApply', 'App\Http\Controllers\StudentController@mobilereApply');
+Route::post('/mobilereApplyfaculty', 'App\Http\Controllers\FacultyController@mobilereApply');
 
 Route::get('/mobile/title-checker-page', 'App\Http\Controllers\StudentController@mobiletitleChecker');
 Route::get('/mobile/show-research-info/{id}', 'App\Http\Controllers\StudentController@mobileshowResearchInfo');
+
+Route::get('/mobile/faculty-checker-page', 'App\Http\Controllers\FacultyController@mobilesearchResearchList');
 
 // Route::post('/apply-certification', 'App\Http\Controllers\RequestingFormController@apply_certifications');
 
@@ -166,4 +176,8 @@ Route::get('/mobilehomepage/{id}', 'App\Http\Controllers\LayoutsController@mobil
 
 Route::get('mobile/student/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilestudentSendRequestAccess');
 Route::post('/student/send-request-access', [ResearchController::class, 'mobilestudentSendinRequestAccess']);
+
+Route::get('mobile/faculty/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilefacultySendRequestAccess');
+Route::get('mobile/facultyFILE/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilefacultySendRequestAccessFILE');
+Route::post('/faculty/send-request-access', [ResearchController::class, 'mobilefacultySendinRequestAccess']);
 //MOBILE END
