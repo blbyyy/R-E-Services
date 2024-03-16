@@ -750,36 +750,29 @@ class StudentController extends Controller
             return response()->json(['success' => true, 'student' => $student], 200);
     }
 
-    public function mobileupdateprofile(Request $request, $id)
+    public function mobileupdateprofile(Request $request, $email)
     {
-        $student_id = DB::table('students')
-            ->select('students.id')
-            ->where('user_id', $request->user_id)
-            ->first();
+        $student = Student::where('email', $email)->first();
 
-        $student = Student::find($id);
-        $student->fname = $request->fname;
-        $student->lname = $request->lname;
-        $student->mname = $request->mname;
-        $student->college = $request->college;
-        $student->course = $request->course;
-        $student->tup_id = $request->tup_id;
-        $student->gender = $request->gender;
-        $student->phone = $request->phone;
-        $student->address = $request->address;
-        $student->birthdate = $request->birthdate;
-        $student->save();
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        }
 
-        $user = User::find($request->user_id);
-        $user->fname = $request->fname;
-        $user->lname = $request->lname;
-        $user->mname = $request->mname;
-        $user->save();
+        // Update student information
+        $student->update($request->all());
+
+        // Update user information
+        $user = User::find($student->user_id);
+
+        if ($user) {
+            $user->update($request->only(['fname', 'lname', 'mname']));
+        }
 
         // Prepare the response data
         $responseData = [
             'success' => true,
-            'message' => 'Profile was successfully updated'
+            'message' => 'Profile was successfully updated',
+            'student' => $student // Optionally, you can return the updated student data
         ];
 
         // Return JSON response

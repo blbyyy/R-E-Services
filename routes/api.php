@@ -127,9 +127,11 @@ Route::get('/staffprofile/{id}', 'App\Http\Controllers\StaffController@getProfil
 
 Route::get('/profile/{id}', 'App\Http\Controllers\StudentController@getProfile');
 
+// Route::get('/facultyprofile/{id}', 'App\Http\Controllers\FacultyController@getProfile');
+
 Route::post('/mobilechangeavatar/{id}', 'App\Http\Controllers\StudentController@mobilechangeavatar');
 Route::get('/student/profile/{id}', 'App\Http\Controllers\StudentController@getStudentProfile');
-Route::put('/student/profile/{id}', 'App\Http\Controllers\StudentController@mobileupdateprofile');
+Route::put('/studentedit/profile/{email}', 'App\Http\Controllers\StudentController@mobileupdateprofile');
 
 Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload_file');
 Route::get('/mobilecertification', 'App\Http\Controllers\StudentController@mobilecertification');
@@ -168,9 +170,9 @@ Route::delete('/mobiledeleteadministration/{id}', [AdminController::class, 'mobi
 Route::get('/mobile/students/application/{id}', [FacultyController::class, 'mobilestudents_application']);
 Route::get('/mobile/students/application/specific/{id}', [FacultyController::class, 'mobilestudents_application_specific']);
 Route::get('/mobile/technicalAdviser/approval/{id}', [FacultyController::class, 'mobiletechnicalAdviserApproval']);
-Route::post('/mobile/sending/technicalAdviser/approval/{id}', [FacultyController::class, 'mobilesendingTechnicalAdviserApproval']);
+Route::post('mobile/sending/technicalAdviser/approval/{id}', [FacultyController::class, 'mobilesendingTechnicalAdviserApproval']);
 Route::get('/mobile/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesubjectAdviserApproval']);
-Route::post('/mobile/sending/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesendingSubjectAdviserApproval']);
+Route::post('mobile/sending/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesendingSubjectAdviserApproval']);
 
 Route::get('/mobilehomepage/{id}', 'App\Http\Controllers\LayoutsController@mobilehomepage');
 
