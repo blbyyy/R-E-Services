@@ -719,35 +719,40 @@ class StudentController extends Controller
         return response()->json($student);
     }
 
-    public function mobilechangeavatar(Request $request, $id)
+    public function mobilechangeavatar(Request $request, $email)
     {
-        $students = DB::table('students')
-            ->select('students.id')
-            ->where('user_id', $id)
-            ->first();
+        $student = Student::where('email', $email)->first();
 
-        $student = Student::find($id);
-        $files = $request->file('avatar');
-        $student->avatar = 'images/' . time() . '-' . $files->getClientOriginalName();
+        if (!$student) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Student not found'
+            ], 404);
+        }
+
+        if (!$request->hasFile('avatar')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Avatar file not provided'
+            ], 400);
+        }
+
+        $file = $request->file('avatar');
+        $fileName = time() . '-' . $file->getClientOriginalName();
+        $filePath = 'images/' . $fileName;
+
+        // Update student avatar
+        $student->avatar = $filePath;
         $student->save();
 
-        $data = array('status' => 'saved');
-        Storage::put('public/images/' . time() . '-' . $files->getClientOriginalName(), file_get_contents($files));
+        // Save the avatar file
+        Storage::put('public/' . $filePath, file_get_contents($file));
 
-        $student->save();
-
-        // Assuming you want to send some data back as JSON
         return response()->json([
             'status' => 'success',
-            'message' => 'Avatar changed successfully!'
+            'message' => 'Avatar changed successfully!',
+            'avatar' => $filePath // Optionally, you can return the updated avatar path
         ]);
-    }
-
-    public function getStudentProfile($id)
-    {
-            $student = Student::find($id);
-
-            return response()->json(['success' => true, 'student' => $student], 200);
     }
 
     public function mobileupdateprofile(Request $request, $email)
@@ -762,10 +767,16 @@ class StudentController extends Controller
         $student->update($request->all());
 
         // Update user information
-        $user = User::find($student->user_id);
+        $user = DB::table('users')
+            ->join('students', 'students.user_id', '=', 'users.id')
+            ->select('users.fname', 'users.lname', 'users.mname')
+            ->where('students.user_id', $student->user_id)
+            ->first(); // Changed find() to first() to get a single result
 
         if ($user) {
-            $user->update($request->only(['fname', 'lname', 'mname']));
+            DB::table('users')
+                ->where('id', $student->user_id)
+                ->update($request->only(['fname', 'lname', 'mname']));
         }
 
         // Prepare the response data

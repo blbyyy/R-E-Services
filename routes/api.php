@@ -126,12 +126,15 @@ Route::post('/add-comment/{id}', 'CommentController@mobileaddcomment');
 Route::get('/staffprofile/{id}', 'App\Http\Controllers\StaffController@getProfile');
 
 Route::get('/profile/{id}', 'App\Http\Controllers\StudentController@getProfile');
+Route::get('/facultyprofile/{id}', 'App\Http\Controllers\FacultyController@getProfile');
 
 // Route::get('/facultyprofile/{id}', 'App\Http\Controllers\FacultyController@getProfile');
 
-Route::post('/mobilechangeavatar/{id}', 'App\Http\Controllers\StudentController@mobilechangeavatar');
-Route::get('/student/profile/{id}', 'App\Http\Controllers\StudentController@getStudentProfile');
+Route::post('/mobilechangeavatar/{email}', 'App\Http\Controllers\StudentController@mobilechangeavatar');
 Route::put('/studentedit/profile/{email}', 'App\Http\Controllers\StudentController@mobileupdateprofile');
+
+Route::post('/facultymobilechangeavatar/{email}', 'App\Http\Controllers\FacultyController@mobilechangeavatar');
+Route::put('/facultyedit/profile/{email}', 'App\Http\Controllers\FacultyController@mobileupdateprofile');
 
 Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload_file');
 Route::get('/mobilecertification', 'App\Http\Controllers\StudentController@mobilecertification');

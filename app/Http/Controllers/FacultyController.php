@@ -991,6 +991,88 @@ class FacultyController extends Controller
     }
 
     //MOBILE START
+    public function getProfile($id)
+    {
+        $faculty = DB::table('faculty')
+                ->join('users', 'users.id', 'faculty.user_id')
+                ->select('faculty.*', 'faculty.id as faculty_id', 'users.*')
+                ->where('user_id', $id)
+                ->first();   
+
+        return response()->json($faculty);
+    }
+
+    public function mobilechangeavatar(Request $request, $email)
+    {
+        $faculty = Faculty::where('email', $email)->first();
+
+        if (!$faculty) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Student not found'
+            ], 404);
+        }
+
+        if (!$request->hasFile('avatar')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Avatar file not provided'
+            ], 400);
+        }
+
+        $file = $request->file('avatar');
+        $fileName = time() . '-' . $file->getClientOriginalName();
+        $filePath = 'images/' . $fileName;
+
+        // Update student avatar
+        $faculty->avatar = $filePath;
+        $faculty->save();
+
+        // Save the avatar file
+        Storage::put('public/' . $filePath, file_get_contents($file));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Avatar changed successfully!',
+            'avatar' => $filePath // Optionally, you can return the updated avatar path
+        ]);
+    }
+
+    public function mobileupdateprofile(Request $request, $email)
+    {
+        $faculty = Faculty::where('email', $email)->first();
+
+        if (!$faculty) {
+            return response()->json(['success' => false, 'message' => 'Faculty not found'], 404);
+        }
+
+        // Update student information
+        $faculty->update($request->only(['fname', 'lname', 'mname', 'tup_id', 'position', 'designation', 'gender', 'phone', 'address', 'birthdate']));
+
+        // Update user information
+        $user = DB::table('users')
+            ->join('faculty', 'faculty.user_id', '=', 'users.id')
+            ->select('users.fname', 'users.lname', 'users.mname')
+            ->where('faculty.user_id', $faculty->user_id)
+            ->first(); // Changed find() to first() to get a single result
+
+        if ($user) {
+            DB::table('users')
+                ->where('id', $faculty->user_id)
+                ->update($request->only(['fname', 'lname', 'mname']));
+        }
+
+        // Prepare the response data
+        $responseData = [
+            'success' => true,
+            'message' => 'Profile was successfully updated',
+            'student' => $faculty // Optionally, you can return the updated student data
+        ];
+
+        // Return JSON response
+        return response()->json($responseData);
+    }
+
     public function mobilestudents_application($id)
     {
         $faculty = DB::table('faculty')
