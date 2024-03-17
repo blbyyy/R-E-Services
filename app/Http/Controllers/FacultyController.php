@@ -991,6 +991,46 @@ class FacultyController extends Controller
     }
 
     //MOBILE START
+    public function mobilefacultyregistration_page()
+    {
+        $departments = Department::orderBy('id')->get();
+
+        return response()->json(['departments' => $departments]);
+    }
+
+    public function mobilefacultyregister(Request $request)
+    { 
+        $user = new User;
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->mname = $request->mname;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->role = 'faculty';    
+        $user->save();
+        $lastInsertedUserId = $user->id;
+
+        $faculty = new Faculty;
+        $faculty->fname = $request->fname;
+        $faculty->lname = $request->lname;
+        $faculty->mname = $request->mname;
+        $faculty->department_id = $request->department;
+        $faculty->position = $request->position;
+        $faculty->designation = $request->designation;
+        $faculty->tup_id = $request->tup_id;
+        $faculty->email = $request->email;
+        $faculty->gender = $request->gender;
+        $faculty->phone = $request->phone;
+        $faculty->address = $request->address;
+        $faculty->birthdate = $request->birthdate;
+        $faculty->user_id = $lastInsertedUserId;
+        $faculty->save();
+
+        auth()->login($user, true);
+
+        return response()->json(['message' => 'Registration successful', 'user_id' => $lastInsertedUserId]);
+    }
+
     public function getProfile($id)
     {
         $faculty = DB::table('faculty')

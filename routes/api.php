@@ -101,7 +101,12 @@ Route::delete('/admin/researchlist/{id}/deleted', [
           'as' => 'admin.deleteResearchInfo'
   ]);
 
-//MOBILE START
+//MOBILE 
+Route::post('/students/register', 'App\Http\Controllers\StudentController@RegisterMobile');
+Route::get('mobilefacultyregistration-page', [FacultyController::class, 'mobilefacultyregistration_page']);
+Route::post('mobilefacultyregister', [FacultyController::class, 'mobilefacultyregister']);
+
+
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
 Route::get('/dashboardmobile', 'App\Http\Controllers\AdminController@dashboardmobile');
 
