@@ -991,6 +991,128 @@ class FacultyController extends Controller
     }
 
     //MOBILE START
+    public function mobilefacultyregistration_page()
+    {
+        $departments = Department::orderBy('id')->get();
+
+        return response()->json(['departments' => $departments]);
+    }
+
+    public function mobilefacultyregister(Request $request)
+    { 
+        $user = new User;
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->mname = $request->mname;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->role = 'faculty';    
+        $user->save();
+        $lastInsertedUserId = $user->id;
+
+        $faculty = new Faculty;
+        $faculty->fname = $request->fname;
+        $faculty->lname = $request->lname;
+        $faculty->mname = $request->mname;
+        $faculty->department_id = $request->department;
+        $faculty->position = $request->position;
+        $faculty->designation = $request->designation;
+        $faculty->tup_id = $request->tup_id;
+        $faculty->email = $request->email;
+        $faculty->gender = $request->gender;
+        $faculty->phone = $request->phone;
+        $faculty->address = $request->address;
+        $faculty->birthdate = $request->birthdate;
+        $faculty->user_id = $lastInsertedUserId;
+        $faculty->save();
+
+        auth()->login($user, true);
+
+        return response()->json(['message' => 'Registration successful', 'user_id' => $lastInsertedUserId]);
+    }
+
+    public function getProfile($id)
+    {
+        $faculty = DB::table('faculty')
+                ->join('users', 'users.id', 'faculty.user_id')
+                ->select('faculty.*', 'faculty.id as faculty_id', 'users.*')
+                ->where('user_id', $id)
+                ->first();   
+
+        return response()->json($faculty);
+    }
+
+    public function mobilechangeavatar(Request $request, $email)
+    {
+        $faculty = Faculty::where('email', $email)->first();
+
+        if (!$faculty) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Student not found'
+            ], 404);
+        }
+
+        if (!$request->hasFile('avatar')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Avatar file not provided'
+            ], 400);
+        }
+
+        $file = $request->file('avatar');
+        $fileName = time() . '-' . $file->getClientOriginalName();
+        $filePath = 'images/' . $fileName;
+
+        // Update student avatar
+        $faculty->avatar = $filePath;
+        $faculty->save();
+
+        // Save the avatar file
+        Storage::put('public/' . $filePath, file_get_contents($file));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Avatar changed successfully!',
+            'avatar' => $filePath // Optionally, you can return the updated avatar path
+        ]);
+    }
+
+    public function mobileupdateprofile(Request $request, $email)
+    {
+        $faculty = Faculty::where('email', $email)->first();
+
+        if (!$faculty) {
+            return response()->json(['success' => false, 'message' => 'Faculty not found'], 404);
+        }
+
+        // Update student information
+        $faculty->update($request->only(['fname', 'lname', 'mname', 'tup_id', 'position', 'designation', 'gender', 'phone', 'address', 'birthdate']));
+
+        // Update user information
+        $user = DB::table('users')
+            ->join('faculty', 'faculty.user_id', '=', 'users.id')
+            ->select('users.fname', 'users.lname', 'users.mname')
+            ->where('faculty.user_id', $faculty->user_id)
+            ->first(); // Changed find() to first() to get a single result
+
+        if ($user) {
+            DB::table('users')
+                ->where('id', $faculty->user_id)
+                ->update($request->only(['fname', 'lname', 'mname']));
+        }
+
+        // Prepare the response data
+        $responseData = [
+            'success' => true,
+            'message' => 'Profile was successfully updated',
+            'student' => $faculty // Optionally, you can return the updated student data
+        ];
+
+        // Return JSON response
+        return response()->json($responseData);
+    }
+
     public function mobilestudents_application($id)
     {
         $faculty = DB::table('faculty')
@@ -1007,7 +1129,7 @@ class FacultyController extends Controller
             ->join('users', 'users.id', 'requestingform.user_id')
             ->join('students', 'users.id', 'students.user_id')
             ->join('files', 'files.id', 'requestingform.research_id')
-            ->select('requestingform.*', 'files.id as file_id', 'files.research_title')
+            ->select('requestingform.*', 'files.id as file_id', 'files.research_title', 'files.research_file')
             ->where(function ($query) use ($faculty_id) {
                 $query->where('requestingform.technicalAdviser_id', $faculty_id)
                     ->where('requestingform.status', 'Pending Technical Adviser Approval');
@@ -1058,48 +1180,103 @@ class FacultyController extends Controller
 
     public function mobilesendingTechnicalAdviserApproval(Request $request, $id)
     {
-        try {
-            $form = RequestingForm::find($id);
-            if (!$form) {
-                return response()->json(['error' => 'Requesting form not found'], 404);
-            }
-
-            if ($request->technicalAdviserRemarks === null) {
+        if ($request->technicalAdviserRemarks === null) {
+                
+                $form = RequestingForm::find($id);
                 $form->status = $request->technicalAdviserStatus;
                 $form->remarks = 'Your paper has been processed. Please wait for approval from your subject adviser.';
                 $form->save();
 
                 $file = Files::find($request->fileId1);
-                if ($file) {
-                    $file->file_status = $request->technicalAdviserStatus;
-                    $file->save();
-                } else {
-                    return response()->json(['error' => 'File not found'], 404);
-                }
+                $file->file_status = $request->technicalAdviserStatus;
+                $file->save();
 
-                // Additional code for sending emails or notifications
+                $subjectAdviser = DB::table('requestingform')
+                ->where('id', $id)
+                ->first();
 
-                return response()->json($form);
-            } else {
+                $research = DB::table('files')
+                ->where('id', $subjectAdviser->research_id)
+                ->first();
+
+                $subjectAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
+                ->where('id', $subjectAdviser->subjectAdviser_id)
+                ->value('subjectAdviserName');
+
+                $technicalAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
+                ->where('id', $subjectAdviser->technicalAdviser_id)
+                ->value('technicalAdviserName');
+
+                $subjectAdviserId = DB::table('requestingform')
+                ->join('faculty','faculty.id','requestingform.subjectAdviser_id')
+                ->join('users','users.id','faculty.user_id')
+                ->where('requestingform.id', $id)
+                ->value('users.id');
+
+                $notif = new Notifications;
+                $notif->type = 'Faculty Notification';
+                $notif->title = 'Subject Adviser Certification Approval';
+                $notif->message = 'Someone submitting an application for approval.';
+                $notif->date = now();
+                $notif->user_id = $subjectAdviser->user_id;
+                $notif->reciever_id = $subjectAdviserId;
+                $notif->save();
+
+                $data = [
+                    'subjectAdviserName' => $subjectAdviserName,
+                ];
+                // Mail::to($subjectAdviser->subjectAdviserEmail)->send(new SubjectAdviserApproval($data));
+
+                $success = [
+                    'requestorName' => $subjectAdviser->requestor_name,
+                    'researchTitle' => $research->research_title,
+                    'technicalAdviserName' => $technicalAdviserName
+                ];
+                // Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalSuccess($success));
+
+            return response()->json($form);
+
+        } else {
+
+                $form = RequestingForm::find($id);
                 $form->status = $request->technicalAdviserStatus;
                 $form->remarks = $request->technicalAdviserRemarks;
                 $form->save();
 
                 $file = Files::find($request->fileId1);
-                if ($file) {
-                    $file->file_status = $request->technicalAdviserStatus;
-                    $file->save();
-                } else {
-                    return response()->json(['error' => 'File not found'], 404);
-                }
+                $file->file_status = $request->technicalAdviserStatus;
+                $file->save();
 
-                // Additional code for sending emails or notifications
+                $subjectAdviser = DB::table('requestingform')
+                ->where('id', $id)
+                ->first();
 
-                return response()->json($form);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+                $technicalAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS technicalAdviserName"))
+                ->where('id', $subjectAdviser->technicalAdviser_id)
+                ->value('technicalAdviserName');
+
+                $research = DB::table('files')
+                ->where('id', $subjectAdviser->research_id)
+                ->first();
+
+                $reject = [
+                    'requestorName' => $subjectAdviser->requestor_name,
+                    'researchTitle' => $research->research_title,
+                    'remarks' => $request->technicalAdviserRemarks,
+                    'technicalAdviserName' => $technicalAdviserName
+                ];
+                // Mail::to($subjectAdviser->email_address)->send(new TechnicalAdviserApprovalReject($reject));
+
+            return response()->json($form);
+            
         }
+
+           
+
+            
     }
 
 
@@ -1118,48 +1295,346 @@ class FacultyController extends Controller
 
     public function mobilesendingSubjectAdviserApproval(Request $request, $id)
     {
-        try {
-            $form = RequestingForm::find($id);
-            if (!$form) {
-                return response()->json(['error' => 'Requesting form not found'], 404);
-            }
-
-            if ($request->subjectAdviserRemarks === null) {
+        if ($request->subjectAdviserRemarks === null) {
+                
+                $form = RequestingForm::find($id);
                 $form->status = $request->subjectAdviserStatus;
                 $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
                 $form->save();
 
                 $file = Files::find($request->fileId2);
-                if ($file) {
-                    $file->file_status = $request->subjectAdviserStatus;
-                    $file->save();
-                } else {
-                    return response()->json(['error' => 'File not found'], 404);
-                }
+                $file->file_status = $request->subjectAdviserStatus;
+                $file->save();
 
-                // Additional code for sending emails or notifications
+                $subjectAdviser = DB::table('requestingform')
+                ->where('id', $id)
+                ->first();
 
-                return response()->json($form);
-            } else {
+                $research = DB::table('files')
+                ->where('id', $subjectAdviser->research_id)
+                ->first();
+
+                $subjectAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
+                ->where('id', $subjectAdviser->subjectAdviser_id)
+                ->value('subjectAdviserName');
+                
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Student Application Certification Submitted';
+                $notif->message = 'Someone submitted an application to certify.';
+                $notif->date = now();
+                $notif->user_id = $subjectAdviser->user_id;
+                $notif->reciever_id = '0';
+                $notif->save();
+
+                $success = [
+                    'requestorName' => $subjectAdviser->requestor_name,
+                    'researchTitle' => $research->research_title,
+                    'subjectAdviserName' => $subjectAdviserName
+                ];
+                // Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalSuccess($success));             
+
+            return response()->json($form);
+
+        } else {
+
+                $form = RequestingForm::find($id);
                 $form->status = $request->subjectAdviserStatus;
                 $form->remarks = $request->subjectAdviserRemarks;
                 $form->save();
 
                 $file = Files::find($request->fileId2);
-                if ($file) {
-                    $file->file_status = $request->subjectAdviserRemarks;
-                    $file->save();
-                } else {
-                    return response()->json(['error' => 'File not found'], 404);
-                }
+                $file->file_status = $request->subjectAdviserRemarks;
+                $file->save();
 
-                // Additional code for sending emails or notifications
+                $subjectAdviser = DB::table('requestingform')
+                ->where('id', $id)
+                ->first();
 
-                return response()->json($form);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+                $subjectAdviserName = DB::table('faculty')
+                ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS subjectAdviserName"))
+                ->where('id', $subjectAdviser->subjectAdviser_id)
+                ->value('subjectAdviserName');
+
+                $research = DB::table('files')
+                ->where('id', $subjectAdviser->research_id)
+                ->first();
+
+                $reject = [
+                    'requestorName' => $subjectAdviser->requestor_name,
+                    'researchTitle' => $research->research_title,
+                    'remarks' => $request->subjectAdviserRemarks,
+                    'subjectAdviserName' => $subjectAdviserName
+                ];
+                // Mail::to($subjectAdviser->email_address)->send(new SubjectAdviserApprovalReject($reject));
+
+            return response()->json($form);
+            
         }
+                   
+    }
+
+    public function mobileapply_certification(Request $request, $id)
+    {
+        $submission = DB::table('requestingform')
+        ->join('users', 'users.id', 'requestingform.user_id')
+        ->join('files', 'files.id', 'requestingform.research_id')
+        ->where('requestingform.research_id', $request->research_id)
+        ->selectRaw(
+            'CASE 
+                WHEN COUNT(*) = 0 THEN "First Submission"
+                WHEN COUNT(*) = 1 THEN "Second Submission"
+                WHEN COUNT(*) = 2 THEN "Third Submission"
+                WHEN COUNT(*) = 3 THEN "Fourth Submission"
+                WHEN COUNT(*) = 4 THEN "Fifth Submission"
+                WHEN COUNT(*) = 5 THEN "Sixth Submission"
+                ELSE "Other Submission" 
+            END as submission_frequency')
+        ->value('submission_frequency');
+
+        $latestPercentage = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.simmilarity_percentage_results')
+            ->where('requestingform.research_id', $request->research_id)
+            ->orderBy('requestingform.id', 'desc') 
+            ->value('simmilarity_percentage_results');
+
+        $faculty =  Faculty::where('user_id', $id)->first();
+
+        $advisers = Faculty::orderBy('id')->get();
+
+        $facultyfullname = $faculty->fname .' '. $faculty->mname .' '. $faculty->lname;
+
+            $form = new RequestingForm;
+            $form->date = now();
+            $form->email_address = $faculty->email;
+            $form->thesis_type = $request->thesis_type;
+            
+            $form->submission_frequency = $submission;
+            $form->initial_simmilarity_percentage = 0;
+
+            if ($submission === 'First Submission') {
+                $form->advisors_turnitin_precheck = 'No';
+                $form->initial_simmilarity_percentage = 0;
+            } else {
+                $form->advisors_turnitin_precheck = 'Yes';
+                $form->initial_simmilarity_percentage = $latestPercentage;
+            } 
+
+            $form->research_specialist = 'tba';
+            $form->research_staff = 'tba';
+            $form->tup_id = $faculty->email;
+            $form->requestor_name = $facultyfullname;
+            $form->tup_mail = $faculty->email;
+            $form->sex = $faculty->gender;
+            $form->requestor_type = $request->requestor_type;
+            $form->college = $request->college;
+            $form->purpose = 'Certification';
+            $form->researchers_name1 = $request->researchers_name1;
+            $form->researchers_name2 = $request->researchers_name2;
+            $form->researchers_name3 = $request->researchers_name3;
+            $form->researchers_name4 = $request->researchers_name4;
+            $form->researchers_name5 = $request->researchers_name5;
+            $form->researchers_name6 = $request->researchers_name6;
+            $form->researchers_name7 = $request->researchers_name7;
+            $form->researchers_name8 = $request->researchers_name8;
+            $form->agreement = 'I Agree';
+            $form->score = 0;
+            $form->research_id = $request->research_id;
+            $form->user_id = $faculty->user_id;
+            $form->status = 'Pending';
+            $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
+            $form->save();
+
+            $file = Files::find($request->research_id);
+            $file->file_status = 'Pending';
+            $file->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Faculty Application Certification Submitted';
+            $notif->message = 'Someone submitted an application to certify.';
+            $notif->date = now();
+            $notif->user_id = $id;
+            $notif->reciever_id = '0';
+            $notif->save();
+
+            return response()->json(["form" => $form, "file" => $file ]);
+
+    }
+
+    public function mobileapplication_status($id)
+    {
+        $faculty = DB::table('faculty')
+            ->join('users','users.id','faculty.user_id')
+            ->select('faculty.*','users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $facultystats = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.*', 'files.research_title')
+            ->where('requestingform.user_id', $id)
+            ->orderBy('requestingform.id', 'desc')
+            ->get();
+
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', $id)
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', $id)
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        // Constructing the JSON response
+        $response = [
+            'faculty' => $faculty,
+            'facultystats' => $facultystats,
+            'facultyNotifCount' => $facultyNotifCount,
+            'facultyNotification' => $facultyNotification
+        ];
+
+        // Returning JSON response
+        return response()->json($response);
+    }
+
+    public function mobileshow_application($id)
+    {
+        $specificData = DB::table('requestingform')
+        ->join('files', 'files.id', 'requestingform.research_id')
+        ->join('users', 'users.id', 'requestingform.user_id')
+        ->leftJoin('certificates', 'certificates.id', 'requestingform.certificate_id')
+        ->select('requestingform.*', 'files.*','certificates.certificate_file')
+        ->where('requestingform.id', $id)
+        ->first();
+
+        return response()->json($specificData);
+    }
+
+    public function mobilereApply(Request $request)
+    {
+        $latestApplication = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.*')
+            ->where('requestingform.research_id', $request->research_id)
+            ->orderBy('requestingform.created_at', 'desc') 
+            ->first();
+        
+        $latestPercentage = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.simmilarity_percentage_results')
+            ->where('requestingform.research_id', $request->research_id)
+            ->orderBy('requestingform.id', 'desc') 
+            ->value('simmilarity_percentage_results');
+
+        $submission = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->where('requestingform.research_id', $request->research_id)
+            ->selectRaw(
+                'CASE 
+                    WHEN COUNT(*) = 0 THEN "First Submission"
+                    WHEN COUNT(*) = 1 THEN "Second Submission"
+                    WHEN COUNT(*) = 2 THEN "Third Submission"
+                    WHEN COUNT(*) = 3 THEN "Fourth Submission"
+                    WHEN COUNT(*) = 4 THEN "Fifth Submission"
+                    WHEN COUNT(*) = 5 THEN "Sixth Submission"
+                    ELSE "Other Submission" 
+                END as submission_frequency')
+            ->value('submission_frequency');
+
+            $form = new RequestingForm;
+            $form->date = now();
+            $form->email_address = $latestApplication->email_address;
+            $form->thesis_type = $latestApplication->thesis_type;
+            $form->submission_frequency = $submission;
+            $form->simmilarity_percentage_results = 0;
+            $form->advisors_turnitin_precheck = 'Yes';
+            $form->initial_simmilarity_percentage = $latestPercentage;
+            
+            $form->research_specialist = 'tba';
+            $form->tup_id = $latestApplication->tup_id;
+            $form->requestor_name = $latestApplication->requestor_name;
+            $form->tup_mail = $latestApplication->tup_mail;
+            $form->sex = $latestApplication->sex;
+            $form->requestor_type = $latestApplication->requestor_type;
+            $form->college = $latestApplication->college;
+            $form->purpose = $latestApplication->purpose;
+            $form->researchers_name1 = $latestApplication->researchers_name1;
+            $form->researchers_name2 = $latestApplication->researchers_name2;
+            $form->researchers_name3 = $latestApplication->researchers_name3;
+            $form->researchers_name4 = $latestApplication->researchers_name4;
+            $form->researchers_name5 = $latestApplication->researchers_name5;
+            $form->researchers_name6 = $latestApplication->researchers_name6;
+            $form->researchers_name7 = $latestApplication->researchers_name7;
+            $form->researchers_name8 = $latestApplication->researchers_name8;
+            $form->agreement = $latestApplication->agreement;
+            $form->score = 0;
+            $form->research_staff = 'tba';
+            $form->research_id = $latestApplication->research_id;
+            $form->user_id = $latestApplication->user_id;
+            $form->status = 'Pending';
+            $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
+            $form->save();
+
+            if ($submission === 'First Submission') {
+                $file = Files::find($request->research_id);
+                $file->file_status = 'Pending';
+                $file->save();
+            } else {
+                $request->validate([
+                    'research_file' => 'required|mimes:pdf|max:10240', // PDF file validation with a maximum size of 10MB
+                ]);
+                
+                $file = Files::find($request->research_id);
+                $file->file_status = 'Pending';
+
+                $pdfFile = $request->file('research_file');
+                $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
+                $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+                
+                $file->research_file = $pdfFileName;
+
+                $file->save();
+            } 
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Faculty Application Certification Submitted';
+            $notif->message = 'Someone submitted an application to certify.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->save();
+
+            return response()->json(["form" => $form, "file" => $file ]);
+
+    }
+
+    public function mobilesearchResearchList(Request $request)
+    {
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $query = $request->input('query');
+        $researchlist = Research::search($query)->get();
+
+        // Return JSON response
+        return response()->json([
+            'researchlist' => $researchlist,
+            'faculty' => $faculty
+        ]);
     }
     //MOBILE END
 

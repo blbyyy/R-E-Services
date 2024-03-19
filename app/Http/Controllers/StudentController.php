@@ -135,7 +135,7 @@ class StudentController extends Controller
     {
         $student_id = DB::table('students')
         ->select('students.id')
-        ->where('user_id',Auth::id())
+        ->where('user_id', Auth::id())
         ->first();
 
         $student = Student::find($student_id->id);
@@ -707,71 +707,124 @@ class StudentController extends Controller
         return response()->json($research);
     }
 
-    
-
-
     //MOBILE START
+    public function RegisterMobile(Request $request)
+    { 
+        $response = [];
+        $user = new User;
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->mname = $request->mname;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->role = $request->role;   
+        $user->save();
+        $lastUserId = DB::getPdo()->lastInsertId();
+
+        $student = new Student;
+        $student->fname = $request->fname;
+        $student->lname = $request->lname;
+        $student->mname = $request->mname;
+        $student->college = $request->college;
+        $student->course = $request->course;
+        $student->tup_id = $request->tup_id;
+        $student->email = $request->email;
+        $student->gender = $request->gender;
+        $student->phone = $request->phone;
+        $student->address = $request->address;
+        $student->birthdate = $request->birthdate;
+        $student->user_id = $lastUserId;
+        $student->save();
+
+        auth()->login($user, true);
+
+        $response['message'] = 'Registration successful';
+        $response['user'] = $user;
+        $response['student'] = $student;
+
+        return response()->json($response, 200);
+    }
+
     public function getProfile($id)
     {
-            $student = DB::table('students')
+        $student = DB::table('students')
                 ->join('users', 'users.id', 'students.user_id')
-                ->select('students.*', 'users.*')
+                ->select('students.*', 'students.id as student_id', 'users.*')
                 ->where('user_id', $id)
                 ->first();   
 
         return response()->json($student);
     }
 
-    public function mobilechangeavatar(Request $request)
+    public function mobilechangeavatar(Request $request, $email)
     {
-        // Check if the user is authenticated
-        if (!Auth::check()) {
-            return response()->json(['error' => 'User not authenticated'], 401);
-        }
+        $student = Student::where('email', $email)->first();
 
-        // Retrieve the authenticated user's ID
-        $user_id = Auth::id();
-
-        // Find the associated student record
-        $student = Student::where('user_id', $user_id)->first();
-
-        // Check if the student record exists
         if (!$student) {
-            return response()->json(['error' => 'Student not found'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Student not found'
+            ], 404);
         }
 
-        // Check if the request contains the 'avatar' file
         if (!$request->hasFile('avatar')) {
-            return response()->json(['error' => 'Avatar file not provided'], 400);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Avatar file not provided'
+            ], 400);
         }
 
-        // Get the 'avatar' file from the request
-        $avatarFile = $request->file('avatar');
+        $file = $request->file('avatar');
+        $fileName = time() . '-' . $file->getClientOriginalName();
+        $filePath = 'images/' . $fileName;
 
-        // Generate a unique filename for the avatar
-        $avatarFilename = 'images/' . time() . '-' . $avatarFile->getClientOriginalName();
+        // Update student avatar
+        $student->avatar = $filePath;
+        $student->save();
 
-        try {
-            // Store the avatar file
-            Storage::put('public/' . $avatarFilename, file_get_contents($avatarFile));
+        // Save the avatar file
+        Storage::put('public/' . $filePath, file_get_contents($file));
 
-            // Update the student's avatar
-            $student->avatar = $avatarFilename;
-            $student->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Avatar changed successfully!',
+            'avatar' => $filePath // Optionally, you can return the updated avatar path
+        ]);
+    }
 
-            // Construct response data
-            $data = [
-                'status' => 'success',
-                'message' => 'Avatar changed successfully',
-                'avatar_url' => asset('storage/' . $avatarFilename),
-            ];
+    public function mobileupdateprofile(Request $request, $email)
+    {
+        $student = Student::where('email', $email)->first();
 
-            // Return the response
-            return response()->json($data);
-        } catch (\Exception $e) {
-            // Return error response if an exception occurs
-            return response()->json(['error' => $e->getMessage()], 500);
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
         }
+
+        // Update student information
+        $student->update($request->all());
+
+        // Update user information
+        $user = DB::table('users')
+            ->join('students', 'students.user_id', '=', 'users.id')
+            ->select('users.fname', 'users.lname', 'users.mname')
+            ->where('students.user_id', $student->user_id)
+            ->first(); // Changed find() to first() to get a single result
+
+        if ($user) {
+            DB::table('users')
+                ->where('id', $student->user_id)
+                ->update($request->only(['fname', 'lname', 'mname']));
+        }
+
+        // Prepare the response data
+        $responseData = [
+            'success' => true,
+            'message' => 'Profile was successfully updated',
+            'student' => $student // Optionally, you can return the updated student data
+        ];
+
+        // Return JSON response
+        return response()->json($responseData);
     }
 
     public function mobileupload_file(Request $request)
@@ -948,7 +1001,6 @@ class StudentController extends Controller
 
     public function mobileapply_certification(Request $request, $id)
     {
-        
         $submission = DB::table('requestingform')
         ->join('users', 'users.id', 'requestingform.user_id')
         ->join('files', 'files.id', 'requestingform.research_id')
@@ -994,7 +1046,7 @@ class StudentController extends Controller
                 $form->advisors_turnitin_precheck = 'Yes';
                 $form->initial_simmilarity_percentage = $latestPercentage;
             } 
-            Log::info($request);
+
             $form->technicalAdviser_id = $request->technicalAdviser_id;
             $technicalAdviserEmail = DB::table('faculty')
             ->where('id', $request->technicalAdviser_id)
@@ -1026,11 +1078,12 @@ class StudentController extends Controller
             $form->researchers_name6 = $request->researchers_name6;
             $form->researchers_name7 = $request->researchers_name7;
             $form->researchers_name8 = $request->researchers_name8;
-            $form->agreement = $request->agreement;
+            $form->agreement = 'I Agree';
             $form->score = 0;
             $form->research_id = $request->research_id;
             $form->user_id = $student->user_id;
             $form->status = 'Pending Technical Adviser Approval';
+            $form->remarks = 'Your paper has been processed. Please wait for approval from your technical adviser.';
             $form->save();
 
             $file = Files::find($request->research_id);
@@ -1042,13 +1095,21 @@ class StudentController extends Controller
             ->first();
 
             $technicalAdviserName = $technicalAdviser->fname .' '. $technicalAdviser->mname .' '. $technicalAdviser->lname;
-            // Log::info($technicalAdviserName);
+            
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Technical Adviser Certification Approval';
+            $notif->message = 'Someone submitting an application for approval.';
+            $notif->date = now();
+            $notif->user_id = $id;
+            $notif->reciever_id = $technicalAdviser->user_id;
+            $notif->save();
 
             $data = [
                 'technicalAdviserName' => $technicalAdviserName,
             ];
         
-            Mail::to($technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
+            // Mail::to($technicalAdviserEmail)->send(new TechnicalAdviserApproval($data));
 
             return response()->json(["form" => $form, "file" => $file ]);
 

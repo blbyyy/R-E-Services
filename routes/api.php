@@ -101,6 +101,7 @@ Route::delete('/admin/researchlist/{id}/deleted', [
           'as' => 'admin.deleteResearchInfo'
   ]);
 
+<<<<<<< HEAD
 Route::post('/faculty/extension/schedule-appointment/checking-date', [
     'uses' => 'AppointmentController@checkingDate',
           'as' => 'appointments.date.check'
@@ -112,6 +113,14 @@ Route::post('/faculty/extension/schedule-appointment/checking-appointment', [
   ]);
 
 //MOBILE START
+=======
+//MOBILE 
+Route::post('/students/register', 'App\Http\Controllers\StudentController@RegisterMobile');
+Route::get('mobilefacultyregistration-page', [FacultyController::class, 'mobilefacultyregistration_page']);
+Route::post('mobilefacultyregister', [FacultyController::class, 'mobilefacultyregister']);
+
+
+>>>>>>> ce5adb40f149d3bc3c76207b44141feb885c1ba9
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
 Route::get('/dashboardmobile', 'App\Http\Controllers\AdminController@dashboardmobile');
 
@@ -131,28 +140,44 @@ Route::delete('/fullcalendars/delete', 'CalendarController@mobiledestroy');
 
 Route::get('/mobileshowannouncement', 'AdminController@mobileshowannouncement');
 Route::get('/show/comments/{id}', 'CommentController@mobileshowcomments');
-Route::post('/add/{id}/comment', [
-  'uses' => 'CommentController@mobileaddcomment',
-        'as' => 'mobileaddcomment'
-]);
+Route::post('/add-comment/{id}', 'CommentController@mobileaddcomment');
 
 Route::get('/staffprofile/{id}', 'App\Http\Controllers\StaffController@getProfile');
 
 Route::get('/profile/{id}', 'App\Http\Controllers\StudentController@getProfile');
-Route::post('/mobilechangeavatar', 'App\Http\Controllers\StudentController@mobilechangeavatar');
+Route::get('/facultyprofile/{id}', 'App\Http\Controllers\FacultyController@getProfile');
+
+// Route::get('/facultyprofile/{id}', 'App\Http\Controllers\FacultyController@getProfile');
+
+Route::post('/mobilechangeavatar/{email}', 'App\Http\Controllers\StudentController@mobilechangeavatar');
+Route::put('/studentedit/profile/{email}', 'App\Http\Controllers\StudentController@mobileupdateprofile');
+
+Route::post('/facultymobilechangeavatar/{email}', 'App\Http\Controllers\FacultyController@mobilechangeavatar');
+Route::put('/facultyedit/profile/{email}', 'App\Http\Controllers\FacultyController@mobileupdateprofile');
+
 Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload_file');
 Route::get('/mobilecertification', 'App\Http\Controllers\StudentController@mobilecertification');
 Route::post('mobileapply_certification/{id}', 'App\Http\Controllers\StudentController@mobileapply_certification');
+
+Route::post('mobilefacultyapply_certification/{id}', 'App\Http\Controllers\FacultyController@mobileapply_certification');
+
 Route::get('/mobileshowpdf/{fileName}', 'App\Http\Controllers\StudentController@mobileshowpdf');
 Route::get('/myfiles/{id}', 'App\Http\Controllers\StudentController@mobilemyfiles')->name('mobilemyfiles');
 Route::delete('/delete_file/{file}', 'StudentController@deleteFile');
 Route::get('/get_files/{id}', 'App\Http\Controllers\StudentController@get_files')->name('get_files');
 Route::get('/mobileapplication_status/status/{id}', 'App\Http\Controllers\StudentController@mobileapplication_status');
 Route::get('/mobileshow_application/{id}', 'App\Http\Controllers\StudentController@mobileshow_application');
+
+Route::get('/mobileapplication_statusfaculty/status/{id}', 'App\Http\Controllers\FacultyController@mobileapplication_status');
+Route::get('/mobileshow_applicationfaculty/{id}', 'App\Http\Controllers\FacultyController@mobileshow_application');
+
 Route::post('/mobilereApply', 'App\Http\Controllers\StudentController@mobilereApply');
+Route::post('/mobilereApplyfaculty', 'App\Http\Controllers\FacultyController@mobilereApply');
 
 Route::get('/mobile/title-checker-page', 'App\Http\Controllers\StudentController@mobiletitleChecker');
 Route::get('/mobile/show-research-info/{id}', 'App\Http\Controllers\StudentController@mobileshowResearchInfo');
+
+Route::get('/mobile/faculty-checker-page', 'App\Http\Controllers\FacultyController@mobilesearchResearchList');
 
 // Route::post('/apply-certification', 'App\Http\Controllers\RequestingFormController@apply_certifications');
 
@@ -167,12 +192,16 @@ Route::delete('/mobiledeleteadministration/{id}', [AdminController::class, 'mobi
 Route::get('/mobile/students/application/{id}', [FacultyController::class, 'mobilestudents_application']);
 Route::get('/mobile/students/application/specific/{id}', [FacultyController::class, 'mobilestudents_application_specific']);
 Route::get('/mobile/technicalAdviser/approval/{id}', [FacultyController::class, 'mobiletechnicalAdviserApproval']);
-Route::post('/mobile/sending/technicalAdviser/approval/{id}', [FacultyController::class, 'mobilesendingTechnicalAdviserApproval']);
+Route::post('mobile/sending/technicalAdviser/approval/{id}', [FacultyController::class, 'mobilesendingTechnicalAdviserApproval']);
 Route::get('/mobile/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesubjectAdviserApproval']);
-Route::post('/mobile/sending/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesendingSubjectAdviserApproval']);
+Route::post('mobile/sending/subjectAdviser/approval/{id}', [FacultyController::class, 'mobilesendingSubjectAdviserApproval']);
 
 Route::get('/mobilehomepage/{id}', 'App\Http\Controllers\LayoutsController@mobilehomepage');
 
 Route::get('mobile/student/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilestudentSendRequestAccess');
 Route::post('/student/send-request-access', [ResearchController::class, 'mobilestudentSendinRequestAccess']);
+
+Route::get('mobile/faculty/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilefacultySendRequestAccess');
+Route::get('mobile/facultyFILE/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilefacultySendRequestAccessFILE');
+Route::post('/faculty/send-request-access', [ResearchController::class, 'mobilefacultySendinRequestAccess']);
 //MOBILE END
