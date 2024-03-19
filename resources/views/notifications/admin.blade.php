@@ -6,8 +6,8 @@
    
     <div class="row">
         @foreach ($notification as $notifications)
-        <div class="col-lg-6">
-            <div class="card">
+        <div class="col-lg-12">
+            <div class="card mb-3">
                 <div class="card-body">
                     <h4 class="card-title">{{$notifications->title}}
                         <span>    ({{ \Carbon\Carbon::parse($notifications->date)->diffForHumans() }})</span>
@@ -38,9 +38,13 @@
                         </div>
                     @elseif ($notifications->title === 'Requesting Appointment for Proposal Consultation')
                         <div class="d-flex justify-content-end">
-                            <a href="{{url('/appointments')}}">View</a>
+                            <a href="{{url('/appointments')}}">View</a> 
+                        </div> 
+                    @elseif ($notifications->title === 'Extension Application Proposal Submitted' || $notifications->title === 'PPMP, PR and Request for Qoutation/Market Study Submitted')
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('/admin/extension/proposal-list')}}">View</a>
                         </div>
-                    @endif
+                    @endif 
                 </div>
             </div>
         </div>

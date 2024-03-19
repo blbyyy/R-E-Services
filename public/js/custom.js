@@ -4354,20 +4354,20 @@ $(document).ready(function () {
                 success: function(data) {
                     console.log(data);
                     $('#extensionId').val(id);
-                    if (data.status === 'New Application') {
-                        if (data.appointment1_id === null) {
+                    if (data.status === 'New Application' || data.status === 'Proposal Consultation Appointment Cancelled') {
+                        if (data.appointment1_id === null || data.status === 'Proposal Consultation Appointment Cancelled') {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
                         } 
-                    } else if (data.status === 'New Application') {
-                        if (data.appointment1_id === null) {
-                            $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
+                    } else if (data.status === 'Topics and Sub Topics Inputted' || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
+                        if (data.appointment2_id === null || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Proposal Consultation"]').prop('disabled', true);
                         } 
-                    } else if (data.status === 'New Application') {
-                        if (data.appointment1_id === null) {
+                    } else if (data.status === 'Appointment Done for Pre-Survey Consultation' || data.status === 'Appointment Cancelled for Mid-Survey Consultation') {
+                        if (data.appointment3_id === null || data.status === 'Appointment Cancelled for Mid-Survey Consultation') {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
-                            $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Proposal Consultation"]').prop('disabled', true);
                         } 
                     } 
                     
@@ -4387,9 +4387,14 @@ $(document).ready(function () {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
                 },
                 dataType: "json",
-                success: function(data) {
-                    console.log(id);
+                success: function(data) { 
+                    console.log(data);
                     $('#proposalId').val(id);
+                    if (data.status === 'Proposal Rejected by R&E Office') {
+                        $('#submissionProposal').text('Re-Submission of Proposal');
+                    } else {
+                        $('#submissionProposal').text('Submission of Proposal');
+                    }
                 },
                 error: function(error) {
                     console.log(error);

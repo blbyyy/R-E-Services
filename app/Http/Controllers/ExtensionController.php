@@ -10,6 +10,7 @@ use App\Mail\DoApproval;
 use App\Mail\UesApproval;
 use App\Mail\OsgApproval;
 use Illuminate\Http\Request;
+use App\Models\Notifications;
 use App\Models\Appointments;
 use App\Models\Extension;
 use App\Models\Prototype;
@@ -78,7 +79,7 @@ class ExtensionController extends Controller
     }
 
     public function proposal1(Request $request)
-    { 
+    {
         $extension = Extension::find($request->proposalId);
         $extension->beneficiary = $request->beneficiary;
         $extension->status = 'Pending Approval of R&E Office';
@@ -87,9 +88,18 @@ class ExtensionController extends Controller
         $pdfFile = $request->file('mou_file');
         $pdfFileName = $pdfFile->getClientOriginalName();
         $pdfFile->move(public_path('uploads/extension'), $pdfFileName);
-        
+            
         $extension->mou_file = $pdfFileName;
         $extension->save();
+
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Extension Application Proposal Submitted';
+        $notif->message = 'Someone submit an application proposal for approval.';
+        $notif->date = now();
+        $notif->user_id = Auth::id();
+        $notif->reciever_id = 0;
+        $notif->save();
         
         return redirect()->to('/faculty/extension/application')->with('success', 'Your Proposal has been sent; kindly wait to be approved.');
     }
@@ -125,6 +135,15 @@ class ExtensionController extends Controller
         $extension->market_study_file = $marketStudyFileName;
         $extension->save();
 
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'PPMP, PR and Request for Qoutation/Market Study Submitted';
+        $notif->message = 'Someone send ppmp, pr and request for qoutation/market study for document approval';
+        $notif->date = now();
+        $notif->user_id = Auth::id();
+        $notif->reciever_id = 0;
+        $notif->save();
+
         $requestor = DB::table('users')
             ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS requestor"))
             ->where('id', Auth::id())
@@ -137,7 +156,7 @@ class ExtensionController extends Controller
             'marketStudyFile' => $marketStudyFileName,
         ];
     
-        Mail::to($doEmail)->send(new DoApproval($data));
+        // Mail::to($doEmail)->send(new DoApproval($data));
         
         return redirect()->to('/faculty/extension/application')->with('success', 'Your Proposal has been sent to Do; kindly wait the result we immediately contact you about the result.');
     }
@@ -163,6 +182,15 @@ class ExtensionController extends Controller
         $extension->moa_file = $moaFileName;
         $extension->save();
 
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'MOA(Memorandum of Agreement) Submitted';
+        $notif->message = 'Someone send moa(memorandum of agreement) for document approval';
+        $notif->date = now();
+        $notif->user_id = Auth::id();
+        $notif->reciever_id = 0;
+        $notif->save();
+
         $proposals = DB::table('extension')
             ->join('users','users.id','extension.user_id')
             ->select(
@@ -181,7 +209,7 @@ class ExtensionController extends Controller
             'moaFile' => $moaFileName,
         ];
     
-        Mail::to($boardEmail)->send(new BoardApproval($data));
+        // Mail::to($boardEmail)->send(new BoardApproval($data));
         
         return redirect()->to('/faculty/extension/application')->with('success', 'Your Proposal has been sent to Board; kindly wait the result if the result is out we immediately contact you.');
     }
@@ -204,6 +232,15 @@ class ExtensionController extends Controller
         $extension->proponents5 = $request->proponents5;
         $extension->save();
 
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Implementation Proper and Proponents Submitted';
+        $notif->message = 'Someone send implementation proper and proponents for implementation approval';
+        $notif->date = now();
+        $notif->user_id = Auth::id();
+        $notif->reciever_id = 0;
+        $notif->save();
+
         return redirect()->to('/faculty/extension/application')->with('success', 'Your Proposal has been sent to R&E-Office; kindly wait the result if the result is out we immediately contact you.');
     }
 
@@ -221,6 +258,15 @@ class ExtensionController extends Controller
         $extension->topics = $request->topics;
         $extension->subtopics = $request->subtopics;
         $extension->save();
+
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Topics and Sub Topics Inserted';
+        $notif->message = 'Topics and Subtopics Inserted';
+        $notif->date = now();
+        $notif->user_id = Auth::id();
+        $notif->reciever_id = 0;
+        $notif->save();
 
         return redirect()->to('/faculty/extension/application')->with('success', 'Topics and Subtopics Inputted; Kindly make an appointment for consultation about the Pre-Evaluation survey.');
     }
@@ -273,6 +319,15 @@ class ExtensionController extends Controller
         $extension->percentage_status = 80;
         $extension->save();
 
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Post Evaluation Attendance, Evaluatin Form, Capsule Detail, Certificate, Attendance and Documentation Photos Inserted';
+        $notif->message = 'Inserted post-evaluation survey attendance, evaluation form, capsule detail, certificate, attendance and documentation photos';
+        $notif->date = now();
+        $notif->user_id = Auth::id();
+        $notif->reciever_id = 0;
+        $notif->save();
+
         $files = $request->file('img_path');
             foreach ($files as $file) 
             {
@@ -321,6 +376,15 @@ class ExtensionController extends Controller
             $extension->percentage_status = 85;
             $extension->save();
 
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Letter, Non Diclosure Agreement and Certificate of Acceptance Inserted';
+            $notif->message = 'Inserted letter, nda and coa ';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
+
             return redirect()->to('/faculty/extension/application')->with('success', 'Inserted: Letter, NDA and COA File');
 
         } else {
@@ -330,6 +394,15 @@ class ExtensionController extends Controller
             $extension->status = 'Process Done';
             $extension->percentage_status = 100;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Extension Application Process Done';
+            $notif->message = 'Extension application was completed all the process ';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
 
             return redirect()->to('/faculty/extension/application')->with('success', 'Process Done');
         }
@@ -360,15 +433,35 @@ class ExtensionController extends Controller
             $extension->pre_evaluation_survey = $request->pre_evaluation;
             $extension->save();
 
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Prototype Pre-Evaluation Survey Done';
+            $notif->message = 'Quick update: prototype pre-evaluation survey done';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
+
             return redirect()->to('/faculty/extension/application')->with('success', 'Prototype Pre-Evaluation Survey Done');
 
         } else {
 
-            $extension = Extension::find($request->proposal7Id);
-            $extension->prototype_id = $lastId;
-            $extension->status = 'Process Done';
-            $extension->percentage_status = 100;
+            $extension = Extension::find($request->proposal8Id);
+            $extension->status = $request->pre_evaluation;
             $extension->save();
+
+            $extension = Prototype::find($request->prototype1Id);
+            $extension->pre_evaluation_survey = $request->pre_evaluation;
+            $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Prototype Pre-Evaluation Survey Not Done';
+            $notif->message = 'Quick update: prototype pre-evaluation survey not done';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
 
             return redirect()->to('/faculty/extension/application')->with('error', 'Prototype Pre-Evaluation Survey Not Done');
         }
@@ -399,15 +492,35 @@ class ExtensionController extends Controller
             $extension->mid_evaluation_survey = $request->mid_evaluation;
             $extension->save();
 
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Prototype Mid-Evaluation Survey Done';
+            $notif->message = 'Quick update: prototype mid-evaluation survey done';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
+
             return redirect()->to('/faculty/extension/application')->with('success', 'Prototype Mid-Evaluation Survey Done');
 
         } else {
 
-            $extension = Extension::find($request->proposal7Id);
-            $extension->prototype_id = $lastId;
-            $extension->status = 'Process Done';
-            $extension->percentage_status = 100;
+            $extension = Extension::find($request->proposal9Id);
+            $extension->status = $request->mid_evaluation;
             $extension->save();
+
+            $extension = Prototype::find($request->prototype2Id);
+            $extension->mid_evaluation_survey = $request->mid_evaluation;
+            $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Prototype Mid-Evaluation Survey Not Done';
+            $notif->message = 'Quick update: prototype mid-evaluation survey not done';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
 
             return redirect()->to('/faculty/extension/application')->with('error', 'Prototype Mid-Evaluation Survey Not Done');
         }
@@ -438,15 +551,35 @@ class ExtensionController extends Controller
             $extension->post_evaluation_survey = $request->post_evaluation;
             $extension->save();
 
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Prototype Post-Evaluation Survey Done';
+            $notif->message = 'Quick update: prototype post-evaluation survey done';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
+
             return redirect()->to('/faculty/extension/application')->with('success', 'Prototype Post-Evaluation Survey Done');
 
         } else {
 
-            $extension = Extension::find($request->proposal7Id);
-            $extension->prototype_id = $lastId;
-            $extension->status = 'Process Done';
-            $extension->percentage_status = 100;
+            $extension = Extension::find($request->proposal10Id);
+            $extension->status = $request->post_evaluation;
             $extension->save();
+
+            $extension = Prototype::find($request->prototype3Id);
+            $extension->post_evaluation_survey = $request->post_evaluation;
+            $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Prototype Post-Evaluation Survey Not Done';
+            $notif->message = 'Quick update: prototype post-evaluation survey not done';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
 
             return redirect()->to('/faculty/extension/application')->with('error', 'Prototype Mid-Evaluation Survey Not Done');
         }
@@ -509,6 +642,15 @@ class ExtensionController extends Controller
 
         $prototype->save();
 
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Inserted Prototype Capsule Detail, Certificate, Documentation Photos and Attendance';
+        $notif->message = 'Inserted prototype capsule detail, certificate, documentation photos, and attendance.';
+        $notif->date = now();
+        $notif->user_id = Auth::id();
+        $notif->reciever_id = 0;
+        $notif->save();
+
         return redirect()->to('/faculty/extension/application')->with('success', 'Capsule Detail, Certificate, Attendance and Documentation Photos Inserted.');
 
     }
@@ -562,12 +704,25 @@ class ExtensionController extends Controller
 
     public function adminProposalApproval1(Request $request)
     { 
-        if ($request->status === 'Proposal Approved') {
+        $userID = Extension::where('id', $request->proposalId1)
+        ->orderBy('created_at', 'desc')
+        ->value('user_id');
+
+        if ($request->status === 'Proposal Approved by R&E Office') {
 
             $extension = Extension::find($request->proposalId1);
             $extension->status = $request->status;
             $extension->percentage_status = 20;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Proposal Approved by R&E Office';
+            $notif->message = 'Your proposal was approved by R&E Office.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('success', 'Proposal Approved.');
 
@@ -576,6 +731,15 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId1);
             $extension->status = $request->status;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Proposal Rejected by R&E Office';
+            $notif->message = 'Your proposal was rejected by R&E Office.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('error', 'Proposal Rejected.');
             
@@ -601,6 +765,10 @@ class ExtensionController extends Controller
     { 
         $uesEmail = 'josephandrebalbada@gmail.com';
 
+        $userID = Extension::where('id', $request->proposalId2)
+        ->orderBy('created_at', 'desc')
+        ->value('user_id');
+
         if ($request->status === 'Pending Proposal Approval By UES') {
 
             $extension = Extension::find($request->proposalId2);
@@ -608,6 +776,15 @@ class ExtensionController extends Controller
             $extension->percentage_status = 30;
             $extension->ues_email = $uesEmail;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Approved By DO';
+            $notif->message = 'Your documents was approved by DO.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             $proposals = DB::table('extension')
             ->join('users','users.id','extension.user_id')
@@ -626,7 +803,7 @@ class ExtensionController extends Controller
                 'marketStudyFile' => $proposals->market_study_file,
             ];
         
-            Mail::to($uesEmail)->send(new UesApproval($data));
+            // Mail::to($uesEmail)->send(new UesApproval($data));
 
             return redirect()->to('/admin/extension/proposal-list')->with('success', 'Proposal Approved By DO.');
 
@@ -636,6 +813,15 @@ class ExtensionController extends Controller
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Rejected By DO';
+            $notif->message = 'Your documents was rejected by DO.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('error', 'Proposal Rejected By DO.');
             
@@ -661,6 +847,10 @@ class ExtensionController extends Controller
     { 
         $presidentEmail = 'josephandrebalbada@gmail.com';
 
+        $userID = Extension::where('id', $request->proposalId3)
+        ->orderBy('created_at', 'desc')
+        ->value('user_id');
+
         if ($request->status === 'Pending Proposal Approval By President') {
 
             $extension = Extension::find($request->proposalId3);
@@ -668,6 +858,15 @@ class ExtensionController extends Controller
             $extension->percentage_status = 35;
             $extension->president_email = $presidentEmail;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Approved By UES';
+            $notif->message = 'Your documents was approved by UES.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             $proposals = DB::table('extension')
             ->join('users','users.id','extension.user_id')
@@ -686,7 +885,7 @@ class ExtensionController extends Controller
                 'marketStudyFile' => $proposals->market_study_file,
             ];
         
-            Mail::to($presidentEmail)->send(new PresidentApproval($data));
+            // Mail::to($presidentEmail)->send(new PresidentApproval($data));
 
             return redirect()->to('/admin/extension/proposal-list')->with('success', 'Proposal Approved By UES.');
 
@@ -696,6 +895,15 @@ class ExtensionController extends Controller
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Rejected By UES';
+            $notif->message = 'Your documents was rejected by UES.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('error', 'Proposal Rejected By UES.');
             
@@ -719,12 +927,25 @@ class ExtensionController extends Controller
 
     public function adminProposalApproval4(Request $request)
     { 
+        $userID = Extension::where('id', $request->proposalId4)
+        ->orderBy('created_at', 'desc')
+        ->value('user_id');
+
         if ($request->status === 'Proposal Approved By President') {
 
             $extension = Extension::find($request->proposalId4);
             $extension->status = $request->status;
             $extension->percentage_status = 40;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Approved By President';
+            $notif->message = 'Your documents was approved by President.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('success', 'Proposal Approved By President.');
 
@@ -734,6 +955,15 @@ class ExtensionController extends Controller
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Rejected By President';
+            $notif->message = 'Your documents was rejected by President.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('error', 'Proposal Rejected By President.');
             
@@ -759,6 +989,10 @@ class ExtensionController extends Controller
     { 
         $osgEmail = 'josephandrebalbada@gmail.com';
 
+        $userID = Extension::where('id', $request->proposalId5)
+        ->orderBy('created_at', 'desc')
+        ->value('user_id');
+
         if ($request->status === 'Pending Proposal Approval By OSG') {
 
             $extension = Extension::find($request->proposalId5);
@@ -766,6 +1000,15 @@ class ExtensionController extends Controller
             $extension->percentage_status = 50;
             $extension->osg_email = $osgEmail;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Approved By Board';
+            $notif->message = 'Your documents was approved by Board.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             $proposals = DB::table('extension')
             ->join('users','users.id','extension.user_id')
@@ -785,7 +1028,7 @@ class ExtensionController extends Controller
                 'moaFile' => $proposals->moa_file,
             ];
         
-            Mail::to($osgEmail)->send(new OsgApproval($data));
+            // Mail::to($osgEmail)->send(new OsgApproval($data));
 
             return redirect()->to('/admin/extension/proposal-list')->with('success', 'Proposal Approved By Board.');
 
@@ -795,6 +1038,15 @@ class ExtensionController extends Controller
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Rejected By Board';
+            $notif->message = 'Your documents was rejected by Board.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('error', 'Proposal Rejected By Board.');
             
@@ -818,12 +1070,25 @@ class ExtensionController extends Controller
 
     public function adminProposalApproval6(Request $request)
     { 
+        $userID = Extension::where('id', $request->proposalId6)
+        ->orderBy('created_at', 'desc')
+        ->value('user_id');
+
         if ($request->status === 'Proposal Approved By OSG') {
 
             $extension = Extension::find($request->proposalId6);
             $extension->status = $request->status;
             $extension->percentage_status = 55;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Approved By OSG';
+            $notif->message = 'Your documents was approved by OSG.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('success', 'Proposal Approved By OSG.');
 
@@ -833,6 +1098,15 @@ class ExtensionController extends Controller
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Documents Rejected By OSG';
+            $notif->message = 'Your documents was rejected by OSG.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/admin/extension/proposal-list')->with('error', 'Proposal Rejected By OSG.');
             
@@ -856,6 +1130,10 @@ class ExtensionController extends Controller
 
     public function adminProposalApproval7(Request $request)
     { 
+        $userID = Extension::where('id', $request->proposalId7)
+        ->orderBy('created_at', 'desc')
+        ->value('user_id');
+
         if ($request->status === 'Implementation Approved By R&E-Office') {
 
             $extension = Extension::find($request->proposalId7);
@@ -863,7 +1141,16 @@ class ExtensionController extends Controller
             $extension->percentage_status = 60;
             $extension->save();
 
-            return redirect()->to('/admin/extension/proposal-list')->with('success', 'Proposal Approved By R&E-Office.');
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Implementation Approved By R&E Office';
+            $notif->message = 'Your implementation yous send was approved by R&E Office.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
+
+            return redirect()->to('/admin/extension/proposal-list')->with('success', 'Implementation Approved By R&E-Office.');
 
         } else {
 
@@ -872,7 +1159,16 @@ class ExtensionController extends Controller
             $extension->remarks = $request->remarks;
             $extension->save();
 
-            return redirect()->to('/admin/extension/proposal-list')->with('error', 'Proposal Rejected By R&E-Office.');
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Implementation Rejected By R&E Office';
+            $notif->message = 'Your implementation yous send was rejected by R&E Office.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
+
+            return redirect()->to('/admin/extension/proposal-list')->with('error', 'Implementation Rejected By R&E-Office.');
             
         }
     }

@@ -80,7 +80,7 @@
                             <span class="badge bg-primary">{{$appointment->status}}</span>
                           @elseif ($appointment->status === 'Appointment Done')
                             <span class="badge bg-success">{{$appointment->status}}</span>
-                          @elseif ($appointment->status === 'Appointment Rejected')
+                          @elseif ($appointment->status === 'Appointment Cancelled')
                             <span class="badge bg-danger">{{$appointment->status}}</span>
                           @elseif ($appointment->status === 'Appointment Pending')
                             <span class="badge bg-warning">{{$appointment->status}}</span>
@@ -279,15 +279,16 @@
     document.getElementById('status').addEventListener('change', function () {
           var messageContainer = document.getElementById('messageContainer');
 
-          if (this.value === 'Rejected') {
+          if (this.value === 'Appointment Cancelled') {
             messageContainer.style.display = 'block';
           } else {
             messageContainer.style.display = 'none';
           }
       });
 
-      $('#processingAppointment').on('hidden.bs.modal', function () {
+      $('#processingAppointmentProposal').on('hidden.bs.modal', function () {
               $('#messageContainer').hide();
+              $('#status').val('');
           });
   });
 </script>

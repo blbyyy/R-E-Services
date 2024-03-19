@@ -65,64 +65,80 @@
                           @if ($proposal->status == 'Process Done')
                           <span class="badge rounded-pill bg-success">{{$proposal->status}}</span>
                           @else
-                          <span class="badge rounded-pill bg-primary">{{$proposal->status}}</span>
+                          <span class="badge rounded-pill bg-primary">{{$proposal->status}}</span> 
                           @endif
                         </td>
                         <td>
-                          @if ($proposal->status === 'Pending Approval for Proposal Consultation Appointment')
+                          @if ($proposal->status === 'Pending Approval for Proposal Consultation Appointment') 
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is waiting for approval of proposal consultation appointment."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Appointment Set for Proposal Consultation')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is ongoing to proposal consultation please wait to be done."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Appointment Done for Proposal Consultation')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application was done to proposal consultation."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Proposal Consultation Appointment Cancelled')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="Proposal consultation was cancelled; let the requestor make another schedule to proceed."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Pending Approval of R&E Office')
                             <button data-id="{{$proposal->id}}" type="button" class="btn btn-primary processProposal1" data-bs-toggle="modal" data-bs-target="#processingProposal1"><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Proposal Approved')
+                          @elseif ($proposal->status === 'Proposal Approved by R&E Office')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application already approved."><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Proposal Approved By President')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application already approved by president."><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Proposal Approved By OSG')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application already approved by OSG."><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Implementation Approved By R&E-Office')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application already approved by R&E Office."><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Proposal Rejected')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application has been rejected."><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Topics and Sub Topics Inputted')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application need to make an appointment for consultation about pre-evaluation survey."><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Pending Approval for Pre-Survey Consultation Appointment')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application waiting for approval of admin for pre-survey consultation appointment."><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Appointment Set for Pre-Survey Consultation')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is ongoing to consultation about Pre-Survey "><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Appointment Done for Pre-Survey Consultation')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application need to make an appointment for consultation about mid-evaluation survey."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Pending Approval of DO')
                             <button data-id="{{$proposal->id}}" type="button" class="btn btn-primary processProposal2" data-bs-toggle="modal" data-bs-target="#processingProposal2"><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Pending Proposal Approval By UES')
                             <button data-id="{{$proposal->id}}" type="button" class="btn btn-primary processProposal3" data-bs-toggle="modal" data-bs-target="#processingProposal3"><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Pending Proposal Approval By President')
                             <button data-id="{{$proposal->id}}" type="button" class="btn btn-primary processProposal4" data-bs-toggle="modal" data-bs-target="#processingProposal4"><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Proposal Approved By President')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application already approved by president."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Pending Approval of Board')
                             <button data-id="{{$proposal->id}}" type="button" class="btn btn-primary processProposal5" data-bs-toggle="modal" data-bs-target="#processingProposal5"><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Pending Proposal Approval By OSG')
                             <button data-id="{{$proposal->id}}" type="button" class="btn btn-primary processProposal6" data-bs-toggle="modal" data-bs-target="#processingProposal6"><i class="bi bi-arrow-right"></i></button>
-                          @elseif ($proposal->status === 'Pending Implementation Approval by R&E-Office')
+                          @elseif ($proposal->status === 'Proposal Approved By OSG')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application already approved by OSG."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Implementation Approved By R&E-Office')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application already approved by R&E Office."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Topics and Sub Topics Inputted')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application need to make an appointment for consultation about pre-evaluation survey."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Pending Implementation Approval by R&E-Office') 
                             <button data-id="{{$proposal->id}}" type="button" class="btn btn-primary processProposal7" data-bs-toggle="modal" data-bs-target="#processingProposal7"><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Pending Approval for Pre-Survey Consultation Appointment')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application waiting for approval of admin for pre-survey consultation appointment."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Appointment Cancelled for Pre-Survey Consultation')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application was cancelled the appointment abnout pre-survey consultation."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Appointment Set for Pre-Survey Consultation')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is ongoing to consultation about Pre-Survey "><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Appointment Done for Pre-Survey Consultation')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application need to make an appointment for consultation about mid-evaluation survey."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Pending Approval for Mid-Survey Consultation Appointment')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application waiting for approval of admin for mid-survey consultation appointment."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Appointment Set for Mid-Survey Consultation')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is ongoing; please wait to done to proceed next step."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Appointment Done for Mid-Survey Consultation')
-                          <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is done to mid-evaluation survey."><i class="bi bi-arrow-right"></i></button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is done to mid-evaluation survey."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Appointment Cancelled for Mid-Survey Consultation')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application was cancelled the appointment abnout mid-survey consultation."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Inserted: Certificate, Documentation, Attendance, and Capsule Details')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is almost done wait to the owner response if they have ptototype."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Have Prototype: Letter, NDA, COA Inserted')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="The prototype pre-evaluation survey is the next step in this application."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Prototype Pre-Evaluation Survey Done')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="The prototype mid-evaluation survey is the next step in this application."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Prototype Pre-Evaluation Survey Not Done')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="prototype pre-evaluation survey not done."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Prototype Mid-Evaluation Survey Done')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="The prototype post-evaluation survey is the next step in this application."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Prototype Mid-Evaluation Survey Not Done')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="prototype mid-evaluation survey not done."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Prototype Post-Evaluation Survey Done')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="Uploading Capsule Detail/Narative, Certificate, Documentation Photos and Attendancce is the next step in this application."><i class="bi bi-arrow-right"></i></button>
+                          @elseif ($proposal->status === 'Prototype Post-Evaluation Survey Not Done')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="prototype post-evaluation survey not done."><i class="bi bi-arrow-right"></i></button>
                           @elseif ($proposal->status === 'Process Done')
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is completed."><i class="bi bi-arrow-right"></i></button>
+                          
+                          @elseif ($proposal->status === 'Proposal Rejected') 
+                            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application has been rejected."><i class="bi bi-arrow-right"></i></button>
+                         
                           @endif
                           </td> 
                     </tr> 
@@ -154,8 +170,8 @@
                             <div class="form-floating">
                                 <select name="status" class="form-select" id="status" aria-label="State">
                                     <option selected>Choose....</option>
-                                    <option value="Proposal Approved">Approve</option>
-                                    <option value="Proposal Rejected">Reject</option>
+                                    <option value="Proposal Approved by R&E Office">Approve</option>
+                                    <option value="Proposal Rejected by R&E Office">Reject</option>
                                 </select>
                                 <label for="status">Status</label>
                             </div>
