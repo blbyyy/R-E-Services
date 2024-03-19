@@ -20,42 +20,43 @@
     <div class="pagetitle">
         <h1>My Files</h1>
     </div>
-    <div class="row">
-        <div class="col-12" style="padding-bottom: 20px;">
-            <button type="button" class="btn btn-dark" onclick="toggleFileUploadForm()"><i class="bi bi-folder-plus"></i> Upload File</button>
-        </div>
-        
-        <div id="fileUploadForm" class="col-md-12" style="display: none;">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Upload a file</h5>
-        
-                    <form class="row g-3" method="POST" action="{{ route('faculty_upload_file') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="col-12">
-                            <label for="research_title" class="form-label">Research Title</label>
-                            <input type="text" class="form-control" id="research_title" name="research_title">
+
+    <div class="col-12" style="padding-bottom: 20px;">
+        <button type="button" class="btn btn-dark" onclick="toggleFileUploadForm()"><i class="bi bi-folder-plus"></i> Upload File</button>
+    </div>
+
+    <div id="fileUploadForm" class="col-md-12" style="display: none;">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Upload a file</h5>
+    
+                <form class="row g-3" method="POST" action="{{ route('faculty_upload_file') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="col-12">
+                        <label for="research_title" class="form-label">Research Title</label>
+                        <input type="text" class="form-control" id="research_title" name="research_title">
+                    </div>
+                    <div class="col-12">
+                        <label for="abstract" class="form-label">Research Abstract</label>
+                        <textarea name="abstract" class="form-control" id="abstract" style="height: 300px;"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label for="research_file" class="form-label">Research File</label>
+                        <input type="file" class="form-control" id="research_file" name="research_file">
+                    </div>
+    
+                    <div class="col-12" style="padding-top: 20px">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-outline-dark">Upload file</button>
+                            <button type="reset" class="btn btn-outline-dark ms-2" onclick="toggleFileUploadForm()">Close</button>
                         </div>
-                        <div class="col-12">
-                            <label for="abstract" class="form-label">Research Abstract</label>
-                            <textarea name="abstract" class="form-control" id="abstract" style="height: 300px;"></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label for="research_file" class="form-label">Research File</label>
-                            <input type="file" class="form-control" id="research_file" name="research_file">
-                        </div>
-        
-                        <div class="col-12" style="padding-top: 20px">
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-outline-dark">Upload file</button>
-                                <button type="reset" class="btn btn-outline-dark ms-2" onclick="toggleFileUploadForm()">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
-        
+    </div>
+
+    <div class="row">
         @if(count($myfiles) > 0)
             @foreach($myfiles as $files)
                 <div class="card mb-3">
@@ -98,9 +99,9 @@
         @endif
     </div>
 
-        <div class="modal fade" id="facultyshowfiles" tabindex="-1">
-            <div class="modal-dialog modal-xl">
-              <div class="modal-content">
+    <div class="modal fade" id="facultyshowfiles" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title"></h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -111,14 +112,13 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
+    </div>
 
-        <div class="modal fade" id="facultyshowhistory" tabindex="-1">
-            <div class="modal-dialog modal-xl">
-              <div class="modal-content">
+    <div class="modal fade" id="facultyshowhistory" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title"></h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -155,9 +155,9 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
-              </div>
             </div>
         </div>
+    </div>
 
 </main>
 <script>

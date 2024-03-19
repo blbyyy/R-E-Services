@@ -483,6 +483,140 @@ Route::get('/faculty/all/notifications', [
           'as' => 'faculty.all.notifications'
   ]);
 
+Route::get('/faculty/extension/schedule-appointment', [
+    'uses' => 'AppointmentController@appointment1',
+          'as' => 'faculty.extension.schedule.appointment1'
+  ]);
+
+Route::post('/faculty/extension/schedule-appointment1/sent', [
+    'uses' => 'AppointmentController@facultySchedulingAppointment1',
+          'as' => 'faculty.extension.schedule.appointment1.sent'
+  ]);
+
+Route::get('/faculty/extension/application', [
+    'uses' => 'ExtensionController@facultyApplication',
+          'as' => 'faculty.extension.application'
+  ]);
+
+Route::post('/faculty/extension/application/created', [
+      'uses' => 'ExtensionController@createApplication',
+            'as' => 'faculty.extension.application.created'
+    ]);
+
+Route::get('/faculty/extension/application/proposal0/{id}', [
+      'uses' => 'ExtensionController@proposal0ExtenxionId',
+            'as' => 'faculty.extension.proposal0.id'
+    ]);
+
+Route::get('/faculty/extension/application/proposal1/{id}', [
+    'uses' => 'ExtensionController@proposal1ExtenxionId',
+          'as' => 'faculty.extension.proposal1.id'
+  ]);
+
+Route::post('/faculty/extension/application/proposal1/sent', [
+    'uses' => 'ExtensionController@proposal1',
+          'as' => 'faculty.extension.proposal1.sent'
+  ]);
+
+Route::get('/faculty/extension/application/proposal2/{id}', [
+    'uses' => 'ExtensionController@proposal2ExtenxionId',
+          'as' => 'faculty.extension.proposal2.id'
+  ]);
+
+Route::post('/faculty/extension/application/proposal2/sent', [
+    'uses' => 'ExtensionController@proposal2',
+          'as' => 'faculty.extension.proposal2.sent'
+  ]);
+
+Route::get('/faculty/extension/application/proposal3/{id}', [
+    'uses' => 'ExtensionController@proposal3ExtenxionId',
+          'as' => 'faculty.extension.proposal3.id'
+  ]);
+
+Route::post('/faculty/extension/application/proposal3/sent', [
+    'uses' => 'ExtensionController@proposal3',
+          'as' => 'faculty.extension.proposal3.sent'
+  ]);
+
+Route::get('/faculty/extension/application/proposal4/{id}', [
+    'uses' => 'ExtensionController@proposal4ExtenxionId',
+          'as' => 'faculty.extension.proposal4.id'
+  ]);
+
+Route::post('/faculty/extension/application/proposal4/sent', [
+    'uses' => 'ExtensionController@proposal4',
+          'as' => 'faculty.extension.proposal4.sent'
+  ]);
+
+Route::get('/faculty/extension/application/proposal5/{id}', [
+    'uses' => 'ExtensionController@proposal5ExtenxionId',
+          'as' => 'faculty.extension.proposal5.id'
+  ]);
+
+Route::post('/faculty/extension/application/proposal5/sent', [
+    'uses' => 'ExtensionController@proposal5',
+          'as' => 'faculty.extension.proposal5.sent'
+  ]);
+
+Route::get('/faculty/extension/application/proposal6/{id}', [
+      'uses' => 'ExtensionController@proposal6ExtenxionId',
+            'as' => 'faculty.extension.proposal6.id'
+    ]);
+  
+Route::post('/faculty/extension/application/proposal6/sent', [
+      'uses' => 'ExtensionController@proposal6',
+            'as' => 'faculty.extension.proposal6.sent'
+    ]);
+
+Route::get('/faculty/extension/application/proposal7/{id}', [
+      'uses' => 'ExtensionController@proposal7ExtenxionId',
+            'as' => 'faculty.extension.proposal7.id'
+    ]);
+  
+Route::post('/faculty/extension/application/proposal7/sent', [
+      'uses' => 'ExtensionController@proposal7',
+            'as' => 'faculty.extension.proposal7.sent'
+    ]);
+
+Route::get('/faculty/extension/application/proposal8/{id}', [
+      'uses' => 'ExtensionController@proposal8ExtenxionId',
+            'as' => 'faculty.extension.proposal8.id'
+    ]);
+  
+Route::post('/faculty/extension/application/proposal8/sent', [
+      'uses' => 'ExtensionController@proposal8',
+            'as' => 'faculty.extension.proposal8.sent'
+    ]);
+
+Route::get('/faculty/extension/application/proposal9/{id}', [
+      'uses' => 'ExtensionController@proposal9ExtenxionId',
+            'as' => 'faculty.extension.proposal9.id'
+    ]);
+  
+Route::post('/faculty/extension/application/proposal9/sent', [
+      'uses' => 'ExtensionController@proposal9',
+            'as' => 'faculty.extension.proposal9.sent'
+    ]);
+
+Route::get('/faculty/extension/application/proposal10/{id}', [
+      'uses' => 'ExtensionController@proposal10ExtenxionId',
+            'as' => 'faculty.extension.proposal10.id'
+    ]);
+  
+Route::post('/faculty/extension/application/proposal10/sent', [
+      'uses' => 'ExtensionController@proposal10',
+            'as' => 'faculty.extension.proposal10.sent'
+    ]);
+
+Route::get('/faculty/extension/application/proposal11/{id}', [
+      'uses' => 'ExtensionController@proposal11ExtenxionId',
+            'as' => 'faculty.extension.proposal11.id'
+    ]);
+  
+Route::post('/faculty/extension/application/proposal11/sent', [
+      'uses' => 'ExtensionController@proposal11',
+            'as' => 'faculty.extension.proposal11.sent'
+    ]);
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [
@@ -932,3 +1066,113 @@ Route::get('/admin/all/notifications', [
   'uses' => 'LayoutsController@adminNotifications',
         'as' => 'admin.all.notifications'
 ]);
+
+Route::get('/appointments', [
+  'uses' => 'AppointmentController@appointments',
+        'as' => 'appointments.list'
+]);
+
+Route::get('/appointments/proposal/{id}', [
+  'uses' => 'AppointmentController@proposalAppointmentId',
+        'as' => 'appointments.list.proposal'
+]);
+
+Route::post('/appointment/proposal/sent', [
+      'uses' => 'AppointmentController@sendingAppointmentProposal',
+            'as' => 'appointment.proposal.sent'
+    ]);
+
+Route::get('/appointments/pre-survey/{id}', [
+      'uses' => 'AppointmentController@preSurveyAppointmentId',
+            'as' => 'appointments.list.pre-survey'
+    ]);
+
+Route::post('/appointment/pre-survey/sent', [
+      'uses' => 'AppointmentController@sendingAppointmentPreSurvey',
+            'as' => 'appointment.pre-survey.sent'
+    ]);
+
+Route::get('/appointments/mid-survey/{id}', [
+      'uses' => 'AppointmentController@midSurveyAppointmentId',
+            'as' => 'appointments.list.mid-survey'
+    ]);
+
+Route::post('/appointment/mid-survey/sent', [
+      'uses' => 'AppointmentController@sendingAppointmentMidSurvey',
+            'as' => 'appointment.mid-survey.sent'
+    ]);
+
+Route::get('/admin/extension/proposal-list', [
+  'uses' => 'ExtensionController@proposalList',
+        'as' => 'admin.proposal.list'
+]);
+
+Route::get('/admin/extension/proposalList/proposal1/{id}', [
+  'uses' => 'ExtensionController@proposal1Id',
+        'as' => 'admin.proposallist.proposal1'
+]);
+
+Route::post('/admin/extension/proposal-list/sent1', [
+  'uses' => 'ExtensionController@adminProposalApproval1',
+        'as' => 'admin.proposal.list.specific.sent1'
+]);
+
+Route::get('/admin/extension/proposalList/proposal2/{id}', [
+  'uses' => 'ExtensionController@proposal2Id',
+        'as' => 'admin.proposallist.proposal2'
+]);
+
+Route::post('/admin/extension/proposal-list/sent2', [
+  'uses' => 'ExtensionController@adminProposalApproval2',
+        'as' => 'admin.proposal.list.specific.sent2'
+]);
+
+Route::get('/admin/extension/proposalList/proposal3/{id}', [
+  'uses' => 'ExtensionController@proposal3Id',
+        'as' => 'admin.proposallist.proposal3'
+]);
+
+Route::post('/admin/extension/proposal-list/sent3', [
+  'uses' => 'ExtensionController@adminProposalApproval3',
+        'as' => 'admin.proposal.list.specific.sent3'
+]);
+
+Route::get('/admin/extension/proposalList/proposal4/{id}', [
+  'uses' => 'ExtensionController@proposal4Id',
+        'as' => 'admin.proposallist.proposal4'
+]);
+
+Route::post('/admin/extension/proposal-list/sent4', [
+  'uses' => 'ExtensionController@adminProposalApproval4',
+        'as' => 'admin.proposal.list.specific.sent4'
+]);
+
+Route::get('/admin/extension/proposalList/proposal5/{id}', [
+  'uses' => 'ExtensionController@proposal5Id',
+        'as' => 'admin.proposallist.proposal5'
+]);
+
+Route::post('/admin/extension/proposal-list/sent5', [
+  'uses' => 'ExtensionController@adminProposalApproval5',
+        'as' => 'admin.proposal.list.specific.sent5'
+]);
+
+Route::get('/admin/extension/proposalList/proposal6/{id}', [
+  'uses' => 'ExtensionController@proposal6Id',
+        'as' => 'admin.proposallist.proposal6'
+]);
+
+Route::post('/admin/extension/proposal-list/sent6', [
+  'uses' => 'ExtensionController@adminProposalApproval6',
+        'as' => 'admin.proposal.list.specific.sent6'
+]);
+
+Route::get('/admin/extension/proposalList/proposal7/{id}', [
+      'uses' => 'ExtensionController@proposal7Id',
+            'as' => 'admin.proposallist.proposal7'
+    ]);
+    
+    Route::post('/admin/extension/proposal-list/sent7', [
+      'uses' => 'ExtensionController@adminProposalApproval7',
+            'as' => 'admin.proposal.list.specific.sent7'
+    ]);

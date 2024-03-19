@@ -1855,6 +1855,312 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //admin approval an proposal consultation appointment
+        $(".processAppointmentProposal").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/appointments/proposal/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#appointmentId1").val(data.appointmentId);
+                    $("#extensionId1").val(data.id);
+                    $("#requestor1").text(data.requestor_name);
+                    $("#date1").text(data.date);
+                    $("#time1").text(data.time);
+                    $("#purpose1").text(data.purpose);
+                    $("#status1").text(data.status);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin approval an pre-survey consultation appointment
+        $(".processAppointmentPreSurvey").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/appointments/pre-survey/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#appointmentId2").val(data.appointmentId);
+                    $("#extensionId2").val(data.id);
+                    $("#requestor2").text(data.requestor_name);
+                    $("#date2").text(data.date);
+                    $("#time2").text(data.time);
+                    $("#purpose2").text(data.purpose);
+                    $("#status2").text(data.status); 
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin approval an mid-survey consultation appointment
+        $(".processAppointmentMidSurvey").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/appointments/mid-survey/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#appointmentId3").val(data.appointmentId);
+                    $("#extensionId3").val(data.id);
+                    $("#requestor3").text(data.requestor_name);
+                    $("#date3").text(data.date);
+                    $("#time3").text(data.time);
+                    $("#purpose3").text(data.purpose); 
+                    $("#status3").text(data.status);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin process an proposal1
+        $(".processProposal1").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/extension/proposalList/proposal2/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#proposalId1").val(data.id);
+                    $("#requestor").text(data.requestor_name);
+                    $("#beneficiary").text(data.beneficiary);
+    
+                    var pdfLink = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        text: "View PDF",
+                        target: "_blank"
+                    });
+                    $("#mou_file").empty().append(pdfLink);
+                   
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin process an proposal2
+        $(".processProposal2").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/extension/proposalList/proposal2/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#proposalId2").val(data.id);
+                    $("#proposal2Requestor").text(data.requestor_name);
+                    $("#proposal2UniqueId").text(data.uniqueId);
+                    $("#proposal2Status").text(data.status);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin process an proposal3
+        $(".processProposal3").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/extension/proposalList/proposal3/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#proposalId3").val(data.id);
+                    $("#proposal3Requestor").text(data.requestor_name);
+                    $("#proposal3UniqueId").text(data.uniqueId);
+                    $("#proposal3Status").text(data.status);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin process an proposal4
+        $(".processProposal4").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/extension/proposalList/proposal4/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#proposalId4").val(data.id);
+                    $("#proposal4Requestor").text(data.requestor_name);
+                    $("#proposal4UniqueId").text(data.uniqueId);
+                    $("#proposal4Status").text(data.status);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin process an proposal5
+        $(".processProposal5").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/extension/proposalList/proposal5/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#proposalId5").val(data.id);
+                    $("#proposal5Requestor").text(data.requestor_name);
+                    $("#proposal5UniqueId").text(data.uniqueId);
+                    $("#proposal5Status").text(data.status);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin process an proposal6
+        $(".processProposal6").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/extension/proposalList/proposal6/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#proposalId6").val(data.id);
+                    $("#proposal6Requestor").text(data.requestor_name);
+                    $("#proposal6UniqueId").text(data.uniqueId);
+                    $("#proposal6Status").text(data.status);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+         //admin process an proposal7
+         $(".processProposal7").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/extension/proposalList/proposal7/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#proposalId7").val(data.id);
+                    $("#proposal7Requestor").text(data.requestor_name);
+                    $("#proposal7UniqueId").text(data.uniqueId);
+                    $("#proposal7Status").text(data.status);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
     //END OF ADMIN POV
 
     //START OF STUDENT POV
@@ -3980,6 +4286,291 @@ $(document).ready(function () {
             $("#facultyRequestAccessForm").hide();
             $("#facultyRequestAccessForm")[0].reset();
         });
-    //END OF FACULTY POV
- 
+
+        //appointment checker in date and time
+        $('#date, #time').change(function() {
+            var selectedDate = $('#date').val();
+            var selectedTime = $('#time').val();
+        
+            $.ajax({
+                url: "/api/faculty/extension/schedule-appointment/checking-date", 
+                type: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'date': selectedDate,
+                    'time': selectedTime,
+                },
+                success: function(response) {
+                    console.log(response)
+                    if (response.exists) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Appointment Conflict: Date Already Reserved",
+                            text: "Oops! This date already has an appointment.",
+                          });
+                        $("#date").val('');
+                        $("#time").val('');
+                    }
+                }
+            });
+        });
+
+        //appoitnment checker if you are currently have appointment
+        $('#purpose').change(function() {
+            var selectedPurpose = $('#purpose').val();
+            var selectedUserID = $('#userId').val();
+            
+            $.ajax({
+                url: "/api/faculty/extension/schedule-appointment/checking-appointment",
+                type: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'purpose': selectedPurpose,
+                    'userId': selectedUserID,
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.exists) {
+                        Swal.fire({
+                            icon: "error",
+                            title: response.title, 
+                            text: response.message,
+                        });
+                        $('#purpose').prop('selectedIndex', -1);
+                    } 
+                }
+            });
+        });
+
+        $(".proposal0GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal0/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+                    $('#extensionId').val(id);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal1GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal1/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+                    $('#proposalId').val(id);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal2GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal2/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+                    $('#proposal2Id').val(id);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal3GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal3/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+                    $('#proposal3Id').val(id);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal4GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal4/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+                    $('#proposal4Id').val(id);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal5GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal5/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+                    $('#proposal5Id').val(id);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal6GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal6/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+                    $('#proposal6Id').val(id);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal7GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal7/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(id);
+                    $('#proposal7Id').val(id);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal8GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal8/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(data); 
+                    $('#proposal8Id').val(data.id);
+                    $('#prototype1Id').val(data.prototypeID);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal9GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal9/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(data); 
+                    $('#proposal9Id').val(data.id);
+                    $('#prototype2Id').val(data.prototypeID);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal10GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal10/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(data); 
+                    $('#proposal10Id').val(data.id);
+                    $('#prototype3Id').val(data.prototypeID);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        $(".proposal11GetId").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "/faculty/extension/application/proposal11/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(data); 
+                    $('#proposal11Id').val(data.id);
+                    $('#prototype4Id').val(data.prototypeID);
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
 });

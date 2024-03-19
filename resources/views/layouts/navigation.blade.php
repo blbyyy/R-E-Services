@@ -307,258 +307,278 @@
       
       @else
       @if(Auth::user()->role == 'Student')
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/homepage')}}">
-          <i class="bi bi-house-door"></i>
-          <span>Home</span>
-        </a>
-      </li>   
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/student/title-checker')}}">
-          <i class="bi bi-check-circle"></i>
-          <span>Title Checker</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/student/myfiles')}}">
-          <i class="bi bi-folder"></i>
-          <span>My Applications</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/apply/certification')}}">
-          <i class="bi bi-award"></i>
-          <span>Certification</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/application/status')}}">
-          <i class="bi bi-file-earmark-bar-graph"></i>
-          <span>Application Status</span>
-        </a>
-      </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/homepage')}}">
+            <i class="bi bi-house-door"></i>
+            <span>Home</span>
+          </a>
+        </li>   
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/student/title-checker')}}">
+            <i class="bi bi-check-circle"></i>
+            <span>Title Checker</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/student/myfiles')}}">
+            <i class="bi bi-folder"></i>
+            <span>My Applications</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/apply/certification')}}">
+            <i class="bi bi-award"></i>
+            <span>Certification</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/application/status')}}">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            <span>Application Status</span>
+          </a>
+        </li>
 
       @elseif(Auth::user()->role == 'Staff')
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/homepage')}}">
-          <i class="bi bi-house-door"></i>
-          <span>Home</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('announcements')}}">
-          <i class="bi bi-megaphone"></i>
-          <span>Announcements</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/events')}}">
-          <i class="bi bi-calendar-event"></i>
-          <span>Events</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/staff/myfiles')}}">
-          <i class="bi bi-folder"></i>
-          <span>My Files</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/staff/apply/certification')}}">
-          <i class="bi bi-award"></i>
-          <span>Certification</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/staff/application/status')}}">
-          <i class="bi bi-file-earmark-bar-graph"></i>
-          <span>Application Status</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/staff/citation')}}">
-          <i class="bi bi-chat-quote-fill"></i>
-          <span>Citation References</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/applicationlist')}}">
-          <i class="bi bi-journal-bookmark"></i>
-          <span>Research Applications</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('certificate/tracking')}}">
-          <i class="bi bi-ui-checks"></i>
-          <span>Certificate Tracking</span>
-        </a>
-      </li>
-
-      @elseif(Auth::user()->role == 'Faculty')
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/homepage')}}">
-          <i class="bi bi-house-door"></i>
-          <span>Home</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/faculty/myfiles')}}">
-          <i class="bi bi-folder"></i>
-          <span>My Files</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/faculty/apply/certification')}}">
-          <i class="bi bi-award"></i>
-          <span>Certification</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/faculty/application/status')}}">
-          <i class="bi bi-file-earmark-bar-graph"></i>
-          <span>Application Status</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/faculty/student-applications')}}">
-          <i class="bi bi-file-earmark-person"></i>
-          <span>Students Application</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/faculty/research-list')}}">
-          <i class="bi bi-card-list"></i>
-          <span>Researches</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-file-richtext"></i><span>Templates</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{url('/faculty/research/templates')}}">
-              <i class="bi bi-circle"></i><span>Research</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{url('/faculty/extension/templates')}}">
-              <i class="bi bi-circle"></i><span>Extension</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/faculty/citation')}}">
-          <i class="bi bi-chat-quote"></i>
-          <span>Citation References</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/faculty/research-inventory')}}">
-          <i class="bi bi-archive"></i>
-          <span>Research Inventory</span>
-        </a>
-      </li>
-
-
-      @elseif(Auth::user()->role == 'Admin')
-      <li class="nav-item">
-        <a style="background-color: {{ Request::is('homepage') ? '#700117' : '#c9c7c8' }};
-                  color: {{ Request::is('homepage') ? 'white' : 'black' }}" 
-           class="nav-link" href="{{ url('/homepage') }}">
-            <i class="bi bi-house-door" style="color: {{ Request::is('homepage') ? 'white' : '#700117' }}"></i>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/homepage')}}">
+            <i class="bi bi-house-door"></i>
             <span>Home</span>
-        </a>
-      </li>
-    
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/dashboard')}}">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/administration')}}">
-          <i class="bi bi-person-fill-gear"></i>
-          <span>Administration</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-people-fill"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{url('/studentlist')}}">
-              <i class="bi bi-circle"></i><span>Student</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{url('/stafflist')}}">
-              <i class="bi bi-circle"></i><span>Staff</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{url('/facultylist')}}">
-              <i class="bi bi-circle"></i><span>Faculty Member</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/admin/departmentlist')}}">
-          <i class="bi bi-person-lines-fill"></i>
-          <span>Departments</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('announcements')}}">
-          <i class="bi bi-megaphone"></i>
-          <span>Announcements</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/events')}}">
-          <i class="bi bi-calendar-event"></i>
-          <span>Events</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/applicationlist')}}">
-          <i class="bi bi-journal-bookmark"></i>
-          <span>Research Applications</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('certificate/tracking')}}">
-          <i class="bi bi-ui-checks"></i>
-          <span>Certificate Tracking</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="{{url('/researchlist')}}">
-          <i class="bi bi-file-earmark-check"></i>
-          <span>Research List</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#accessRequest" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-question-square"></i><span>Access Requests</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="accessRequest" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{url('/student-research-access-requests')}}">
-              <i class="bi bi-circle"></i><span>Student</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{url('/faculty-research-access-requests')}}">
-              <i class="bi bi-circle"></i><span>Faculty</span>
-            </a>
-          </li>
-        </ul>
-      </li>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('announcements')}}">
+            <i class="bi bi-megaphone"></i>
+            <span>Announcements</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/events')}}">
+            <i class="bi bi-calendar-event"></i>
+            <span>Events</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/staff/myfiles')}}">
+            <i class="bi bi-folder"></i>
+            <span>My Files</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/staff/apply/certification')}}">
+            <i class="bi bi-award"></i>
+            <span>Certification</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/staff/application/status')}}">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            <span>Application Status</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/staff/citation')}}">
+            <i class="bi bi-chat-quote-fill"></i>
+            <span>Citation References</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/applicationlist')}}">
+            <i class="bi bi-journal-bookmark"></i>
+            <span>Research Applications</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('certificate/tracking')}}">
+            <i class="bi bi-ui-checks"></i>
+            <span>Certificate Tracking</span>
+          </a>
+        </li>
+      @elseif(Auth::user()->role == 'Faculty')
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/homepage')}}">
+            <i class="bi bi-house-door"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/myfiles')}}">
+            <i class="bi bi-folder"></i>
+            <span>My Files</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/apply/certification')}}">
+            <i class="bi bi-award"></i>
+            <span>Certification</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/application/status')}}">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            <span>Application Status</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/student-applications')}}">
+            <i class="bi bi-file-earmark-person"></i>
+            <span>Students Application</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/research-list')}}">
+            <i class="bi bi-card-list"></i>
+            <span>Researches</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-file-richtext"></i><span>Templates</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a href="{{url('/faculty/research/templates')}}">
+                <i class="bi bi-circle"></i><span>Research</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url('/faculty/extension/templates')}}">
+                <i class="bi bi-circle"></i><span>Extension</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/citation')}}">
+            <i class="bi bi-chat-quote"></i>
+            <span>Citation References</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/research-inventory')}}">
+            <i class="bi bi-archive"></i>
+            <span>Research Inventory</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/extension/schedule-appointment')}}">
+            <i class="bi bi-calendar-plus"></i>
+            <span>Schedule Appointment</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/extension/application')}}">
+            <i class="bi bi-card-heading"></i>
+            <span>Extension Application</span>
+          </a>
+        </li>
+      @elseif(Auth::user()->role == 'Admin')
+        <li class="nav-item">
+          <a style="background-color: {{ Request::is('homepage') ? '#700117' : '#c9c7c8' }};
+                    color: {{ Request::is('homepage') ? 'white' : 'black' }}" 
+            class="nav-link" href="{{ url('/homepage') }}">
+              <i class="bi bi-house-door" style="color: {{ Request::is('homepage') ? 'white' : '#700117' }}"></i>
+              <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/dashboard')}}">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/administration')}}">
+            <i class="bi bi-person-fill-gear"></i>
+            <span>Administration</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-people-fill"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a href="{{url('/studentlist')}}">
+                <i class="bi bi-circle"></i><span>Student</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url('/stafflist')}}">
+                <i class="bi bi-circle"></i><span>Staff</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url('/facultylist')}}">
+                <i class="bi bi-circle"></i><span>Faculty Member</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/admin/departmentlist')}}">
+            <i class="bi bi-person-lines-fill"></i>
+            <span>Departments</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('announcements')}}">
+            <i class="bi bi-megaphone"></i>
+            <span>Announcements</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/events')}}">
+            <i class="bi bi-calendar-event"></i>
+            <span>Events</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/applicationlist')}}">
+            <i class="bi bi-journal-bookmark"></i>
+            <span>Research Applications</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('certificate/tracking')}}">
+            <i class="bi bi-ui-checks"></i>
+            <span>Certificate Tracking</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/researchlist')}}">
+            <i class="bi bi-file-earmark-check"></i>
+            <span>Research List</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#accessRequest" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-question-square"></i><span>Access Requests</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="accessRequest" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a href="{{url('/student-research-access-requests')}}">
+                <i class="bi bi-circle"></i><span>Student</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url('/faculty-research-access-requests')}}">
+                <i class="bi bi-circle"></i><span>Faculty</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/appointments')}}">
+            <i class="bi bi-calendar2-week"></i>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/admin/extension/proposal-list')}}">
+            <i class="bi bi-clipboard"></i>
+            <span>Extension Proposals</span>
+          </a>
+        </li>
       @endif
       @endguest
 

@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('appointments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type');
-            $table->string('title');
-            $table->text('message');
-            $table->string('date');
+            $table->string('purpose');
+            $table->date('date')->nullable();
+            $table->string('time')->nullable();
+            $table->string('status');
+            $table->text('message')->nullable();
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('reciever_id')->unsigned()->nullable();
-            $table->foreign('reciever_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notification');
+        Schema::dropIfExists('appointments');
     }
 };

@@ -101,6 +101,16 @@ Route::delete('/admin/researchlist/{id}/deleted', [
           'as' => 'admin.deleteResearchInfo'
   ]);
 
+Route::post('/faculty/extension/schedule-appointment/checking-date', [
+    'uses' => 'AppointmentController@checkingDate',
+          'as' => 'appointments.date.check'
+  ]);
+
+Route::post('/faculty/extension/schedule-appointment/checking-appointment', [
+    'uses' => 'AppointmentController@checkingAppointments',
+          'as' => 'appointments.purpose.check'
+  ]);
+
 //MOBILE START
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
 Route::get('/dashboardmobile', 'App\Http\Controllers\AdminController@dashboardmobile');

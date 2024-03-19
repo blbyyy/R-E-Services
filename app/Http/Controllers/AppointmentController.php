@@ -1,0 +1,438 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Http\Request;
+use App\Models\Appointments;
+use App\Models\Extension;
+use View, DB, File, Auth;
+
+class AppointmentController extends Controller
+{
+    public function appointments()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $adminNotifCount = DB::table('notifications')
+        ->where('type', 'Admin Notification')
+        ->count();
+
+        $adminNotification = DB::table('notifications')
+        ->where('type', 'Admin Notification')
+        ->orderBy('date', 'desc')
+        ->take(5)
+        ->get();
+
+        $appointments = DB::table('appointments')
+        ->join('users','users.id','appointments.user_id')
+        ->select(
+            'appointments.*',
+            'users.id as userID',
+            'users.role',
+            DB::raw("CONCAT(users.fname, ' ', COALESCE(users.mname, ''), ' ', users.lname) AS requestor_name")
+        )
+        ->orderBy('appointments.created_at', 'desc')
+        ->get();
+
+        return View::make('appointments.appointments',compact('admin','adminNotifCount','adminNotification','appointments'));
+    }
+
+    public function proposalAppointmentId($id)
+    {
+        $appointments = DB::table('appointments')
+        ->join('users', 'users.id', '=', 'appointments.user_id')
+        ->join('extension', 'extension.appointment1_id', '=', 'appointments.id')
+        ->select(
+            'extension.*',
+            'appointments.id as appointmentId',
+            'appointments.time',
+            'appointments.purpose',
+            'appointments.date',
+            'users.id as userID',
+            'users.role',
+            DB::raw("CONCAT(users.fname, ' ', COALESCE(users.mname, ''), ' ', users.lname) AS requestor_name")
+        )
+        ->where('appointments.id', $id)
+        ->first();
+
+        return response()->json($appointments);
+    }
+
+    public function preSurveyAppointmentId($id)
+    {
+        $appointments = DB::table('appointments')
+        ->join('users', 'users.id', '=', 'appointments.user_id')
+        ->join('extension', 'extension.appointment2_id', '=', 'appointments.id')
+        ->select(
+            'extension.*',
+            'appointments.id as appointmentId',
+            'appointments.time',
+            'appointments.purpose',
+            'appointments.date',
+            'users.id as userID',
+            'users.role',
+            DB::raw("CONCAT(users.fname, ' ', COALESCE(users.mname, ''), ' ', users.lname) AS requestor_name")
+        )
+        ->where('appointments.id', $id)
+        ->first();
+
+        return response()->json($appointments);
+    }
+
+    public function midSurveyAppointmentId($id)
+    {
+        $appointments = DB::table('appointments')
+        ->join('users', 'users.id', '=', 'appointments.user_id')
+        ->join('extension', 'extension.appointment3_id', '=', 'appointments.id')
+        ->select(
+            'extension.*',
+            'appointments.id as appointmentId',
+            'appointments.time',
+            'appointments.purpose',
+            'appointments.date',
+            'users.id as userID',
+            'users.role',
+            DB::raw("CONCAT(users.fname, ' ', COALESCE(users.mname, ''), ' ', users.lname) AS requestor_name")
+        )
+        ->where('appointments.id', $id)
+        ->first();
+
+        return response()->json($appointments);
+    }
+
+    public function sendingAppointmentProposal(Request $request)
+    { 
+        $purpose = Appointments::where('id', $request->appointmentId1)
+        ->orderBy('created_at', 'desc')
+        ->value('status');
+
+        if ($request->status === 'Appointment Set') {
+
+            $appointment = Appointments::find($request->appointmentId1);
+            $appointment->status = $request->status;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId1);
+            $extension->status = 'Appointment Set for Proposal Consultation';
+            $extension->percentage_status = 5;
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('success', 'Appointment Successfully Set.');
+
+        } elseif ($request->status === 'Appointment Done') {
+
+            $appointment = Appointments::find($request->appointmentId1);
+            $appointment->status = $request->status;
+            $appointment->message = $request->message;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId1);
+            $extension->status = 'Appointment Done for Proposal Consultation';
+            $extension->percentage_status = 8;
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('success', 'Appointment Done.');
+            
+        } elseif ($request->status === 'Appointment Cancelled') {
+
+            $appointment = Appointments::find($request->appointmentId1);
+            $appointment->status = $request->status;
+            $appointment->message = $request->message;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId1);
+            $extension->status = 'Appointment Cancelled for Proposal Consultation';
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('error', 'Appointment Cancelled.');
+            
+        }
+    }
+
+    public function sendingAppointmentPreSurvey(Request $request)
+    { 
+        if ($request->status === 'Appointment Set') {
+
+            $appointment = Appointments::find($request->appointmentId2);
+            $appointment->status = $request->status;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId2);
+            $extension->status = 'Appointment Set for Pre-Survey Consultation';
+            $extension->percentage_status = 68;
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('success', 'Appointment Successfully Set.');
+
+        } elseif ($request->status === 'Appointment Done') {
+
+            $appointment = Appointments::find($request->appointmentId2);
+            $appointment->status = $request->status;
+            $appointment->message = $request->message;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId2);
+            $extension->status = 'Appointment Done for Pre-Survey Consultation';
+            $extension->percentage_status = 70;
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('success', 'Appointment Done.');
+            
+        } elseif ($request->status === 'Appointment Cancelled') {
+
+            $appointment = Appointments::find($request->appointmentId2);
+            $appointment->status = $request->status;
+            $appointment->message = $request->message;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId2);
+            $extension->status = 'Appointment Cancelled for Pre-Survey Consultation';
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('error', 'Appointment Cancelled.');
+            
+        }
+    }
+
+    public function sendingAppointmentMidSurvey(Request $request)
+    { 
+        if ($request->status === 'Appointment Set') {
+
+            $appointment = Appointments::find($request->appointmentId3);
+            $appointment->status = $request->status;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId3);
+            $extension->status = 'Appointment Set for Mid-Survey Consultation';
+            $extension->percentage_status = 72;
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('success', 'Appointment Successfully Set.');
+
+        } elseif ($request->status === 'Appointment Done'){
+
+            $appointment = Appointments::find($request->appointmentId3);
+            $appointment->status = $request->status;
+            $appointment->message = $request->message;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId3);
+            $extension->status = 'Appointment Done for Mid-Survey Consultation';
+            $extension->percentage_status = 74;
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('success', 'Appointment Done.');
+            
+        } elseif ($request->status === 'Appointment Cancelled'){
+
+            $appointment = Appointments::find($request->appointmentId3);
+            $appointment->status = $request->status;
+            $appointment->message = $request->message;
+            $appointment->save();
+
+            $extension = Extension::find($request->extensionId3);
+            $extension->status = 'Appointment Cancelled for Mid-Survey Consultation';
+            $extension->save();
+
+            return redirect()->to('/appointments')->with('error', 'Appointment Cancelled.');
+            
+        }
+    }
+
+    public function appointment1()
+    {
+        $faculty = DB::table('faculty')
+        ->join('users','users.id','faculty.user_id')
+        ->select('faculty.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('appointments.appointment1',compact('faculty','facultyNotifCount','facultyNotification'));
+    }
+
+    public function checkingDate(Request $request)
+    {
+        $date = $request->input('date');
+        $time = $request->input('time');
+
+        $existingAppointment = Appointments::where('date', $date)
+        ->where('time', $time)
+        ->where('status', 'Pending')
+        ->exists();
+
+        return response()->json(['exists' => $existingAppointment]);
+    }
+
+    public function checkingAppointments(Request $request)
+    {
+        $purpose = $request->purpose;
+        $userID = $request->userId;
+        
+        if ($purpose === 'Proposal Consultation') {
+            $proposalProposal = Appointments::where('user_id', $userID)
+                ->where('purpose', $purpose)
+                ->whereIn('status', ['Appointment Done', 'Appointment Pending'])
+                ->exists();
+
+            $condition = Appointments::where('user_id', $userID)
+                ->where('purpose', $purpose) 
+                ->orderBy('created_at', 'desc')
+                ->value('status');
+
+            if ($condition === 'Appointment Done') {
+                $message = 'You are done to this type of appointment please proceed to the next step';
+                $title = 'Appointment Done';
+            } elseif ($condition === 'Appointment Pending') {
+                $message = 'You have currently pending appointment';
+                $title = 'Appointment Pending';
+            } 
+            
+            if (!$proposalProposal) {
+                return response()->json(['exists' => false, ]);
+            } else {
+                return response()->json(['exists' => true, 'message' => $message, 'title' => $title]);
+            }
+        } 
+
+        if ($purpose === 'Pre-Survey Consultation') {
+            $preSurveyAppointmentExists = Appointments::where('user_id', $userID)
+                ->where('purpose', $purpose)
+                ->orderBy('created_at', 'desc')
+                ->exists();
+        
+            if (!$preSurveyAppointmentExists) {
+                $message = 'There is no previous Pre-Survey Consultation appointment.';
+                $title = 'Appointment Requirement';
+                return response()->json(['exists' => false, 'message' => $message, 'title' => $title]);
+            } else {
+                $status = Appointments::where('user_id', $userID)
+                    ->where('purpose', $purpose)
+                    ->orderBy('created_at', 'desc')
+                    ->value('status');
+        
+                if ($status === 'Appointment Done') {
+                    $message = 'You have completed the Pre-Survey Consultation appointment. Please proceed to the next step.';
+                    $title = 'Appointment Done';
+                } elseif ($status === 'Appointment Pending') {
+                    $message = 'You have a pending Pre-Survey Consultation appointment.';
+                    $title = 'Appointment Pending';
+                }
+        
+                return response()->json(['exists' => true, 'message' => $message, 'title' => $title]);
+            }
+        }
+        
+        if ($purpose === 'Mid-Survey Consultation') {
+            $preSurveyAppointmentExists = Appointments::where('user_id', $userID)
+                ->where('purpose', $purpose)
+                ->orderBy('created_at', 'desc')
+                ->exists();
+        
+            if (!$preSurveyAppointmentExists) {
+                $message = 'There is no previous Mid-Survey Consultation appointment.';
+                $title = 'Appointment Requirement';
+                return response()->json(['exists' => false, 'message' => $message, 'title' => $title]);
+            } else {
+                $status = Appointments::where('user_id', $userID)
+                    ->where('purpose', $purpose)
+                    ->orderBy('created_at', 'desc')
+                    ->value('status');
+        
+                if ($status === 'Appointment Done') {
+                    $message = 'You have completed the Pre-Survey Consultation appointment. Please proceed to the next step.';
+                    $title = 'Appointment Done';
+                } elseif ($status === 'Appointment Pending') {
+                    $message = 'You have a pending Pre-Survey Consultation appointment.';
+                    $title = 'Appointment Pending';
+                }
+        
+                return response()->json(['exists' => true, 'message' => $message, 'title' => $title]);
+            }
+        }
+        
+    }
+
+    public function facultySchedulingAppointment1(Request $request)
+    { 
+        
+        if ($request->purpose === 'Proposal Consultation') {
+
+            $appointments = new Appointments;
+            $appointments->date = $request->date;
+            $appointments->time = $request->time;
+            $appointments->purpose = $request->purpose;
+            $appointments->status = 'Appointment Pending';
+            $appointments->user_id = Auth::id();
+            $appointments->save();
+            $lastId = DB::getPdo()->lastInsertId();
+
+            $extension = Extension::find($request->extensionId);
+            $extension->appointment1_id = $lastId;
+            $extension->status = 'Pending Approval for Proposal Consultation Appointment';
+            $extension->percentage_status = 3;
+            $extension->save();
+
+            return redirect()->to('/faculty/extension/application')->with('success', 'Your schedule has been sent; kindly wait to be approved.');
+        
+        } elseif ($request->purpose === 'Pre-Survey Consultation') {
+
+            $appointments = new Appointments;
+            $appointments->date = $request->date;
+            $appointments->time = $request->time;
+            $appointments->purpose = $request->purpose;
+            $appointments->status = 'Appointment Pending';
+            $appointments->user_id = Auth::id();
+            $appointments->save();
+            $lastId = DB::getPdo()->lastInsertId();
+
+            $extension = Extension::find($request->extensionId);
+            $extension->appointment2_id = $lastId;
+            $extension->status = 'Pending Approval for Pre-Survey Consultation Appointment';
+            $extension->percentage_status = 67;
+            $extension->save();
+
+            return redirect()->to('/faculty/extension/application')->with('success', 'Your schedule has been sent; kindly wait to be approved.');
+
+        } elseif ($request->purpose === 'Mid-Survey Consultation') {
+
+            $appointments = new Appointments;
+            $appointments->date = $request->date;
+            $appointments->time = $request->time;
+            $appointments->purpose = $request->purpose;
+            $appointments->status = 'Appointment Pending';
+            $appointments->user_id = Auth::id();
+            $appointments->save();
+            $lastId = DB::getPdo()->lastInsertId();
+
+            $extension = Extension::find($request->extensionId);
+            $extension->appointment3_id = $lastId;
+            $extension->status = 'Pending Approval for Mid-Survey Consultation Appointment';
+            $extension->percentage_status = 70;
+            $extension->save();
+
+            return redirect()->to('/faculty/extension/application')->with('success', 'Your schedule has been sent; kindly wait to be approved.');
+
+        }
+    
+    }
+
+    
+
+}

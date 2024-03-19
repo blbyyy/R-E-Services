@@ -93,7 +93,7 @@
                     <div class="d-grid gap-2 mt-3">
                       <button type="button" class="btn btn-outline-dark" id="addFacultyAdviser"><i class="bi bi-plus-lg"></i> Add Faculty Adviser</button>
                     </div>
-    
+
                     <div id="additionalResearcher">
                       <div class="col-md-12">
                         <div class="form-floating">
@@ -124,7 +124,7 @@
                           <button type="submit" class="btn btn-outline-dark">Add</button>
                           <button type="reset" class="btn btn-outline-dark ms-2">Reset</button>
                       </div>
-                  </div>
+                    </div>
                   </form>
             </div>
         </div>
