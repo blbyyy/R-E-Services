@@ -693,7 +693,7 @@
             <form class="row g-3" method="POST" action="{{ route('faculty.extension.schedule.appointment1.sent') }}" enctype="multipart/form-data">
               @csrf
 
-              <input name="extensionId" type="text" class="form-control" id="extensionId">
+              <input name="extensionId" type="hidden" class="form-control" id="extensionId">
   
               <div class="col-12">
                 <label for="purpose" class="form-label">Purpose</label>

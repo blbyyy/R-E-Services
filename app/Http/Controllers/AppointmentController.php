@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
 use App\Models\Appointments;
 use App\Models\Extension;
@@ -111,6 +112,10 @@ class AppointmentController extends Controller
         ->orderBy('created_at', 'desc')
         ->value('status');
 
+        $userID = Appointments::where('id', $request->appointmentId1)
+        ->orderBy('created_at', 'desc')
+        ->value('user_id');
+
         if ($request->status === 'Appointment Set') {
 
             $appointment = Appointments::find($request->appointmentId1);
@@ -121,6 +126,15 @@ class AppointmentController extends Controller
             $extension->status = 'Appointment Set for Proposal Consultation';
             $extension->percentage_status = 5;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Requesting Appointment for Proposal Consultation';
+            $notif->message = 'Someone requested appointment for proposal consultation';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $userID;
+            $notif->save();
 
             return redirect()->to('/appointments')->with('success', 'Appointment Successfully Set.');
 
@@ -274,7 +288,7 @@ class AppointmentController extends Controller
 
         $existingAppointment = Appointments::where('date', $date)
         ->where('time', $time)
-        ->where('status', 'Pending')
+        ->whereIn('status', ['Appointment Set', 'Appointment Pending'])
         ->exists();
 
         return response()->json(['exists' => $existingAppointment]);
@@ -388,6 +402,15 @@ class AppointmentController extends Controller
             $extension->status = 'Pending Approval for Proposal Consultation Appointment';
             $extension->percentage_status = 3;
             $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Requesting Appointment for Proposal Consultation';
+            $notif->message = 'Someone requested appointment for proposal consultation';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
 
             return redirect()->to('/faculty/extension/application')->with('success', 'Your schedule has been sent; kindly wait to be approved.');
         

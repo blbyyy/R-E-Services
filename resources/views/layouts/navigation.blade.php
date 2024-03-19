@@ -460,12 +460,6 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{url('/faculty/extension/schedule-appointment')}}">
-            <i class="bi bi-calendar-plus"></i>
-            <span>Schedule Appointment</span>
-          </a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link " href="{{url('/faculty/extension/application')}}">
             <i class="bi bi-card-heading"></i>
             <span>Extension Application</span>

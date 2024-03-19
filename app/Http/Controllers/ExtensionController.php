@@ -59,6 +59,7 @@ class ExtensionController extends Controller
                 'users.fname','users.mname',
                 'users.lname','users.role')
             ->where('extension.user_id',Auth::id())
+            ->orderBy('extension.created_at', 'desc')
             ->get();
 
         return View::make('extension.facultyApplication',compact('faculty','facultyNotifCount','facultyNotification','application'));

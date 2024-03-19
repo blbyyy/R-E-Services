@@ -4352,8 +4352,25 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function(data) {
-                    console.log(id);
+                    console.log(data);
                     $('#extensionId').val(id);
+                    if (data.status === 'New Application') {
+                        if (data.appointment1_id === null) {
+                            $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                        } 
+                    } else if (data.status === 'New Application') {
+                        if (data.appointment1_id === null) {
+                            $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                        } 
+                    } else if (data.status === 'New Application') {
+                        if (data.appointment1_id === null) {
+                            $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                        } 
+                    } 
+                    
                 },
                 error: function(error) {
                     console.log(error);

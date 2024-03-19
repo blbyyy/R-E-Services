@@ -36,6 +36,10 @@
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/applicationlist')}}">View</a>
                         </div>
+                    @elseif ($notifications->title === 'Requesting Appointment for Proposal Consultation')
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('/appointments')}}">View</a>
+                        </div>
                     @endif
                 </div>
             </div>
