@@ -157,7 +157,28 @@
                     </div>
                   </div>
                 </div>
-            @elseif($applications->status == 'Pending Approval of R&E Office')
+            @elseif($applications->status == 'Proposal Consultation Appointment Cancelled')
+                <div class="card mb-3">
+                  <div class="row">
+                    <div class="col-md-10 d-flex justify-content-center align-items-center">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$applications->title}}</h5>   
+                            <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                            <div class="progress mt-3">
+                              <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <div>
+                          <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
+                            Submit Proposal
+                          </button> 
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            @elseif($applications->status == 'Pending Approval of R&E Office') 
                 <div class="card mb-3">
                   <div class="row g-0">
                     <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -178,7 +199,7 @@
                     </div>
                   </div>
                 </div>
-            @elseif($applications->status == 'Proposal Approved')
+            @elseif($applications->status == 'Proposal Approved by R&E Office')
                 <div class="card mb-3">
                   <div class="row">
                     <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -193,6 +214,27 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
+                            Submit Proposal
+                          </button> 
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            @elseif($applications->status == 'Proposal Rejected by R&E Office')
+                <div class="card mb-3">
+                  <div class="row">
+                    <div class="col-md-10 d-flex justify-content-center align-items-center">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$applications->title}}</h5>   
+                            <span class="badge rounded-pill bg-primary">{{$applications->status}}</span>
+                            <div class="progress mt-3">
+                              <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <div>
+                          <button type="button" class="btn btn-outline-dark proposal1GetId" data-bs-toggle="modal" data-bs-target="#proposal1" data-id="{{$applications->id}}">
                             Submit Proposal
                           </button> 
                         </div>
@@ -430,6 +472,27 @@
                     </div>
                   </div>
               </div>
+            @elseif($applications->status == 'Appointment Cancelled for Pre-Survey Consultation')
+              <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-10 d-flex justify-content-center align-items-center">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$applications->title}}</h5>   
+                            <span class="badge rounded-pill bg-warning">{{$applications->status}}</span>
+                            <div class="progress mt-3">
+                              <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <div>
+                          <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
+                            Submit Proposal
+                          </button>
+                        </div>
+                    </div>
+                  </div>
+              </div>
             @elseif($applications->status == 'Appointment Set for Pre-Survey Consultation')
               <div class="card mb-3">
                   <div class="row g-0">
@@ -487,6 +550,27 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="Appointment for Mid-Survey Consultation is Pending; Please wait the approval to proceed in next step.">
+                            Submit Proposal
+                          </button>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+            @elseif($applications->status == 'Appointment Cancelled for Mid-Survey Consultation')
+              <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-10 d-flex justify-content-center align-items-center">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$applications->title}}</h5>   
+                            <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                            <div class="progress mt-3">
+                              <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <div>
+                          <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
                             Submit Proposal
                           </button>
                         </div>
@@ -577,6 +661,27 @@
                   </div>
                 </div>
               </div>
+            @elseif($applications->status == 'Prototype Pre-Evaluation Survey Not Done')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span> 
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal8GetId" data-bs-toggle="modal" data-bs-target="#proposal8" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
             @elseif($applications->status == 'Prototype Pre-Evaluation Survey Done')
               <div class="card mb-3">
                 <div class="row">
@@ -592,6 +697,27 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal9GetId" data-bs-toggle="modal" data-bs-target="#proposal9" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
+            @elseif($applications->status == 'Prototype Mid-Evaluation Survey Done')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-primary">{{$applications->status}}</span> 
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal10GetId" data-bs-toggle="modal" data-bs-target="#proposal10" data-id="{{$applications->id}}">
                           Submit Proposal
                         </button> 
                       </div>
@@ -640,13 +766,34 @@
                   </div>
                 </div>
               </div>
+            @elseif($applications->status == 'Prototype Post-Evaluation Survey Not Done')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span> 
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal10GetId" data-bs-toggle="modal" data-bs-target="#proposal10" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
             @elseif($applications->status == 'Process Done')
               <div class="card mb-3">
                 <div class="row">
                   <div class="col-md-10 d-flex justify-content-center align-items-center">
                       <div class="card-body">
                           <h5 class="card-title">{{$applications->title}}</h5>   
-                          <span class="badge rounded-pill bg-primary">{{$applications->status}}</span> 
+                          <span class="badge rounded-pill bg-success">{{$applications->status}}</span> 
                           <div class="progress mt-3">
                             <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
                           </div>
@@ -745,7 +892,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Extension Application</h5>
+            <h5 class="modal-title" id="submissionProposal" >Submission of Proposal</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
