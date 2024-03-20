@@ -699,9 +699,9 @@
                 <label for="purpose" class="form-label">Purpose</label>
                 <select id="purpose" name="purpose" class="form-select">
                   <option selected>--- SELECT PURPOSE ---</option>
-                  <option value="Proposal Consultation">Consultaion Meeting for Proposal</option>
-                  <option value="Pre-Survey Consultation">Consultaion Meeting for Pre-Evaluation Survey</option>
-                  <option value="Mid-Survey Consultation">Consultaion Meeting for Mid-Evaluation Survey</option>
+                  <option value="Proposal Consultation">Consultation Meeting for Proposal</option>
+                  <option value="Pre-Survey Consultation">Consultation Meeting for Pre-Evaluation Survey</option>
+                  <option value="Mid-Survey Consultation">Consultation Meeting for Mid-Evaluation Survey</option>
                   <option value=""></option>
                 </select>
               </div>

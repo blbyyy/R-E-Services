@@ -456,6 +456,156 @@ class AppointmentController extends Controller
     
     }
 
+    //MOBILE START
+    public function mobilecheckingDate(Request $request)
+    {
+        $date = $request->input('date');
+        $time = $request->input('time');
+
+        $existingAppointment = Appointments::where('date', $date)
+        ->where('time', $time)
+        ->whereIn('status', ['Appointment Set', 'Appointment Pending'])
+        ->exists();
+
+        return response()->json(['exists' => $existingAppointment]);
+    }
+
+    public function mobilecheckingAppointments(Request $request)
+    {
+        $purpose = $request->purpose;
+        $userID = $request->userId;
+        
+        if ($purpose === 'Proposal Consultation') {
+            $proposalProposal = Appointments::where('user_id', $userID)
+                ->where('purpose', $purpose)
+                ->whereIn('status', ['Appointment Done', 'Appointment Pending'])
+                ->exists();
+
+            $condition = Appointments::where('user_id', $userID)
+                ->where('purpose', $purpose) 
+                ->orderBy('created_at', 'desc')
+                ->value('status');
+
+            if ($condition === 'Appointment Done') {
+                $message = 'You are done to this type of appointment please proceed to the next step';
+                $title = 'Appointment Done';
+            } elseif ($condition === 'Appointment Pending') {
+                $message = 'You have currently pending appointment';
+                $title = 'Appointment Pending';
+            } 
+            
+            if (!$proposalProposal) {
+                return response()->json(['exists' => false, ]);
+            } else {
+                return response()->json(['exists' => true, 'message' => $message, 'title' => $title]);
+            }
+        } 
+
+        if ($purpose === 'Pre-Survey Consultation') {
+            $preSurveyAppointmentExists = Appointments::where('user_id', $userID)
+                ->where('purpose', $purpose)
+                ->orderBy('created_at', 'desc')
+                ->exists();
+        
+            if (!$preSurveyAppointmentExists) {
+                $message = 'There is no previous Pre-Survey Consultation appointment.';
+                $title = 'Appointment Requirement';
+                return response()->json(['exists' => false, 'message' => $message, 'title' => $title]);
+            } else {
+                $status = Appointments::where('user_id', $userID)
+                    ->where('purpose', $purpose)
+                    ->orderBy('created_at', 'desc')
+                    ->value('status');
+        
+                if ($status === 'Appointment Done') {
+                    $message = 'You have completed the Pre-Survey Consultation appointment. Please proceed to the next step.';
+                    $title = 'Appointment Done';
+                } elseif ($status === 'Appointment Pending') {
+                    $message = 'You have a pending Pre-Survey Consultation appointment.';
+                    $title = 'Appointment Pending';
+                }
+        
+                return response()->json(['exists' => true, 'message' => $message, 'title' => $title]);
+            }
+        }
+        
+        if ($purpose === 'Mid-Survey Consultation') {
+            $preSurveyAppointmentExists = Appointments::where('user_id', $userID)
+                ->where('purpose', $purpose)
+                ->orderBy('created_at', 'desc')
+                ->exists();
+        
+            if (!$preSurveyAppointmentExists) {
+                $message = 'There is no previous Mid-Survey Consultation appointment.';
+                $title = 'Appointment Requirement';
+                return response()->json(['exists' => false, 'message' => $message, 'title' => $title]);
+            } else {
+                $status = Appointments::where('user_id', $userID)
+                    ->where('purpose', $purpose)
+                    ->orderBy('created_at', 'desc')
+                    ->value('status');
+        
+                if ($status === 'Appointment Done') {
+                    $message = 'You have completed the Pre-Survey Consultation appointment. Please proceed to the next step.';
+                    $title = 'Appointment Done';
+                } elseif ($status === 'Appointment Pending') {
+                    $message = 'You have a pending Pre-Survey Consultation appointment.';
+                    $title = 'Appointment Pending';
+                }
+        
+                return response()->json(['exists' => true, 'message' => $message, 'title' => $title]);
+            }
+        }
+        
+    }
+
+    public function mobilefacultySchedulingAppointment1(Request $request)
+    { 
+        if ($request->purpose === 'Proposal Consultation' || $request->purpose === 'Pre-Survey Consultation' || $request->purpose === 'Mid-Survey Consultation') {
+
+            $appointments = new Appointments;
+            $appointments->date = $request->date;
+            $appointments->time = $request->time;
+            $appointments->purpose = $request->purpose;
+            $appointments->status = 'Appointment Pending';
+            $appointments->user_id = Auth::id();
+            $appointments->save();
+            $lastId = DB::getPdo()->lastInsertId();
+
+            $extension = Extension::find($request->extensionId);
+            
+            if ($request->purpose === 'Proposal Consultation') {
+                $extension->appointment1_id = $lastId;
+                $extension->status = 'Pending Approval for Proposal Consultation Appointment';
+                $extension->percentage_status = 3;
+            } elseif ($request->purpose === 'Pre-Survey Consultation') {
+                $extension->appointment2_id = $lastId;
+                $extension->status = 'Pending Approval for Pre-Survey Consultation Appointment';
+                $extension->percentage_status = 67;
+            } elseif ($request->purpose === 'Mid-Survey Consultation') {
+                $extension->appointment3_id = $lastId;
+                $extension->status = 'Pending Approval for Mid-Survey Consultation Appointment';
+                $extension->percentage_status = 70;
+            }
+            
+            $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Requesting Appointment for ' . $request->purpose;
+            $notif->message = 'Someone requested appointment for ' . strtolower($request->purpose);
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
+
+            return response()->json(['success' => true, 'message' => 'Your schedule has been sent; kindly wait to be approved.'], 200);
+        }
+        
+        return response()->json(['success' => false, 'message' => 'Invalid purpose.'], 400);
+    }
+    //MOBILE START
+
     
 
 }
