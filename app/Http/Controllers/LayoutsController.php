@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Imagick, TCPDF, FPDF, View, DB, File, Auth;
 
 
@@ -216,10 +217,13 @@ class LayoutsController extends Controller
             ->where('type', 'Admin Notification')
             ->orderBy('notifications.created_at', 'desc')
             ->get();
+
+        $twoDaysAgo = Carbon::now()->subDays(2);
             
         $adminNotifCount = DB::table('notifications')
-            ->where('type', 'Admin Notification')
-            ->count();
+        ->where('type', 'Admin Notification')
+        ->where('created_at', '>=', $twoDaysAgo)
+        ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')

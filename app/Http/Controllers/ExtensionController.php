@@ -390,7 +390,6 @@ class ExtensionController extends Controller
         } else {
 
             $extension = Extension::find($request->proposal7Id);
-            $extension->prototype_id = $lastId;
             $extension->status = 'Process Done';
             $extension->percentage_status = 100;
             $extension->save();
@@ -812,6 +811,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId2);
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
+            $extension->percentage_status = 20;
             $extension->save();
 
             $notif = new Notifications;
@@ -894,6 +894,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId3);
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
+            $extension->percentage_status = 20;
             $extension->save();
 
             $notif = new Notifications;
@@ -954,6 +955,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId4);
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
+            $extension->percentage_status = 20;
             $extension->save();
 
             $notif = new Notifications;
@@ -1037,6 +1039,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId5);
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
+            $extension->percentage_status = 20;
             $extension->save();
 
             $notif = new Notifications;
@@ -1097,6 +1100,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId6);
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
+            $extension->percentage_status = 20;
             $extension->save();
 
             $notif = new Notifications;
@@ -1157,6 +1161,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId7);
             $extension->status = $request->status;
             $extension->remarks = $request->remarks;
+            $extension->percentage_status = 55;
             $extension->save();
 
             $notif = new Notifications;

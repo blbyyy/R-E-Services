@@ -40,11 +40,12 @@
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/faculty/student-applications')}}">View</a>
                         </div>
-                    @elseif ($notifications->title === 'Appointment Done for Proposal Consultation' || $notifications->title === 'Appointment Set for Proposal Consultation' ||  $notifications->title === 'Appointment Cancelled for Proposal Consultation')
+                    {{-- @elseif ($notifications->title === 'Appointment Done for Proposal Consultation' || $notifications->title === 'Appointment Set for Proposal Consultation' ||  $notifications->title === 'Appointment Cancelled for Proposal Consultation') --}}
+                    @else
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/faculty/extension/application')}}">View</a>
                         </div>
-                    @endif
+                    @endif 
                 </div>
             </div>
         </div>
