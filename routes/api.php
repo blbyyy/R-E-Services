@@ -209,4 +209,6 @@ Route::get('/faculty/mobileapplication/{user_id}', 'App\Http\Controllers\Extensi
 Route::post('/mobilecheckingDate', 'App\Http\Controllers\AppointmentController@mobilecheckingDate');
 Route::post('/mobilecheckingAppointments', 'App\Http\Controllers\AppointmentController@mobilecheckingAppointments');
 Route::post('/mobilefacultySchedulingAppointment1', 'App\Http\Controllers\AppointmentController@mobilefacultySchedulingAppointment1');
+Route::post('/mobileproposal1', 'App\Http\Controllers\ExtensionController@mobileproposal1');
+Route::post('/mobileproposal2', 'App\Http\Controllers\ExtensionController@mobileproposal2');
 //MOBILE END

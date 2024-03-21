@@ -1229,6 +1229,104 @@ class ExtensionController extends Controller
         // Return JSON response
         return response()->json($data);
     }
+
+    public function mobileproposal1(Request $request)
+    {
+        try {
+            $extension = Extension::find($request->proposalId);
+            $extension->beneficiary = $request->beneficiary;
+            $extension->status = 'Pending Approval of R&E Office';
+            $extension->percentage_status = 15;
+
+            if ($request->hasFile('mou_file')) {
+                $pdfFile = $request->file('mou_file');
+                $pdfFileName = $pdfFile->getClientOriginalName();
+                $pdfFile->move(public_path('uploads/extension'), $pdfFileName);
+                
+                $extension->mou_file = $pdfFileName;
+            }
+
+            $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Extension Application Proposal Submitted';
+            $notif->message = 'Someone submit an application proposal for approval.';
+            $notif->date = now();
+            $notif->user_id = $request->user_id;
+            $notif->reciever_id = 0;
+            $notif->save();
+            
+            // Construct the response data
+            $response = [
+                'success' => true,
+                'message' => 'Your Proposal has been sent; kindly wait to be approved.'
+            ];
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+            // Handle any exceptions
+            return response()->json([
+                'success' => false,
+                'message' => 'Error submitting proposal: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function mobileproposal2(Request $request)
+    { 
+        $doEmail = 'josephandrebalbada@gmail.com';
+
+        $extension = Extension::find($request->proposal2Id);
+        $extension->status = 'Pending Approval of DO';
+        $extension->percentage_status = 25;
+        $extension->do_email = $doEmail;
+
+        $pdfFile = $request->file('ppmp_file');
+        $ppmpFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $ppmpFileName);
+        $extension->ppmp_file = $ppmpFileName;
+
+        $pdfFile = $request->file('pr_file');
+        $prFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $prFileName);
+        $extension->pr_file = $prFileName;
+
+        $pdfFile = $request->file('market_study_file');
+        $marketStudyFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $marketStudyFileName);
+        $extension->market_study_file = $marketStudyFileName;
+        $extension->save();
+
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'PPMP, PR and Request for Qoutation/Market Study Submitted';
+        $notif->message = 'Someone send ppmp, pr and request for qoutation/market study for document approval';
+        $notif->date = now();
+        $notif->user_id = $request->user_id;
+        $notif->reciever_id = 0;
+        $notif->save();
+
+        $requestor = DB::table('users')
+            ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS requestor"))
+            ->where('id', $request->user_id)
+            ->value('requestor');
+
+        $data = [
+            'requestor' => $requestor,
+            'ppmpFile' => $ppmpFileName,
+            'prFile' => $prFileName,
+            'marketStudyFile' => $marketStudyFileName,
+        ];
+
+        // Mail::to($doEmail)->send(new DoApproval($data));
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Your Proposal has been sent to Do; kindly wait the result we immediately contact you about the result.',
+            'data' => $data,
+        ]);
+    }
     //MOBILE END
 }
 

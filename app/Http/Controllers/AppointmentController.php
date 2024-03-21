@@ -626,7 +626,6 @@ class AppointmentController extends Controller
     
     }
 
-<<<<<<< HEAD
     //MOBILE START
     public function mobilecheckingDate(Request $request)
     {
@@ -739,7 +738,7 @@ class AppointmentController extends Controller
             $appointments->time = $request->time;
             $appointments->purpose = $request->purpose;
             $appointments->status = 'Appointment Pending';
-            $appointments->user_id = Auth::id();
+            $appointments->user_id = $request->user_id;
             $appointments->save();
             $lastId = DB::getPdo()->lastInsertId();
 
@@ -766,7 +765,7 @@ class AppointmentController extends Controller
             $notif->title = 'Requesting Appointment for ' . $request->purpose;
             $notif->message = 'Someone requested appointment for ' . strtolower($request->purpose);
             $notif->date = now();
-            $notif->user_id = Auth::id();
+            $notif->user_id = $request->user_id;
             $notif->reciever_id = 0;
             $notif->save();
 
@@ -777,8 +776,4 @@ class AppointmentController extends Controller
     }
     //MOBILE START
 
-    
-
-=======
->>>>>>> 7323b02d4d31f405be196f10c5c452c818216995
 }
