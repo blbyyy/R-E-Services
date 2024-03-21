@@ -101,7 +101,6 @@ Route::delete('/admin/researchlist/{id}/deleted', [
           'as' => 'admin.deleteResearchInfo'
   ]);
 
-<<<<<<< HEAD
 Route::post('/faculty/extension/schedule-appointment/checking-date', [
     'uses' => 'AppointmentController@checkingDate',
           'as' => 'appointments.date.check'
@@ -113,14 +112,13 @@ Route::post('/faculty/extension/schedule-appointment/checking-appointment', [
   ]);
 
 //MOBILE START
-=======
 //MOBILE 
 Route::post('/students/register', 'App\Http\Controllers\StudentController@RegisterMobile');
 Route::get('mobilefacultyregistration-page', [FacultyController::class, 'mobilefacultyregistration_page']);
 Route::post('mobilefacultyregister', [FacultyController::class, 'mobilefacultyregister']);
 
 
->>>>>>> ce5adb40f149d3bc3c76207b44141feb885c1ba9
+// >>>>>>> ce5adb40f149d3bc3c76207b44141feb885c1ba9
 Route::post('/login-mobile', 'Auth\LoginController@LoginMobile');
 Route::get('/dashboardmobile', 'App\Http\Controllers\AdminController@dashboardmobile');
 
@@ -204,4 +202,11 @@ Route::post('/student/send-request-access', [ResearchController::class, 'mobiles
 Route::get('mobile/faculty/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilefacultySendRequestAccess');
 Route::get('mobile/facultyFILE/send-request-access/{id}', 'App\Http\Controllers\ResearchController@mobilefacultySendRequestAccessFILE');
 Route::post('/faculty/send-request-access', [ResearchController::class, 'mobilefacultySendinRequestAccess']);
+
+Route::post('/extension/mobileapplication', 'App\Http\Controllers\ExtensionController@mobilecreateApplication');
+Route::get('/faculty/mobileapplication/{user_id}', 'App\Http\Controllers\ExtensionController@mobilefacultyApplication');
+
+Route::post('/mobilecheckingDate', 'App\Http\Controllers\AppointmentController@mobilecheckingDate');
+Route::post('/mobilecheckingAppointments', 'App\Http\Controllers\AppointmentController@mobilecheckingAppointments');
+Route::post('/mobilefacultySchedulingAppointment1', 'App\Http\Controllers\AppointmentController@mobilefacultySchedulingAppointment1');
 //MOBILE END

@@ -1177,5 +1177,63 @@ class ExtensionController extends Controller
             
         }
     }
+
+    //MOBILE START
+    public function mobilecreateApplication(Request $request)
+    { 
+        $extension = new Extension;
+        $extension->title = $request->title;
+        $extension->percentage_status = 0;
+        $extension->status = 'New Application';
+        $extension->user_id = $request->user_id;
+        $extension->save();
+
+        return response()->json(['message' => 'Created Application Successfully', 'extension_id' => $extension->id], 200);
+    }
+
+    public function mobilefacultyApplication($user_id)
+    {
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', $user_id)
+            ->first();
+
+        // $facultyNotifCount = DB::table('notifications')
+        //     ->where('type', 'Faculty Notification')
+        //     ->where('receiver_id', Auth::id())
+        //     ->count();
+
+        // $facultyNotification = DB::table('notifications')
+        //     ->where('type', 'Faculty Notification')
+        //     ->where('receiver_id', Auth::id())
+        //     ->orderBy('date', 'desc')
+        //     ->take(4)
+        //     ->get();
+
+        $application = DB::table('extension')
+            ->join('users', 'users.id', 'extension.user_id')
+            ->select(
+                'extension.*',
+                'users.id as userId',
+                'users.fname', 'users.mname',
+                'users.lname', 'users.role'
+            )
+            ->where('extension.user_id', $user_id)
+            ->orderBy('extension.created_at', 'desc')
+            ->get();
+
+        // Create an associative array to hold all the data
+        $data = [
+            'faculty' => $faculty,
+            // 'facultyNotifCount' => $facultyNotifCount,
+            // 'facultyNotification' => $facultyNotification,
+            'application' => $application,
+        ];
+
+        // Return JSON response
+        return response()->json($data);
+    }
+    //MOBILE END
 }
 
