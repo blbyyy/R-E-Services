@@ -2008,8 +2008,36 @@ $(document).ready(function () {
                     console.log(data);
                     $("#proposalId2").val(data.id);
                     $("#proposal2Requestor").text(data.requestor_name);
-                    $("#proposal2UniqueId").text(data.uniqueId);
-                    $("#proposal2Status").text(data.status);
+                    $("#proposal2Title").text(data.title);
+                    $("#proposal2Status").text(data.status); 
+
+                    var mou = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        text: "MOA (Memorandum of Understanding)",
+                        target: "_blank"
+                    });
+                    $("#proposal2Mou").empty().append(mou);
+
+                    var ppmp = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                        text: "PPMP (Project Procurement Management Plan)", 
+                        target: "_blank"
+                    });
+                    $("#proposal2Ppmp").empty().append(ppmp);
+
+                    var pr = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                        text: "PR (Purchase Request)",
+                        target: "_blank"
+                    });
+                    $("#proposal2Pr").empty().append(pr);
+
+                    var marketStudy = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
+                        text: "Request for Qoutation/Market Study",
+                        target: "_blank"
+                    });
+                    $("#proposal2MarketStudy").empty().append(marketStudy);
                 },
                 error: function (error) {
                     console.log(error);
@@ -2037,8 +2065,36 @@ $(document).ready(function () {
                     console.log(data);
                     $("#proposalId3").val(data.id);
                     $("#proposal3Requestor").text(data.requestor_name);
-                    $("#proposal3UniqueId").text(data.uniqueId);
+                    $("#proposal3Title").text(data.title);
                     $("#proposal3Status").text(data.status);
+
+                    var mou = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        text: "MOA (Memorandum of Understanding)",
+                        target: "_blank"
+                    });
+                    $("#proposal3Mou").empty().append(mou);
+
+                    var ppmp = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                        text: "PPMP (Project Procurement Management Plan)", 
+                        target: "_blank"
+                    });
+                    $("#proposal3Ppmp").empty().append(ppmp);
+
+                    var pr = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                        text: "PR (Purchase Request)",
+                        target: "_blank"
+                    });
+                    $("#proposal3Pr").empty().append(pr);
+
+                    var marketStudy = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
+                        text: "Request for Qoutation/Market Study",
+                        target: "_blank"
+                    });
+                    $("#proposal3MarketStudy").empty().append(marketStudy);
                 },
                 error: function (error) {
                     console.log(error);
@@ -2066,8 +2122,36 @@ $(document).ready(function () {
                     console.log(data);
                     $("#proposalId4").val(data.id);
                     $("#proposal4Requestor").text(data.requestor_name);
-                    $("#proposal4UniqueId").text(data.uniqueId);
+                    $("#proposal4Title").text(data.title);
                     $("#proposal4Status").text(data.status);
+
+                    var mou = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        text: "MOA (Memorandum of Understanding)",
+                        target: "_blank"
+                    });
+                    $("#proposal4Mou").empty().append(mou);
+
+                    var ppmp = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                        text: "PPMP (Project Procurement Management Plan)", 
+                        target: "_blank"
+                    });
+                    $("#proposal4Ppmp").empty().append(ppmp);
+
+                    var pr = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                        text: "PR (Purchase Request)",
+                        target: "_blank"
+                    });
+                    $("#proposal4Pr").empty().append(pr);
+
+                    var marketStudy = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
+                        text: "Request for Qoutation/Market Study",
+                        target: "_blank"
+                    });
+                    $("#proposal4MarketStudy").empty().append(marketStudy);
                 },
                 error: function (error) {
                     console.log(error);
@@ -2095,8 +2179,36 @@ $(document).ready(function () {
                     console.log(data);
                     $("#proposalId5").val(data.id);
                     $("#proposal5Requestor").text(data.requestor_name);
-                    $("#proposal5UniqueId").text(data.uniqueId);
+                    $("#proposal5Title").text(data.title);
                     $("#proposal5Status").text(data.status);
+
+                    var mou = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        text: "MOA (Memorandum of Understanding)",
+                        target: "_blank"
+                    });
+                    $("#proposal5Mou").empty().append(mou);
+
+                    var ppmp = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                        text: "PPMP (Project Procurement Management Plan)", 
+                        target: "_blank"
+                    });
+                    $("#proposal5Ppmp").empty().append(ppmp);
+
+                    var pr = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                        text: "PR (Purchase Request)",
+                        target: "_blank"
+                    });
+                    $("#proposal5Pr").empty().append(pr);
+
+                    var marketStudy = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
+                        text: "Request for Qoutation/Market Study",
+                        target: "_blank"
+                    });
+                    $("#proposal5MarketStudy").empty().append(marketStudy);
                 },
                 error: function (error) {
                     console.log(error);
@@ -2124,8 +2236,36 @@ $(document).ready(function () {
                     console.log(data);
                     $("#proposalId6").val(data.id);
                     $("#proposal6Requestor").text(data.requestor_name);
-                    $("#proposal6UniqueId").text(data.uniqueId);
+                    $("#proposal6Title").text(data.title);
                     $("#proposal6Status").text(data.status);
+
+                    var mou = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        text: "MOA (Memorandum of Understanding)",
+                        target: "_blank"
+                    });
+                    $("#proposal6Mou").empty().append(mou);
+
+                    var ppmp = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                        text: "PPMP (Project Procurement Management Plan)", 
+                        target: "_blank"
+                    });
+                    $("#proposal6Ppmp").empty().append(ppmp);
+
+                    var pr = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                        text: "PR (Purchase Request)",
+                        target: "_blank"
+                    });
+                    $("#proposal6Pr").empty().append(pr);
+
+                    var marketStudy = $('<a>', {
+                        href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
+                        text: "Request for Qoutation/Market Study",
+                        target: "_blank"
+                    });
+                    $("#proposal6MarketStudy").empty().append(marketStudy);
                 },
                 error: function (error) {
                     console.log(error);
@@ -2153,8 +2293,43 @@ $(document).ready(function () {
                     console.log(data);
                     $("#proposalId7").val(data.id);
                     $("#proposal7Requestor").text(data.requestor_name);
-                    $("#proposal7UniqueId").text(data.uniqueId);
                     $("#proposal7Status").text(data.status);
+                    $("#proposal7ImplementationProper").text(data.implementation_proper);
+
+                    if (data.proponents1 === null) {
+                        $("#p1").hide();
+                    } else {
+                        $("#p1").show();
+                        $("#proposal7Proponent1").text(data.proponents1);
+                    }
+
+                    if (data.proponents2 === null) {
+                        $("#p2").hide();
+                    } else {
+                        $("#p2").show();
+                        $("#proposal7Proponent2").text(data.proponents2);
+                    }
+
+                    if (data.proponents3 === null) {
+                        $("#p3").hide();
+                    } else {
+                        $("#p3").show();
+                        $("#proposal7Proponent3").text(data.proponents3);
+                    }
+
+                    if (data.proponents4 === null) {
+                        $("#p4").hide();
+                    } else {
+                        $("#p4").show();
+                        $("#proposal7Proponent4").text(data.proponents4);
+                    }
+
+                    if (data.proponents5 === null) {
+                        $("#p5").hide();
+                    } else {
+                        $("#p5").show();
+                        $("#proposal7Proponent5").text(data.proponents5);
+                    }
                 },
                 error: function (error) {
                     console.log(error);
@@ -4354,12 +4529,19 @@ $(document).ready(function () {
                 success: function(data) {
                     console.log(data);
                     $('#extensionId').val(id);
-                    if (data.status === 'New Application' || data.status === 'Proposal Consultation Appointment Cancelled') {
-                        if (data.appointment1_id === null || data.status === 'Proposal Consultation Appointment Cancelled') {
+                    if (data.status === 'New Application') {
+                        if (data.appointment1_id === null) {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                            $("#p1Title").text('Set Up an Appointment for a Proposal Consultation');
                         } 
-                    } else if (data.status === 'Topics and Sub Topics Inputted' || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
+                    } else if (data.status === 'Proposal Consultation Appointment Cancelled') {
+                        if (data.status === 'Proposal Consultation Appointment Cancelled') {
+                            $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                            $("#p1Title").text('Reschedule a Consultation Appointment for a Proposal');
+                        } 
+                    }else if (data.status === 'Topics and Sub Topics Inputted' || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
                         if (data.appointment2_id === null || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Proposal Consultation"]').prop('disabled', true);
@@ -4391,9 +4573,9 @@ $(document).ready(function () {
                     console.log(data);
                     $('#proposalId').val(id);
                     if (data.status === 'Proposal Rejected by R&E Office') {
-                        $('#submissionProposal').text('Re-Submission of Proposal');
+                        $('#p2Title').text('Re-Submission of Proposal');
                     } else {
-                        $('#submissionProposal').text('Submission of Proposal');
+                        $('#p2Title').text('Submission of Proposal');
                     }
                 },
                 error: function(error) {

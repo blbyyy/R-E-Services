@@ -40,7 +40,7 @@
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/appointments')}}">View</a> 
                         </div> 
-                    @elseif ($notifications->title === 'Extension Application Proposal Submitted' || $notifications->title === 'PPMP, PR and Request for Qoutation/Market Study Submitted')
+                    @else
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/admin/extension/proposal-list')}}">View</a>
                         </div>

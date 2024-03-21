@@ -226,7 +226,7 @@
                     <div class="col-md-10 d-flex justify-content-center align-items-center">
                         <div class="card-body">
                             <h5 class="card-title">{{$applications->title}}</h5>   
-                            <span class="badge rounded-pill bg-primary">{{$applications->status}}</span>
+                            <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
                             <div class="progress mt-3">
                               <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
                             </div>   
@@ -262,6 +262,27 @@
                     </div>
                   </div>
               </div>
+            @elseif($applications->status == 'Proposal Rejected By DO')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>   
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
             @elseif($applications->status == 'Pending Proposal Approval By UES')
               <div class="card mb-3">
                   <div class="row g-0">
@@ -283,7 +304,28 @@
                     </div>
                   </div>
               </div>
-            @elseif($applications->status == 'Pending Proposal Approval By President')
+            @elseif($applications->status == 'Proposal Rejected By UES')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>   
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
+            @elseif($applications->status == 'Pending Proposal Approval By President') 
               <div class="card mb-3">
                   <div class="row g-0">
                     <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -325,6 +367,27 @@
                   </div>
                 </div>
               </div>
+            @elseif($applications->status == 'Proposal Rejected By President')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>   
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
             @elseif($applications->status == 'Pending Approval of Board')
               <div class="card mb-3">
                   <div class="row g-0">
@@ -346,6 +409,27 @@
                     </div>
                   </div>
               </div>
+            @elseif($applications->status == 'Proposal Rejected By Board')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>   
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
             @elseif($applications->status == 'Pending Proposal Approval By OSG')
               <div class="card mb-3">
                   <div class="row g-0">
@@ -366,6 +450,27 @@
                         </div>
                     </div>
                   </div>
+              </div>
+            @elseif($applications->status == 'Proposal Rejected By OSG')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>   
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
               </div>
             @elseif($applications->status == 'Proposal Approved By OSG')
               <div class="card mb-3">
@@ -408,6 +513,27 @@
                         </div>
                     </div>
                   </div>
+              </div>
+            @elseif($applications->status == 'Implementation Rejected By R&E-Office')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div> 
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal4GetId" data-bs-toggle="modal" data-bs-target="#proposal4" data-id="{{$applications->id}}">
+                          Submit Proposal
+                        </button> 
+                      </div>
+                  </div>
+                </div>
               </div>
             @elseif($applications->status == 'Implementation Approved By R&E-Office')
               <div class="card mb-3">
@@ -832,7 +958,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Make an Appointment</h5>
+            <h5 class="modal-title" id="p1Title">Make an Appointment</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -892,7 +1018,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="submissionProposal" >Submission of Proposal</h5>
+            <h5 class="modal-title" id="p2Title" >Submission of Proposal</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -932,7 +1058,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Extension Application</h5>
+            <h5 class="modal-title">Submission of Documents</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -1168,7 +1294,7 @@
                 <select id="confirmation" class="form-select" name="confirmation">
                   <option selected>Choose.........</option>
                   <option value="Yes">Yes</option>
-                  <option value="No">No</option>
+                  <option value="None">None</option>
                 </select>
               </div>
 
@@ -1185,13 +1311,13 @@
                   <label for="coa" class="form-label">Upload COA (Certificate of Acceptance):</label>
                   <input type="file" class="form-control" id="coa" name="coa">
                 </div>
-                <div class="col-" style="padding-top: 20px">
-                  <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-outline-dark">Submit Proposal</button>
-                  </div>
-                </div>
               </div>
 
+              <div class="col-" style="padding-top: 20px">
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-outline-dark">Submit Proposal</button>
+                </div>
+              </div>
               
             </form>
            
