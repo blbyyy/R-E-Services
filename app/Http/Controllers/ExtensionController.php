@@ -370,7 +370,7 @@ class ExtensionController extends Controller
             $prototype->save();
             $lastId = DB::getPdo()->lastInsertId();
 
-            $extension = Extension::find($request->proposal7Id);
+            $extension = Extension::find($request->proposalId);
             $extension->prototype_id = $lastId;
             $extension->status = 'Have Prototype: Letter, NDA, COA Inserted';
             $extension->percentage_status = 85;
@@ -1282,7 +1282,7 @@ class ExtensionController extends Controller
     { 
         $doEmail = 'josephandrebalbada@gmail.com';
 
-        $extension = Extension::find($request->proposal2Id);
+        $extension = Extension::find($request->proposalId);
         $extension->status = 'Pending Approval of DO';
         $extension->percentage_status = 25;
         $extension->do_email = $doEmail;
@@ -1331,6 +1331,555 @@ class ExtensionController extends Controller
             'message' => 'Your Proposal has been sent to Do; kindly wait the result we immediately contact you about the result.',
             'data' => $data,
         ]);
+    }
+
+    public function mobileproposal3(Request $request)
+    { 
+        $boardEmail = 'josephandrebalbada@gmail.com';
+
+        $extension = Extension::find($request->proposalId);
+        $extension->status = 'Pending Approval of Board';
+        $extension->percentage_status = 45;
+        $extension->board_email = $boardEmail;
+
+        $pdfFile = $request->file('moa_file');
+        $moaFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $moaFileName);
+        $extension->moa_file = $moaFileName;
+        $extension->save();
+
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'MOA(Memorandum of Agreement) Submitted';
+        $notif->message = 'Someone send moa(memorandum of agreement) for document approval';
+        $notif->date = now();
+        $notif->user_id = $request->user_id;
+        $notif->reciever_id = 0;
+        $notif->save();
+
+        $proposals = DB::table('extension')
+            ->join('users','users.id','extension.user_id')
+            ->select(
+                'extension.*',
+                'users.id as userID','users.role',
+                DB::raw("CONCAT(users.fname, ' ', COALESCE(users.mname, ''), ' ', users.lname) AS requestor_name")
+            )
+            ->where('extension.id', $request->proposalId)
+            ->first();
+
+        $data = [
+            'requestor' => $proposals->requestor_name,
+            'ppmpFile' => $proposals->ppmp_file,
+            'prFile' => $proposals->pr_file,
+            'marketStudyFile' => $proposals->market_study_file,
+            'moaFile' => $moaFileName,
+        ];
+
+        // Mail::to($boardEmail)->send(new BoardApproval($data));
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Your Proposal has been sent to Board; kindly wait the result if the result is out we immediately contact you.',
+            'data' => $data
+        ]);
+    }
+
+    public function mobileproposal4(Request $request)
+    { 
+        $extension = Extension::find($request->proposalId);
+        $extension->status = 'Pending Implementation Approval by R&E-Office';
+        $extension->implementation_proper = $request->implementation_proper;
+        $extension->proponents1 = $request->proponents1;
+        $extension->proponents2 = $request->proponents2;
+        $extension->proponents3 = $request->proponents3;
+        $extension->proponents4 = $request->proponents4;
+        $extension->proponents5 = $request->proponents5;
+        $extension->save();
+
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Implementation Proper and Proponents Submitted';
+        $notif->message = 'Someone send implementation proper and proponents for implementation approval';
+        $notif->date = now();
+        $notif->user_id = $request->user_id;
+        $notif->reciever_id = 0;
+        $notif->save();
+
+        // Prepare response data
+        $response = [
+            'success' => true,
+            'message' => 'Your Proposal has been sent to R&E-Office; kindly wait for the result. If the result is out, we will immediately contact you.'
+        ];
+
+        // Return JSON response
+        return response()->json($response);
+    }
+    
+    public function mobileproposal5(Request $request)
+    { 
+        $extension = Extension::find($request->proposalId);
+        $extension->status = 'Topics and Sub Topics Inputted';
+        $extension->percentage_status = 65;
+        $extension->topics = $request->topics;
+        $extension->subtopics = $request->subtopics;
+        $extension->save();
+
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Topics and Sub Topics Inserted';
+        $notif->message = 'Topics and Subtopics Inserted';
+        $notif->date = now();
+        $notif->user_id = $request->user_id;
+        $notif->reciever_id = 0;
+        $notif->save();
+
+        // Prepare data to return
+        $responseData = [
+            'success' => true,
+            'message' => 'Topics and Subtopics Inputted; Kindly make an appointment for consultation about the Pre-Evaluation survey.'
+        ];
+
+        // Return JSON response
+        return response()->json($responseData);
+    }
+
+    public function mobileproposal6(Request $request)
+    { 
+        $extension = Extension::find($request->proposalId);
+
+        $pdfFile = $request->file('post_evaluation_attendance');
+        $postEvaluationAttendanceFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $postEvaluationAttendanceFileName);
+        $extension->post_evaluation_attendance = $postEvaluationAttendanceFileName;
+
+        $pdfFile = $request->file('evaluation_form');
+        $evaluationFormFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $evaluationFormFileName);
+        $extension->evaluation_form = $evaluationFormFileName;
+
+        $pdfFile = $request->file('capsule_detail');
+        $capsuleDetailFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $capsuleDetailFileName);
+        $extension->capsule_detail = $capsuleDetailFileName;
+
+        $pdfFile = $request->file('certificate');
+        $certificateFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $certificateFileName);
+        $extension->certificate = $certificateFileName;
+
+        $pdfFile = $request->file('attendance');
+        $attendanceFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/extension'), $attendanceFileName);
+        $extension->attendance = $attendanceFileName;
+        
+        $extension->status = 'Inserted: Certificate, Documentation, Attendance, and Capsule Details';
+        $extension->percentage_status = 80;
+        $extension->save();
+
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Post Evaluation Attendance, Evaluatin Form, Capsule Detail, Certificate, Attendance and Documentation Photos Inserted';
+        $notif->message = 'Inserted post-evaluation survey attendance, evaluation form, capsule detail, certificate, attendance and documentation photos';
+        $notif->date = now();
+        $notif->user_id = $request->user_id;
+        $notif->reciever_id = 0;
+        $notif->save();
+
+        $files = $request->file('img_path');
+        $documentation_photos = [];
+        foreach ($files as $file) {
+            $this->documentation_img_upload($file);
+            $multi['img_path'] = time() . $file->getClientOriginalName();
+            $multi['extension_id'] = $request->proposalId;
+            DB::table('documentation_photos')->insert($multi);
+
+            // Collect data for documentation photos
+            $documentation_photos[] = $multi;
+        }
+
+        // Prepare response data
+        $response = [
+            'extension_status' => 'Process Done',
+            'documentation_photos' => $documentation_photos
+        ];
+
+        // Return JSON response
+        return response()->json($response);
+    }
+
+    public function mobileproposal7(Request $request)
+    { 
+        if ($request->confirmation == 'Yes') {
+            
+            $prototype = new Prototype;
+            
+            $pdfFile = $request->file('letter');
+            $letterFileName = $pdfFile->getClientOriginalName();
+            $pdfFile->move(public_path('uploads/prototype'), $letterFileName);
+            $prototype->letter = $letterFileName;
+
+            $pdfFile = $request->file('nda');
+            $ndaFileName = $pdfFile->getClientOriginalName();
+            $pdfFile->move(public_path('uploads/prototype'), $ndaFileName);
+            $prototype->nda = $ndaFileName;
+
+            $pdfFile = $request->file('coa');
+            $coaFileName = $pdfFile->getClientOriginalName();
+            $pdfFile->move(public_path('uploads/prototype'), $coaFileName);
+            $prototype->coa = $coaFileName;
+            
+            $prototype->save();
+            $lastId = DB::getPdo()->lastInsertId();
+
+            $extension = Extension::find($request->proposalId);
+            $extension->prototype_id = $lastId;
+            $extension->status = 'Have Prototype: Letter, NDA, COA Inserted';
+            $extension->percentage_status = 85;
+            $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Letter, Non Disclosure Agreement and Certificate of Acceptance Inserted';
+            $notif->message = 'Inserted letter, nda and coa ';
+            $notif->date = now();
+            $notif->user_id = $request->user_id;
+            $notif->reciever_id = 0;
+            $notif->save();
+
+            return response()->json(['success' => 'Inserted: Letter, NDA and COA File']);
+
+        } else {
+
+            $extension = Extension::find($request->proposalId);
+            $extension->status = 'Process Done';
+            $extension->percentage_status = 100;
+            $extension->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Extension Application Process Done';
+            $notif->message = 'Extension application was completed all the process ';
+            $notif->date = now();
+            $notif->user_id = $request->user_id;
+            $notif->reciever_id = 0;
+            $notif->save();
+
+            return response()->json(['success' => 'Process Done']);
+        }
+
+    }
+
+    public function mobileproposal8(Request $request)
+    { 
+        $responseData = [];
+
+        if ($request->pre_evaluation == 'Prototype Pre-Evaluation Survey Done') {
+            
+            $extension = Extension::find($request->proposalId);
+            if ($extension) {
+                $extension->status = $request->pre_evaluation;
+                $extension->percentage_status = 87;
+                $extension->save();
+
+                $extension_id = DB::table('extension')
+                    ->select('prototype_id')
+                    ->where('id', $request->proposalId)
+                    ->first();
+
+                if ($extension_id) {
+                    $prototype_id = $extension_id->prototype_id;
+
+                    $prototype = Prototype::find($prototype_id);
+                    if ($prototype) {
+                        $prototype->pre_evaluation_survey = $request->pre_evaluation;
+                        $prototype->save();
+                    }
+                }
+
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Prototype Pre-Evaluation Survey Done';
+                $notif->message = 'Quick update: prototype pre-evaluation survey done';
+                $notif->date = now();
+                $notif->user_id = $request->user_id;
+                $notif->reciever_id = 0;
+                $notif->save();
+
+                $responseData['message'] = 'Prototype Pre-Evaluation Survey Done';
+                $responseData['success'] = true;
+            } else {
+                $responseData['message'] = 'Extension not found';
+                $responseData['success'] = false;
+            }
+        } 
+        else {
+            $extension = Extension::find($request->proposalId);
+            if ($extension) {
+                $extension->status = $request->pre_evaluation;
+                $extension->save();
+
+                $extension_id = DB::table('extension')
+                    ->select('prototype_id')
+                    ->where('id', $request->proposalId)
+                    ->first();
+
+                if ($extension_id) {
+                    $prototype_id = $extension_id->prototype_id;
+
+                    $prototype = Prototype::find($prototype_id);
+                    if ($prototype) {
+                        $prototype->pre_evaluation_survey = $request->pre_evaluation;
+                        $prototype->save();
+                    }
+                }
+
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Prototype Pre-Evaluation Survey Not Done';
+                $notif->message = 'Quick update: prototype pre-evaluation survey not done';
+                $notif->date = now();
+                $notif->user_id = $request->user_id;
+                $notif->reciever_id = 0;
+                $notif->save();
+
+                $responseData['message'] = 'Prototype Pre-Evaluation Survey Not Done';
+                $responseData['success'] = false;
+            } else {
+                $responseData['message'] = 'Extension not found';
+                $responseData['success'] = false;
+            }
+        }
+
+        return response()->json($responseData);
+    }
+
+    public function mobileproposal9(Request $request)
+    { 
+        $responseData = [];
+
+        if ($request->mid_evaluation == 'Prototype Mid-Evaluation Survey Done') {
+            
+            $extension = Extension::find($request->proposalId);
+            if ($extension) {
+                $extension->status = $request->mid_evaluation;
+                $extension->percentage_status = 89;
+                $extension->save();
+
+                $extension_id = DB::table('extension')
+                    ->select('prototype_id')
+                    ->where('id', $request->proposalId)
+                    ->first();
+
+                if ($extension_id) {
+                    $prototype_id = $extension_id->prototype_id;
+
+                    $prototype = Prototype::find($prototype_id);
+                    if ($prototype) {
+                        $prototype->mid_evaluation_survey = $request->mid_evaluation;
+                        $prototype->save();
+                    }
+                }
+
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Prototype Mid-Evaluation Survey Done';
+                $notif->message = 'Quick update: prototype mid-evaluation survey done';
+                $notif->date = now();
+                $notif->user_id = $request->user_id;
+                $notif->reciever_id = 0;
+                $notif->save();
+
+                $responseData['message'] = 'Prototype Mid-Evaluation Survey Done';
+                $responseData['success'] = true;
+            } else {
+                $responseData['message'] = 'Extension not found';
+                $responseData['success'] = false;
+            }
+        }
+         else {
+
+            $extension = Extension::find($request->proposalId);
+            if ($extension) {
+                $extension->status = $request->mid_evaluation;
+                $extension->save();
+
+                $extension_id = DB::table('extension')
+                    ->select('prototype_id')
+                    ->where('id', $request->proposalId)
+                    ->first();
+
+                if ($extension_id) {
+                    $prototype_id = $extension_id->prototype_id;
+
+                    $prototype = Prototype::find($prototype_id);
+                    if ($prototype) {
+                        $prototype->mid_evaluation_survey = $request->mid_evaluation;
+                        $prototype->save();
+                    }
+                }
+
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Prototype Mid-Evaluation Survey Not Done';
+                $notif->message = 'Quick update: prototype mid-evaluation survey not done';
+                $notif->date = now();
+                $notif->user_id = $request->user_id;
+                $notif->reciever_id = 0;
+                $notif->save();
+
+                $responseData['message'] = 'Prototype Mid-Evaluation Survey Not Done';
+                $responseData['success'] = false;
+            } else {
+                $responseData['message'] = 'Extension not found';
+                $responseData['success'] = false;
+            }
+        }
+
+        return response()->json($responseData);
+    }
+
+    public function mobileproposal10(Request $request)
+    { 
+        $responseData = [];
+
+        if ($request->post_evaluation == 'Prototype Post-Evaluation Survey Done') {
+            
+            $extension = Extension::find($request->proposalId);
+            if ($extension) {
+                $extension->status = $request->post_evaluation;
+                $extension->percentage_status = 91;
+                $extension->save();
+
+                $extension_id = DB::table('extension')
+                    ->select('prototype_id')
+                    ->where('id', $request->proposalId)
+                    ->first();
+
+                if ($extension_id) {
+                    $prototype_id = $extension_id->prototype_id;
+
+                    $prototype = Prototype::find($prototype_id);
+                    if ($prototype) {
+                        $prototype->post_evaluation_survey = $request->post_evaluation;
+                        $prototype->save();
+                    }
+                }
+
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Prototype Post-Evaluation Survey Done';
+                $notif->message = 'Quick update: prototype post-evaluation survey done';
+                $notif->date = now();
+                $notif->user_id = $request->user_id;
+                $notif->reciever_id = 0;
+                $notif->save();
+
+                $responseData['message'] = 'Prototype Post-Evaluation Survey Done';
+                $responseData['success'] = true;
+            } else {
+                $responseData['message'] = 'Extension not found';
+                $responseData['success'] = false;
+            }
+        }
+         else {
+
+            $extension = Extension::find($request->proposalId);
+            if ($extension) {
+                $extension->status = $request->post_evaluation;
+                $extension->save();
+
+                $extension_id = DB::table('extension')
+                    ->select('prototype_id')
+                    ->where('id', $request->proposalId)
+                    ->first();
+
+                if ($extension_id) {
+                    $prototype_id = $extension_id->prototype_id;
+
+                    $prototype = Prototype::find($prototype_id);
+                    if ($prototype) {
+                        $prototype->post_evaluation_survey = $request->post_evaluation;
+                        $prototype->save();
+                    }
+                }
+
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Prototype Post-Evaluation Survey Not Done';
+                $notif->message = 'Quick update: prototype post-evaluation survey not done';
+                $notif->date = now();
+                $notif->user_id = $request->user_id;
+                $notif->reciever_id = 0;
+                $notif->save();
+
+                $responseData['message'] = 'Prototype Post-Evaluation Survey Not Done';
+                $responseData['success'] = false;
+            } else {
+                $responseData['message'] = 'Extension not found';
+                $responseData['success'] = false;
+            }
+        }
+
+        return response()->json($responseData);
+    }
+
+    public function mobileproposal11(Request $request)
+    { 
+        $extension = Extension::find($request->proposalId);
+        $extension->status = 'Process Done';
+        $extension->percentage_status = 100;
+        $extension->save();
+
+        $extension_id = DB::table('extension')
+                    ->select('prototype_id')
+                    ->where('id', $request->proposalId)
+                    ->first();
+        
+        $prototype_id = $extension_id->prototype_id;
+
+        $prototype = Prototype::find($prototype_id);
+        
+        $pdfFile = $request->file('capsule_detail');
+        $capsuleDetailFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/prototype'), $capsuleDetailFileName);
+        $prototype->capsule_detail = $capsuleDetailFileName;
+
+        $pdfFile = $request->file('certificate');
+        $certificateFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/prototype'), $certificateFileName);
+        $prototype->certificate = $certificateFileName;
+
+        $pdfFile = $request->file('attendance');
+        $attendanceFileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/prototype'), $attendanceFileName);
+        $prototype->attendance = $attendanceFileName;
+
+        $files = $request->file('img_path');
+        foreach ($files as $file) 
+        {
+            $this->prototypeDocumentation_img_upload($file);
+            $multi['img_path']=time().$file->getClientOriginalName();
+            $multi['prototype_id'] = $prototype_id ;
+            DB::table('prototype_photos')->insert($multi);
+        }
+
+        $prototype->save();
+
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Inserted Prototype Capsule Detail, Certificate, Documentation Photos and Attendance';
+        $notif->message = 'Inserted prototype capsule detail, certificate, documentation photos, and attendance.';
+        $notif->date = now();
+        $notif->user_id = $request->user_id;
+        $notif->reciever_id = 0;
+        $notif->save();
+
+        $responseData = [
+            'success' => true,
+            'message' => 'Capsule Detail, Certificate, Attendance and Documentation Photos Inserted.'
+        ];
+        
+        return response()->json($responseData);
     }
     //MOBILE END
 }

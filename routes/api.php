@@ -211,4 +211,13 @@ Route::post('/mobilecheckingAppointments', 'App\Http\Controllers\AppointmentCont
 Route::post('/mobilefacultySchedulingAppointment1', 'App\Http\Controllers\AppointmentController@mobilefacultySchedulingAppointment1');
 Route::post('/mobileproposal1', 'App\Http\Controllers\ExtensionController@mobileproposal1');
 Route::post('/mobileproposal2', 'App\Http\Controllers\ExtensionController@mobileproposal2');
+Route::post('/mobileproposal3', 'App\Http\Controllers\ExtensionController@mobileproposal3');
+Route::post('/mobileproposal4', 'App\Http\Controllers\ExtensionController@mobileproposal4');
+Route::post('/mobileproposal5', 'App\Http\Controllers\ExtensionController@mobileproposal5');
+Route::post('/mobileproposal6', 'App\Http\Controllers\ExtensionController@mobileproposal6');
+Route::post('/mobileproposal7', 'App\Http\Controllers\ExtensionController@mobileproposal7');
+Route::post('/mobileproposal8', 'App\Http\Controllers\ExtensionController@mobileproposal8');
+Route::post('/mobileproposal9', 'App\Http\Controllers\ExtensionController@mobileproposal9');
+Route::post('/mobileproposal10', 'App\Http\Controllers\ExtensionController@mobileproposal10');
+Route::post('/mobileproposal11', 'App\Http\Controllers\ExtensionController@mobileproposal11');
 //MOBILE END
