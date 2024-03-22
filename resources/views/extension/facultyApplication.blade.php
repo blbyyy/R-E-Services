@@ -928,7 +928,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is already completed.">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>

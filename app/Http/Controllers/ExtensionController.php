@@ -63,7 +63,67 @@ class ExtensionController extends Controller
             ->orderBy('extension.created_at', 'desc')
             ->get();
 
+            $extension = DB::table('extension')
+            ->join('users','users.id','=','extension.user_id')
+            ->select('extension.*','users.*')
+            ->where('extension.user_id', Auth::id())
+            ->get();
+
         return View::make('extension.facultyApplication',compact('faculty','facultyNotifCount','facultyNotification','application'));
+    }
+
+    public function facultyApplicationStatus()
+    {
+        $faculty = DB::table('faculty')
+        ->join('users','users.id','faculty.user_id')
+        ->select('faculty.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        $extension = DB::table('extension')->where('extension.user_id', Auth::id())->get();
+
+        return View::make('extension.facultyApplicationStatus',compact('faculty','facultyNotifCount','facultyNotification','extension'));
+    }
+
+    public function getAppointment($id)
+    {
+        $appointment = Appointments::find($id);
+        return response()->json($appointment);
+    }
+    
+    public function getFileExtension($id)
+    {
+        $extension = Extension::find($id);
+        return response()->json($extension);
+    }
+
+    public function getDoumentationPhotos($id)
+    {
+        $photos = DB::table('extension')
+        ->join('documentation_photos','extension.id','documentation_photos.extension_id')
+        ->select('documentation_photos.*')
+        ->where('extension.id', $id)
+        ->get();
+
+        return response()->json($photos);
+    }
+
+    public function getFilePrototype($id)
+    {
+        $prototype = Prototype::find($id);
+        return response()->json($prototype);
     }
 
     public function proposal0ExtenxionId($id)

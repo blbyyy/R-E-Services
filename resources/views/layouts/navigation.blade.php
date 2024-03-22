@@ -465,6 +465,12 @@
             <span>Extension Application</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/extension/application/status')}}">
+            <i class="bi bi-file-earmark-break"></i>
+            <span>Extension Application Status</span>
+          </a>
+        </li>
       @elseif(Auth::user()->role == 'Admin')
         <li class="nav-item">
           <a style="background-color: {{ Request::is('homepage') ? '#700117' : '#c9c7c8' }};

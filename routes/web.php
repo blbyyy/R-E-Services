@@ -498,6 +498,31 @@ Route::get('/faculty/extension/application', [
           'as' => 'faculty.extension.application'
   ]);
 
+Route::get('/faculty/extension/application/status', [
+      'uses' => 'ExtensionController@facultyApplicationStatus',
+            'as' => 'faculty.extension.application.status'
+    ]);
+
+Route::get('/faculty/extension/application/status/appointment/{id}', [
+      'uses' => 'ExtensionController@getAppointment',
+            'as' => 'faculty.extension.application.status.specific'
+    ]);
+
+Route::get('/faculty/extension/application/status/extension/files/{id}', [
+      'uses' => 'ExtensionController@getFileExtension',
+            'as' => 'faculty.extension.application.files.specific'
+    ]);
+
+Route::get('/faculty/extension/application/status/extension/documentation-photos/{id}', [
+      'uses' => 'ExtensionController@getDoumentationPhotos',
+            'as' => 'faculty.extension.application.documentation-photos.specific'
+    ]);
+
+Route::get('/faculty/extension/application/status/prototype/files/{id}', [
+      'uses' => 'ExtensionController@getFilePrototype',
+            'as' => 'faculty.extension.application.prototype.files.specific'
+    ]);
+
 Route::post('/faculty/extension/application/created', [
       'uses' => 'ExtensionController@createApplication',
             'as' => 'faculty.extension.application.created'
