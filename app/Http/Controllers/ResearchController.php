@@ -118,6 +118,7 @@ class ResearchController extends Controller
         ->join('students', 'users.id', 'students.user_id')
         ->select('student_request_access.*', 'research_list.*', 'students.*', 'users.*')
         ->where('research_list.id', $id)
+        ->where('users.id', Auth::id())
         ->latest('student_request_access.created_at')
         ->first(); 
 
@@ -165,6 +166,7 @@ class ResearchController extends Controller
         ->join('faculty', 'users.id', 'faculty.user_id')
         ->select('faculty_request_access.*','research_list.*','faculty.*','users.*')
         ->where('research_list.id', $id)
+        ->where('users.id', Auth::id())
         ->latest('faculty_request_access.created_at')
         ->first();
 

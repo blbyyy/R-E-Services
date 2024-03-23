@@ -2768,7 +2768,7 @@ $(document).ready(function () {
                         var currentDate = new Date(); 
                         var endDate = new Date(data.end_access_date); 
 
-                        if (endDate.toDateString() === currentDate.toDateString()) {
+                        if (endDate.toDateString() === currentDate.toDateString() || endDate < currentDate) {
                             $("#accessDeneid").hide();
                             $("#processingRequest").hide();
                             $("#rejectRequest").hide();
@@ -4422,7 +4422,7 @@ $(document).ready(function () {
                         var currentDate = new Date(); 
                         var endDate = new Date(data.end_access_date); 
 
-                        if (endDate.toDateString() === currentDate.toDateString()) {
+                        if (endDate.toDateString() === currentDate.toDateString() || endDate < currentDate) {
                             $("#facultyRequestedFile").hide();
                             $("#facultyAccessDeneid").hide();
                             $("#facultyProcessingRequest").hide();
