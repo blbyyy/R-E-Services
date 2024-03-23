@@ -375,16 +375,18 @@ class ResearchController extends Controller
     }
 
     //MOBILE START
-    public function mobilestudentSendRequestAccess($id)
+    public function mobilestudentSendRequestAccess(Request $request, $id)
     {
+        // Get user id from the authenticated user
         $research = DB::table('student_request_access')
-        ->join('research_list', 'research_list.id', 'student_request_access.research_id')
-        ->join('users', 'users.id', 'student_request_access.requestor_id')
-        ->join('students', 'users.id', 'students.user_id')
-        ->select('student_request_access.*','research_list.*','students.*','users.*')
-        ->where('research_list.id', $id)
-        ->latest('student_request_access.created_at')
-        ->first();
+            ->join('research_list', 'research_list.id', 'student_request_access.research_id')
+            ->join('users', 'users.id', 'student_request_access.requestor_id')
+            ->join('students', 'users.id', 'students.user_id')
+            ->select('student_request_access.*','research_list.*','students.*','users.*')
+            ->where('research_list.id', $id)
+            ->where('users.id', $request->user_id)
+            ->latest('student_request_access.created_at')
+            ->first();
 
         return response()->json($research);
     }
@@ -410,14 +412,14 @@ class ResearchController extends Controller
         $requests->status = 'Pending';
         $requests->save();
 
-            $notif = new Notifications;
-            $notif->type = 'Admin Notification';
-            $notif->title = 'Research Access Request for Information';
-            $notif->message = 'Someone requested access to the research information.';
-            $notif->date = now();
-            $notif->user_id = Auth::id();
-            $notif->reciever_id = 0;
-            $notif->save();
+        $notif = new Notifications;
+        $notif->type = 'Admin Notification';
+        $notif->title = 'Research Access Request for Information';
+        $notif->message = 'Someone requested access to the research information.';
+        $notif->date = now();
+        $notif->user_id = $request->requestor_id;
+        $notif->reciever_id = 0;
+        $notif->save();
 
         return response()->json([
             'success' => true,
@@ -434,7 +436,7 @@ class ResearchController extends Controller
         return response()->json($research);
     }
 
-    public function mobilefacultySendRequestAccessFILE($id)
+    public function mobilefacultySendRequestAccessFILE(Request $request, $id)
     {
         $research = DB::table('faculty_request_access')
         ->join('research_list', 'research_list.id', 'faculty_request_access.research_id')
@@ -442,6 +444,7 @@ class ResearchController extends Controller
         ->join('faculty', 'users.id', 'faculty.user_id')
         ->select('faculty_request_access.*','research_list.*','faculty.*','users.*')
         ->where('research_list.id', $id)
+        ->where('users.id', $request->user_id)
         ->latest('faculty_request_access.created_at')
         ->first();
 
@@ -474,7 +477,7 @@ class ResearchController extends Controller
             $notif->title = 'Research Access Request for Documents';
             $notif->message = 'Someone requested access to the research documents.';
             $notif->date = now();
-            $notif->user_id = Auth::id();
+            $notif->user_id = $request->requestor_id;
             $notif->reciever_id = 0;
             $notif->save();
 

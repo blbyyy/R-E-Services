@@ -1636,6 +1636,95 @@ class FacultyController extends Controller
             'faculty' => $faculty
         ]);
     }
+
+    public function mobilefacultyapply_certificationfinal(Request $request, $id)
+    {
+        $submission = DB::table('requestingform')
+        ->join('users', 'users.id', 'requestingform.user_id')
+        ->join('files', 'files.id', 'requestingform.research_id')
+        ->where('requestingform.research_id', $request->research_id)
+        ->selectRaw(
+            'CASE 
+                WHEN COUNT(*) = 0 THEN "First Submission"
+                WHEN COUNT(*) = 1 THEN "Second Submission"
+                WHEN COUNT(*) = 2 THEN "Third Submission"
+                WHEN COUNT(*) = 3 THEN "Fourth Submission"
+                WHEN COUNT(*) = 4 THEN "Fifth Submission"
+                WHEN COUNT(*) = 5 THEN "Sixth Submission"
+                ELSE "Other Submission" 
+            END as submission_frequency')
+        ->value('submission_frequency');
+
+        $latestPercentage = DB::table('requestingform')
+            ->join('users', 'users.id', 'requestingform.user_id')
+            ->join('files', 'files.id', 'requestingform.research_id')
+            ->select('requestingform.simmilarity_percentage_results')
+            ->where('requestingform.research_id', $request->research_id)
+            ->orderBy('requestingform.id', 'desc') 
+            ->value('simmilarity_percentage_results');
+
+        $faculty =  Faculty::where('user_id', $id)->first();
+
+        $advisers = Faculty::orderBy('id')->get();
+
+        $facultyfullname = $faculty->fname .' '. $faculty->mname .' '. $faculty->lname;
+
+            $form = new RequestingForm;
+            $form->date = now();
+            $form->email_address = $faculty->email;
+            $form->thesis_type = $request->thesis_type;
+            
+            $form->submission_frequency = $submission;
+            $form->initial_simmilarity_percentage = 0;
+
+            if ($submission === 'First Submission') {
+                $form->advisors_turnitin_precheck = 'No';
+                $form->initial_simmilarity_percentage = 0;
+            } else {
+                $form->advisors_turnitin_precheck = 'Yes';
+                $form->initial_simmilarity_percentage = $latestPercentage;
+            } 
+
+            $form->research_specialist = 'tba';
+            $form->research_staff = 'tba';
+            $form->tup_id = $faculty->email;
+            $form->requestor_name = $facultyfullname;
+            $form->tup_mail = $faculty->email;
+            $form->sex = $faculty->gender;
+            $form->requestor_type = $request->requestor_type;
+            $form->college = $request->college;
+            $form->purpose = 'Certification';
+            $form->researchers_name1 = $request->researchers_name1;
+            $form->researchers_name2 = $request->researchers_name2;
+            $form->researchers_name3 = $request->researchers_name3;
+            $form->researchers_name4 = $request->researchers_name4;
+            $form->researchers_name5 = $request->researchers_name5;
+            $form->researchers_name6 = $request->researchers_name6;
+            $form->researchers_name7 = $request->researchers_name7;
+            $form->researchers_name8 = $request->researchers_name8;
+            $form->agreement = 'I Agree';
+            $form->score = 0;
+            $form->research_id = $request->research_id;
+            $form->user_id = $faculty->user_id;
+            $form->status = 'Pending';
+            $form->remarks = 'Your application is undergoing certification; please wait for it to be finished.';
+            $form->save();
+
+            $file = Files::find($request->research_id);
+            $file->file_status = 'Pending';
+            $file->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Faculty Application Certification Submitted';
+            $notif->message = 'Someone submitted an application to certify.';
+            $notif->date = now();
+            $notif->user_id = $id;
+            $notif->reciever_id = '0';
+            $notif->save();
+
+            return response()->json(["form" => $form, "file" => $file ]);
+    }
     //MOBILE END
 
 }

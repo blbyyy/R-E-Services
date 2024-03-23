@@ -157,6 +157,7 @@ Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload
 Route::get('/mobilecertification', 'App\Http\Controllers\StudentController@mobilecertification');
 Route::post('mobileapply_certification/{id}', 'App\Http\Controllers\StudentController@mobileapply_certification');
 
+Route::post('mobilefacultyapply_certificationfinal/{id}', 'App\Http\Controllers\FacultyController@mobilefacultyapply_certificationfinal');
 Route::post('mobilefacultyapply_certification/{id}', 'App\Http\Controllers\FacultyController@mobileapply_certification');
 
 Route::get('/mobileshowpdf/{fileName}', 'App\Http\Controllers\StudentController@mobileshowpdf');
