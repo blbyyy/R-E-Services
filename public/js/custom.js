@@ -2768,7 +2768,7 @@ $(document).ready(function () {
                         var currentDate = new Date(); 
                         var endDate = new Date(data.end_access_date); 
 
-                        if (endDate.toDateString() === currentDate.toDateString()) {
+                        if (endDate.toDateString() === currentDate.toDateString() || endDate < currentDate) {
                             $("#accessDeneid").hide();
                             $("#processingRequest").hide();
                             $("#rejectRequest").hide();
@@ -4422,7 +4422,7 @@ $(document).ready(function () {
                         var currentDate = new Date(); 
                         var endDate = new Date(data.end_access_date); 
 
-                        if (endDate.toDateString() === currentDate.toDateString()) {
+                        if (endDate.toDateString() === currentDate.toDateString() || endDate < currentDate) {
                             $("#facultyRequestedFile").hide();
                             $("#facultyAccessDeneid").hide();
                             $("#facultyProcessingRequest").hide();
@@ -4515,6 +4515,509 @@ $(document).ready(function () {
                     } 
                 }
             });
+        });
+
+        //faculty extension application getting appointment1
+        $(".appointment1").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/appointment/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $('#purpose1').text(data.purpose);
+                    $('#status1').text(data.status);
+                    $('#time1').text(data.time);
+                    $('#date1').text(data.date);
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //faculty extension application getting appointment2
+        $(".appointment2").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/appointment/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $('#purpose2').text(data.purpose);
+                    $('#status2').text(data.status);
+                    $('#time2').text(data.time);
+                    $('#date2').text(data.date);
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //faculty extension application getting appointment3
+        $(".appointment3").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/appointment/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $('#purpose3').text(data.purpose);
+                    $('#status3').text(data.status);
+                    $('#time3').text(data.time);
+                    $('#date3').text(data.date);
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //faculty extension application getting extension files
+        $(".extensionFiles").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/extension/files/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    if (data.topics === null) {
+                        $('#beneficiary').text('No Data!');
+                    } else {
+                        $('#beneficiary').text(data.beneficiary);
+                    }
+                    
+                    if (data.topics === null) {
+                        $('#topics').text('No Data!');
+                    } else {
+                        $('#topics').text(data.topics);
+                    }
+
+                    if (data.topics === null) {
+                        $('#subtopics').text('No Data!');
+                    } else {
+                        $('#subtopics').text(data.subtopics);
+                    }
+
+                    if (data.implementation_proper === null) {
+                        $('#implementationProper').text('No Data!');
+                    } else {
+                        $('#implementationProper').text(data.implementation_proper);
+                    }
+    
+                    if (data.proponents1 === null) {
+                        $('#prpnts1').hide();
+                    } else {
+                        $('#proponent1').text(data.proponents1);
+                    }
+
+                    if (data.proponents2 === null) {
+                        $('#prpnts2').hide();
+                    } else {
+                        $('#proponent2').text(data.proponents2);
+                    }
+
+                    if (data.proponents3 === null) {
+                        $('#prpnts3').hide();
+                    } else {
+                        $('#proponent3').text(data.proponents3);
+                    }
+
+                    if (data.proponents4 === null) {
+                        $('#prpnts4').hide();
+                    } else {
+                        $('#proponent4').text(data.proponents4);
+                    }
+
+                    if (data.proponents5 === null) {
+                        $('#prpnts5').hide();
+                    } else {
+                        $('#proponent5').text(data.proponents5);
+                    }
+
+                    if (data.mou_file === null) {
+                        $('#mouFile').text('No File Loaded Yet');
+                    } else {
+                        var mouFile = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#mouFile").empty().append(mouFile);
+                    }
+
+                    if (data.ppmp_file === null) {
+                        $('#ppmpmFile').text('No File Loaded Yet');
+                    } else {
+                        var ppmpmFile = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#ppmpmFile").empty().append(ppmpmFile);
+                    }
+                    
+                    if (data.prFile === null) {
+                        $('#prFile').text('No File Loaded Yet');
+                    } else {
+                        var prFile = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#prFile").empty().append(prFile);
+                    }
+                    
+                    if (data.marketStudyFile === null) {
+                        $('#marketStudyFile').text('No File Loaded Yet');
+                    } else {
+                        var marketStudyFile = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.c),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#marketStudyFile").empty().append(marketStudyFile);
+                    }
+                    
+                    if (data.moa_file === null) {
+                        $('#moaFile').text('No File Loaded Yet');
+                    } else {
+                        var moaFile = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.moa_file),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#moaFile").empty().append(moaFile);
+                    }
+                    
+                    if (data.post_evaluation_attendance === null) {
+                        $('#attendancePostEvaluationSurvey').text('No File Loaded Yet');
+                    } else {
+                        var attendancePostEvaluationSurvey = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.post_evaluation_attendance),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#attendancePostEvaluationSurvey").empty().append(attendancePostEvaluationSurvey);
+                    }
+                    
+                    if (data.evaluation_form === null) {
+                        $('#evaluationForm').text('No File Loaded Yet');
+                    } else {
+                        var evaluationForm = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.evaluation_form),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#evaluationForm").empty().append(evaluationForm);
+                    }
+
+                    if (data.capsule_detail === null) {
+                        $('#capsuleDetail').text('No File Loaded Yet');
+                    } else {
+                        var capsuleDetail = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.capsule_detail),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#capsuleDetail").empty().append(capsuleDetail);
+                    }
+                    
+                    if (data.certificate === null) {
+                        $('#certificate').text('No File Loaded Yet');
+                    } else {
+                        var certificate = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.certificate),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#certificate").empty().append(certificate);
+                    }
+                    
+                    if (data.attendance === null) {
+                        $('#attendance').text('No File Loaded Yet');
+                    } else {
+                        var attendance = $('<a>', {
+                            href: "/uploads/extension/" + encodeURIComponent(data.attendance),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#attendance").empty().append(attendance);
+                    }
+                    
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
+        //faculty extension application getting documentation photos
+        $(".doumentationPhotos").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/extension/documentation-photos/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    if (data == '') { 
+                        $('#carouselExampleControls').hide();
+                        $('#noDocumentationPhotos').show();
+                    } else {
+                        $('#carouselExampleControls').show();
+                        $('#noDocumentationPhotos').hide();
+                        data.forEach(function(item, index) {
+                            var imageName = item.img_path; 
+                            var imageUrl = '/images/documentation/' + imageName;
+                            
+                            var carouselItem = document.createElement("div");
+                            carouselItem.classList.add("carousel-item");
+                            
+                            if (index === 0) {
+                                carouselItem.classList.add("active");
+                            }
+                            
+                            var img = document.createElement("img");
+                            img.src = imageUrl;
+                            img.classList.add("d-block", "w-100");
+                            img.alt = "Slide " + (index + 1);
+                            
+                            carouselItem.appendChild(img);
+                            
+                            document.querySelector("#carouselExampleControls .carousel-inner").appendChild(carouselItem);
+                        });
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //refresh modal when the modal is close
+        $("#doumentationPhotos").on("hidden.bs.modal", function () {
+            function clearCarouselItems() {
+                var carouselInner = document.querySelector("#carouselExampleControls .carousel-inner");
+                carouselInner.innerHTML = ''; // Clear all inner HTML
+            }
+
+            clearCarouselItems();
+        });
+
+        //faculty extension application getting prototype files
+        $(".prototypeFiles").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/prototype/files/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    if (data.pre_evaluation_survey === null) {
+                        $('#preEvaluationSurvey').text('No Data!');
+                    } else {
+                        $('#preEvaluationSurvey').text(data.pre_evaluation_survey);
+                    }
+                    
+                    if (data.mid_evaluation_survey === null) {
+                        $('#midEvaluationSurvey').text('No Data!');
+                    } else {
+                        $('#midEvaluationSurvey').text(data.mid_evaluation_survey);
+                    }
+
+                    if (data.post_evaluation_survey === null) {
+                        $('#postEvaluationSurvey').text('No Data!');
+                    } else {
+                        $('#postEvaluationSurvey').text(data.post_evaluation_survey);
+                    }
+
+
+                    if (data.nda_file === null) {
+                        $('#ndaFile').text('No File Loaded Yet');
+                    } else {
+                        var ndaFile = $('<a>', {
+                            href: "/uploads/prototype/" + encodeURIComponent(data.nda_file),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#ndaFile").empty().append(ndaFile);
+                    }
+
+                    if (data.coa_file === null) {
+                        $('#coaFile').text('No File Loaded Yet');
+                    } else {
+                        var coaFile = $('<a>', {
+                            href: "/uploads/prototype/" + encodeURIComponent(data.coa_file),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#coaFile").empty().append(coaFile);
+                    }
+                    
+                    if (data.capsule_detail === null) {
+                        $('#prototypeCapsuleDetail').text('No File Loaded Yet');
+                    } else {
+                        var prototypeCapsuleDetail = $('<a>', {
+                            href: "/uploads/prototype/" + encodeURIComponent(data.capsule_detail),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#prototypeCapsuleDetail").empty().append(prototypeCapsuleDetail);
+                    }
+                    
+                    if (data.certificate === null) {
+                        $('#prototypeCertificate').text('No File Loaded Yet');
+                    } else {
+                        var prototypeCertificate = $('<a>', {
+                            href: "/uploads/prototype/" + encodeURIComponent(data.certificate),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#prototypeCertificate").empty().append(prototypeCertificate);
+                    }
+
+                    if (data.attendance === null) {
+                        $('#prototypeAttendance').text('No File Loaded Yet');
+                    } else {
+                        var prototypeAttendance = $('<a>', {
+                            href: "/uploads/prototype/" + encodeURIComponent(data.attendance),
+                            text: "View PDF",
+                            target: "_blank"
+                        });
+                        $("#prototypeAttendance").empty().append(prototypeAttendance);
+                    }
+                    
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+        
+        //faculty extension application getting prototype documentation photos
+        $(".prototypePhotos").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/extension/prototype-photos/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    if (data == '') { 
+                        $('#carouselPrototypePhotos').hide();
+                        $('#noPrototypeDocumentationPhotos').show();
+                    } else {
+                        $('#carouselPrototypePhotos').show();
+                        $('#noPrototypeDocumentationPhotos').hide();
+                        data.forEach(function(item, index) {
+                            var imageName = item.img_path; 
+                            var imageUrl = '/images/prototypeDocumentation/' + imageName;
+                            
+                            var carouselItem = document.createElement("div");
+                            carouselItem.classList.add("carousel-item");
+                            
+                            if (index === 0) {
+                                carouselItem.classList.add("active");
+                            }
+                            
+                            var img = document.createElement("img");
+                            img.src = imageUrl;
+                            img.classList.add("d-block", "w-100");
+                            img.alt = "Slide " + (index + 1);
+                            
+                            carouselItem.appendChild(img);
+                            
+                            document.querySelector("#prototype").appendChild(carouselItem);
+                        });
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //refresh modal when the modal is close
+        $("#prototypePhotos").on("hidden.bs.modal", function () {
+            function clearCarouselItems() {
+                var carouselInner = document.querySelector("#prototype");
+                carouselInner.innerHTML = ''; // Clear all inner HTML
+            }
+
+            clearCarouselItems();
         });
 
         $(".proposal0GetId").click(function() {

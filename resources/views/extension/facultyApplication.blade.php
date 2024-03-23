@@ -850,7 +850,7 @@
                   </div>
                 </div>
               </div>
-            @elseif($applications->status == 'Prototype Mid-Evaluation Survey Done')
+            @elseif($applications->status == 'Prototype Mid-Evaluation Survey Not Done')
               <div class="card mb-3">
                 <div class="row">
                   <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -864,7 +864,7 @@
                   </div>
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
-                        <button type="button" class="btn btn-outline-dark proposal10GetId" data-bs-toggle="modal" data-bs-target="#proposal10" data-id="{{$applications->id}}">
+                        <button type="button" class="btn btn-outline-dark proposal9GetId" data-bs-toggle="modal" data-bs-target="#proposal9" data-id="{{$applications->id}}">
                           Submit Proposal
                         </button> 
                       </div>
@@ -928,7 +928,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is already completed.">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
