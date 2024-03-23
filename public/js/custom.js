@@ -4793,7 +4793,7 @@ $(document).ready(function () {
             });
         });
 
-        //faculty extension application getting appointment3
+        //faculty extension application getting documentation photos
         $(".doumentationPhotos").click(function() {
             var id = $(this).data("id");
             $.ajax({
@@ -4956,6 +4956,69 @@ $(document).ready(function () {
             });
         });
         
+        //faculty extension application getting prototype documentation photos
+        $(".prototypePhotos").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/extension/prototype-photos/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    if (data == '') { 
+                        $('#carouselPrototypePhotos').hide();
+                        $('#noPrototypeDocumentationPhotos').show();
+                    } else {
+                        $('#carouselPrototypePhotos').show();
+                        $('#noPrototypeDocumentationPhotos').hide();
+                        data.forEach(function(item, index) {
+                            var imageName = item.img_path; 
+                            var imageUrl = '/images/prototypeDocumentation/' + imageName;
+                            
+                            var carouselItem = document.createElement("div");
+                            carouselItem.classList.add("carousel-item");
+                            
+                            if (index === 0) {
+                                carouselItem.classList.add("active");
+                            }
+                            
+                            var img = document.createElement("img");
+                            img.src = imageUrl;
+                            img.classList.add("d-block", "w-100");
+                            img.alt = "Slide " + (index + 1);
+                            
+                            carouselItem.appendChild(img);
+                            
+                            document.querySelector("#prototype").appendChild(carouselItem);
+                        });
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //refresh modal when the modal is close
+        $("#prototypePhotos").on("hidden.bs.modal", function () {
+            function clearCarouselItems() {
+                var carouselInner = document.querySelector("#prototype");
+                carouselInner.innerHTML = ''; // Clear all inner HTML
+            }
+
+            clearCarouselItems();
+        });
 
         $(".proposal0GetId").click(function() {
             var id = $(this).data("id");

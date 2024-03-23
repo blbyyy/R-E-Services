@@ -1,6 +1,15 @@
 @extends('layouts.navigation')
 @include('sweetalert::alert')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    .table-container {
+      overflow-y: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  </style>
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Extension Application Status</h1>
@@ -8,90 +17,98 @@
 
     <div class="card">
         <div class="card-body">
-          <h5 class="card-title">List of your Extension Application</h5>
 
-          <table class="table table-hover">
-            <thead>
-              <tr class="text-center">
-                <th scope="col">Application Title</th>
-                <th scope="col">Appointment 1</th>
-                <th scope="col">Appointment 2</th>
-                <th scope="col">Appointment 3</th>
-                <th scope="col">Files/Other Details</th>
-                <th scope="col">Documentation Photos</th>
-                <th scope="col">Prototype Files/Details</th>
-                <th scope="col">Status</th>
-                <th scope="col">Percentage Status</th>
-              </tr>
-            </thead>
-            @foreach ($extension as $extensions)
-                <tbody>
+          <h5 class="card-title">List of your Extension Application</h5>
+            <div class="table-container">
+                <table class="table table-hover">
+                    <thead>
                     <tr class="text-center">
-                        <td><i>{{$extensions->title}}</i></td>
-                        <td>
-                            @if ($extensions->appointment1_id === null)
-                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            @else
-                                <button style="width: 50px" data-id="{{$extensions->appointment1_id}}" type="button" class="btn btn-primary appointment1" data-bs-toggle="modal" data-bs-target="#proposalAppointment">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            @endif
-                        </td>
-                        <td>
-                            @if ($extensions->appointment2_id === null)
-                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            @else
-                                <button style="width: 50px" data-id="{{$extensions->appointment2_id}}" type="button" class="btn btn-primary appointment2" data-bs-toggle="modal" data-bs-target="#preEvaluationAppointment">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            @endif
-                        </td>
-                        <td>
-                            @if ($extensions->appointment3_id === null)
-                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            @else
-                                <button style="width: 50px" data-id="{{$extensions->appointment3_id}}" type="button" class="btn btn-primary appointment3" data-bs-toggle="modal" data-bs-target="#midEvaluationAppointment">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            @endif    
-                        </td>
-                        <td>
-                            <button style="width: 50px" data-id="{{$extensions->id}}" type="button" class="btn btn-primary extensionFiles" data-bs-toggle="modal" data-bs-target="#extensionFiles">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </td>
-                        <td>
-                            <button style="width: 50px" data-id="{{$extensions->id}}" type="button" class="btn btn-primary doumentationPhotos" data-bs-toggle="modal" data-bs-target="#doumentationPhotos">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </td>
-                        <td>
-                            @if ($extensions->prototype_id === null)
-                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="No prototype has been made yet.">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            @else
-                                <button style="width: 50px" data-id="{{$extensions->prototype_id}}" type="button" class="btn btn-primary prototypeFiles" data-bs-toggle="modal" data-bs-target="#prototypeFiles">
-                                    <i class="bi bi-eye"></i>
-                                </button> 
-                            @endif
-                        </td>
-                        <td><b>{{$extensions->status}}</b></td>
-                        <td>
-                            <div class="progress mt-3">
-                                <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: {{$extensions->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$extensions->percentage_status}}%</div>
-                            </div>  
-                        </td>
+                        <th scope="col">Application Title</th>
+                        <th scope="col">Appointment 1</th>
+                        <th scope="col">Appointment 2</th>
+                        <th scope="col">Appointment 3</th>
+                        <th scope="col">Files/Other Details</th>
+                        <th scope="col">Documentation Photos</th>
+                        <th scope="col">Prototype Files/Details</th>
+                        <th scope="col">Prototype Docu Photos</th>
+                        <th scope="col">Application Status</th>
+                        <th scope="col">Percentage Status</th>
                     </tr>
-                </tbody>
-            @endforeach
-          </table>
+                    </thead>
+                    @foreach ($extension as $extensions)
+                        <tbody>
+                            <tr class="text-center">
+                                <td><i>{{$extensions->title}}</i></td>
+                                <td>
+                                    @if ($extensions->appointment1_id === null)
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    @else
+                                        <button style="width: 50px" data-id="{{$extensions->appointment1_id}}" type="button" class="btn btn-primary appointment1" data-bs-toggle="modal" data-bs-target="#proposalAppointment">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($extensions->appointment2_id === null)
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    @else
+                                        <button style="width: 50px" data-id="{{$extensions->appointment2_id}}" type="button" class="btn btn-primary appointment2" data-bs-toggle="modal" data-bs-target="#preEvaluationAppointment">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($extensions->appointment3_id === null)
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    @else
+                                        <button style="width: 50px" data-id="{{$extensions->appointment3_id}}" type="button" class="btn btn-primary appointment3" data-bs-toggle="modal" data-bs-target="#midEvaluationAppointment">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    @endif    
+                                </td>
+                                <td>
+                                    <button style="width: 50px" data-id="{{$extensions->id}}" type="button" class="btn btn-primary extensionFiles" data-bs-toggle="modal" data-bs-target="#extensionFiles">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button style="width: 50px" data-id="{{$extensions->id}}" type="button" class="btn btn-primary doumentationPhotos" data-bs-toggle="modal" data-bs-target="#doumentationPhotos">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    @if ($extensions->prototype_id === null)
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="No prototype has been made yet.">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    @else
+                                        <button style="width: 50px" data-id="{{$extensions->prototype_id}}" type="button" class="btn btn-primary prototypeFiles" data-bs-toggle="modal" data-bs-target="#prototypeFiles">
+                                            <i class="bi bi-eye"></i>
+                                        </button> 
+                                    @endif
+                                </td>
+                                <td>
+                                    <button style="width: 50px" data-id="{{$extensions->prototype_id}}" type="button" class="btn btn-primary prototypePhotos" data-bs-toggle="modal" data-bs-target="#prototypePhotos">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </td>
+                                <td><b>{{$extensions->status}}</b></td>
+                                <td>
+                                    <div class="progress mt-3">
+                                        <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: {{$extensions->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$extensions->percentage_status}}%</div>
+                                    </div>  
+                                </td>
+                            </tr>
+                        </tbody>
+                    @endforeach
+                </table>
+            </div>
 
           <div class="modal fade" id="proposalAppointment" tabindex="-1">
             <div class="modal-dialog modal-lg">
@@ -495,6 +512,44 @@
                                 <span id="prototypeAttendance"></span>
                             </div>
                         </div> 
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="prototypePhotos" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Prototype Documentation Photos</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="carouselPrototypePhotos" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" id="prototype">
+                        </div>
+                    
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselPrototypePhotos" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselPrototypePhotos" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                    <div class="col-md-12" id="noPrototypeDocumentationPhotos">
+                        <div class="card-body text-center" style="padding: 40px">
+                            <i class="bi bi-file-image" style="font-size: 8em; color: maroon;"></i>
+                            <h5 style="padding: 20px"><b style="color: maroon">Nothing has been uploaded here.</b></h5>
+                        </div>
                     </div>
                     
                 </div>

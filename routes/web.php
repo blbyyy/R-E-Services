@@ -523,6 +523,11 @@ Route::get('/faculty/extension/application/status/prototype/files/{id}', [
             'as' => 'faculty.extension.application.prototype.files.specific'
     ]);
 
+Route::get('/faculty/extension/application/status/extension/prototype-photos/{id}', [
+      'uses' => 'ExtensionController@getProtoypePhotos',
+            'as' => 'faculty.extension.application.prototype-photos.specific'
+    ]);
+
 Route::post('/faculty/extension/application/created', [
       'uses' => 'ExtensionController@createApplication',
             'as' => 'faculty.extension.application.created'

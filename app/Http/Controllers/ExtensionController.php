@@ -126,6 +126,17 @@ class ExtensionController extends Controller
         return response()->json($prototype);
     }
 
+    public function getProtoypePhotos($id)
+    {
+        $photos = DB::table('prototype')
+        ->join('prototype_photos','prototype.id','prototype_photos.prototype_id')
+        ->select('prototype_photos.*')
+        ->where('prototype.id', $id)
+        ->get();
+
+        return response()->json($photos);
+    }
+
     public function proposal0ExtenxionId($id)
     {
         $extension = Extension::find($id);
