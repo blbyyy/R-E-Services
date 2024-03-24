@@ -16,8 +16,6 @@
         <form class="row g-3" method="POST" action="{{ route('FacultyRegistered') }}">
             @csrf
 
-            <input type="hidden" class="form-control id" id="role" name="role" value="Faculty">
-
             <div class="col-md-4">
               <div class="form-floating">
                 <input type="text" class="form-control" id="lname" @error('lname') is-invalid @enderror name="lname" value="{{ old('lname') }}" required autocomplete="lname" autofocus placeholder="Last Name">

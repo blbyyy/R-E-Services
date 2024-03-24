@@ -42,7 +42,7 @@ class FacultyController extends Controller
             $users->mname = $request->mname;
             $users->email = $request->email;
             $users->password = bcrypt($request->password);
-            $users->role = $request->role;    
+            $users->role = 'Faculty Not Verified';    
             $users->save();
             $last = DB::getPdo()->lastInsertId();
 

@@ -186,7 +186,7 @@
                 @else
                   <img class="rounded-circle" src="{{ asset('/uploads/avatars/'.$staff->avatar) }}" alt="" />    
                 @endif
-              @elseif(Auth::user()->role === 'Faculty')
+              @elseif(Auth::user()->role === 'Faculty' || Auth::user()->role === 'Faculty Not Verified')
                 @if($faculty->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
