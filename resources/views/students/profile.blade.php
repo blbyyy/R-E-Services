@@ -50,7 +50,7 @@
                       </form>
                 @else
                     <div>
-                      <img id="img" class="rounded-circle" src="{{ asset('storage/'.$student->avatar) }}" />
+                      <img id="img" class="rounded-circle" src="{{ asset('/uploads/avatars/'.$student->avatar) }}" />
                     </div>
                     <div class="text-center" style="padding-bottom: 10px; padding-top: 10px">
                       <button id="toggleForm" type="submit" class="btn btn-outline-dark">Change Avatar</button>

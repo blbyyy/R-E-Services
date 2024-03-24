@@ -132,12 +132,10 @@ class FacultyController extends Controller
 
         $faculty = Faculty::find($faculty->id);
         $files = $request->file('avatar');
-        $faculty->avatar = 'images/'.time().'-'.$files->getClientOriginalName();
-
-        $faculty->save();
-
-        $data = array('status' => 'saved');
-        Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        $avatarFileName = time().'-'.$files->getClientOriginalName();
+        $files->move(public_path('uploads/avatars'), $avatarFileName);
+        
+        $faculty->avatar = $avatarFileName;
         $faculty->save();
 
         Alert::success('Success', 'Avatar changed successfully!');

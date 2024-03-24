@@ -384,12 +384,10 @@ class AdminController extends Controller
 
         $admin = Staff::find($admin->id);
         $files = $request->file('avatar');
-        $admin->avatar = 'images/'.time().'-'.$files->getClientOriginalName();
-
-        $admin->save();
-
-        $data = array('status' => 'saved');
-        Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        $avatarFileName = time().'-'.$files->getClientOriginalName();
+        $files->move(public_path('uploads/avatars'), $avatarFileName);
+        
+        $admin->avatar = $avatarFileName;
         $admin->save();
 
         Alert::success('Success', 'Avatar changed successfully!');

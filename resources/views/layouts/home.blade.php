@@ -1,4 +1,6 @@
 @extends('layouts.navigation')
+@include('sweetalert::alert')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
     .custom {
       height: 400px;
@@ -18,11 +20,31 @@
     }
 </style>
 <main id="main" class="main">
+
+    @if(session('success'))
+    <script>
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session('success') }}',
+        });
+    </script>
+    @elseif(session('error'))
+      <script>
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: '{{ session('error') }}',
+          });
+      </script>
+    @endif
+
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <i class="bi bi-check-circle me-1"></i>
           Hello Welcome back,  {{Auth::user()->fname .' '. Auth::user()->lname .' '. Auth::user()->mname}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
           <h5 class="card-title">Home</h5>
@@ -273,4 +295,5 @@
 
         </div>
     </div>
+
 </main>
