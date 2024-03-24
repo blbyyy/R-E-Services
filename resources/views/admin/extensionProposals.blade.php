@@ -47,27 +47,15 @@
           <table class="table table-hover">
             <thead>
                 <tr class="text-center">
+                    <th scope="col">Actions</th>
                     <th scope="col">Application Title</th>
                     <th scope="col">Requestor</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($proposals as $proposal)
                     <tr class="text-center">
-                        <td>{{$proposal->title}}</td>
-                        <td>
-                            {{$proposal->requestor_name}}
-                            <span style="font-size: small">({{$proposal->role}})</span>
-                        </td>
-                        <td>
-                          @if ($proposal->status == 'Process Done')
-                          <span class="badge rounded-pill bg-success">{{$proposal->status}}</span>
-                          @else
-                          <span class="badge rounded-pill bg-primary">{{$proposal->status}}</span> 
-                          @endif
-                        </td>
                         <td>
                           @if ($proposal->status === 'Pending Approval for Proposal Consultation Appointment') 
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is waiting for approval of proposal consultation appointment."><i class="bi bi-arrow-right"></i></button>
@@ -152,9 +140,21 @@
                           
                           @elseif ($proposal->status === 'Proposal Rejected') 
                             <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This application has been rejected."><i class="bi bi-arrow-right"></i></button>
-                         
+                        
                           @endif
-                          </td> 
+                        </td> 
+                        <td>{{$proposal->title}}</td>
+                        <td>
+                            {{$proposal->requestor_name}}
+                            <span style="font-size: small">({{$proposal->role}})</span>
+                        </td>
+                        <td>
+                          @if ($proposal->status == 'Process Done')
+                          <span class="badge rounded-pill bg-success">{{$proposal->status}}</span>
+                          @else
+                          <span class="badge rounded-pill bg-primary">{{$proposal->status}}</span> 
+                          @endif
+                        </td>
                     </tr> 
                 @endforeach
             </tbody>

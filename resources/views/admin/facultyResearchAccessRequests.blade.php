@@ -78,32 +78,28 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+
+                  <div class="card-body text-center">
+                    <h5 style="color: maroon"><b>Requested Research Title:</b></h5>
+                    <p id="researchTitle" class="large fst-italic"></p>
+                  </div>
+                  <div class="card-body text-center">
+                    <h5 style="color: maroon"><b>Purpose:</b></h5>
+                    <p id="purpose"></p>
+                  </div>
         
                   <form class="row g-3" method="POST" action="{{ route('faculty.sending.access.file') }}" enctype="multipart/form-data">
                       @csrf
           
                     <input type="hidden" class="form-control" id="requestId" name="requestId">
 
-                    <h5 style="color: maroon">Requested Research Title:</h5>
-                    <p id="researchTitle" class="large fst-italic"></p>
-
-                    <h5 style="color: maroon">Purpose:</h5>
-                    <p id="purpose"></p>
-
-                    <div class="col-md-12">
-                        <div class="form-floating">
-                            <select name="status" class="form-select" id="status" aria-label="State">
-                                <option selected>Select Status....</option>
-                                <option value="Access Approved">Approved</option>
-                                <option value="Rejected">Reject</option>
-                            </select>
-                            <label for="status">Status</label>
-                        </div>
-                    </div>
-              
-                    <div class="col-md-12" id="fileContainer" style="display: none;">
-                        <label for="research_file" class="form-label" style="color: maroon">Research File</label>
-                        <input type="file" class="form-control" id="research_file" name="research_file">
+                    <div class="col-12 text-center">
+                      <label for="status" class="form-label">Do you approved this request?</label>
+                        <select id="status" class="form-select" name="status">
+                            <option selected>Select....</option>
+                            <option value="Access Approved">Yes</option>
+                            <option value="Rejected">No</option>
+                        </select>
                     </div>
             
                     <div class="col-" style="padding-top: 20px">

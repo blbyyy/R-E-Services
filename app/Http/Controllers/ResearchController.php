@@ -61,6 +61,11 @@ class ResearchController extends Controller
             $research->abstract = $request->abstract;
             $research->department = $request->department;
             $research->course = $request->course;
+
+            $pdfFile = $request->file('research_file');
+            $researchFileName = $pdfFile->getClientOriginalName();
+            $pdfFile->move(public_path('uploads/researchFile'), $researchFileName);
+            $research->research_file = $researchFileName;
             $research->save();
                 
             return redirect()->to('/researchlist')->with('success', 'Research Added');

@@ -107,7 +107,6 @@ class FacultyController extends Controller
         $faculty->position = $request->position;
         $faculty->designation = $request->designation;
         $faculty->tup_id = $request->fid;
-        $faculty->email = $request->email;
         $faculty->gender = $request->gender;
         $faculty->phone = $request->phone;
         $faculty->address = $request->address;
@@ -117,7 +116,6 @@ class FacultyController extends Controller
         $user->fname = $request->fname;
         $user->lname = $request->lname;
         $user->mname = $request->mname;
-        $user->email = $request->email;
         $user->save();
 
         Alert::success('Success', 'Profile was successfully updated');
@@ -176,7 +174,7 @@ class FacultyController extends Controller
                 'password' => Hash::make($request->newpassword),
             ]);
             Alert::success('Success', 'Password changed successfully!');
-            return redirect()->to('/Faculty/Profile/{id}')->with('success', 'Password changed successfully.');
+            return redirect()->to('/faculty/profile/{id}')->with('success', 'Password changed successfully.');
         }
     }
 
@@ -984,6 +982,11 @@ class FacultyController extends Controller
             $research->abstract = $request->abstract;
             $research->department = $request->department;
             $research->course = $request->course;
+
+            $pdfFile = $request->file('research_file');
+            $researchFileName = $pdfFile->getClientOriginalName();
+            $pdfFile->move(public_path('uploads/researchFile'), $researchFileName);
+            $research->research_file = $researchFileName;
             $research->save();
                 
             return redirect()->to('/faculty/research-inventory')->with('success', 'Research was successfully uploaded');

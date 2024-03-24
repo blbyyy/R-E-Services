@@ -114,16 +114,14 @@
                         <input name="appointmentId1" type="hidden" class="form-control" id="appointmentId1">
                         <input name="extensionId1" type="hidden" class="form-control" id="extensionId1">
 
-                        <div class="col-md-12">
-                            <div class="form-floating">
-                                <select name="status" class="form-select" id="status" aria-label="State">
-                                    <option selected>Choose....</option>
-                                    <option value="Appointment Set">Approve</option>
-                                    <option value="Appointment Done">Done</option>
-                                    <option value="Appointment Cancelled">Reject</option>
-                                </select>
-                                <label for="status">Status</label>
-                            </div>
+                        <div class="col-12 text-center">
+                          <label for="status" class="form-label">Did you authorize this appointment?</label>
+                            <select id="status" class="form-select" name="status">
+                              <option selected>Choose....</option>
+                              <option value="Appointment Set">Approve</option>
+                              <option value="Appointment Done">Done</option>
+                              <option value="Appointment Cancelled">Reject</option>
+                            </select>
                         </div>
 
                         <div class="col-12" id="messageContainer" style="display: none;">
@@ -174,16 +172,14 @@
                       <input name="appointmentId2" type="hidden" class="form-control" id="appointmentId2">
                       <input name="extensionId2" type="hidden" class="form-control" id="extensionId2">
 
-                      <div class="col-md-12">
-                          <div class="form-floating">
-                              <select name="status" class="form-select" id="status" aria-label="State">
-                                  <option selected>Choose....</option>
-                                  <option value="Appointment Set">Approve</option>
-                                  <option value="Appointment Done">Done</option>
-                                  <option value="Appointment Cancelled">Reject</option>
-                              </select>
-                              <label for="status">Status</label>
-                          </div>
+                      <div class="col-12 text-center">
+                        <label for="status" class="form-label">Did you authorize this appointment?</label>
+                          <select id="status" class="form-select" name="status">
+                            <option selected>Choose....</option>
+                            <option value="Appointment Set">Approve</option>
+                            <option value="Appointment Done">Done</option>
+                            <option value="Appointment Cancelled">Reject</option>
+                          </select>
                       </div>
 
                       <div class="col-12" id="messageContainer" style="display: none;">
@@ -232,16 +228,14 @@
                       <input name="appointmentId3" type="hidden" class="form-control" id="appointmentId3">
                       <input name="extensionId3" type="hidden" class="form-control" id="extensionId3">
 
-                      <div class="col-md-12">
-                          <div class="form-floating">
-                              <select name="status" class="form-select" id="status" aria-label="State">
-                                  <option selected>Choose....</option>
-                                  <option value="Appointment Set">Approve</option>
-                                  <option value="Appointment Done">Done</option>
-                                  <option value="Appointment Cancelled">Reject</option>
-                              </select>
-                              <label for="status">Status</label>
-                          </div>
+                      <div class="col-12 text-center">
+                        <label for="status" class="form-label">Did you authorize this appointment?</label>
+                          <select id="status" class="form-select" name="status">
+                            <option selected>Choose....</option>
+                            <option value="Appointment Set">Approve</option>
+                            <option value="Appointment Done">Done</option>
+                            <option value="Appointment Cancelled">Reject</option>
+                          </select>
                       </div>
 
                       <div class="col-12" id="messageContainer" style="display: none;">

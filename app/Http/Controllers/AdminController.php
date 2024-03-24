@@ -19,6 +19,7 @@ use App\Models\Student;
 use App\Models\Staff;
 use App\Models\Faculty;
 use App\Models\User;
+use App\Models\Extension;
 use App\Models\Certificate;
 use App\Models\Announcement;
 use App\Models\RequestingForm;
@@ -42,6 +43,8 @@ class AdminController extends Controller
     public function dashboard()
     {
         $usersCount = DB::table('users')->count();
+
+        $extensionCount = DB::table('extension')->count();
 
         $rolesCount = DB::table('users')
         ->select('role', DB::raw('count(*) as count'))
@@ -118,7 +121,7 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount'));
+        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount','extensionCount'));
     }
 
     public function administration()
@@ -1616,6 +1619,33 @@ class AdminController extends Controller
         $research->delete();
         $data = array('success' =>'deleted','code'=>'200');
         return response()->json($data);
+    }
+
+    public function extensionlist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $extension = DB::table('extension')
+        ->join('users','users.id','extension.user_id')
+        ->select('extension.*','users.*')
+        ->orderBy('extension.id')
+        ->get();
+
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.extensionlist',compact('extension','admin','adminNotifCount','adminNotification'));
     }
     
 

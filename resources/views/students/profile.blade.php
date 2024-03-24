@@ -52,18 +52,18 @@
                     <div>
                       <img id="img" class="rounded-circle" src="{{ asset('storage/'.$student->avatar) }}" />
                     </div>
-                      <div class="text-center" style="padding-bottom: 10px; padding-top: 10px">
-                        <button id="toggleForm" type="submit" class="btn btn-outline-dark">Change Avatar</button>
-                      </div>
-                      <form style="display: none;" id="avatarForm" class="row g-3" method="POST" action="{{ route('student_update_avatar') }}" enctype="multipart/form-data">
-                        @csrf
-                          <div class="col-sm-8">
-                            <input class="form-control" type="file" id="avatar" name="avatar">
-                          </div>
-                          <div class="col-sm-4">
-                            <button type="submit" class="btn btn-outline-dark">Change</button>
-                          </div>
-                      </form>
+                    <div class="text-center" style="padding-bottom: 10px; padding-top: 10px">
+                      <button id="toggleForm" type="submit" class="btn btn-outline-dark">Change Avatar</button>
+                    </div>
+                    <form style="display: none;" id="avatarForm" class="row g-3" method="POST" action="{{ route('student_update_avatar') }}" enctype="multipart/form-data">
+                      @csrf
+                        <div class="col-sm-8">
+                          <input class="form-control" type="file" id="avatar" name="avatar">
+                        </div>
+                        <div class="col-sm-4">
+                          <button type="submit" class="btn btn-outline-dark">Change</button>
+                        </div>
+                    </form>
                 @endif
             
               <div class="text-center">
@@ -158,8 +158,6 @@
                   </div>
 
                 </div>
-
-              
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
@@ -288,52 +286,45 @@
                     {!! Form::close() !!} 
 
                 </div>
-               
-                <div class="tab-pane fade pt-3" id="profile-settings">
-
-                </div>
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
-                  <!-- Change Password Form -->
+                  <form id="passwordForm" action="{{ route('student_change_password') }}" method="post">
+                      @csrf
 
-                <form id="passwordForm" action="{{ route('student_change_password') }}" method="post">
-                    @csrf
-
-                    <div class="row mb-3">
-                      <label for="password" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                          <input name="password" type="password" class="form-control" id="password" required onchange="validatePassword()">
-                          <span id="passwordMatchMessages"></span>
-                        </div>
-                    </div>
-                
-                    <div class="row mb-3">
-                      <label for="newpassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                          <input name="newpassword" type="password" class="form-control" id="newpassword" required>
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                        <label for="renewpassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                      <div class="row mb-3">
+                        <label for="password" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="renewpassword" type="password" class="form-control" id="renewpassword" required>
-                            <span id="passwordMatchMessage"></span>
+                            <input name="password" type="password" class="form-control" id="password" required onchange="validatePassword()">
+                            <span id="passwordMatchMessages"></span>
+                          </div>
+                      </div>
+                  
+                      <div class="row mb-3">
+                        <label for="newpassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="newpassword" type="password" class="form-control" id="newpassword" required>
                         </div>
-                    </div>
+                      </div>
                     
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-outline-dark changePassword">Change Password</button>
-                        <button style="display: none;" type="button" class="btn btn-outline-dark errorButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Please double-check your password entry.">
-                          Change Password
-                        </button>
-                    </div>
-                    
-                </form>
-
+                      <div class="row mb-3">
+                          <label for="renewpassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="renewpassword" type="password" class="form-control" id="renewpassword" required>
+                              <span id="passwordMatchMessage"></span>
+                          </div>
+                      </div>
+                      
+                      <div class="text-center">
+                          <button type="submit" class="btn btn-outline-dark changePassword">Change Password</button>
+                          <button style="display: none;" type="button" class="btn btn-outline-dark errorButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Please double-check your password entry.">
+                            Change Password
+                          </button>
+                      </div>
+                      
+                  </form>
                 </div>
 
-              </div><!-- End Bordered Tabs -->
+              </div>
 
             </div>
           </div>

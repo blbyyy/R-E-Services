@@ -1027,6 +1027,11 @@ Route::post('/admin/researchlist/specific-department', [
         'as' => 'admin.researchlist.specific-department'
 ]);
 
+Route::get('/admin/extensionlist', [
+      'uses' => 'AdminController@extensionlist',
+            'as' => 'admin.extensionlist'
+    ]);
+
 Route::get('/userCountTable', [
   'uses' => 'PdfController@userCountTable',
         'as' => 'userCountTable.pdf'
