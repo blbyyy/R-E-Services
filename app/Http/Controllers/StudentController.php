@@ -163,6 +163,7 @@ class StudentController extends Controller
 
     public function changeavatar(Request $request)
     {
+        dd($request->all());
         $students = DB::table('students')
         ->select('students.id')
         ->where('user_id',Auth::id())
@@ -179,8 +180,6 @@ class StudentController extends Controller
         
         $student->avatar = $avatarFileName;
         $student->save();
-
-        
 
         Alert::success('Success', 'Avatar changed successfully!');
 
