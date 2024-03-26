@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Favicons -->
-    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    {{-- <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
 
     <link href="{{ secure_asset('../assets/img/favicon.png') }}" rel="icon">
     <link href="{{ secure_asset('../assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
@@ -25,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
   
     <!-- Vendor CSS Files -->
-    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
@@ -34,7 +34,7 @@
     <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/comment.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/comment.css') }}" rel="stylesheet"> --}}
     
     <link href="{{ secure_asset('../assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
@@ -182,7 +182,7 @@
                 @if($student->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
-                  <img class="rounded-circle" src="{{ asset('storage/' . $student->avatar) }}" alt="Avatar" />    
+                  <img class="rounded-circle" src="{{ secure_asset('storage/' . $student->avatar) }}" alt="Avatar" />    
                 @endif
               @elseif(Auth::user()->role === 'Staff')
                 @if($staff->avatar === 'avatar.jpg')
@@ -619,7 +619,7 @@
   <script src="{{ secure_asset('../assets/vendor/php-email-form/validate.js')}}"></script>
   <script src="{{ secure_asset('../js/custom.js')}}"></script>
 
-  <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+  {{-- <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
   <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{ asset('assets/vendor/chart.js/chart.umd.js')}}"></script>
   <script src="{{ asset('assets/vendor/echarts/echarts.min.js')}}"></script>
@@ -627,7 +627,7 @@
   <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
   <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js')}}"></script>
   <script src="{{ asset('assets/vendor/php-email-form/validate.js')}}"></script>
-  <script src="{{ asset('js/custom.js')}}"></script>
+  <script src="{{ asset('js/custom.js')}}"></script> --}}
 
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
