@@ -1,4 +1,6 @@
 @extends('layouts.navigation')
+@include('sweetalert::alert')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Departments</h1>
