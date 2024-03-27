@@ -169,13 +169,13 @@ class StudentController extends Controller
         ->first();
 
         $student = Student::find($students->id);
-        // $files = $request->file('avatar');
-        // $avatarFileName = time().'-'.$files->getClientOriginalName();
-        // $files->move(public_path('uploads/avatars'), $avatarFileName);
-
         $files = $request->file('avatar');
         $avatarFileName = time().'-'.$files->getClientOriginalName();
-        Storage::put('uploads/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        $files->move(public_path('uploads/avatars'), $avatarFileName);
+
+        // $files = $request->file('avatar');
+        // $avatarFileName = time().'-'.$files->getClientOriginalName();
+        // Storage::put('uploads/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
         
         $student->avatar = $avatarFileName;
         $student->save();
