@@ -174,8 +174,8 @@ class StudentController extends Controller
         // $files->move(public_path('uploads/avatars'), $avatarFileName);
 
         $files = $request->file('avatar');
-        $avatarFileName = 'images/'.time().'-'.$files->getClientOriginalName();
-        Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        $avatarFileName = time().'-'.$files->getClientOriginalName();
+        Storage::put('public/uploads/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
         
         $student->avatar = $avatarFileName;
         $student->save();
