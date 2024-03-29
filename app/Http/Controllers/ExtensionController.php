@@ -183,7 +183,7 @@ class ExtensionController extends Controller
 
     public function proposal2(Request $request)
     { 
-        $doEmail = 'josephandrebalbada@gmail.com';
+        $doEmail = 'ronmichael.dejan@tup.edu.ph';
 
         $extension = Extension::find($request->proposal2Id);
         $extension->status = 'Pending Approval of DO';
@@ -227,7 +227,7 @@ class ExtensionController extends Controller
             'marketStudyFile' => $marketStudyFileName,
         ];
     
-        // Mail::to($doEmail)->send(new DoApproval($data));
+        Mail::to($doEmail)->send(new DoApproval($data));
         
         return redirect()->to('/faculty/extension/application')->with('success', 'Your Proposal has been sent to Do; kindly wait the result we immediately contact you about the result.');
     }
