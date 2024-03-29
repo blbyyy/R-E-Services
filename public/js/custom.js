@@ -2543,8 +2543,8 @@ $(document).ready(function () {
                         position: 'center',
                         icon: 'success',
                         title: 'Request Sent',
-                        showConfirmButton: false,
-                        timer: 1500
+                        html: '<p>Thanks for using our system! Your feedback means a lot to us as we aim to improve our services on campus</p>' 
+                        + '<img class="img" src="/assets/img/CustomerSatisfaction.png" alt="" style="width: 250px; height: auto;">',
                     })
                 },
                 error: function (error) {
@@ -2603,8 +2603,8 @@ $(document).ready(function () {
                         position: 'center',
                         icon: 'success',
                         title: 'Request Sent',
-                        showConfirmButton: false,
-                        timer: 1500
+                        html: '<p>Thanks for using our system! Your feedback means a lot to us as we aim to improve our services on campus</p>' 
+                        + '<img class="img" src="/assets/img/CustomerSatisfaction.png" alt="" style="width: 250px; height: auto;">',
                     })
                 },
                 error: function (error) {
@@ -3095,8 +3095,8 @@ $(document).ready(function () {
                         position: 'center',
                         icon: 'success',
                         title: 'Request Sent',
-                        showConfirmButton: false,
-                        timer: 1500
+                        html: '<p>Thanks for using our system! Your feedback means a lot to us as we aim to improve our services on campus</p>' 
+                        + '<img class="img" src="/assets/img/CustomerSatisfaction.png" alt="" style="width: 250px; height: auto;">',
                     })
                 },
                 error: function (error) {
@@ -3155,8 +3155,8 @@ $(document).ready(function () {
                         position: 'center',
                         icon: 'success',
                         title: 'Request Sent',
-                        showConfirmButton: false,
-                        timer: 1500
+                        html: '<p>Thanks for using our system! Your feedback means a lot to us as we aim to improve our services on campus</p>' 
+                        + '<img class="img" src="/assets/img/CustomerSatisfaction.png" alt="" style="width: 250px; height: auto;">',
                     })
                 },
                 error: function (error) {
@@ -3669,8 +3669,8 @@ $(document).ready(function () {
                         position: 'center',
                         icon: 'success',
                         title: 'Request Sent',
-                        showConfirmButton: false,
-                        timer: 1500
+                        html: '<p>Thanks for using our system! Your feedback means a lot to us as we aim to improve our services on campus</p>' 
+                        + '<img class="img" src="/assets/img/CustomerSatisfaction.png" alt="" style="width: 250px; height: auto;">',
                     })
                 },
                 error: function (error) {
@@ -3729,8 +3729,8 @@ $(document).ready(function () {
                         position: 'center',
                         icon: 'success',
                         title: 'Request Sent',
-                        showConfirmButton: false,
-                        timer: 1500
+                        html: '<p>Thanks for using our system! Your feedback means a lot to us as we aim to improve our services on campus</p>' 
+                        + '<img class="img" src="/assets/img/CustomerSatisfaction.png" alt="" style="width: 250px; height: auto;">',
                     })
                 },
                 error: function (error) {

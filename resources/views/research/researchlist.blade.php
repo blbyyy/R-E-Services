@@ -17,11 +17,11 @@
 
   @if(session('success'))
     <script>
-      Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: '{{ session('success') }}',
-        });
+      // Swal.fire({
+      //   icon: 'success',
+      //   title: 'Success',
+      //   text: '{{ session('success') }}',
+      //   });
     </script>
   @elseif(session('error'))
     <script>
@@ -42,7 +42,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Add Research</h5>
-              <form class="row g-3" method="POST" action="{{ route('addresearch') }}">
+              <form class="row g-3" method="POST" action="{{ route('addresearch') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="col-12">
@@ -130,6 +130,13 @@
                     <div class="form-floating">
                       <input type="date" name="date_completion" class="form-control" id="date_completion" placeholder="Date Completion">
                       <label for="date_completion">Date Completion</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-floating">
+                      <input type="file" name="research_file" class="form-control" id="research_file" placeholder="Research File">
+                      <label for="research_file">Research File</label>
                     </div>
                   </div>
                 

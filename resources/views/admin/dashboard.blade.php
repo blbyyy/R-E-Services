@@ -106,6 +106,25 @@
                 </div>
             </div>
 
+            <div class="col-xxl-12 col-md-12">
+                <div class="card info-card blue-card">
+
+                    <a href="{{url('/admin/extensionlist')}}">
+                        <div id="departments-table" class="card-body">
+                        <h5 class="card-title">Extension Applications</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6 id="researchCount">{{$extensionCount}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">

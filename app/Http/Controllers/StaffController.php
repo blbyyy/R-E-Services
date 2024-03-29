@@ -115,12 +115,10 @@ class StaffController extends Controller
 
         $staff = Staff::find($staff->id);
         $files = $request->file('avatar');
-        $staff->avatar = 'images/'.time().'-'.$files->getClientOriginalName();
-
-        $staff->save();
-
-        $data = array('status' => 'saved');
-        Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        $avatarFileName = time().'-'.$files->getClientOriginalName();
+        $files->move(public_path('uploads/avatars'), $avatarFileName);
+        
+        $staff->avatar = $avatarFileName;
         $staff->save();
 
         Alert::success('Success', 'Avatar changed successfully!');

@@ -42,7 +42,7 @@ class FacultyController extends Controller
             $users->mname = $request->mname;
             $users->email = $request->email;
             $users->password = bcrypt($request->password);
-            $users->role = $request->role;    
+            $users->role = 'Faculty Not Verified';    
             $users->save();
             $last = DB::getPdo()->lastInsertId();
 
@@ -107,7 +107,6 @@ class FacultyController extends Controller
         $faculty->position = $request->position;
         $faculty->designation = $request->designation;
         $faculty->tup_id = $request->fid;
-        $faculty->email = $request->email;
         $faculty->gender = $request->gender;
         $faculty->phone = $request->phone;
         $faculty->address = $request->address;
@@ -117,7 +116,6 @@ class FacultyController extends Controller
         $user->fname = $request->fname;
         $user->lname = $request->lname;
         $user->mname = $request->mname;
-        $user->email = $request->email;
         $user->save();
 
         Alert::success('Success', 'Profile was successfully updated');
@@ -134,12 +132,10 @@ class FacultyController extends Controller
 
         $faculty = Faculty::find($faculty->id);
         $files = $request->file('avatar');
-        $faculty->avatar = 'images/'.time().'-'.$files->getClientOriginalName();
-
-        $faculty->save();
-
-        $data = array('status' => 'saved');
-        Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        $avatarFileName = time().'-'.$files->getClientOriginalName();
+        $files->move(public_path('uploads/avatars'), $avatarFileName);
+        
+        $faculty->avatar = $avatarFileName;
         $faculty->save();
 
         Alert::success('Success', 'Avatar changed successfully!');
@@ -176,7 +172,7 @@ class FacultyController extends Controller
                 'password' => Hash::make($request->newpassword),
             ]);
             Alert::success('Success', 'Password changed successfully!');
-            return redirect()->to('/Faculty/Profile/{id}')->with('success', 'Password changed successfully.');
+            return redirect()->to('/faculty/profile/{id}')->with('success', 'Password changed successfully.');
         }
     }
 
@@ -984,6 +980,11 @@ class FacultyController extends Controller
             $research->abstract = $request->abstract;
             $research->department = $request->department;
             $research->course = $request->course;
+
+            $pdfFile = $request->file('research_file');
+            $researchFileName = $pdfFile->getClientOriginalName();
+            $pdfFile->move(public_path('uploads/researchFile'), $researchFileName);
+            $research->research_file = $researchFileName;
             $research->save();
                 
             return redirect()->to('/faculty/research-inventory')->with('success', 'Research was successfully uploaded');

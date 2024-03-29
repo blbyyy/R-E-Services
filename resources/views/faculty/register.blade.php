@@ -10,14 +10,11 @@
     <div class="card">
         <div class="card-body">
           <h5 class="card-title">Create a New Faculty Member Profile</h5>
-          <p>Note: All students must be enrolled in Technological University of
-            Philippines - Taguig Campus. please enter the student ID number and use TUP Email only.</p>
+          <p><span class="badge bg-warning text-dark">Note:</span>  (This is pre-registered only to keep others from signing up as faculty member 
+            because faculty members have exclusive access to the system; after registering, simply wait for the administrator's clearance to proceed.)</p>
 
-          <!-- Floating Labels Form -->
-          <form class="row g-3" method="POST" action="{{ route('FacultyRegistered') }}">
+        <form class="row g-3" method="POST" action="{{ route('FacultyRegistered') }}">
             @csrf
-
-            <input type="hidden" class="form-control id" id="role" name="role" value="Faculty">
 
             <div class="col-md-4">
               <div class="form-floating">
@@ -63,7 +60,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                <label for="tup_id">TUP ID</label>
+                <label for="tup_id">ID Number</label>
                 </div>
             </div>
 
@@ -144,13 +141,13 @@
             </div>
 
             <div class="col-md-4">
-              <div class="form-floating mb-3">
+              <div class="form-floating">
                 <select class="form-select" id="gender" name="gender" aria-label="State">
-                  <option value="" disabled selected>Select Gender</option>
+                  <option value="" disabled selected>Select Sex</option>
                   <option value="Male" >Male</option>
                   <option value="Female" >Female</option>
                 </select>
-                <label for="gender">Gender</label>
+                <label for="gender">Sex</label>
               </div>
             </div>
 
@@ -194,9 +191,7 @@
                 </div>
             </div>
 
-            
-
-          </form><!-- End floating Labels Form -->
+        </form>
 
         </div>
       </div>

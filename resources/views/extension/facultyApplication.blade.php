@@ -88,7 +88,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="Please wait to approve your appointment">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="Proposal consultation appointment is ongoing please wait to proceed to next step.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal1GetId" data-bs-toggle="modal" data-bs-target="#proposal1" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button> 
                         </div>
                     </div>
@@ -172,7 +172,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button> 
                         </div>
                     </div>
@@ -193,7 +193,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This proposal is currently undergoing approval of R&E Office.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button> 
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal1GetId" data-bs-toggle="modal" data-bs-target="#proposal1" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button> 
                         </div>
                     </div>
@@ -256,7 +256,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of DO, Please wait the result.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -277,7 +277,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -298,7 +298,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of UES, Please wait the result.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -319,7 +319,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -340,7 +340,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of President, Please wait the result.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -361,7 +361,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal3GetId" data-bs-toggle="modal" data-bs-target="#proposal3" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -382,7 +382,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -403,7 +403,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of Board, Please wait the result.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -424,7 +424,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -445,7 +445,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of OSG, Please wait the result.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -466,7 +466,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -487,7 +487,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal4GetId" data-bs-toggle="modal" data-bs-target="#proposal4" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -508,7 +508,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of R&E-Office, Please wait the result.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -529,7 +529,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal4GetId" data-bs-toggle="modal" data-bs-target="#proposal4" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -550,7 +550,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal5GetId" data-bs-toggle="modal" data-bs-target="#proposal5" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -571,7 +571,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -592,7 +592,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="Appointment for Pre-Survey Consultation is Pending; Please wait the approval to proceed in next step.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -613,7 +613,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -634,7 +634,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="Appointment for Pre-Seurvey Consultation is Ongoing; Please wait to be done to process the next step.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -655,7 +655,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -676,7 +676,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="Appointment for Mid-Survey Consultation is Pending; Please wait the approval to proceed in next step.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -697,7 +697,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -718,7 +718,7 @@
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
                           <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="Appointment for Mid-Survey Consultation is Ongoing; Please wait to be done to proceed to the next step.">
-                            Submit Proposal
+                            <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
@@ -739,7 +739,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal6GetId" data-bs-toggle="modal" data-bs-target="#proposal6" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -760,7 +760,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal7GetId" data-bs-toggle="modal" data-bs-target="#proposal7" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -781,7 +781,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal8GetId" data-bs-toggle="modal" data-bs-target="#proposal8" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -802,7 +802,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal8GetId" data-bs-toggle="modal" data-bs-target="#proposal8" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -823,7 +823,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal9GetId" data-bs-toggle="modal" data-bs-target="#proposal9" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -844,7 +844,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal10GetId" data-bs-toggle="modal" data-bs-target="#proposal10" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -865,7 +865,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal9GetId" data-bs-toggle="modal" data-bs-target="#proposal9" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -886,7 +886,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal11GetId" data-bs-toggle="modal" data-bs-target="#proposal11" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
@@ -907,7 +907,7 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal10GetId" data-bs-toggle="modal" data-bs-target="#proposal10" data-id="{{$applications->id}}">
-                          Submit Proposal
+                          <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>

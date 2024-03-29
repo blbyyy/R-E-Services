@@ -6,7 +6,7 @@
    
     <div class="row">
         @foreach ($notification as $notifications)
-        <div class="col-lg-2">
+        <div class="col-lg-12">
             <div class="card mb-3">
                 <div class="card-body">
                     <h4 class="card-title">{{$notifications->title}}

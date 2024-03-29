@@ -37,7 +37,7 @@ class StudentController extends Controller
             $users->mname = $request->mname;
             $users->email = $request->email;
             $users->password = bcrypt($request->password);
-            $users->role = $request->role;   
+            $users->role = 'Student';   
             $users->save();
             $last = DB::getPdo()->lastInsertId();
 
@@ -45,7 +45,7 @@ class StudentController extends Controller
             $students->fname = $request->fname;
             $students->lname = $request->lname;
             $students->mname = $request->mname;
-            $students->college = $request->college;
+            $students->college = 'TUPT';
             $students->course = $request->course;
             $students->tup_id = $request->tup_id;
             $students->email = $request->email;
@@ -58,7 +58,7 @@ class StudentController extends Controller
 
             auth()->login($users, true);
 
-            return redirect()->to('/homepage');
+            return redirect()->to('/homepage')->with('success', 'Student Profile Successfully Created.');
 
     }
 
@@ -170,12 +170,14 @@ class StudentController extends Controller
 
         $student = Student::find($students->id);
         $files = $request->file('avatar');
-        $student->avatar = 'images/'.time().'-'.$files->getClientOriginalName();
+        $avatarFileName = time().'-'.$files->getClientOriginalName();
+        $files->move(public_path('uploads/avatars'), $avatarFileName);
 
-        $student->save();
-
-        $data = array('status' => 'saved');
-        Storage::put('public/images/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        // $files = $request->file('avatar');
+        // $avatarFileName = time().'-'.$files->getClientOriginalName();
+        // Storage::put('uploads/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        
+        $student->avatar = $avatarFileName;
         $student->save();
 
         Alert::success('Success', 'Avatar changed successfully!');
