@@ -744,6 +744,15 @@ class AdminController extends Controller
 
     }
     
+    public function turnitin_img_upload($filename)
+    {
+        $photo = array('photo' => $filename);
+        $destinationPath = public_path().'/images/turnitinProofs'; 
+        $original_filename = time().$filename->getClientOriginalName();
+        $turnitin = $filename->getClientOriginalExtension(); 
+        $filename->move($destinationPath, $original_filename); 
+    }
+    
     public function certification(Request $request, $id)
     {
         $request->validate([
@@ -792,10 +801,20 @@ class AdminController extends Controller
             $form->simmilarity_percentage_results = $request->simmilarity_percentage_results;
             $form->research_specialist = $specialist;
             $form->research_staff = $specialist;
+            $form->date_processed = $request->date_processed;
             $form->date_processing_end = now();
             $form->remarks = 'Your certificate is ready to be picked up. Please visit the R&E Services Office to collect it.';
             $form->certificate_id = $lastId;
             $form->save();
+
+            $proof = $request->file('img_path');
+            foreach ($proof as $proofs) 
+            {
+                $this->turnitin_img_upload($proofs);
+                $multi['img_path']=time().$proofs->getClientOriginalName();
+                $multi['requestingform_id'] = $id ;
+                DB::table('turnitin_photos')->insert($multi);
+            }
 
             $file = Files::find($fileId->id);
             $file->file_status = $request->status;

@@ -14,8 +14,8 @@
         }
         th, td {
             border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
+            text-align: center;
+            padding: 4px;
         }
         th {
             background-color: #f2f2f2;
@@ -24,32 +24,16 @@
 </head>
 <body>
     <div style="text-align: center;">
-        <h3>Applications Count Table</h3>
+        <h4>Applications Count Table</h4>
     </div>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Status</th>
-                <th scope="col">Numbers of Application/s</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($applicationsCount as $applicationsCounts)
-                <tr>
-                    <td>{{ $applicationsCounts->status }}</td>
-                    <td>{{ $applicationsCounts->count }}</td>
-                </tr>                
-            @endforeach
-        </tbody>
-    </table>
-    <br>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Requestor Name</th>
                 <th scope="col">Requestor Type</th>
                 <th scope="col">Thesis Type</th>
+                <th scope="col">Application Title</th>
+                <th scope="col">Abstract</th>
                 <th scope="col">Submission Frequency</th>
                 <th scope="col">Status</th>
             </tr>
@@ -57,10 +41,11 @@
         <tbody>
             @foreach ($applications as $application)
                 <tr>
-                    <td>{{ $application->id }}</td>
                     <td>{{ $application->requestor_name}}</td>
                     <td>{{ $application->requestor_type }}</td>
                     <td>{{ $application->thesis_type }}</td>
+                    <td>{{ $application->research_title }}</td>
+                    <td>{{ $application->abstract }}</td>
                     <td>{{ $application->submission_frequency }}</td>
                     <td>{{ $application->status }}</td>
                 </tr>                

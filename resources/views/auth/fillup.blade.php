@@ -85,51 +85,44 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" name="college" id="college" placeholder="Collge">
-                        <label for="college">Collge</label>
-                    </div>
-                </div>
+
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" name="course" id="course" placeholder="Course">
                         <label for="course">Course</label>
                     </div>
                 </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone">
-                        <label for="phone">Phone</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" name="address" id="address" placeholder="Address">
-                        <label for="address">Address</label>
-                    </div>
-                </div>
-
-
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="date" class="form-control" name="birthdate" id="birthdate" placeholder="BirthDate">
                         <label for="birthdate">BirthDate</label>
                     </div>
                 </div>
-                <div class="col-md-6">
+
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone">
+                        <label for="phone">Phone</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="address" id="address" placeholder="Address">
+                        <label for="address">Address</label>
+                    </div>
+                </div>  
+                <div class="col-md-4">
                     <div class="form-floating mb-3">
                         <select class="form-select" name="gender" id="gender" aria-label="State">
-                        <option selected>Select Gender</option>
+                        <option selected>Select Sex</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         </select>
-                        <label for="gender">Gender</label>
+                        <label for="gender">Sex</label>
                     </div>
                 </div>
         
-                <div>
+                <div class="d-flex justify-content-end align-items-center">
                     <button type="submit" class="btn btn-outline-dark">Save</button>
                 </div>
     </form>

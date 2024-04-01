@@ -84,29 +84,34 @@
                 @csrf
 
                 <input name="file_id" type="hidden" class="form-control" id="file_id">
-                  <div class="col-md-12">
-                    <div class="form-floating">
-                        <select name="status" class="form-select" id="status" aria-label="State">
-                            <option selected>Choose....</option>
-                            <option value="Passed">Passed</option>
-                            <option value="Returned">Returned</option>
-                        </select>
-                        <label for="status">Status</label>
-                    </div>
+
+                  <div class="col-12 text-center">
+                    <label for="status" class="form-label">Using Turnitin, this application passed the Similarity Index.</label>
+                    <select id="status" class="form-select" name="status">
+                        <option selected>Choose....</option>
+                        <option value="Passed">Passed</option>
+                        <option value="Returned">Returned</option>
+                    </select>
                   </div>
 
-                  <div class="col-12">
-                      <div class="form-floating">
-                          <input name="simmilarity_percentage_results" type="number" class="form-control" id="simmilarity_percentage_results" placeholder="Similarity Result">
-                          <label for="simmilarity_percentage_results">Similarity Result</label>
-                      </div>
+                  <div class="col-12 text-center">
+                    <label for="simmilarity_percentage_results" class="form-label">Similarity Result:</label>
+                    <input type="number" class="form-control" id="simmilarity_percentage_results" name="simmilarity_percentage_results">
                   </div>
 
-                  <div class="col-12" id="remarksContainer" style="display: none;">
-                    <div class="form-floating">
-                      <textarea class="form-control" id="remarks" name="remarks" style="height: 150px;"></textarea>
-                      <label for="remarks">Remarks</label>
-                    </div>
+                  <div class="col-12 text-center">
+                    <label for="date_processed" class="form-label">Processed Date:</label>
+                    <input type="date" class="form-control" id="date_processed" name="date_processed">
+                  </div>
+
+                  <div class="col-12 text-center">
+                    <label for="content" class="form-label">Proof of Similarity Index Using Turnitin:</label>
+                    <input name="img_path[]" type="file" multiple id="img_path" class="form-control" id="documentation">
+                  </div>
+
+                  <div class="col-12 text-center" id="remarksContainer" style="display: none;">
+                    <label for="remarks">Remarks</label>
+                    <textarea class="form-control" id="remarks" name="remarks" style="height: 150px;"></textarea>
                   </div>
 
                   <div class="col-12" style="padding-top: 20px">

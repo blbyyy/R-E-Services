@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('research_list', function (Blueprint $table) {
             $table->increments('id');
             $table->text('research_title');
+            $table->text('abstract');
             $table->text('department');
             $table->text('course');
             $table->text('faculty_adviser1')->nullable();
@@ -30,7 +31,7 @@ return new class extends Migration
             $table->text('researcher6')->nullable();
             $table->text('time_frame');
             $table->text('date_completion');
-            $table->text('abstract');
+            $table->string('research_file');
             $table->timestamps();
         });
 

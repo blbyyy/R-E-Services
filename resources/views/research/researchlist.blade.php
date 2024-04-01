@@ -145,29 +145,17 @@
                       <button type="submit" class="btn btn-outline-dark">Add</button>
                       <button type="reset" class="btn btn-outline-dark ms-2" onclick="toggleFileUploadForm()">Close</button>
                   </div>
-              </div>
+                </div>
               </form>
         </div>
     </div>
   </div>
 
-    <form class="row g-3" action="{{ route('research.list') }}" method="GET">
-      <div class="col-9">
-          <input type="text" class="form-control" name="query">
-      </div>
-      <div class="col-1">
-          <button type="submit" class="btn btn-dark" style="height: 40px; width: 70px;"><i class="bi bi-search"></i></button>
-      </div>
-      <div class="col-2">
-          <a href="{{url('/researchlist')}}">
-              <button type="button" class="btn btn-dark"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
-          </a>
-      </div>
-    </form>
-
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Research List</h5>
+
+          
 
           <table class="table table-bordered">
               <thead>

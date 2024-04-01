@@ -271,16 +271,14 @@
         
                           <input name="fileId1" type="hidden" class="form-control" id="fileId1">
                           <input name="requestId1" type="hidden" class="form-control" id="requestId1">
-            
-                          <div class="col-md-12">
-                              <div class="form-floating">
-                                  <select name="technicalAdviserStatus" class="form-select" id="technicalAdviserStatus" aria-label="State">
-                                      <option selected>Choose....</option>
-                                      <option value="Pending Subject Adviser Approval">Approve</option>
-                                      <option value="Rejected By Technical Adviser">Reject</option>
-                                  </select>
-                                  <label for="technicalAdviserStatus">Status</label>
-                              </div>
+
+                          <div class="col-12 text-center">
+                            <label for="technicalAdviserStatus" class="form-label">Are you approving this application?</label>
+                            <select id="technicalAdviserStatus" class="form-select" name="technicalAdviserStatus">
+                                <option selected>Choose....</option>
+                                <option value="Pending Subject Adviser Approval">Approve</option>
+                                <option value="Rejected By Technical Adviser">Reject</option>
+                            </select>
                           </div>
                           
                           <div class="col-12" id="technicalAdviserRemarksContainer" style="display: none;">
@@ -335,16 +333,14 @@
         
                           <input name="fileId2" type="hidden" class="form-control" id="fileId2">
                           <input name="requestId2" type="hidden" class="form-control" id="requestId2">
-            
-                          <div class="col-md-12">
-                              <div class="form-floating">
-                                  <select name="subjectAdviserStatus" class="form-select" id="subjectAdviserStatus" aria-label="State">
-                                      <option selected>Choose....</option>
-                                      <option value="Pending">Approve</option>
-                                      <option value="Rejected By Subject Adviser">Reject</option>
-                                  </select>
-                                  <label for="subjectAdviserStatus">Status</label>
-                              </div>
+
+                          <div class="col-12 text-center">
+                            <label for="subjectAdviserStatus" class="form-label">Are you approving this application?</label>
+                            <select name="subjectAdviserStatus" class="form-select" id="subjectAdviserStatus" aria-label="State">
+                              <option selected>Choose....</option>
+                              <option value="Pending">Approve</option>
+                              <option value="Rejected By Subject Adviser">Reject</option>
+                            </select>
                           </div>
                           
                           <div class="col-12" id="subjectAdviserRemarksContainer" style="display: none;">

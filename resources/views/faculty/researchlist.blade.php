@@ -249,7 +249,7 @@
 
                       <div class="text-center" id="facultyAccessDeneid">
                         <div class="col-md-12" >      
-                          <i class="bi bi-lock-fill" style="color: maroon; font-size: 8em; padding-top: 300px;"></i>
+                          <i class="bx bxs-lock" style="color: maroon; font-size: 8em;"></i>
                         </div>
                 
                         <div class="col-md-12" style="padding-top: 20px">

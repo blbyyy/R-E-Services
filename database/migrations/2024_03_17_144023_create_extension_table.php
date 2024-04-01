@@ -51,6 +51,8 @@ return new class extends Migration
             $table->string('moa_file')->nullable();
             $table->string('board_email')->nullable();
             $table->string('osg_email')->nullable();
+            $table->integer('appointment2_id')->unsigned()->nullable();
+            $table->foreign('appointment2_id')->references('id')->on('appointments');
             $table->string('proponents1')->nullable();
             $table->string('proponents2')->nullable();
             $table->string('proponents3')->nullable();
@@ -59,10 +61,10 @@ return new class extends Migration
             $table->string('implementation_proper')->nullable();
             $table->string('topics')->nullable();
             $table->string('subtopics')->nullable();
-            $table->integer('appointment2_id')->unsigned()->nullable();
-            $table->foreign('appointment2_id')->references('id')->on('appointments');
             $table->integer('appointment3_id')->unsigned()->nullable();
             $table->foreign('appointment3_id')->references('id')->on('appointments');
+            $table->integer('appointment4_id')->unsigned()->nullable();
+            $table->foreign('appointment4_id')->references('id')->on('appointments');
             $table->string('post_evaluation_attendance')->nullable();
             $table->string('evaluation_form')->nullable();
             $table->string('capsule_detail')->nullable();

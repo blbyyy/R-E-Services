@@ -710,6 +710,15 @@ class FacultyController extends Controller
                 $notif->reciever_id = $subjectAdviserId;
                 $notif->save();
 
+                $notif = new Notifications;
+                $notif->type = 'Student Notification';
+                $notif->title = 'Technical Adviser Certification Approved';
+                $notif->message = 'Your application was approved by the technical adviser; please wait for the approval of the subject adviser.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $subjectAdviser->user_id;
+                $notif->save();
+
                 $data = [
                     'subjectAdviserName' => $subjectAdviserName,
                 ];
@@ -810,7 +819,15 @@ class FacultyController extends Controller
                 $notif->message = 'Someone submitted an application to certify.';
                 $notif->date = now();
                 $notif->user_id = $subjectAdviser->user_id;
-                $notif->reciever_id = '0';
+                $notif->save();
+
+                $notif = new Notifications;
+                $notif->type = 'Student Notification';
+                $notif->title = 'Subject Adviser Certification Approved';
+                $notif->message = 'Your application has been approved by the subject adviser; please wait for the process of certification to be completed.';
+                $notif->date = now();
+                $notif->user_id = Auth::id();
+                $notif->reciever_id = $subjectAdviser->user_id;
                 $notif->save();
 
                 $success = [
@@ -990,6 +1007,8 @@ class FacultyController extends Controller
             return redirect()->to('/faculty/research-inventory')->with('success', 'Research was successfully uploaded');
     
     }
+
+    
 
     //MOBILE START
     public function mobilefacultyregistration_page()

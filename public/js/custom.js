@@ -2720,6 +2720,70 @@ $(document).ready(function () {
             });
         });
 
+        //student view application turnitin proof photos
+        $(".turnitinPhotos").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                url: "/student/application/turnitin-proof-photos/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    if (data == '') { 
+                        $('#carouselTurnitinProofPhotos').hide();
+                        $('#noTurnitinProofPhotos').show();
+                    } else {
+                        $('#carouselTurnitinProofPhotos').show();
+                        $('#noTurnitinProofPhotos').hide();
+                        data.forEach(function(item, index) {
+                            var imageName = item.img_path; 
+                            var imageUrl = '/images/turnitinProofs/' + imageName;
+                            
+                            var carouselItem = document.createElement("div");
+                            carouselItem.classList.add("carousel-item");
+                            
+                            if (index === 0) {
+                                carouselItem.classList.add("active");
+                            }
+                            
+                            var img = document.createElement("img");
+                            img.src = imageUrl;
+                            img.classList.add("d-block", "w-100");
+                            img.alt = "Slide " + (index + 1);
+                            
+                            carouselItem.appendChild(img);
+                            
+                            document.querySelector("#turnitin").appendChild(carouselItem);
+                        });
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //refresh modal when the modal is close
+        $("#turnitinPhotos").on("hidden.bs.modal", function () {
+            function clearCarouselItems() {
+                var carouselInner = document.querySelector("#turnitin");
+                carouselInner.innerHTML = ''; // Clear all inner HTML
+            }
+
+            clearCarouselItems();
+        });
+
         //if modal is hidden or close it will refresh 
         $('#studentViewInfo').on('hidden.bs.modal', function () {
             $("#certificate").empty();

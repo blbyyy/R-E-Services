@@ -132,6 +132,11 @@ Route::get('/application/status/{id}', [
         'as' => 'student.get-specific-data'
 ]);
 
+Route::get('/student/application/turnitin-proof-photos/{id}', [
+      'uses' => 'StudentController@getTurnitinProofPhotos',
+            'as' => 'student.get.application.turnitin-proof-proof.specific'
+    ]);
+
 Route::get('/student/title-checker', [
   'uses' => 'StudentController@titleChecker',
         'as' => 'student.titleChecker'
@@ -647,6 +652,16 @@ Route::post('/faculty/extension/application/proposal11/sent', [
       'uses' => 'ExtensionController@proposal11',
             'as' => 'faculty.extension.proposal11.sent'
     ]);
+
+Route::get('/faculty/research-proposal', [
+      'uses' => 'ResearchProposalController@researchProposal',
+            'as' => 'faculty.research-proposal'
+    ]);
+
+Route::post('/faculty/research-proposal/sent', [
+      'uses' => 'ResearchProposalController@uploadResearchProposal',
+            'as' => 'faculty.research-proposal.sent'
+    ]);
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [
@@ -1037,15 +1052,45 @@ Route::get('/userCountTable', [
         'as' => 'userCountTable.pdf'
 ]);
 
+Route::get('/studentCountTable', [
+      'uses' => 'PdfController@studentCountTable',
+            'as' => 'studentCountTable.pdf'
+    ]);
+
+Route::get('/facultyCountTable', [
+      'uses' => 'PdfController@facultyCountTable',
+            'as' => 'facultyCountTable.pdf'
+    ]);
+
+Route::get('/researchCoordinatorCountTable', [
+      'uses' => 'PdfController@researchCoordinatorCountTable',
+            'as' => 'researchCoordinatorCountTable.pdf'
+    ]);
+
+Route::get('/staffAdminCountTable', [
+      'uses' => 'PdfController@staffAdminCountTable',
+            'as' => 'staffAdminCountTable.pdf'
+    ]);
+
 Route::get('/applicationsCountTable', [
   'uses' => 'PdfController@applicationsCountTable',
         'as' => 'applicationsCountTable.pdf'
 ]);
 
-Route::get('/thesisTypeCountTable', [
+Route::post('/thesisTypeCountTable', [
   'uses' => 'PdfController@thesisTypeCountTable',
         'as' => 'thesisTypeCountTable.pdf'
 ]);
+
+Route::post('/requestorTypeCountTable', [
+      'uses' => 'PdfController@requestorTypeCountTable',
+            'as' => 'requestorTypeCountTable.pdf'
+    ]);
+
+Route::post('/statusTypeCountTable', [
+      'uses' => 'PdfController@statusTypeCountTable',
+            'as' => 'statusTypeCountTable.pdf'
+    ]);
 
 Route::get('/courseCountTable', [
   'uses' => 'PdfController@courseCountTable',
@@ -1061,6 +1106,21 @@ Route::get('/researchesCourseCountTable', [
   'uses' => 'PdfController@researchesCourseCountTable',
         'as' => 'researchesCourseCountTable.pdf'
 ]);
+
+Route::post('/researchListByDepartmentAndYear', [
+      'uses' => 'PdfController@researchListByDepartmentAndYear',
+            'as' => 'researchListByDepartmentAndYear.pdf'
+    ]);
+
+Route::get('/researchesCountTable', [
+      'uses' => 'PdfController@researchesCountTable',
+            'as' => 'researchesCountTable.pdf'
+    ]);
+
+Route::get('/researchListByInputText', [
+      'uses' => 'PdfController@researchListByInputText',
+            'as' => 'researchListByInputText.pdf'
+    ]);
 
 Route::get('/certificate/{control_id}', [
   'uses' => 'QrCodeController@landingPage',
@@ -1207,7 +1267,12 @@ Route::get('/admin/extension/proposalList/proposal7/{id}', [
             'as' => 'admin.proposallist.proposal7'
     ]);
     
-    Route::post('/admin/extension/proposal-list/sent7', [
+Route::post('/admin/extension/proposal-list/sent7', [
       'uses' => 'ExtensionController@adminProposalApproval7',
             'as' => 'admin.proposal.list.specific.sent7'
+    ]);
+
+Route::get('/admin/printable-data', [
+      'uses' => 'PdfController@printableData',
+            'as' => 'admin.printable.data'
     ]);

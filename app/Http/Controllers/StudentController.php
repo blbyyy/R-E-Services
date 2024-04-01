@@ -70,7 +70,19 @@ class StudentController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        return View::make('auth.fillup',compact('student'));
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('auth.fillup',compact('student','studentNotifCount','studentNotification'));
     }
 
     public function filled(Request $request)
@@ -82,7 +94,7 @@ class StudentController extends Controller
 
         $student = Student::find($student_id->id);
         $student->mname = $request->mname;
-        $student->college = $request->college;
+        $student->college = 'TUPT';
         $student->course = $request->course;
         $student->tup_id = $request->tup_id;
         $student->gender = $request->gender;
@@ -672,6 +684,17 @@ class StudentController extends Controller
         ->first();
 
         return response()->json($specificData);
+    }
+
+    public function getTurnitinProofPhotos($id)
+    {
+        $photos = DB::table('requestingform')
+        ->join('turnitin_photos','requestingform.id','turnitin_photos.requestingform_id')
+        ->select('turnitin_photos.*')
+        ->where('requestingform.id', $id)
+        ->get();
+
+        return response()->json($photos);
     }
 
     public function titleChecker(Request $request)
