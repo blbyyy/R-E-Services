@@ -559,6 +559,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link " href="{{url('/admin/research-proposal')}}">
+            <i class="ri-file-edit-line"></i>
+            <span>Research Proposals</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link " href="{{url('/applicationlist')}}">
             <i class="bi bi-journal-bookmark"></i>
             <span>Research Applications</span>

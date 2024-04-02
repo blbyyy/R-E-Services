@@ -2336,6 +2336,50 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //admin view research proposal status
+        $(".processResearchProposal").click(function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/research-proposal/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    $('#proposalId').val(id);
+                    $('#researchProposalTitle').text(data.title);
+                    $('#researchProposalType').text(data.research_type);
+
+                    if (data.status === "Pending R&E Office Approval") {
+                        $("#researchProposalStatus").html('<h5><span class="badge bg-warning">Pending R&E Office Approval</span></h5>');
+                    } else if (data.status === "Research Proposal Approved By R&E Office") {
+                        $("#researchProposalStatus").html('<h5><span class="badge bg-success">Research Proposal Approved By R&E Office</span></h5>');
+                    } 
+
+                    var pdfLink = $('<a>', {
+                        href: "/uploads/researchProposal/" + encodeURIComponent(data.proposal_file),
+                        text: "Download File",
+                        target: "_blank"
+                    });
+                    $("#pdfFile").empty().append(pdfLink);
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
     //END OF ADMIN POV
 
     //START OF STUDENT POV
@@ -5340,6 +5384,99 @@ $(document).ready(function () {
                     $('#prototype4Id').val(data.prototypeID);
                 },
                 error: function(error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //faculty view research proposal status
+        $(".viewReseachProposalStatus").click(function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/research-proposal/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    if (data.colloquiumId === null) { 
+                        $('#colloquiumSchedule').hide();
+                    } else {
+                        $('#colloquiumSchedule').show();
+                        $('#colloquiumTime').text(data.time);
+                        $('#colloquiumDate').text(data.date);
+                    }
+                    
+                    $('#researchTitle').text(data.title);
+                    $('#status').text(data.status);
+                    $('#researchProposalRemarks').text(data.remarks);
+                    $('#researchProposalType').text(data.research_type);
+
+                    if (data.status === "Pending R&E Office Approval") {
+                        $("#status").html('<h5><span class="badge bg-warning">Pending R&E Office Approval</span></h5>');
+                    } else if (data.status === "Research Proposal Approved By R&E Office") {
+                        $("#status").html('<h5><span class="badge bg-success">Research Proposal Approved By R&E Office</span></h5>');
+                    } else if (data.status === "Research Proposal Rejected By R&E Office") {
+                        $("#status").html('<h5><span class="badge bg-danger">Research Proposal Rejected By R&E Office</span></h5>');
+                    }
+
+                    var pdfLink = $('<a>', {
+                        href: "/uploads/researchProposal/" + encodeURIComponent(data.proposal_file),
+                        text: "View File",
+                        target: "_blank"
+                    });
+                    $("#pdfFile").empty().append(pdfLink);
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //when the research proposal modal is hidden all the data will be back to the default
+        $("#viewReseachProposalStatus").on("hidden.bs.modal", function () {
+            $('#researchTitle').empty();
+            $('#status').empty();
+            $('#researchProposalRemarks').empty();
+            $('#researchProposalType').empty();
+            $("#pdfFile").empty();
+        });
+
+        //faculty getting id for resubmit research proposal
+        $(".reSubmitResearchProposal").click(function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/research-proposal/resbumit/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    $('#proposalId').val(id);
+                    
+                },
+                error: function (error) {
                     console.log(error);
                 },
             });

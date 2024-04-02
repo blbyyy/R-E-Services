@@ -150,9 +150,9 @@
                         </td>
                         <td>
                           @if ($proposal->status == 'Process Done')
-                          <span class="badge rounded-pill bg-success">{{$proposal->status}}</span>
+                            <span class="badge rounded-pill bg-success">{{$proposal->status}}</span>
                           @else
-                          <span class="badge rounded-pill bg-primary">{{$proposal->status}}</span> 
+                            <span class="badge rounded-pill bg-primary">{{$proposal->status}}</span> 
                           @endif
                         </td>
                     </tr> 

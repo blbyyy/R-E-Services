@@ -79,7 +79,7 @@
               </div>
             </div>
         @else
-              <div class="card mb-3">
+            <div class="card mb-3">
                 <div class="row">
                   <div class="col-md-10 d-flex justify-content-center align-items-center">
                       <div class="card-body">
@@ -95,7 +95,7 @@
                       </div>
                   </div>
                 </div>
-              </div>
+            </div>
         @endif
       @endforeach
     @else

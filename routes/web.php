@@ -161,6 +161,21 @@ Route::get('/student/all/notifications', [
   'uses' => 'LayoutsController@studentNotifications',
         'as' => 'student.all.notifications'
 ]);
+
+Route::get('/admin/research-proposal', [
+      'uses' => 'ResearchProposalController@researchProposalList',
+            'as' => 'admin.research-proposal'
+    ]);
+
+Route::get('/admin/research-proposal/{id}', [
+      'uses' => 'ResearchProposalController@processingResearchProposal',
+            'as' => 'admin.process.research-proposal'
+    ]);
+
+Route::post('/admin/research-proposal/sent', [
+      'uses' => 'ResearchProposalController@sendingBackResearchProposal',
+            'as' => 'admin.sending-back.research.proposal'
+    ]);
 //END OF STUDENT POV
 
 //START STAFF POV
@@ -661,6 +676,21 @@ Route::get('/faculty/research-proposal', [
 Route::post('/faculty/research-proposal/sent', [
       'uses' => 'ResearchProposalController@uploadResearchProposal',
             'as' => 'faculty.research-proposal.sent'
+    ]);
+
+Route::get('/faculty/research-proposal/resbumit/{id}', [
+      'uses' => 'ResearchProposalController@reSubmitProposalFetchingId',
+            'as' => 'faculty.research-proposal.resubmit'
+    ]);
+
+Route::post('/faculty/research-proposal/resubmit/sent', [
+      'uses' => 'ResearchProposalController@reUploadResearchProposal',
+            'as' => 'faculty.research-proposal.resubmit.sent'
+    ]);
+
+Route::get('/faculty/research-proposal/{id}', [
+      'uses' => 'ResearchProposalController@researchProposalStatus',
+            'as' => 'faculty.research-proposal.status'
     ]);
 //END OF FACULTY POV
 
