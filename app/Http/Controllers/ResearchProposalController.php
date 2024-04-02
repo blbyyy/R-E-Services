@@ -229,4 +229,52 @@ class ResearchProposalController extends Controller
             return redirect()->to('/admin/research-proposal')->with('success', 'Research Proposal Process Done.');
 
     }
+
+    //MOBILE START
+    public function mobileresearchProposal($id)
+    {
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $proposal = DB::table('research_proposal')
+            ->join('users', 'users.id', 'research_proposal.user_id')
+            ->select('research_proposal.*', 'users.*')
+            ->where('research_proposal.user_id', $id)
+            ->get();
+
+        $data = [
+            'faculty' => $faculty,
+            'proposal' => $proposal
+        ];
+
+        return response()->json($data);
+    }
+
+    public function mobileuploadResearchProposal(Request $request)
+    { 
+        $proposal = new ResearchProposal;
+        $proposal->research_type = $request->research_type;
+        $proposal->title = $request->title;
+        $proposal->status = 'Pending R&E Office Approval';
+        $proposal->remarks = 'Your research proposal will undergo a review process. Please wait for the results once your proposal has been assessed.';
+        $proposal->user_id  = $request->user_id;
+
+        $pdfFile = $request->file('researchProposalFile');
+        $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
+        $pdfFile->move(public_path('uploads/researchProposal'), $pdfFileName);
+        $proposal->proposal_file = $pdfFileName;
+
+        $proposal->save();
+
+        $response = [
+            'success' => true,
+            'message' => 'Research Proposal Successfully Sent.'
+        ];
+
+        return response()->json($response);
+    }
+    //MOBILE END
 }

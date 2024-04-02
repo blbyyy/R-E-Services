@@ -211,4 +211,7 @@ Route::post('/mobilecheckingAppointments', 'App\Http\Controllers\AppointmentCont
 Route::post('/mobilefacultySchedulingAppointment1', 'App\Http\Controllers\AppointmentController@mobilefacultySchedulingAppointment1');
 Route::post('/mobileproposal1', 'App\Http\Controllers\ExtensionController@mobileproposal1');
 Route::post('/mobileproposal2', 'App\Http\Controllers\ExtensionController@mobileproposal2');
+
+Route::get('/mobileresearchProposal/{id}', 'App\Http\Controllers\ResearchProposalController@mobileresearchProposal');
+Route::post('/mobileuploadResearchProposal', 'App\Http\Controllers\ResearchProposalController@mobileuploadResearchProposal');
 //MOBILE END
