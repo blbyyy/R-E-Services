@@ -66,6 +66,14 @@
                             @else
                               <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentMidSurvey" data-bs-toggle="modal" data-bs-target="#processingAppointmentMidSurvey"><i class="bi bi-arrow-right"></i></button>
                             @endif
+                          @elseif ($appointment->purpose === 'Implementation Proper Appointment')
+                            @if ($appointment->status === 'Appointment Done') 
+                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is ongoing"><i class="bi bi-arrow-right"></i></button>
+                            @elseif ($appointment->status === 'Appointment Rejected')
+                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
+                            @else
+                              <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentImplementationProper" data-bs-toggle="modal" data-bs-target="#processingAppointmentImplementationProper"><i class="bi bi-arrow-right"></i></button>
+                            @endif
                           @endif
                         </td>
                         <td>
@@ -149,11 +157,11 @@
 
         </div>
 
-        <div class="modal fade" id="processingAppointmentPreSurvey" tabindex="-1">
+        <div class="modal fade" id="processingAppointmentImplementationProper" tabindex="-1">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Appointments2</h5>
+                <h5 class="modal-title">Appointments</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -166,11 +174,67 @@
                       <h5><b style="color: maroon">Status:</b> <span id="status2"></span></h5>
                   </div>
 
-                  <form class="row g-3" method="POST" action="{{ route('appointment.pre-survey.sent') }}" enctype="multipart/form-data">
+                  <form class="row g-3" method="POST" action="{{ route('appointment.implementation-proper.sent') }}" enctype="multipart/form-data">
                           @csrf
 
                       <input name="appointmentId2" type="hidden" class="form-control" id="appointmentId2">
                       <input name="extensionId2" type="hidden" class="form-control" id="extensionId2">
+
+                      <div class="col-12 text-center">
+                        <label for="status" class="form-label">Did you authorize this appointment?</label>
+                          <select id="status" class="form-select" name="status">
+                            <option selected>Choose....</option>
+                            <option value="Appointment Set">Approve</option>
+                            <option value="Appointment Done">Done</option>
+                            <option value="Appointment Cancelled">Reject</option>
+                          </select>
+                      </div>
+
+                      <div class="col-12" id="messageContainer" style="display: none;">
+                          <div class="form-floating">
+                          <textarea class="form-control" id="message" name="message" style="height: 100px;"></textarea>
+                          <label for="message">Message</label>
+                          </div>
+                      </div>
+
+                      <div class="col-12" style="padding-top: 20px">
+                          <div class="d-flex justify-content-end">
+                              <button type="submit" class="btn btn-outline-dark">Submit</button>
+                          </div>
+                      </div>
+
+                  </form>
+                  
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="processingAppointmentPreSurvey" tabindex="-1">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Appointments3</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+               
+                  <div class="text-center" style="padding-bottom: 30px; padding-top: 30px;">
+                      <h5><b style="color: maroon">Requestor:</b> <span id="requestor3"></span></h5>
+                      <h5><b style="color: maroon">Date:</b> <span id="date3"></span></h5>
+                      <h5><b style="color: maroon">Time Range:</b> <span id="time3"></span></h5>
+                      <h5><b style="color: maroon">Purpose:</b> <span id="purpose3"></span></h5>
+                      <h5><b style="color: maroon">Status:</b> <span id="status3"></span></h5>
+                  </div>
+
+                  <form class="row g-3" method="POST" action="{{ route('appointment.pre-survey.sent') }}" enctype="multipart/form-data">
+                          @csrf
+
+                      <input name="appointmentId3" type="hidden" class="form-control" id="appointmentId3">
+                      <input name="extensionId3" type="hidden" class="form-control" id="extensionId3">
 
                       <div class="col-12 text-center">
                         <label for="status" class="form-label">Did you authorize this appointment?</label>
@@ -215,18 +279,18 @@
               <div class="modal-body">
                
                   <div class="text-center" style="padding-bottom: 30px; padding-top: 30px;">
-                      <h5><b style="color: maroon">Requestor:</b> <span id="requestor3"></span></h5>
-                      <h5><b style="color: maroon">Date:</b> <span id="date3"></span></h5>
-                      <h5><b style="color: maroon">Time Range:</b> <span id="time3"></span></h5>
-                      <h5><b style="color: maroon">Purpose:</b> <span id="purpose3"></span></h5>
-                      <h5><b style="color: maroon">Status:</b> <span id="status3"></span></h5>
+                      <h5><b style="color: maroon">Requestor:</b> <span id="requestor4"></span></h5>
+                      <h5><b style="color: maroon">Date:</b> <span id="date4"></span></h5>
+                      <h5><b style="color: maroon">Time Range:</b> <span id="time4"></span></h5>
+                      <h5><b style="color: maroon">Purpose:</b> <span id="purpose4"></span></h5>
+                      <h5><b style="color: maroon">Status:</b> <span id="status4"></span></h5>
                   </div>
 
                   <form class="row g-3" method="POST" action="{{ route('appointment.mid-survey.sent') }}" enctype="multipart/form-data">
                           @csrf
 
-                      <input name="appointmentId3" type="hidden" class="form-control" id="appointmentId3">
-                      <input name="extensionId3" type="hidden" class="form-control" id="extensionId3">
+                      <input name="appointmentId4" type="hidden" class="form-control" id="appointmentId4">
+                      <input name="extensionId4" type="hidden" class="form-control" id="extensionId4">
 
                       <div class="col-12 text-center">
                         <label for="status" class="form-label">Did you authorize this appointment?</label>

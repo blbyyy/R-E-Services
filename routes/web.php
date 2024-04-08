@@ -1207,6 +1207,16 @@ Route::post('/appointment/proposal/sent', [
             'as' => 'appointment.proposal.sent'
     ]);
 
+Route::get('/appointments/implentation-proper/{id}', [
+      'uses' => 'AppointmentController@implementationProperAppointmentId',
+            'as' => 'appointments.list.implementation-proper'
+    ]);
+
+Route::post('/appointment/implentation-proper/sent', [
+      'uses' => 'AppointmentController@sendingImplementationProperAppointment',
+            'as' => 'appointment.implementation-proper.sent'
+    ]);
+
 Route::get('/appointments/pre-survey/{id}', [
       'uses' => 'AppointmentController@preSurveyAppointmentId',
             'as' => 'appointments.list.pre-survey'

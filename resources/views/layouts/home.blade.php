@@ -248,7 +248,7 @@
               </div>
 
               <div class="tab-pane fade" id="organizationTab" role="tabpanel" aria-labelledby="organization-tab">
-                  organization
+                <img src="{{ asset('assets/img/org.png')}}" style="width: 100%; height: 100%;">
               </div>
 
               <div class="tab-pane fade" id="certificationGuideTab" role="tabpanel" aria-labelledby="certificationGuide-tab">

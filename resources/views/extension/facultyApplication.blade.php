@@ -42,11 +42,15 @@
     @endif
 
     <div class="col-12" style="padding-bottom: 20px;">
-      <button type="button" class="btn btn-dark" onclick="toggleCreateApplicationForm()"><i class="bi bi-folder-plus"></i> Create Application</button>
+      <button type="button" class="btn btn-dark" onclick="toggleCreateApplicationForm()">
+        <i class="bi bi-folder-plus"></i> Create Application
+      </button>
     </div>
 
-    <div id="createApplicationForm" class="col-md-12" style="display: none;">
-      <div class="card">
+    <section class="section">
+      <div class="row">
+
+        <div class="card mb-3" id="createApplicationForm" style="display: none;">
           <div class="card-body">
               <h5 class="card-title">Create an Application</h5>
   
@@ -66,11 +70,8 @@
                   </div>
               </form>
           </div>
-      </div>
-    </div>
+        </div>
 
-    <section class="section">
-      <div class="row">
         @if(count($application) > 0)
           @foreach($application as $applications)
             @if($applications->status == 'New Application')
@@ -241,7 +242,7 @@
                     </div>
                   </div>
                 </div>
-            @elseif($applications->status == 'Pending Approval of DO')
+            @elseif($applications->status == 'Pending Approval of DO, UES and President')
               <div class="card mb-3">
                   <div class="row g-0">
                     <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -255,7 +256,7 @@
                     </div>
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
-                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of DO, Please wait the result.">
+                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of DO, UES and President; Please wait the result.">
                             <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
@@ -283,27 +284,6 @@
                   </div>
                 </div>
               </div>
-            @elseif($applications->status == 'Pending Proposal Approval By UES')
-              <div class="card mb-3">
-                  <div class="row g-0">
-                    <div class="col-md-10 d-flex justify-content-center align-items-center">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$applications->title}}</h5>   
-                            <span class="badge rounded-pill bg-warning">{{$applications->status}}</span>
-                            <div class="progress mt-3">
-                              <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
-                            </div>   
-                        </div>
-                    </div>
-                    <div class="col-md-2 d-flex justify-content-center align-items-center">
-                        <div>
-                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of UES, Please wait the result.">
-                            <i class="bi bi-arrow-right"></i>
-                          </button>
-                        </div>
-                    </div>
-                  </div>
-              </div>
             @elseif($applications->status == 'Proposal Rejected By UES')
               <div class="card mb-3">
                 <div class="row">
@@ -319,48 +299,6 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal2GetId" data-bs-toggle="modal" data-bs-target="#proposal2" data-id="{{$applications->id}}">
-                          <i class="bi bi-arrow-right"></i>
-                        </button> 
-                      </div>
-                  </div>
-                </div>
-              </div>
-            @elseif($applications->status == 'Pending Proposal Approval By President') 
-              <div class="card mb-3">
-                  <div class="row g-0">
-                    <div class="col-md-10 d-flex justify-content-center align-items-center">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$applications->title}}</h5>   
-                            <span class="badge rounded-pill bg-warning">{{$applications->status}}</span>
-                            <div class="progress mt-3">
-                              <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
-                            </div>   
-                        </div>
-                    </div>
-                    <div class="col-md-2 d-flex justify-content-center align-items-center">
-                        <div>
-                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of President, Please wait the result.">
-                            <i class="bi bi-arrow-right"></i>
-                          </button>
-                        </div>
-                    </div>
-                  </div>
-              </div>
-            @elseif($applications->status == 'Proposal Approved By President')
-              <div class="card mb-3">
-                <div class="row">
-                  <div class="col-md-10 d-flex justify-content-center align-items-center">
-                      <div class="card-body">
-                          <h5 class="card-title">{{$applications->title}}</h5>   
-                          <span class="badge rounded-pill bg-primary">{{$applications->status}}</span>
-                          <div class="progress mt-3">
-                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
-                          </div>    
-                      </div>
-                  </div>
-                  <div class="col-md-2 d-flex justify-content-center align-items-center">
-                      <div>
-                        <button type="button" class="btn btn-outline-dark proposal3GetId" data-bs-toggle="modal" data-bs-target="#proposal3" data-id="{{$applications->id}}">
                           <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
@@ -388,7 +326,28 @@
                   </div>
                 </div>
               </div>
-            @elseif($applications->status == 'Pending Approval of Board')
+            @elseif($applications->status == 'Proposal Approved By DO, UES and President')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-primary">{{$applications->status}}</span>
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div>    
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal3GetId" data-bs-toggle="modal" data-bs-target="#proposal3" data-id="{{$applications->id}}">
+                          <i class="bi bi-arrow-right"></i>
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
+            @elseif($applications->status == 'Pending Approval of Board and OSG')
               <div class="card mb-3">
                   <div class="row g-0">
                     <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -402,7 +361,7 @@
                     </div>
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
-                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of Board, Please wait the result.">
+                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of Board and OSG, Please wait the result.">
                             <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
@@ -430,27 +389,6 @@
                   </div>
                 </div>
               </div>
-            @elseif($applications->status == 'Pending Proposal Approval By OSG')
-              <div class="card mb-3">
-                  <div class="row g-0">
-                    <div class="col-md-10 d-flex justify-content-center align-items-center">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$applications->title}}</h5>   
-                            <span class="badge rounded-pill bg-warning">{{$applications->status}}</span>
-                            <div class="progress mt-3">
-                              <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
-                            </div>    
-                        </div>
-                    </div>
-                    <div class="col-md-2 d-flex justify-content-center align-items-center">
-                        <div>
-                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of OSG, Please wait the result.">
-                            <i class="bi bi-arrow-right"></i>
-                          </button>
-                        </div>
-                    </div>
-                  </div>
-              </div>
             @elseif($applications->status == 'Proposal Rejected By OSG')
               <div class="card mb-3">
                 <div class="row">
@@ -472,7 +410,7 @@
                   </div>
                 </div>
               </div>
-            @elseif($applications->status == 'Proposal Approved By OSG')
+            @elseif($applications->status == 'Proposal Approved By Board and OSG')
               <div class="card mb-3">
                 <div class="row">
                   <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -486,14 +424,14 @@
                   </div>
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
-                        <button type="button" class="btn btn-outline-dark proposal4GetId" data-bs-toggle="modal" data-bs-target="#proposal4" data-id="{{$applications->id}}">
+                        <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
                           <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
                   </div>
                 </div>
               </div>
-            @elseif($applications->status == 'Pending Implementation Approval by R&E-Office')
+            @elseif($applications->status == 'Pending Approval for Implementation Proper Appointment')
               <div class="card mb-3">
                   <div class="row g-0">
                     <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -507,35 +445,35 @@
                     </div>
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div>
-                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval of R&E-Office, Please wait the result.">
+                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="This application is pending of approval for implementation proper appointment, Please wait the result.">
                             <i class="bi bi-arrow-right"></i>
                           </button>
                         </div>
                     </div>
                   </div>
               </div>
-            @elseif($applications->status == 'Implementation Rejected By R&E-Office')
+            @elseif($applications->status == 'Appointment Set for Implementation Proper')
               <div class="card mb-3">
-                <div class="row">
-                  <div class="col-md-10 d-flex justify-content-center align-items-center">
-                      <div class="card-body">
-                          <h5 class="card-title">{{$applications->title}}</h5>   
-                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
-                          <div class="progress mt-3">
-                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
-                          </div> 
-                      </div>
+                  <div class="row g-0">
+                    <div class="col-md-10 d-flex justify-content-center align-items-center">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$applications->title}}</h5>   
+                            <span class="badge rounded-pill bg-warning">{{$applications->status}}</span> 
+                            <div class="progress mt-3">
+                              <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <div>
+                          <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="Implementation proper appointment is ongoing please wait to proceed to next step.">
+                            <i class="bi bi-arrow-right"></i>
+                          </button>
+                        </div>
+                    </div>
                   </div>
-                  <div class="col-md-2 d-flex justify-content-center align-items-center">
-                      <div>
-                        <button type="button" class="btn btn-outline-dark proposal4GetId" data-bs-toggle="modal" data-bs-target="#proposal4" data-id="{{$applications->id}}">
-                          <i class="bi bi-arrow-right"></i>
-                        </button> 
-                      </div>
-                  </div>
-                </div>
               </div>
-            @elseif($applications->status == 'Implementation Approved By R&E-Office')
+            @elseif($applications->status == 'Appointment Done for Implementation Proper')
               <div class="card mb-3">
                 <div class="row">
                   <div class="col-md-10 d-flex justify-content-center align-items-center">
@@ -550,6 +488,27 @@
                   <div class="col-md-2 d-flex justify-content-center align-items-center">
                       <div>
                         <button type="button" class="btn btn-outline-dark proposal5GetId" data-bs-toggle="modal" data-bs-target="#proposal5" data-id="{{$applications->id}}">
+                          <i class="bi bi-arrow-right"></i>
+                        </button> 
+                      </div>
+                  </div>
+                </div>
+              </div>
+            @elseif($applications->status == 'Implementation Proper Appointment Cancelled')
+              <div class="card mb-3">
+                <div class="row">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$applications->title}}</h5>   
+                          <span class="badge rounded-pill bg-danger">{{$applications->status}}</span>
+                          <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: {{$applications->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$applications->percentage_status}}%</div>
+                          </div> 
+                      </div>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
+                      <div>
+                        <button type="button" class="btn btn-outline-dark proposal0GetId" data-bs-toggle="modal" data-bs-target="#proposal0" data-id="{{$applications->id}}">
                           <i class="bi bi-arrow-right"></i>
                         </button> 
                       </div>
@@ -958,7 +917,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="p1Title">Make an Appointment</h5>
+            <h5 class="modal-title" id="p1Title"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -968,23 +927,24 @@
 
               <input name="extensionId" type="hidden" class="form-control" id="extensionId">
   
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="purpose" class="form-label">Purpose</label>
                 <select id="purpose" name="purpose" class="form-select">
                   <option selected>--- SELECT PURPOSE ---</option>
                   <option value="Proposal Consultation">Consultation Meeting for Proposal</option>
                   <option value="Pre-Survey Consultation">Consultation Meeting for Pre-Evaluation Survey</option>
                   <option value="Mid-Survey Consultation">Consultation Meeting for Mid-Evaluation Survey</option>
+                  <option value="Implementation Proper Appointment">Appointment for Implementation Proper</option>
                   <option value=""></option>
                 </select>
               </div>
   
-              <div class="col-6">
+              <div class="col-6 text-center">
                 <label for="date" class="form-label">Date</label>
                 <input type="date" class="form-control" id="date" name="date">
               </div>
   
-              <div class="col-6">
+              <div class="col-6 text-center">
                 <label for="time" class="form-label">Time</label>
                 <select id="time" name="time" class="form-select">
                   <option selected>--- SELECT TIME RANGE ---</option>
@@ -1028,19 +988,19 @@
   
               <input type="hidden" class="form-control" id="proposalId" name="proposalId">
       
-              <div class="col-12">
-                <label for="beneficiary" class="form-label">Beneficiary:</label>
+              <div class="col-12 text-center">
+                <label for="beneficiary" class="form-label">Partner/Beneficiary</label>
                 <input type="text" class="form-control" id="beneficiary" name="beneficiary">
               </div>
 
-              <div class="col-12">
-                <label for="mou_file" class="form-label">Upload MOU File:</label>
+              <div class="col-12 text-center">
+                <label for="mou_file" class="form-label">Upload MOU (memorandum of understanding)</label>
                 <input type="file" class="form-control" id="mou_file" name="mou_file">
               </div>
 
               <div class="col-" style="padding-top: 20px">
                 <div class="d-flex justify-content-end">
-                  <button type="submit" class="btn btn-outline-dark">Submit Proposal</button>
+                  <button type="submit" class="btn btn-outline-dark">Submit</button>
                 </div>
               </div>
       
@@ -1058,7 +1018,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Submission of Documents</h5>
+            <h5 class="modal-title" id="proposal2Title">Submission of Documents</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -1068,24 +1028,24 @@
   
               <input type="hidden" class="form-control" id="proposal2Id" name="proposal2Id">
 
-              <div class="col-12">
-                <label for="ppmp_file" class="form-label">Upload PPMP(Project Procurement Management Plan):</label>
+              <div class="col-12 text-center">
+                <label for="ppmp_file" class="form-label">Upload PPMP (Project Procurement Management Plan):</label>
                 <input type="file" class="form-control" id="ppmp_file" name="ppmp_file">
               </div>
 
-              <div class="col-12">
-                <label for="pr_file" class="form-label">Upload PR(Purchase Request):</label>
+              <div class="col-12 text-center">
+                <label for="pr_file" class="form-label">Upload PR (Purchase Request):</label>
                 <input type="file" class="form-control" id="pr_file" name="pr_file">
               </div>
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="market_study_file" class="form-label">Upload Request for Qoutation/Market Study:</label>
                 <input type="file" class="form-control" id="market_study_file" name="market_study_file">
               </div>
 
               <div class="col-" style="padding-top: 20px">
                 <div class="d-flex justify-content-end">
-                  <button type="submit" class="btn btn-outline-dark">Submit Proposal</button>
+                  <button type="submit" class="btn btn-outline-dark">Submit</button>
                 </div>
               </div>
       
@@ -1113,14 +1073,14 @@
   
               <input type="hidden" class="form-control" id="proposal3Id" name="proposal3Id">
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="moa_file" class="form-label">Upload MOA (Memorandum Of Agreement):</label>
                 <input type="file" class="form-control" id="moa_file" name="moa_file">
               </div>
 
               <div class="col-" style="padding-top: 20px">
                 <div class="d-flex justify-content-end">
-                  <button type="submit" class="btn btn-outline-dark">Submit Proposal</button>
+                  <button type="submit" class="btn btn-outline-dark">Submit</button>
                 </div>
               </div>
             </form>
@@ -1191,19 +1151,19 @@
   
               <input type="hidden" class="form-control" id="proposal5Id" name="proposal5Id">
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="topics" class="form-label">Enter Topics:</label>
-                <input type="text" class="form-control" id="topics" name="topics">
+                <textarea type="text" class="form-control" id="topics" name="topics" style="height: 100px"></textarea>
               </div>
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="subtopics" class="form-label">Enter Sub Topics:</label>
-                <input type="text" class="form-control" id="subtopics" name="subtopics">
+                <textarea type="text" class="form-control" id="subtopics" name="subtopics" style="height: 100px"></textarea>
               </div>
 
               <div class="col-" style="padding-top: 20px">
                 <div class="d-flex justify-content-end">
-                  <button type="submit" class="btn btn-outline-dark">Submit Proposal</button>
+                  <button type="submit" class="btn btn-outline-dark">Submit</button>
                 </div>
               </div>
             </form>
@@ -1230,32 +1190,32 @@
   
               <input type="hidden" class="form-control" id="proposal6Id" name="proposal6Id">
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="post_evaluation_attendance" class="form-label">Upload Attendance for Post-Evaluation Survey:</label>
                 <input type="file" class="form-control" id="post_evaluation_attendance" name="post_evaluation_attendance">
               </div>
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="evaluation_form" class="form-label">Evaluation Form:</label>
                 <input type="file" class="form-control" id="evaluation_form" name="evaluation_form">
               </div>
               
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="capsule_detail" class="form-label">Upload Capsule Detail/Narrative:</label>
                 <input type="file" class="form-control" id="capsule_detail" name="capsule_detail">
               </div>
 
-              <div class="col-12">
+              <div class="col-12 text-center ">
                 <label for="certificate" class="form-label">Upload Certificate:</label>
                 <input type="file" class="form-control" id="certificate" name="certificate">
               </div>
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="attendance" class="form-label">Upload Attendance:</label>
                 <input type="file" class="form-control" id="attendance" name="attendance">
               </div>
 
-              <div class="col-md-12">
+              <div class="col-12 text-center">
                 <label for="content" class="form-label">Documentation Photos:</label>
                 <input name="img_path[]" type="file" multiple id="img_path" class="form-control" id="documentation">
               </div>
@@ -1299,15 +1259,15 @@
               </div>
 
               <div id="fileContainer" style="display: none;">
-                <div class="col-12">
+                <div class="col-12 text-center">
                   <label for="letter" class="form-label">Upload Letter:</label>
                   <input type="file" class="form-control" id="letter" name="letter">
                 </div>
-                <div class="col-12">
+                <div class="col-12 text-center">
                   <label for="nda" class="form-label">Upload NDA (Non Diclosure Agreement):</label>
                   <input type="file" class="form-control" id="nda" name="nda">
                 </div>
-                <div class="col-12">
+                <div class="col-12 text-center">
                   <label for="coa" class="form-label">Upload COA (Certificate of Acceptance):</label>
                   <input type="file" class="form-control" id="coa" name="coa">
                 </div>
@@ -1315,7 +1275,7 @@
 
               <div class="col-" style="padding-top: 20px">
                 <div class="d-flex justify-content-end">
-                  <button type="submit" class="btn btn-outline-dark">Submit Proposal</button>
+                  <button type="submit" class="btn btn-outline-dark">Submit</button>
                 </div>
               </div>
               
@@ -1464,23 +1424,23 @@
               <input type="hidden" class="form-control" id="proposal11Id" name="proposal11Id">
               <input type="hidden" class="form-control" id="prototype4Id" name="prototype4Id">
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="capsule_detail" class="form-label">Upload Capsule Detail/Narrative:</label>
                 <input type="file" class="form-control" id="capsule_detail" name="capsule_detail">
               </div>
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="certificate" class="form-label">Upload Certificate:</label>
                 <input type="file" class="form-control" id="certificate" name="certificate">
               </div>
 
-              <div class="col-12">
+              <div class="col-12 text-center">
                 <label for="attendance" class="form-label">Upload Attendance:</label>
                 <input type="file" class="form-control" id="attendance" name="attendance">
               </div>
 
-              <div class="col-md-12">
-                <label for="content" class="form-label">Prototype Documentation Photos:</label>
+              <div class="col-12 text-center">
+                <label for="content" class="form-label">Upload Prototype Documentation Photos:</label>
                 <input name="img_path[]" type="file" multiple id="img_path" class="form-control" id="documentation">
               </div>
 

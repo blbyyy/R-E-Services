@@ -53,12 +53,6 @@ return new class extends Migration
             $table->string('osg_email')->nullable();
             $table->integer('appointment2_id')->unsigned()->nullable();
             $table->foreign('appointment2_id')->references('id')->on('appointments');
-            $table->string('proponents1')->nullable();
-            $table->string('proponents2')->nullable();
-            $table->string('proponents3')->nullable();
-            $table->string('proponents4')->nullable();
-            $table->string('proponents5')->nullable();
-            $table->string('implementation_proper')->nullable();
             $table->string('topics')->nullable();
             $table->string('subtopics')->nullable();
             $table->integer('appointment3_id')->unsigned()->nullable();

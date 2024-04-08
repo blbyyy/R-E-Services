@@ -1881,6 +1881,53 @@ $(document).ready(function () {
                     $("#time1").text(data.time);
                     $("#purpose1").text(data.purpose);
                     $("#status1").text(data.status);
+
+                    if (data.status === 'Appointment Pending' ) {
+                        $('option[value="Appointment Done"]').prop('disabled', true);
+                    } else {
+                        $('option[value="Appointment Cancelled"]').prop('disabled', true);
+                        $('option[value="Appointment Set"]').prop('disabled', true);
+                    }
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin approval an implementation-proper appointment
+        $(".processAppointmentImplementationProper").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/appointments/implentation-proper/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#appointmentId2").val(data.appointmentId);
+                    $("#extensionId2").val(data.id);
+                    $("#requestor2").text(data.requestor_name);
+                    $("#date2").text(data.date);
+                    $("#time2").text(data.time);
+                    $("#purpose2").text(data.purpose); 
+                    $("#status2").text(data.status);
+
+                    if (data.status === 'Appointment Pending' ) {
+                        $('option[value="Appointment Done"]').prop('disabled', true);
+                    } else {
+                        $('option[value="Appointment Cancelled"]').prop('disabled', true);
+                        $('option[value="Appointment Set"]').prop('disabled', true);
+                    }
                 },
                 error: function (error) {
                     console.log(error);
@@ -1906,13 +1953,20 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) { 
                     console.log(data);
-                    $("#appointmentId2").val(data.appointmentId);
-                    $("#extensionId2").val(data.id);
-                    $("#requestor2").text(data.requestor_name);
-                    $("#date2").text(data.date);
-                    $("#time2").text(data.time);
-                    $("#purpose2").text(data.purpose);
-                    $("#status2").text(data.status); 
+                    $("#appointmentId3").val(data.appointmentId);
+                    $("#extensionId3").val(data.id);
+                    $("#requestor3").text(data.requestor_name);
+                    $("#date3").text(data.date);
+                    $("#time3").text(data.time);
+                    $("#purpose3").text(data.purpose);
+                    $("#status3").text(data.status); 
+
+                    if (data.status === 'Appointment Pending' ) {
+                        $('option[value="Appointment Done"]').prop('disabled', true);
+                    } else {
+                        $('option[value="Appointment Cancelled"]').prop('disabled', true);
+                        $('option[value="Appointment Set"]').prop('disabled', true);
+                    }
                 },
                 error: function (error) {
                     console.log(error);
@@ -1938,13 +1992,20 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) { 
                     console.log(data);
-                    $("#appointmentId3").val(data.appointmentId);
-                    $("#extensionId3").val(data.id);
-                    $("#requestor3").text(data.requestor_name);
-                    $("#date3").text(data.date);
-                    $("#time3").text(data.time);
-                    $("#purpose3").text(data.purpose); 
-                    $("#status3").text(data.status);
+                    $("#appointmentId4").val(data.appointmentId);
+                    $("#extensionId4").val(data.id);
+                    $("#requestor4").text(data.requestor_name);
+                    $("#date4").text(data.date);
+                    $("#time4").text(data.time);
+                    $("#purpose4").text(data.purpose); 
+                    $("#status4").text(data.status);
+
+                    if (data.status === 'Appointment Pending' ) {
+                        $('option[value="Appointment Done"]').prop('disabled', true);
+                    } else {
+                        $('option[value="Appointment Cancelled"]').prop('disabled', true);
+                        $('option[value="Appointment Set"]').prop('disabled', true);
+                    }
                 },
                 error: function (error) {
                     console.log(error);
@@ -4712,6 +4773,35 @@ $(document).ready(function () {
             });
         });
 
+        //faculty extension application getting appointment4
+        $(".appointment4").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/appointment/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $('#purpose4').text(data.purpose);
+                    $('#status4').text(data.status);
+                    $('#time4').text(data.time);
+                    $('#date4').text(data.date);
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
         //faculty extension application getting extension files
         $(".extensionFiles").click(function() {
             var id = $(this).data("id");
@@ -5144,28 +5234,39 @@ $(document).ready(function () {
                         if (data.appointment1_id === null) {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
-                            $("#p1Title").text('Set Up an Appointment for a Proposal Consultation');
+                            $('option[value="Implementation Proper Appointment"]').prop('disabled', true);
+                            $("#p1Title").text('Make an Appointment for a Proposal Consultation');
                         } 
                     } else if (data.status === 'Proposal Consultation Appointment Cancelled') {
                         if (data.status === 'Proposal Consultation Appointment Cancelled') {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Implementation Proper Appointment"]').prop('disabled', true);
                             $("#p1Title").text('Reschedule a Consultation Appointment for a Proposal');
                         } 
-                    }else if (data.status === 'Topics and Sub Topics Inputted' || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
-                        if (data.appointment2_id === null || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
+                    } else if (data.status === 'Topics and Sub Topics Inputted' || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
+                        if (data.appointment3_id === null || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Proposal Consultation"]').prop('disabled', true);
+                            $('option[value="Implementation Proper Appointment"]').prop('disabled', true);
+                            $("#p1Title").text('Make an Appointment for a Pre-Survey Consultation');
                         } 
                     } else if (data.status === 'Appointment Done for Pre-Survey Consultation' || data.status === 'Appointment Cancelled for Mid-Survey Consultation') {
-                        if (data.appointment3_id === null || data.status === 'Appointment Cancelled for Mid-Survey Consultation') {
+                        if (data.appointment4_id === null || data.status === 'Appointment Cancelled for Mid-Survey Consultation') {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Proposal Consultation"]').prop('disabled', true);
+                            $('option[value="Implementation Proper Appointment"]').prop('disabled', true);
+                            $("#p1Title").text('Make an Appointment for a Mid-Survey Consultation');
                         } 
-                    } 
+                    } else if (data.status === 'Proposal Approved By Board and OSG' || data.status === 'Implementation Proper Appointment Cancelled') {
+                            $('option[value="Proposal Consultation"]').prop('disabled', true);
+                            $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                            $("#p1Title").text('Make an Appointment for Implementation Proper');
+                    }
                     
                 },
-                error: function(error) {
+                error: function(error) {s
                     console.log(error);
                 },
             });
@@ -5205,8 +5306,14 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function(data) {
-                    console.log(id);
+                    console.log(data);
                     $('#proposal2Id').val(id);
+
+                   if (data.status === 'Proposal Rejected By DO' || data.status === 'Proposal Rejected By UES' || data.status === 'Proposal Rejected By President') {
+                    $('#proposal2Title').text('Re-Submission of Documents');
+                   } else if (data.status === 'Proposal Rejected By Board' || data.status === 'Proposal Rejected By OSG') {
+                    $('#proposal2Title').text('Re-Submission of Documents');
+                   }
                 },
                 error: function(error) {
                     console.log(error);
@@ -5224,7 +5331,7 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function(data) {
-                    console.log(id);
+                    console.log(data);
                     $('#proposal3Id').val(id);
                 },
                 error: function(error) {

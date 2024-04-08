@@ -175,18 +175,18 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-    document.getElementById('status').addEventListener('change', function () {
-          var colloquiumContainer = document.getElementById('colloquiumContainer');
+        document.getElementById('status').addEventListener('change', function () {
+            var colloquiumContainer = document.getElementById('colloquiumContainer');
 
-          if (this.value === 'Research Proposal Approved By R&E Office') {
-            colloquiumContainer.style.display = 'block';
-          } else {
-            colloquiumContainer.style.display = 'none';
-          }
-      });
+            if (this.value === 'Research Proposal Approved By R&E Office') {
+                colloquiumContainer.style.display = 'block';
+            } else {
+                colloquiumContainer.style.display = 'none';
+            }
+        });
 
-      $('#processingResearchProposal').on('hidden.bs.modal', function () {
-              $('#colloquiumContainer').hide();
-          });
-  });
+        $('#processingResearchProposal').on('hidden.bs.modal', function () {
+                $('#colloquiumContainer').hide();
+        });
+    });
 </script>
