@@ -214,4 +214,10 @@ Route::post('/mobileproposal2', 'App\Http\Controllers\ExtensionController@mobile
 
 Route::get('/mobileresearchProposal/{id}', 'App\Http\Controllers\ResearchProposalController@mobileresearchProposal');
 Route::post('/mobileuploadResearchProposal', 'App\Http\Controllers\ResearchProposalController@mobileuploadResearchProposal');
+Route::get('/mobilereSubmitProposalFetchingId/{id}', 'App\Http\Controllers\ResearchProposalController@mobilereSubmitProposalFetchingId');
+Route::post('/mobilereUploadResearchProposal', 'App\Http\Controllers\ResearchProposalController@mobilereUploadResearchProposal');
+Route::get('/mobileresearchProposalStatus/{id}', 'App\Http\Controllers\ResearchProposalController@mobileresearchProposalStatus');
+Route::get('/mobilecolloquiumSchedule/{id}', 'App\Http\Controllers\ResearchProposalController@mobilecolloquiumSchedule');
+Route::get('/RPmobileshowpdf/{fileName}', 'App\Http\Controllers\ResearchProposalController@RPmobileshowpdf');
+
 //MOBILE END
