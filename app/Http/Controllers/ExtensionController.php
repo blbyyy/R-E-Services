@@ -1289,7 +1289,6 @@ class ExtensionController extends Controller
             $notif->message = 'Someone submit an application proposal for approval.';
             $notif->date = now();
             $notif->user_id = $request->user_id;
-            $notif->reciever_id = 0;
             $notif->save();
             
             // Construct the response data
