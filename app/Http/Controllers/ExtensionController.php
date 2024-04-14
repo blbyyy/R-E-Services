@@ -1310,11 +1310,15 @@ class ExtensionController extends Controller
     public function mobileproposal2(Request $request)
     { 
         $doEmail = 'josephandrebalbada@gmail.com';
+        $uesEmail = 'josephandrebalbada@gmail.com';
+        $presidentEmail = 'josephandrebalbada@gmail.com';
 
         $extension = Extension::find($request->proposalId);
-        $extension->status = 'Pending Approval of DO';
+        $extension->status = 'Pending Approval of DO, UES and President';
         $extension->percentage_status = 25;
         $extension->do_email = $doEmail;
+        $extension->ues_email = $uesEmail;
+        $extension->president_email = $presidentEmail;
 
         $pdfFile = $request->file('ppmp_file');
         $ppmpFileName = $pdfFile->getClientOriginalName();
@@ -1335,10 +1339,9 @@ class ExtensionController extends Controller
         $notif = new Notifications;
         $notif->type = 'Admin Notification';
         $notif->title = 'PPMP, PR and Request for Qoutation/Market Study Submitted';
-        $notif->message = 'Someone send ppmp, pr and request for qoutation/market study for document approval';
+        $notif->message = 'Someone send ppmp, pr and request for qoutation/market study for document approval of DO, UES and President';
         $notif->date = now();
         $notif->user_id = $request->user_id;
-        $notif->reciever_id = 0;
         $notif->save();
 
         $requestor = DB::table('users')
@@ -1353,7 +1356,9 @@ class ExtensionController extends Controller
             'marketStudyFile' => $marketStudyFileName,
         ];
 
-        // Mail::to($doEmail)->send(new DoApproval($data));
+        Mail::to($doEmail)->send(new DoApproval($data));
+        Mail::to($uesEmail)->send(new UesApproval($data));
+        Mail::to($presidentEmail)->send(new PresidentApproval($data));
         
         return response()->json([
             'success' => true,
@@ -1365,11 +1370,13 @@ class ExtensionController extends Controller
     public function mobileproposal3(Request $request)
     { 
         $boardEmail = 'josephandrebalbada@gmail.com';
+        $osgEmail = 'josephandrebalbada@gmail.com';
 
         $extension = Extension::find($request->proposalId);
-        $extension->status = 'Pending Approval of Board';
-        $extension->percentage_status = 45;
+        $extension->status = 'Pending Approval of Board and OSG';
+        $extension->percentage_status = 50;
         $extension->board_email = $boardEmail;
+        $extension->osg_email = $osgEmail;
 
         $pdfFile = $request->file('moa_file');
         $moaFileName = $pdfFile->getClientOriginalName();
@@ -1380,10 +1387,9 @@ class ExtensionController extends Controller
         $notif = new Notifications;
         $notif->type = 'Admin Notification';
         $notif->title = 'MOA(Memorandum of Agreement) Submitted';
-        $notif->message = 'Someone send moa(memorandum of agreement) for document approval';
+        $notif->message = 'Someone send moa(memorandum of agreement) for document approval of Board and OSG';
         $notif->date = now();
         $notif->user_id = $request->user_id;
-        $notif->reciever_id = 0;
         $notif->save();
 
         $proposals = DB::table('extension')
@@ -1404,7 +1410,8 @@ class ExtensionController extends Controller
             'moaFile' => $moaFileName,
         ];
 
-        // Mail::to($boardEmail)->send(new BoardApproval($data));
+        Mail::to($boardEmail)->send(new BoardApproval($data));
+        Mail::to($osgEmail)->send(new OsgApproval($data));
         
         return response()->json([
             'success' => true,
@@ -1448,7 +1455,7 @@ class ExtensionController extends Controller
     { 
         $extension = Extension::find($request->proposalId);
         $extension->status = 'Topics and Sub Topics Inputted';
-        $extension->percentage_status = 65;
+        $extension->percentage_status = 75;
         $extension->topics = $request->topics;
         $extension->subtopics = $request->subtopics;
         $extension->save();
@@ -1459,7 +1466,6 @@ class ExtensionController extends Controller
         $notif->message = 'Topics and Subtopics Inserted';
         $notif->date = now();
         $notif->user_id = $request->user_id;
-        $notif->reciever_id = 0;
         $notif->save();
 
         // Prepare data to return
@@ -1500,9 +1506,9 @@ class ExtensionController extends Controller
         $attendanceFileName = $pdfFile->getClientOriginalName();
         $pdfFile->move(public_path('uploads/extension'), $attendanceFileName);
         $extension->attendance = $attendanceFileName;
-        
+
         $extension->status = 'Inserted: Certificate, Documentation, Attendance, and Capsule Details';
-        $extension->percentage_status = 80;
+        $extension->percentage_status = 90;
         $extension->save();
 
         $notif = new Notifications;
@@ -1511,7 +1517,6 @@ class ExtensionController extends Controller
         $notif->message = 'Inserted post-evaluation survey attendance, evaluation form, capsule detail, certificate, attendance and documentation photos';
         $notif->date = now();
         $notif->user_id = $request->user_id;
-        $notif->reciever_id = 0;
         $notif->save();
 
         $files = $request->file('img_path');
