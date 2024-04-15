@@ -882,48 +882,205 @@ class AppointmentController extends Controller
 
     public function mobilefacultySchedulingAppointment1(Request $request)
     { 
-        if ($request->purpose === 'Proposal Consultation' || $request->purpose === 'Pre-Survey Consultation' || $request->purpose === 'Mid-Survey Consultation') {
+        $response = []; // Initialize an empty array for the response data
 
-            $appointments = new Appointments;
-            $appointments->date = $request->date;
-            $appointments->time = $request->time;
-            $appointments->purpose = $request->purpose;
-            $appointments->status = 'Appointment Pending';
-            $appointments->user_id = $request->user_id;
-            $appointments->save();
-            $lastId = DB::getPdo()->lastInsertId();
+        if ($request->purpose === 'Proposal Consultation') {
 
-            $extension = Extension::find($request->extensionId);
-            
-            if ($request->purpose === 'Proposal Consultation') {
+            $extension = DB::table('extension')
+                ->where('id', $request->extensionId)
+                ->first();
+
+            if ($extension->status === 'New Application') {
+                
+                $appointments = new Appointments;
+                $appointments->date = $request->date;
+                $appointments->time = $request->time;
+                $appointments->purpose = $request->purpose;
+                $appointments->status = 'Appointment Pending';
+                $appointments->user_id = $request->user_id;
+                $appointments->save();
+                $lastId = DB::getPdo()->lastInsertId();
+
+                $extension = Extension::find($request->extensionId);
                 $extension->appointment1_id = $lastId;
                 $extension->status = 'Pending Approval for Proposal Consultation Appointment';
                 $extension->percentage_status = 3;
-            } elseif ($request->purpose === 'Pre-Survey Consultation') {
-                $extension->appointment2_id = $lastId;
-                $extension->status = 'Pending Approval for Pre-Survey Consultation Appointment';
-                $extension->percentage_status = 67;
-            } elseif ($request->purpose === 'Mid-Survey Consultation') {
-                $extension->appointment3_id = $lastId;
-                $extension->status = 'Pending Approval for Mid-Survey Consultation Appointment';
-                $extension->percentage_status = 70;
+                $extension->save();
+
+            } else {
+                
+                $appointments = Appointments::find($extension->appointment1_id);
+                $appointments->date = $request->date;
+                $appointments->time = $request->time;
+                $appointments->purpose = $request->purpose;
+                $appointments->status = 'Appointment Pending';
+                $appointments->user_id = $request->user_id;
+                $appointments->save();
+
+                $extension = Extension::find($request->extensionId);
+                $extension->status = 'Pending Approval for Proposal Consultation Appointment';
+                $extension->save();
+                
             }
             
-            $extension->save();
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Requesting Appointment for Proposal Consultation';
+            $notif->message = 'Someone requested appointment for proposal consultation';
+            $notif->date = now();
+            $notif->user_id = $request->user_id;
+            $notif->save();
+
+            $response['success'] = 'Your schedule has been sent; kindly wait to be approved.';
+        
+        } elseif ($request->purpose === 'Pre-Survey Consultation') {
+
+            $extension = DB::table('extension')
+                ->where('id', $request->extensionId)
+                ->first();
+
+            if ($extension->status === 'Topics and Sub Topics Inputted') {
+                
+                $appointments = new Appointments;
+                $appointments->date = $request->date;
+                $appointments->time = $request->time;
+                $appointments->purpose = $request->purpose;
+                $appointments->status = 'Appointment Pending';
+                $appointments->user_id = $request->user_id;
+                $appointments->save();
+                $lastId = DB::getPdo()->lastInsertId();
+
+                $extension = Extension::find($request->extensionId);
+                $extension->appointment3_id = $lastId;
+                $extension->status = 'Pending Approval for Pre-Survey Consultation Appointment';
+                $extension->percentage_status = 77;
+                $extension->save();
+
+            } else {
+                
+                $appointments = Appointments::find($extension->appointment3_id);
+                $appointments->date = $request->date;
+                $appointments->time = $request->time;
+                $appointments->purpose = $request->purpose;
+                $appointments->status = 'Appointment Pending';
+                $appointments->save();
+
+                $extension = Extension::find($request->extensionId);
+                $extension->status = 'Pending Approval for Pre-Survey Consultation Appointment';
+                $extension->save();
+
+            }
 
             $notif = new Notifications;
             $notif->type = 'Admin Notification';
-            $notif->title = 'Requesting Appointment for ' . $request->purpose;
-            $notif->message = 'Someone requested appointment for ' . strtolower($request->purpose);
+            $notif->title = 'Requesting Appointment for Pre-Survey Consultation';
+            $notif->message = 'Someone requested appointment for pre-survey consultation';
             $notif->date = now();
             $notif->user_id = $request->user_id;
-            $notif->reciever_id = 0;
+            $notif->save();
+            
+            $response['success'] = 'Your schedule has been sent; kindly wait to be approved.';
+
+        } elseif ($request->purpose === 'Mid-Survey Consultation') {
+
+            $extension = DB::table('extension')
+                ->where('id', $request->extensionId)
+                ->first();
+
+            if ($extension->status === 'Appointment Done for Pre-Survey Consultation') {
+                
+                $appointments = new Appointments;
+                $appointments->date = $request->date;
+                $appointments->time = $request->time;
+                $appointments->purpose = $request->purpose;
+                $appointments->status = 'Appointment Pending';
+                $appointments->user_id = $request->user_id;
+                $appointments->save();
+                $lastId = DB::getPdo()->lastInsertId();
+
+                $extension = Extension::find($request->extensionId);
+                $extension->appointment4_id = $lastId;
+                $extension->status = 'Pending Approval for Mid-Survey Consultation Appointment';
+                $extension->percentage_status = 82;
+                $extension->save();
+
+            } else {
+                
+                $appointments = Appointments::find($extension->appointment4_id);
+                $appointments->date = $request->date;
+                $appointments->time = $request->time;
+                $appointments->purpose = $request->purpose;
+                $appointments->status = 'Appointment Pending';
+                $appointments->save();
+
+                $extension = Extension::find($request->extensionId);
+                $extension->status = 'Pending Approval for Mid-Survey Consultation Appointment';
+                $extension->save();
+
+            }
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Requesting Appointment for Mid-Survey Consultation';
+            $notif->message = 'Someone requested appointment for mid-survey consultation';
+            $notif->date = now();
+            $notif->user_id = $request->user_id;
             $notif->save();
 
-            return response()->json(['success' => true, 'message' => 'Your schedule has been sent; kindly wait to be approved.'], 200);
+            $response['success'] = 'Your schedule has been sent; kindly wait to be approved.';
+
+        } elseif ($request->purpose === 'Implementation Proper Appointment') {
+
+            $extension = DB::table('extension')
+                ->where('id', $request->extensionId)
+                ->first();
+
+            if ($extension->status === 'Proposal Approved By Board and OSG') {
+                
+                $appointments = new Appointments;
+                $appointments->date = $request->date;
+                $appointments->time = $request->time;
+                $appointments->purpose = $request->purpose;
+                $appointments->status = 'Appointment Pending';
+                $appointments->user_id = $request->user_id;
+                $appointments->save();
+                $lastId = DB::getPdo()->lastInsertId();
+
+                $extension = Extension::find($request->extensionId);
+                $extension->appointment2_id = $lastId;
+                $extension->status = 'Pending Approval for Implementation Proper Appointment';
+                $extension->percentage_status = 70;
+                $extension->save();
+
+            } else {
+                
+                $appointments = Appointments::find($extension->appointment2_id);
+                $appointments->date = $request->date;
+                $appointments->time = $request->time;
+                $appointments->purpose = $request->purpose;
+                $appointments->status = 'Appointment Pending';
+                $appointments->save();
+
+                $extension = Extension::find($request->extensionId);
+                $extension->status = 'Pending Approval for Implementation Proper Appointment';
+                $extension->save();
+
+            }
+
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Requesting Appointment for Implementation Proper';
+            $notif->message = 'Someone requested appointment for implementation proper';
+            $notif->date = now();
+            $notif->user_id = $request->user_id;
+            $notif->save();
+
+            $response['success'] = 'Your schedule has been sent; kindly wait to be approved.';
+
         }
-        
-        return response()->json(['success' => false, 'message' => 'Invalid purpose.'], 400);
+
+        // Return the response as JSON
+        return response()->json($response);
     }
     //MOBILE START
 
