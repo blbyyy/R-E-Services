@@ -47,7 +47,7 @@
     <div class="card mb-3" style="margin: 30px">
       <div class="row g-0">
         <div class="col-md-2">
-          <img src="{{ asset('assets/img/RED.png')}}" alt="" style="width: 200px; margin: 20px;l">
+          <img src="{{ asset('assets/img/RED.png')}}" alt="" style="width: 200px; margin: 20px;">
         </div>
 
         <div class="col-md-10" style="padding-top: 20px">

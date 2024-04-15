@@ -63,7 +63,7 @@ class ExtensionController extends Controller
             ->orderBy('extension.created_at', 'desc')
             ->get();
 
-            $extension = DB::table('extension')
+        $extension = DB::table('extension')
             ->join('users','users.id','=','extension.user_id')
             ->select('extension.*','users.*')
             ->where('extension.user_id', Auth::id())
@@ -407,7 +407,7 @@ class ExtensionController extends Controller
             foreach ($files as $file) 
             {
                 $this->documentation_img_upload($file);
-                $multi['img_path']=time().$file->getClientOriginalName();
+                $multi['img_path'] = time().$file->getClientOriginalName();
                 $multi['extension_id'] = $request->proposal6Id ;
                 DB::table('documentation_photos')->insert($multi);
             }

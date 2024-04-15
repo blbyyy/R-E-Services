@@ -1,6 +1,5 @@
 @extends('layouts.navigation')
 <main id="main" class="main">
-  
 <div class="form-container">
 
     <p class="title">
@@ -55,5 +54,5 @@
     <div class="buttons-container">
       
     </form>
-    </div>
+</div>
 </main>

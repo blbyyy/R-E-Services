@@ -64,7 +64,15 @@ class FacultyController extends Controller
 
             auth()->login($users, true);
 
-            return redirect()->to('/homepage');
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Faculty Member Account Verification';
+            $notif->message = 'Someone needs to verify the account.';
+            $notif->date = now();
+            $notif->user_id = $last;
+            $notif->save();
+
+            return redirect()->to('/homepage')->with('success', 'Account Successfully Registered. Please wait for your account to undergo processing for full verification.');
 
     }
 

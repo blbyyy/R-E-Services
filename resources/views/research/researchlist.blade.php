@@ -155,9 +155,40 @@
         <div class="card-body">
           <h5 class="card-title">Research List</h5>
 
-          
-
-          <table class="table table-bordered">
+          @if(count($researchlist) > 0)
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">Actions</th>
+                        <th scope="col">Research Title</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Course</th>
+                        <th scope="col">Faculty Adviser</th>
+                    </tr>
+                </thead>
+                <tbody id="researchTableBody">
+                    @foreach ($researchlist as $researchlists)
+                        <tr class="text-center">
+                            <td style="width: 160px">
+                                <button data-id="{{$researchlists->id}}" type="button" class="btn btn-info researchshowBtn" data-bs-toggle="modal" data-bs-target="#showresearchinfo"><i class="bi bi-eye"></i></button>
+                                <button data-id="{{$researchlists->id}}" type="button" class="btn btn-primary researcheditBtn" data-bs-toggle="modal" data-bs-target="#editresearchinfo"><i class="bi bi-pencil-square"></i></button>
+                                <button data-id="{{$researchlists->id}}" type="button" class="btn btn-danger researchdeleteBtn"><i class="bi bi-trash"></i></button>
+                            </td>
+                            <td>{{$researchlists->research_title}}</td>
+                            <td>{{$researchlists->department}}</td>
+                            <td>{{$researchlists->course}}</td>
+                            <td style="width: 220px">
+                                {{$researchlists->faculty_adviser1}}<br>
+                                {{$researchlists->faculty_adviser2}}<br>
+                                {{$researchlists->faculty_adviser3}}<br>
+                                {{$researchlists->faculty_adviser4}}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+          @else
+            <table class="table table-bordered">
               <thead>
                   <tr class="text-center">
                       <th scope="col">Actions</th>
@@ -167,33 +198,23 @@
                       <th scope="col">Faculty Adviser</th>
                   </tr>
               </thead>
-              <tbody id="researchTableBody">
-                  @foreach ($researchlist as $researchlists)
-                      <tr class="text-center">
-                          <td style="width: 160px">
-                              <button data-id="{{$researchlists->id}}" type="button" class="btn btn-info researchshowBtn" data-bs-toggle="modal" data-bs-target="#showresearchinfo"><i class="bi bi-eye"></i></button>
-                              <button data-id="{{$researchlists->id}}" type="button" class="btn btn-primary researcheditBtn" data-bs-toggle="modal" data-bs-target="#editresearchinfo"><i class="bi bi-pencil-square"></i></button>
-                              <button data-id="{{$researchlists->id}}" type="button" class="btn btn-danger researchdeleteBtn"><i class="bi bi-trash"></i></button>
-                          </td>
-                          <td>{{$researchlists->research_title}}</td>
-                          <td>{{$researchlists->department}}</td>
-                          <td>{{$researchlists->course}}</td>
-                          <td style="width: 220px">
-                              {{$researchlists->faculty_adviser1}}<br>
-                              {{$researchlists->faculty_adviser2}}<br>
-                              {{$researchlists->faculty_adviser3}}<br>
-                              {{$researchlists->faculty_adviser4}}
-                          </td>
-                      </tr>
-                  @endforeach
+              <tbody>
+                  <tr>
+                  </tr>
               </tbody>
-          </table>
-          
+            </table>
+            <div class="alert alert-danger" role="alert">
+              <div class="text-center">
+                  <span class="badge border-danger border-1 text-danger" style="font-size: large">No Research Populated</span>
+              </div>
+            </div>
+          @endif
+
           <div class="modal fade" id="showresearchinfo" tabindex="-1">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header" >
-                  <h5 class="modal-title" ></h5>
+                  <h5 class="modal-title" >Research Information</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -309,7 +330,7 @@
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header" >
-                  <h5 class="modal-title" >Edit Staff User Information</h5>
+                  <h5 class="modal-title" >Edit Research Information</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

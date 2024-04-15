@@ -2441,6 +2441,51 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //show userlist info
+        $(".verifyUserAccount").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/users-pending/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+
+                    $("#usersID").val(data.userID);
+                    
+                    if (data.avatar === "avatar.jpg") {
+                        $("#userProfile").html('<img src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" class="img-fluid rounded-start" alt="..."></img>');
+                    } else {
+                        $("#userProfile").html('<img src="storage/' + data.avatar + '" class="img-fluid rounded-start" alt="...">');
+                    }
+
+                    $("#userName").text(data.fname + ' ' + data.mname + ' ' + data.lname);
+                    $("#userID").text(data.tup_id);
+                    $("#userEmail").text(data.email);
+                    $("#userPosition").text(data.position);
+                    $("#userDesignation").text(data.designation);
+                    $("#userDepartment").text(data.department_name);
+                    $("#userGender").text(data.gender);
+                    $("#userPhone").text(data.phone);
+                    $("#userAddress").text(data.address);
+                    $("#userBirthdate").text(data.birthdate);   
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
     //END OF ADMIN POV
 
     //START OF STUDENT POV
@@ -4896,7 +4941,7 @@ $(document).ready(function () {
                         $("#ppmpmFile").empty().append(ppmpmFile);
                     }
                     
-                    if (data.prFile === null) {
+                    if (data.pr_file === null) {
                         $('#prFile').text('No File Loaded Yet');
                     } else {
                         var prFile = $('<a>', {
@@ -4907,11 +4952,11 @@ $(document).ready(function () {
                         $("#prFile").empty().append(prFile);
                     }
                     
-                    if (data.marketStudyFile === null) {
+                    if (data.market_study_file === null) {
                         $('#marketStudyFile').text('No File Loaded Yet');
                     } else {
                         var marketStudyFile = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.c),
+                            href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
                             text: "View PDF",
                             target: "_blank"
                         });

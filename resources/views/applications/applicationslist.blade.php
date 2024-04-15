@@ -22,39 +22,70 @@
     <h1>Applications List</h1>
   </div>
 
-  <div id="table">
-    <div class="row g-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">List of Pending Certification Applications</h5>
+  @if(count($application) > 0)
+    <div id="table">
+      <div class="row g-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">List of Pending Certification Applications</h5>
 
-            <table class="table table-hover">
-              <thead>
-                <tr class="text-center">
-                  <th scope="col">Actions</th>
-                  <th scope="col">Requestor Name</th>
-                  <th scope="col">Research Title</th>
-                  <th scope="col">Frequency Submission</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($application as $applications)
+              <table class="table table-hover">
+                <thead>
                   <tr class="text-center">
-                    <td>
-                        <button data-id="{{$applications->id}}" type="button" class="btn btn-success adminCertification" data-bs-toggle="modal" data-bs-target="#viewApplicationInfo"><i class="bi bi-award"></i></button>
-                    </td>
-                    <td>{{$applications->requestor_name}}</td>
-                    <td>{{$applications->research_title}}</td>
-                    <td>{{$applications->submission_frequency}}</td>
+                    <th scope="col">Actions</th>
+                    <th scope="col">Requestor Name</th>
+                    <th scope="col">Research Title</th>
+                    <th scope="col">Frequency Submission</th>
                   </tr>
-                @endforeach
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  @foreach($application as $applications)
+                    <tr class="text-center">
+                      <td>
+                          <button data-id="{{$applications->id}}" type="button" class="btn btn-success adminCertification" data-bs-toggle="modal" data-bs-target="#viewApplicationInfo"><i class="bi bi-award"></i></button>
+                      </td>
+                      <td>{{$applications->requestor_name}}</td>
+                      <td>{{$applications->research_title}}</td>
+                      <td>{{$applications->submission_frequency}}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
 
+            </div>
           </div>
-        </div>
+      </div>
     </div>
-  </div>
+  @else
+    <div id="table">
+      <div class="row g-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">List of Pending Certification Applications</h5>
+                <table class="table table-hover">
+                  <thead>
+                    <tr class="text-center">
+                      <th scope="col">Actions</th>
+                      <th scope="col">Requestor Name</th>
+                      <th scope="col">Research Title</th>
+                      <th scope="col">Frequency Submission</th>
+                    </tr>
+                  </thead>
+                      <tbody>
+                        <tr>
+                        </tr>
+                      </tbody>
+                </table>
+                <div class="alert alert-danger" role="alert">
+                  <div class="text-center">
+                      <span class="badge border-danger border-1 text-danger" style="font-size: large">No Application Populated</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  @endif
 
   <div class="modal fade" id="viewApplicationInfo" tabindex="-1">
     <div class="modal-dialog modal-lg">

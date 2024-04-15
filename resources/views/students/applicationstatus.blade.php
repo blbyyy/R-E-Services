@@ -60,10 +60,10 @@
           <div class="card-body">
               <h5 class="card-title"></h5>
               <div class="icon">
-                  <i class="bi bi-folder2-open"></i>
+                <i class="ri-file-forbid-line"></i>
               </div>
               <div class="body">
-                  <h2>Nothing has been uploaded here.</h2>
+                <h2>No files have been uploaded here.</h2>
               </div>
           </div>
       </div>

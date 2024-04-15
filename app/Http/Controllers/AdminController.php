@@ -121,6 +121,7 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
+
         return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount','extensionCount'));
     }
 
@@ -1648,7 +1649,13 @@ class AdminController extends Controller
 
         $extension = DB::table('extension')
         ->join('users','users.id','extension.user_id')
-        ->select('extension.*','users.*')
+        ->select('extension.*',
+                'users.id as userID',
+                'users.fname',
+                'users.mname',
+                'users.lname',
+                'users.role',
+                )
         ->orderBy('extension.id')
         ->get();
 
@@ -1664,7 +1671,84 @@ class AdminController extends Controller
 
         return View::make('admin.extensionlist',compact('extension','admin','adminNotifCount','adminNotification'));
     }
-    
+
+    public function usersPending()
+    {
+        $admin = DB::table('staff')
+            ->join('users','users.id','staff.user_id')
+            ->select('staff.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
+        $users = DB::table('users')
+            ->join('faculty','users.id','faculty.user_id')
+            ->join('departments','departments.id','faculty.department_id')
+            ->select('faculty.*','departments.*','users.id as userID','users.fname','users.mname','users.lname','users.role')
+            ->where('users.role', 'Faculty Not Verified')
+            ->get();
+
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.usersPending',compact('users','admin','adminNotifCount','adminNotification'));
+    }
+
+    public function usersPendingId($id)
+    {
+        $users = DB::table('users')
+            ->join('faculty', 'users.id', '=', 'faculty.user_id')
+            ->join('departments', 'departments.id', '=', 'faculty.department_id')
+            ->select('faculty.*', 'departments.id as deptID', 'departments.department_name', 'users.id as userID', 'users.fname', 'users.mname', 'users.lname', 'users.role')
+            ->where('users.id', $id)
+            ->first();
+
+        return response()->json($users);
+    }
+
+    public function usersVerified(Request $request)
+    {
+        if ($request->verify === 'Faculty') {
+
+            $verify = User::find($request->usersID);
+            $verify->role = 'Faculty';
+            $verify->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Account Verified';
+            $notif->message = 'Your Account Has Been Verified.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $request->usersID;
+            $notif->save();
+
+            return redirect()->to('/admin/users-pending')->with('success', 'Account Verified');
+
+        } else {
+
+            $verify = User::find($request->usersID);
+            $verify->role = 'Faculty Not Verified';
+            $verify->save();
+
+            $notif = new Notifications;
+            $notif->type = 'Faculty Notification';
+            $notif->title = 'Account Denied';
+            $notif->message = 'Your Account Has Been Denied Verification.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = $request->usersID;
+            $notif->save();
+
+            return redirect()->to('/admin/users-pending')->with('error', 'Account Not Verifiedd');
+        }
+    }
 
     //MOBILE START
     public function dashboardmobile(Request $request)

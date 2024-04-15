@@ -42,7 +42,7 @@ class LayoutsController extends Controller
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
             ->orderBy('date', 'desc')
-            ->take(4)
+            ->take(5)
             ->get();
         
         $facultyNotifCount = DB::table('notifications')
@@ -221,14 +221,13 @@ class LayoutsController extends Controller
         $twoDaysAgo = Carbon::now()->subDays(2);
             
         $adminNotifCount = DB::table('notifications')
-        ->where('type', 'Admin Notification')
-        ->where('created_at', '>=', $twoDaysAgo)
-        ->count();
+            ->where('type', 'Admin Notification')
+            ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
             ->orderBy('date', 'desc')
-            ->take(4)
+            ->take(5)
             ->get();
 
         return View::make('notifications.admin',compact('admin','notification','adminNotifCount','adminNotification'));
@@ -252,13 +251,14 @@ class LayoutsController extends Controller
         $facultyNotifCount = DB::table('notifications')
             ->where('type', 'Faculty Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', '=', 'Unread')
             ->count();
 
         $facultyNotification = DB::table('notifications')
             ->where('type', 'Faculty Notification')
+            ->where('status', '=', 'Unread')
             ->where('reciever_id', Auth::id())
             ->orderBy('date', 'desc')
-            ->take(4)
             ->get();
 
         return View::make('notifications.faculty',compact('faculty','notification','facultyNotifCount','facultyNotification'));
