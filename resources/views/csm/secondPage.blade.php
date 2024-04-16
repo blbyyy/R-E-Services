@@ -44,49 +44,6 @@
                     </div>
                 </fieldset>
 
-
-                    {{-- <fieldset class="col-md-12">
-                        <legend class="col-form-label col-sm-12 pt-0">CC2: If YES to the previous question, did you see this office's Citizen's Charter (CC)?</legend>
-                        <div class="col-sm-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="cc2" id="cc2Answer1" value=" Yes, the CC was easy to find">
-                            <label class="form-check-label" for="cc2Answer1">
-                                Yes, the CC was easy to find
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="cc2" id="cc2Answer2" value="Yes, but the CC was hard to find">
-                            <label class="form-check-label" for="cc2Answer2">
-                                Yes, but the CC was hard to find
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="cc2" id="cc2Answer3" value="No, I did not see this office's CC">
-                            <label class="form-check-label" for="cc2Answer3">
-                                No, I did not see this office's CC
-                            </label>
-                        </div>
-                        </div>
-                    </fieldset>
-
-                    <fieldset class="col-md-12">
-                        <legend class="col-form-label col-sm-12 pt-0">CC3. If YES to the previous question, did you use the Citizen's Charter(CC) as a guide for the service/s you availed?</legend>
-                        <div class="col-sm-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="cc3" id="cc3Answer1" value="Yes, I was able to use the CC">
-                            <label class="form-check-label" for="cc3Answer1">
-                                Yes, I was able to use the CC
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="cc3" id="cc3Answer2" value="No, I was not able to use the CC">
-                            <label class="form-check-label" for="cc3Answer2">
-                                No, I was not able to use the CC
-                            </label>
-                        </div>
-                        </div>
-                    </fieldset> --}}
-            
                 <div class="col-12" style="padding-top: 20px">
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-outline-dark">Next</button>
@@ -95,21 +52,6 @@
                 </div>
             </form>
 
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-body">
-            @if(session()->has('form_data'))
-                <h1>Form Data</h1>
-                <ul>
-                    @foreach(session('form_data') as $key => $value)
-                        <li><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ is_array($value) ? implode(', ', $value) : $value }}</li>
-                    @endforeach
-                </ul>
-            @else
-                <p>Form data not found!</p>
-            @endif
         </div>
     </div>
 

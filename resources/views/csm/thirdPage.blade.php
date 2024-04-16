@@ -21,7 +21,7 @@
                 @csrf
 
                     <fieldset class="col-md-12">
-                        <legend class="col-form-label col-sm-12 pt-0">CC2: If YES to the previous question, did you see this office's Citizen's Charter (CC)?</legend>
+                        <legend class="col-form-label col-sm-12 pt-0">CC2: If <b>YES</b> to the previous question, did you see this office's Citizen's Charter (CC)?</legend>
                         <div class="col-sm-12">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="cc2" id="cc2Answer1" value=" Yes, the CC was easy to find">
@@ -52,21 +52,6 @@
                 </div>
             </form>
 
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-body">
-            @if(session()->has('form_data'))
-                <h1>Form Data</h1>
-                <ul>
-                    @foreach(session('form_data') as $key => $value)
-                        <li><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ is_array($value) ? implode(', ', $value) : $value }}</li>
-                    @endforeach
-                </ul>
-            @else
-                <p>Form data not found!</p>
-            @endif
         </div>
     </div>
 

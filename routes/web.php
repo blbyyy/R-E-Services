@@ -53,6 +53,13 @@ Route::get('/fifthPage', [
             'as' => 'csm.page5'
     ]);
 
+Route::get('/sixthPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@sixthPage',
+            'as' => 'csm.page6'
+    ]);
+
+Route::post('/form-submit5', 'ClientSatisfactionMeasurementController@session5')->name('form.submit5');
+
 Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
 
 Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');

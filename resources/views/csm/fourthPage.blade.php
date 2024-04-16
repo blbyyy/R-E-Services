@@ -21,7 +21,7 @@
                 @csrf
 
                     <fieldset class="col-md-12">
-                        <legend class="col-form-label col-sm-12 pt-0">CC3. If YES to the previous question, did you use the Citizen's Charter(CC) as a guide for the service/s you availed?</legend>
+                        <legend class="col-form-label col-sm-12 pt-0">CC3. If <b>YES</b> to the previous question, did you use the Citizen's Charter(CC) as a guide for the service/s you availed?</legend>
                         <div class="col-sm-12">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="cc3" id="cc3Answer1" value="Yes, I was able to use the CC">
@@ -37,6 +37,11 @@
                         </div>
                         </div>
                     </fieldset>
+
+                    <div class="col-12">
+                        <label for="cc3_explanation" class="form-label">If your answer to CC3 Question is <b>NO</b> then provide a brief explanation for your answer.</label>
+                        <textarea class="form-control" placeholder="Your Answer" id="cc3_explanation" name="cc3_explanation" style="height: 100px;"></textarea>
+                    </div>
             
                 <div class="col-12" style="padding-top: 20px">
                     <div class="d-flex justify-content-end">
@@ -46,21 +51,6 @@
                 </div>
             </form>
 
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-body">
-            @if(session()->has('form_data'))
-                <h1>Form Data</h1>
-                <ul>
-                    @foreach(session('form_data') as $key => $value)
-                        <li><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ is_array($value) ? implode(', ', $value) : $value }}</li>
-                    @endforeach
-                </ul>
-            @else
-                <p>Form data not found!</p>
-            @endif
         </div>
     </div>
 

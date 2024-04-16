@@ -45,7 +45,7 @@ return new class extends Migration
             $table->string('q8')->nullable();
             $table->string('a8')->nullable();
             $table->string('comprehensive_type')->nullable();
-            $table->string('compalaint_message')->nullable();
+            $table->string('complaint_message')->nullable();
             $table->timestamps();
         });
     }
