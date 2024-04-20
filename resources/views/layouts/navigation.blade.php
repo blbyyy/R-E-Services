@@ -6,6 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>R&E-Services</title>
+    <link rel="website icon" type="png" href="{{ asset('assets/img/RED.png')}}">
+
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta content="{{ csrf_token() }}" name="csrf-token" >
@@ -54,8 +56,8 @@
     <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/comment.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet" defer>
+    <link href="{{ asset('css/comment.css') }}" rel="stylesheet" >
   
   </head>
   
@@ -516,6 +518,12 @@
           <a class="nav-link " href="{{url('/administration')}}">
             <i class="bi bi-person-fill-gear"></i>
             <span>Administration</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/admin/users-pending')}}">
+            <i class="bx bxs-user-check"></i>
+            <span>Accounts Verification</span>
           </a>
         </li>
         <li class="nav-item">

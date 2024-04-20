@@ -896,16 +896,14 @@
             @endif 
           @endforeach 
         @else
-            <div class="col-md-12">
-              <div class="card">
-                  <div class="card-body">
-                      <h5 class="card-title"></h5>
-                      <div class="icon">
-                          <i class="bi bi-folder2-open"></i>
-                      </div>
-                      <div class="body">
-                          <h2>Nothing has been uploaded here.</h2>
-                      </div>
+            <div class="card mb-3">
+              <div class="card-body">
+                  <h5 class="card-title"></h5>
+                  <div class="icon">
+                    <i class="ri-file-forbid-line"></i>
+                  </div>
+                  <div class="body">
+                    <h2>Nothing has been uploaded here.</h2>
                   </div>
               </div>
             </div>

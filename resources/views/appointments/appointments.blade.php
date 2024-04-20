@@ -27,77 +27,101 @@
     <div class="card">
         <div class="card-body">
           <h5 class="card-title">List of People Making Appointment Requests</h5>
-          <table class="table table-hover">
-            <thead>
-                <tr class="text-center">
-                    <th scope="col">Actions</th>
-                    <th scope="col">Requestor</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Purpose</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($appointments as $appointment)
-                    <tr class="text-center">
-                        <td>
-                          @if ($appointment->purpose === 'Proposal Consultation')
-                            @if ($appointment->status === 'Appointment Done') 
-                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is already done"><i class="bi bi-arrow-right"></i></button>
-                            @elseif ($appointment->status === 'Appointment Rejected')
-                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
-                            @else
-                              <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentProposal" data-bs-toggle="modal" data-bs-target="#processingAppointmentProposal"><i class="bi bi-arrow-right"></i></button>
+          @if(count($appointments) > 0)
+            <table class="table table-hover">
+              <thead>
+                  <tr class="text-center">
+                      <th scope="col">Actions</th>
+                      <th scope="col">Requestor</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Purpose</th>
+                      <th scope="col">Status</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach($appointments as $appointment)
+                      <tr class="text-center">
+                          <td>
+                            @if ($appointment->purpose === 'Proposal Consultation')
+                              @if ($appointment->status === 'Appointment Done') 
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is already done"><i class="bi bi-arrow-right"></i></button>
+                              @elseif ($appointment->status === 'Appointment Rejected')
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
+                              @else
+                                <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentProposal" data-bs-toggle="modal" data-bs-target="#processingAppointmentProposal"><i class="bi bi-arrow-right"></i></button>
+                              @endif
+                            @elseif ($appointment->purpose === 'Pre-Survey Consultation')
+                              @if ($appointment->status === 'Appointment Done') 
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is already done"><i class="bi bi-arrow-right"></i></button>
+                              @elseif ($appointment->status === 'Appointment Rejected')
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
+                              @else
+                                <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentPreSurvey" data-bs-toggle="modal" data-bs-target="#processingAppointmentPreSurvey"><i class="bi bi-arrow-right"></i></button>
+                              @endif
+                            @elseif ($appointment->purpose === 'Mid-Survey Consultation')
+                              @if ($appointment->status === 'Appointment Done') 
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is ongoing"><i class="bi bi-arrow-right"></i></button>
+                              @elseif ($appointment->status === 'Appointment Rejected')
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
+                              @else
+                                <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentMidSurvey" data-bs-toggle="modal" data-bs-target="#processingAppointmentMidSurvey"><i class="bi bi-arrow-right"></i></button>
+                              @endif
+                            @elseif ($appointment->purpose === 'Implementation Proper Appointment')
+                              @if ($appointment->status === 'Appointment Done') 
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is ongoing"><i class="bi bi-arrow-right"></i></button>
+                              @elseif ($appointment->status === 'Appointment Rejected')
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
+                              @else
+                                <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentImplementationProper" data-bs-toggle="modal" data-bs-target="#processingAppointmentImplementationProper"><i class="bi bi-arrow-right"></i></button>
+                              @endif
                             @endif
-                          @elseif ($appointment->purpose === 'Pre-Survey Consultation')
-                            @if ($appointment->status === 'Appointment Done') 
-                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is already done"><i class="bi bi-arrow-right"></i></button>
-                            @elseif ($appointment->status === 'Appointment Rejected')
-                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
-                            @else
-                              <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentPreSurvey" data-bs-toggle="modal" data-bs-target="#processingAppointmentPreSurvey"><i class="bi bi-arrow-right"></i></button>
+                          </td>
+                          <td>
+                              {{$appointment->requestor_name}}
+                              <span style="font-size: small">({{$appointment->role}})</span>
+                          </td>
+                          <td>{{$appointment->date}}</td>
+                          <td>{{$appointment->time}}</td>
+                          <td>{{$appointment->purpose}}</td>
+                          <td>
+                            @if ($appointment->status === 'Appointment Set') 
+                              <span class="badge bg-primary">{{$appointment->status}}</span>
+                            @elseif ($appointment->status === 'Appointment Done')
+                              <span class="badge bg-success">{{$appointment->status}}</span>
+                            @elseif ($appointment->status === 'Appointment Cancelled')
+                              <span class="badge bg-danger">{{$appointment->status}}</span>
+                            @elseif ($appointment->status === 'Appointment Pending')
+                              <span class="badge bg-warning">{{$appointment->status}}</span>
                             @endif
-                          @elseif ($appointment->purpose === 'Mid-Survey Consultation')
-                            @if ($appointment->status === 'Appointment Done') 
-                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is ongoing"><i class="bi bi-arrow-right"></i></button>
-                            @elseif ($appointment->status === 'Appointment Rejected')
-                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
-                            @else
-                              <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentMidSurvey" data-bs-toggle="modal" data-bs-target="#processingAppointmentMidSurvey"><i class="bi bi-arrow-right"></i></button>
-                            @endif
-                          @elseif ($appointment->purpose === 'Implementation Proper Appointment')
-                            @if ($appointment->status === 'Appointment Done') 
-                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment is ongoing"><i class="bi bi-arrow-right"></i></button>
-                            @elseif ($appointment->status === 'Appointment Rejected')
-                              <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This appointment has been rejected."><i class="bi bi-arrow-right"></i></button>
-                            @else
-                              <button data-id="{{$appointment->id}}" type="button" class="btn btn-primary processAppointmentImplementationProper" data-bs-toggle="modal" data-bs-target="#processingAppointmentImplementationProper"><i class="bi bi-arrow-right"></i></button>
-                            @endif
-                          @endif
-                        </td>
-                        <td>
-                            {{$appointment->requestor_name}}
-                            <span style="font-size: small">({{$appointment->role}})</span>
-                        </td>
-                        <td>{{$appointment->date}}</td>
-                        <td>{{$appointment->time}}</td>
-                        <td>{{$appointment->purpose}}</td>
-                        <td>
-                          @if ($appointment->status === 'Appointment Set') 
-                            <span class="badge bg-primary">{{$appointment->status}}</span>
-                          @elseif ($appointment->status === 'Appointment Done')
-                            <span class="badge bg-success">{{$appointment->status}}</span>
-                          @elseif ($appointment->status === 'Appointment Cancelled')
-                            <span class="badge bg-danger">{{$appointment->status}}</span>
-                          @elseif ($appointment->status === 'Appointment Pending')
-                            <span class="badge bg-warning">{{$appointment->status}}</span>
-                          @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-          </table>
+                          </td>
+                      </tr>
+                  @endforeach
+              </tbody>
+            </table>
+          @else
+            <table class="table table-hover">
+              <thead>
+                  <tr class="text-center">
+                      <th scope="col">Actions</th>
+                      <th scope="col">Requestor</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Purpose</th>
+                      <th scope="col">Status</th>
+                  </tr>
+              </thead>
+              <tbody>
+                      <tr>
+                      </tr>
+              </tbody>
+            </table>
+            <div class="alert alert-danger" role="alert">
+                <div class="text-center">
+                    <span class="badge border-danger border-1 text-danger" style="font-size: large">No Appointments Populated</span>
+                </div>
+            </div>
+          @endif
 
         <div class="modal fade" id="processingAppointmentProposal" tabindex="-1">
             <div class="modal-dialog modal-lg">

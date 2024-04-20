@@ -7,21 +7,21 @@
     </div>
 
     @if(session('success'))
-    <script>
-      Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: '{{ session('success') }}',
-        });
-    </script>
-    @elseif(session('error'))
-      <script>
+        <script>
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: '{{ session('error') }}',
-          });
-      </script>
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('success') }}',
+            });
+        </script>
+    @elseif(session('error'))
+        <script>
+            Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            });
+        </script>
     @endif
 
     <div class="col-12" style="padding-bottom: 20px">
@@ -59,81 +59,103 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Departments List</h5>
-            <table id="departmentlist" class="table table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">Actions</th>
-                    <th scope="col">Department Name</th>
-                    <th scope="col">Department Code</th>
-                </tr>
-                </thead>
-                @foreach ($departmentlists as $departmentlist)
-                <tbody>
-                <tr>
-                    <td>
-                        <button data-id="{{$departmentlist->id}}" type="button" class="btn btn-primary departmenteditBtn" data-bs-toggle="modal" data-bs-target="#editdepartmentinfo"><i class="bi bi-pencil-square"></i></button>
-                        <button data-id="{{$departmentlist->id}}" type="button" class="btn btn-danger departmentdeleteBtn"><i class="bi bi-trash"></i></button>
-                    </td>
-                    <td>{{$departmentlist->department_name}}</td>
-                    <td>{{$departmentlist->department_code}}</td>
-                </tr>
-                </tbody>
-                @endforeach
-            </table>
-
-            <div class="modal fade" id="editdepartmentinfo" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header" >
-                      <h5 class="modal-title" >Edit Department Information</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title"></h5>
             
-                          <form id="departmentinfoform" class="row g-3" enctype="multipart/form-data" >
-                            @csrf
-                                <input type="text" class="form-control" id="department_edit_id" name="department_edit_id" hidden >
-                           
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        <input type="text" name="dept_name" class="form-control" id="dept_name" placeholder="Department Name">
-                                        <label for="dept_name">Department Name</label>
-                                    </div>
-                                </div>
-        
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        <input type="text" name="dept_code" class="form-control" id="dept_code" placeholder="Department Code">
-                                        <label for="dept_code">Department Code</label>
-                                    </div>
-                                </div>
-                            
-                                <div class="col-12" style="padding-top: 20px">
-                                    <div class="d-flex justify-content-end">
-                                        <button data-id="{{$departmentlist->id}}" type="submit" class="btn btn-outline-dark departmentupdateBtn">Save Changes</button>
-                                        <button type="reset" class="btn btn-outline-dark ms-2">Reset</button>
-                                    </div>
-                                </div>
-                          </form>
-            
+                @if(count($departmentlists) > 0)
+                    <table id="departmentlist" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">Actions</th>
+                            <th scope="col">Department Name</th>
+                            <th scope="col">Department Code</th>
+                        </tr>
+                        </thead>
+                            @foreach ($departmentlists as $departmentlist)
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <button data-id="{{$departmentlist->id}}" type="button" class="btn btn-primary departmenteditBtn" data-bs-toggle="modal" data-bs-target="#editdepartmentinfo"><i class="bi bi-pencil-square"></i></button>
+                                        <button data-id="{{$departmentlist->id}}" type="button" class="btn btn-danger departmentdeleteBtn"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                    <td>{{$departmentlist->department_name}}</td>
+                                    <td>{{$departmentlist->department_code}}</td>
+                                </tr>
+                            </tbody>
+                            @endforeach
+                    </table>
+                @else
+                    <table id="departmentlist" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Actions</th>
+                                <th scope="col">Department Name</th>
+                                <th scope="col">Department Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="text-center">
+                            <span class="badge border-danger border-1 text-danger" style="font-size: large">No Department Populated</span>
                         </div>
-                      </div>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                @endif
+
+            @isset($departmentlist->id)
+                <div class="modal fade" id="editdepartmentinfo" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header" >
+                        <h5 class="modal-title" >Edit Department Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title"></h5>
+                
+                            <form id="departmentinfoform" class="row g-3" enctype="multipart/form-data" >
+                                @csrf
+                                    <input type="text" class="form-control" id="department_edit_id" name="department_edit_id" hidden >
+                            
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            <input type="text" name="dept_name" class="form-control" id="dept_name" placeholder="Department Name">
+                                            <label for="dept_name">Department Name</label>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            <input type="text" name="dept_code" class="form-control" id="dept_code" placeholder="Department Code">
+                                            <label for="dept_code">Department Code</label>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-12" style="padding-top: 20px">
+                                        <div class="d-flex justify-content-end">
+                                            <button data-id="{{$departmentlist->id}}" type="submit" class="btn btn-outline-dark departmentupdateBtn">Save Changes</button>
+                                            <button type="reset" class="btn btn-outline-dark ms-2">Reset</button>
+                                        </div>
+                                    </div>
+                            </form>
+                
+                            </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                  </div>
-                </div>
-            </div>
+                    </div>
+                </div>        
+            @endisset
 
         </div>
     </div>
 
-      
-    
 </main>
 <script>
     function showAddDepartmentForm() {

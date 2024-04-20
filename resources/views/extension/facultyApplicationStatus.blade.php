@@ -9,7 +9,22 @@
       width: 100%;
       border-collapse: collapse;
     }
-  </style>
+    .icon{
+        font-size: 8em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 30px;
+        padding-bottom: 50px;
+        color: maroon;
+    }
+    .body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 50px;
+    }
+</style>
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Extension Application Status</h1>
@@ -20,118 +35,128 @@
 
           <h5 class="card-title">List of your Extension Application</h5>
 
-            <div class="accordion accordion-flush" id="accordionFlushExample">
-                @foreach ($extension as $extensions)
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#extension{{$extensions->id}}" aria-expanded="false" aria-controls="flush-collapseOne">
-                        <b>{{$extensions->title}}</b>
-                    </button>
-                  </h2>
-                  <div id="extension{{$extensions->id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        <div class="row"> 
-                            <div class="col-12 text-center">
-                                <h5 class="text-center" style="color: maroon"><b>Status</b></h5>
-                                <p>({{$extensions->status}})</p>
-                                <div class="progress mt-3">
-                                    <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: {{$extensions->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$extensions->percentage_status}}%</div>
+            @if(count($extension) > 0)
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    @foreach ($extension as $extensions)
+                    <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#extension{{$extensions->id}}" aria-expanded="false" aria-controls="flush-collapseOne">
+                            <b>{{$extensions->title}}</b>
+                        </button>
+                    </h2>
+                    <div id="extension{{$extensions->id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div class="row"> 
+                                <div class="col-12 text-center">
+                                    <h5 class="text-center" style="color: maroon"><b>Status</b></h5>
+                                    <p>({{$extensions->status}})</p>
+                                    <div class="progress mt-3">
+                                        <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: {{$extensions->percentage_status}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$extensions->percentage_status}}%</div>
+                                    </div>
+                                </div><br>
+                                <div class="col-12 text-center">
+                                    <i class="bx bxs-calendar-check" style="font-size: 4em; color: maroon; padding-top: 20px"></i>
+                                    <h5 class="text-center" style="color: maroon"><b>Appointments</b></h5>
+                                    <div class="row">
+                                        <div class="col-6 mb-2 text-center">
+                                            @if ($extensions->appointment1_id === null)
+                                                <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
+                                                    Proposal Consultation
+                                                </button>
+                                            @else
+                                                <button style="width: 100%" data-id="{{$extensions->appointment1_id}}" type="button" class="btn btn-outline-dark appointment1" data-bs-toggle="modal" data-bs-target="#proposalAppointment">
+                                                    Proposal Consultation
+                                                </button>
+                                            @endif
+                                        </div>
+                                        <div class="col-6 mb-2 text-center">
+                                            @if ($extensions->appointment2_id === null)
+                                                <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
+                                                    Implementation Proper
+                                                </button>
+                                            @else
+                                                <button style="width: 100%" data-id="{{$extensions->appointment2_id}}" type="button" class="btn btn-outline-dark appointment2" data-bs-toggle="modal" data-bs-target="#implementationProperAppointment">
+                                                    Implementation Proper
+                                                </button>
+                                            @endif
+                                        </div>
+                                        <div class="col-6 mb-2 text-center">
+                                            @if ($extensions->appointment3_id === null)
+                                                <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
+                                                    Pre-Evaluation Survey
+                                                </button>
+                                            @else
+                                                <button style="width: 100%" data-id="{{$extensions->appointment3_id}}" type="button" class="btn btn-outline-dark appointment3" data-bs-toggle="modal" data-bs-target="#preEvaluationAppointment">
+                                                    Pre-Evaluation Survey
+                                                </button>
+                                            @endif
+                                        </div>
+                                        <div class="col-6 mb-2 text-center">
+                                            @if ($extensions->appointment4_id === null)
+                                                <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
+                                                    Mid-Evaluation Survey
+                                                </button>
+                                            @else
+                                                <button style="width: 100%" data-id="{{$extensions->appointment4_id}}" type="button" class="btn btn-outline-dark appointment4" data-bs-toggle="modal" data-bs-target="#midEvaluationAppointment">
+                                                    Mid-Evaluation Survey
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
-                            </div><br>
-                            <div class="col-12 text-center">
-                                <i class="bx bxs-calendar-check" style="font-size: 4em; color: maroon; padding-top: 20px"></i>
-                                <h5 class="text-center" style="color: maroon"><b>Appointments</b></h5>
-                                <div class="row">
-                                    <div class="col-6 mb-2 text-center">
-                                        @if ($extensions->appointment1_id === null)
-                                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
-                                                Proposal Consultation
+                                <div class="col-6 text-center">
+                                    <i class="bx bxs-file" style="font-size: 4em; color: maroon; padding-top: 20px"></i>
+                                    <h5 class="text-center" style="color: maroon"><b>Files/Details</b></h5>
+                                    <div class="row">
+                                        <div class="col-12 mb-2 text-center">
+                                            <button style="width: 100%" data-id="{{$extensions->id}}" type="button" class="btn btn-outline-dark extensionFiles" data-bs-toggle="modal" data-bs-target="#extensionFiles">
+                                                Extension
                                             </button>
-                                        @else
-                                            <button style="width: 100%" data-id="{{$extensions->appointment1_id}}" type="button" class="btn btn-outline-dark appointment1" data-bs-toggle="modal" data-bs-target="#proposalAppointment">
-                                                Proposal Consultation
-                                            </button>
-                                        @endif
-                                    </div>
-                                    <div class="col-6 mb-2 text-center">
-                                        @if ($extensions->appointment2_id === null)
-                                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
-                                                Implementation Proper
-                                            </button>
-                                        @else
-                                            <button style="width: 100%" data-id="{{$extensions->appointment2_id}}" type="button" class="btn btn-outline-dark appointment2" data-bs-toggle="modal" data-bs-target="#implementationProperAppointment">
-                                                Implementation Proper
-                                            </button>
-                                        @endif
-                                    </div>
-                                    <div class="col-6 mb-2 text-center">
-                                        @if ($extensions->appointment3_id === null)
-                                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
-                                                Pre-Evaluation Survey
-                                            </button>
-                                        @else
-                                            <button style="width: 100%" data-id="{{$extensions->appointment3_id}}" type="button" class="btn btn-outline-dark appointment3" data-bs-toggle="modal" data-bs-target="#preEvaluationAppointment">
-                                                Pre-Evaluation Survey
-                                            </button>
-                                        @endif
-                                    </div>
-                                    <div class="col-6 mb-2 text-center">
-                                        @if ($extensions->appointment4_id === null)
-                                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No appointment has been made yet.">
-                                                Mid-Evaluation Survey
-                                            </button>
-                                        @else
-                                            <button style="width: 100%" data-id="{{$extensions->appointment4_id}}" type="button" class="btn btn-outline-dark appointment4" data-bs-toggle="modal" data-bs-target="#midEvaluationAppointment">
-                                                Mid-Evaluation Survey
-                                            </button>
-                                        @endif
+                                        </div>
+                                        <div class="col-12 mb-2 text-center">
+                                            @if ($extensions->prototype_id === null)
+                                                <button style="width: 100%" type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No prototype has been made yet.">
+                                                    Prototype 
+                                                </button>
+                                            @else
+                                                <button style="width: 100%" data-id="{{$extensions->prototype_id}}" type="button" class="btn btn-outline-dark prototypeFiles" data-bs-toggle="modal" data-bs-target="#prototypeFiles">
+                                                    Prototype
+                                                </button> 
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-6 text-center">
-                                <i class="bx bxs-file" style="font-size: 4em; color: maroon; padding-top: 20px"></i>
-                                <h5 class="text-center" style="color: maroon"><b>Files/Details</b></h5>
-                                <div class="row">
-                                    <div class="col-12 mb-2 text-center">
-                                        <button style="width: 100%" data-id="{{$extensions->id}}" type="button" class="btn btn-outline-dark extensionFiles" data-bs-toggle="modal" data-bs-target="#extensionFiles">
-                                            Extension
-                                        </button>
-                                    </div>
-                                    <div class="col-12 mb-2 text-center">
-                                        @if ($extensions->prototype_id === null)
-                                            <button style="width: 100%" type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="left" title="No prototype has been made yet.">
-                                                Prototype 
+                                <div class="col-6 text-center">
+                                    <i class="bx bxs-file-image" style="font-size: 4em; color: maroon; padding-top: 20px"></i>
+                                    <h5 class="text-center" style="color: maroon"><b>Documentation Photos</b></h5>
+                                    <div class="row">
+                                        <div class="col-12 mb-2 text-center">
+                                            <button style="width: 100%" data-id="{{$extensions->id}}" type="button" class="btn btn-outline-dark doumentationPhotos" data-bs-toggle="modal" data-bs-target="#doumentationPhotos">
+                                                Extension
                                             </button>
-                                        @else
-                                            <button style="width: 100%" data-id="{{$extensions->prototype_id}}" type="button" class="btn btn-outline-dark prototypeFiles" data-bs-toggle="modal" data-bs-target="#prototypeFiles">
+                                        </div>
+                                        <div class="col-12 mb-2 text-center">
+                                            <button style="width: 100%" data-id="{{$extensions->prototype_id}}" type="button" class="btn btn-outline-dark prototypePhotos" data-bs-toggle="modal" data-bs-target="#prototypePhotos">
                                                 Prototype
-                                            </button> 
-                                        @endif
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-6 text-center">
-                                <i class="bx bxs-file-image" style="font-size: 4em; color: maroon; padding-top: 20px"></i>
-                                <h5 class="text-center" style="color: maroon"><b>Documentation Photos</b></h5>
-                                <div class="row">
-                                    <div class="col-12 mb-2 text-center">
-                                        <button style="width: 100%" data-id="{{$extensions->id}}" type="button" class="btn btn-outline-dark doumentationPhotos" data-bs-toggle="modal" data-bs-target="#doumentationPhotos">
-                                            Extension
-                                        </button>
-                                    </div>
-                                    <div class="col-12 mb-2 text-center">
-                                        <button style="width: 100%" data-id="{{$extensions->prototype_id}}" type="button" class="btn btn-outline-dark prototypePhotos" data-bs-toggle="modal" data-bs-target="#prototypePhotos">
-                                            Prototype
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>    
+                            </div>    
+                        </div>
                     </div>
-                  </div>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
-            </div>
+            @else
+                <div class="icon">
+                    <i class="ri-file-forbid-line"></i>
+                </div>
+                <div class="body">
+                    <h2>Nothing has been uploaded here.</h2>
+                </div>
+ 
+            @endif
 
           <div class="modal fade" id="proposalAppointment" tabindex="-1">
             <div class="modal-dialog modal-lg">

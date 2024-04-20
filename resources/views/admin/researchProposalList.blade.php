@@ -25,7 +25,7 @@
 
     @if(session('success'))
         <script>
-        Swal.fire({
+            Swal.fire({
             icon: 'success',
             title: 'Success',
             text: '{{ session('success') }}',
@@ -33,7 +33,7 @@
         </script>
     @elseif(session('error'))
         <script>
-        Swal.fire({
+            Swal.fire({
             icon: 'error',
             title: 'Error',
             text: '{{ session('error') }}',
@@ -44,44 +44,69 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">List of Research Proposal</h5>
-            <table class="table table-hover">
-                <thead>
-                    <tr class="text-center">
-                        <th scope="col">Owner</th>
-                        <th scope="col">Research Proposal Title</th>
-                        <th scope="col">Research Proposal Type</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                @foreach ($proposal as $proposals)
-                    <tbody>
+            @if(count($proposal) > 0)
+                <table class="table table-hover">
+                    <thead>
                         <tr class="text-center">
-                            <td>{{$proposals->fname .' '.$proposals->mname .' '. $proposals->lname}}<span>({{$proposals->role}})</span></td>
-                            <td>{{$proposals->title}}</td>
-                            <td>{{$proposals->research_type}}</td>
-                            <td>
-                                @if ($proposals->status === 'Pending R&E Office Approval')
-                                    <h5><span class="badge bg-warning">{{$proposals->status}}</span></h5>
-                                @elseif ($proposals->status === 'Research Proposal Approved By R&E Office')
-                                    <h5><span class="badge bg-success">{{$proposals->status}}</span></h5>
-                                @elseif ($proposals->status === 'Research Proposal Rejected By R&E Office')
-                                    <h5><span class="badge bg-danger">{{$proposals->status}}</span></h5>
-                                @endif 
-                            </td>
-                            <td>
-                                @if ($proposals->status === 'Pending R&E Office Approval')
-                                    <button data-id="{{$proposals->id}}" type="button" class="btn btn-primary processResearchProposal" data-bs-toggle="modal" data-bs-target="#processingResearchProposal"><i class="bi bi-arrow-right"></i></button>
-                                @elseif ($proposals->status === 'Research Proposal Approved By R&E Office')
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This proposal has already been approved."><i class="bi bi-arrow-right"></i></button>
-                                @elseif ($proposals->status === 'Research Proposal Rejected By R&E Office')
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This proposal has already been rejected."><i class="bi bi-arrow-right"></i></button>
-                                @endif
-                            </td>
+                            <th scope="col">Owner</th>
+                            <th scope="col">Research Proposal Title</th>
+                            <th scope="col">Research Proposal Type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
                         </tr>
-                    </tbody>
-                @endforeach
-            </table>
+                    </thead>
+                    @foreach ($proposal as $proposals)
+                        <tbody>
+                            <tr class="text-center">
+                                <td>{{$proposals->fname .' '.$proposals->mname .' '. $proposals->lname}}<span>({{$proposals->role}})</span></td>
+                                <td>{{$proposals->title}}</td>
+                                <td>{{$proposals->research_type}}</td>
+                                <td>
+                                    @if ($proposals->status === 'Pending R&E Office Approval')
+                                        <h5><span class="badge bg-warning">{{$proposals->status}}</span></h5>
+                                    @elseif ($proposals->status === 'Research Proposal Approved By R&E Office')
+                                        <h5><span class="badge bg-success">{{$proposals->status}}</span></h5>
+                                    @elseif ($proposals->status === 'Research Proposal Rejected By R&E Office')
+                                        <h5><span class="badge bg-danger">{{$proposals->status}}</span></h5>
+                                    @endif 
+                                </td>
+                                <td>
+                                    @if ($proposals->status === 'Pending R&E Office Approval')
+                                        <button data-id="{{$proposals->id}}" type="button" class="btn btn-primary processResearchProposal" data-bs-toggle="modal" data-bs-target="#processingResearchProposal"><i class="bi bi-arrow-right"></i></button>
+                                    @elseif ($proposals->status === 'Research Proposal Approved By R&E Office')
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This proposal has already been approved."><i class="bi bi-arrow-right"></i></button>
+                                    @elseif ($proposals->status === 'Research Proposal Rejected By R&E Office')
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This proposal has already been rejected."><i class="bi bi-arrow-right"></i></button>
+                                    @endif
+                                </td>
+                            </tr>
+                        </tbody>
+                    @endforeach
+                </table>
+            @else
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">Owner</th>
+                            <th scope="col">Research Proposal Title</th>
+                            <th scope="col">Research Proposal Type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                </table>
+                <div class="alert alert-danger" role="alert">
+                    <div class="text-center">
+                        <span class="badge border-danger border-1 text-danger" style="font-size: large">No Research Proposal Populated</span>
+                    </div>
+                </div>
+            @endif
+
         </div>
     </div>
 

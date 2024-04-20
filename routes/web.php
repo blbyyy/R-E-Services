@@ -20,6 +20,45 @@ use App\Models\Department;
 //     'uses' => 'AdminController@showannouncement',
 //           'as' => 'homepage'
 //   ]);
+Route::get('/firstPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@firstPage',
+            'as' => 'csm.page1'
+    ]);
+
+Route::post('/form-submit1', 'ClientSatisfactionMeasurementController@session1')->name('form.submit1');
+
+Route::get('/secondPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@secondPage',
+            'as' => 'csm.page2'
+    ]);
+
+Route::post('/form-submit2', 'ClientSatisfactionMeasurementController@session2')->name('form.submit2');
+
+Route::get('/thirdPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@thirdPage',
+            'as' => 'csm.page3'
+    ]);
+
+Route::post('/form-submit3', 'ClientSatisfactionMeasurementController@session3')->name('form.submit3');
+
+Route::get('/fourthPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@fourthPage',
+            'as' => 'csm.page4'
+    ]);
+
+Route::post('/form-submit4', 'ClientSatisfactionMeasurementController@session4')->name('form.submit4');
+
+Route::get('/fifthPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@fifthPage',
+            'as' => 'csm.page5'
+    ]);
+
+Route::get('/sixthPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@sixthPage',
+            'as' => 'csm.page6'
+    ]);
+
+Route::post('/form-submit5', 'ClientSatisfactionMeasurementController@session5')->name('form.submit5');
 
 Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
 
@@ -1315,4 +1354,19 @@ Route::post('/admin/extension/proposal-list/sent7', [
 Route::get('/admin/printable-data', [
       'uses' => 'PdfController@printableData',
             'as' => 'admin.printable.data'
+    ]);
+
+Route::get('/admin/users-pending', [
+      'uses' => 'AdminController@usersPending',
+            'as' => 'admin.users.pending'
+    ]);
+
+Route::get('/admin/users-pending/{id}', [
+      'uses' => 'AdminController@usersPendingId',
+            'as' => 'admin.users.pending.specific'
+    ]);
+
+Route::post('/admin/users-pending/verified', [
+      'uses' => 'AdminController@usersVerified',
+            'as' => 'admin.users.pending.verified'
     ]);

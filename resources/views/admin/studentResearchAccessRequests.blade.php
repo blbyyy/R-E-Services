@@ -27,47 +27,69 @@
     <div class="card">
         <div class="card-body">
           <h5 class="card-title">List of Student Access Requests</h5>
-
-          <table class="table table-hover">
-            <thead>
-              <tr class="text-center">
-                <th scope="col">Actions</th>
-                <th scope="col">Requestor</th>
-                <th scope="col">Research Title</th>
-                <th scope="col">Purpose</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-            @foreach($requestAccess as $request)
-              <tr class="text-center">
-                <td>
-                  @if ($request->status === 'Access Approved')
-                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="At the moment, this request has access."><i class="bi bi-key-fill"></i></button>
-                  @elseif ($request->status === 'Rejected')
-                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="This request is not granted."><i class="bi bi-key-fill"></i></button>
-                  @else
-                    <button data-id="{{$request->id }}" type="button" class="btn btn-primary studentProcessAccessRequest" data-bs-toggle="modal" data-bs-target="#studentResearchAccessRequest"><i class="bi bi-key-fill"></i></button>
-                  @endif
-                <td>
-                    {{$request->fname . ' ' . $request->mname . ' ' . $request->lname}}
-                    <span style="font-size: small">({{$request->requestor_type}})</span>
-                </td>
-                <td>{{$request->research_title}}</td>
-                <td>{{$request->purpose}}</td>
-                <td>
-                    @if ($request->status === 'Rejected')
-                        <span class="badge rounded-pill bg-danger">{{$request->status}}</span>
-                    @elseif ($request->status === 'Access Approved')
-                        <span class="badge rounded-pill bg-success">{{$request->status}}</span>
+          @if(count($requestAccess) > 0)
+            <table class="table table-hover">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">Actions</th>
+                  <th scope="col">Requestor</th>
+                  <th scope="col">Research Title</th>
+                  <th scope="col">Purpose</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+              @foreach($requestAccess as $request)
+                <tr class="text-center">
+                  <td>
+                    @if ($request->status === 'Access Approved')
+                      <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="At the moment, this request has access."><i class="bi bi-key-fill"></i></button>
+                    @elseif ($request->status === 'Rejected')
+                      <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="This request is not granted."><i class="bi bi-key-fill"></i></button>
                     @else
-                        <span class="badge rounded-pill bg-warning">{{$request->status}}</span>
+                      <button data-id="{{$request->id }}" type="button" class="btn btn-primary studentProcessAccessRequest" data-bs-toggle="modal" data-bs-target="#studentResearchAccessRequest"><i class="bi bi-key-fill"></i></button>
                     @endif
-                </td>
-              </tr>
-            @endforeach
-            </tbody>
-          </table>
+                  <td>
+                      {{$request->fname . ' ' . $request->mname . ' ' . $request->lname}}
+                      <span style="font-size: small">({{$request->requestor_type}})</span>
+                  </td>
+                  <td>{{$request->research_title}}</td>
+                  <td>{{$request->purpose}}</td>
+                  <td>
+                      @if ($request->status === 'Rejected')
+                          <span class="badge rounded-pill bg-danger">{{$request->status}}</span>
+                      @elseif ($request->status === 'Access Approved')
+                          <span class="badge rounded-pill bg-success">{{$request->status}}</span>
+                      @else
+                          <span class="badge rounded-pill bg-warning">{{$request->status}}</span>
+                      @endif
+                  </td>
+                </tr>
+              @endforeach
+              </tbody>
+            </table>
+          @else
+            <table class="table table-hover">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">Actions</th>
+                  <th scope="col">Requestor</th>
+                  <th scope="col">Research Title</th>
+                  <th scope="col">Purpose</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+            <div class="alert alert-danger" role="alert">
+                <div class="text-center">
+                    <span class="badge border-danger border-1 text-danger" style="font-size: large">No Student Request Access Populated</span>
+                </div>
+            </div>
+          @endif
 
           <div class="modal fade" id="studentResearchAccessRequest" tabindex="-1"> 
             <div class="modal-dialog modal-lg">
