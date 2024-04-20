@@ -1543,64 +1543,77 @@ class ExtensionController extends Controller
 
     public function mobileproposal7(Request $request)
     { 
-        if ($request->confirmation == 'Yes') {
-            
-            $prototype = new Prototype;
-            
-            $pdfFile = $request->file('letter');
-            $letterFileName = $pdfFile->getClientOriginalName();
-            $pdfFile->move(public_path('uploads/prototype'), $letterFileName);
-            $prototype->letter = $letterFileName;
+        try {
+            // Validate confirmation value
+            $confirmation = $request->confirmation;
+            if ($confirmation !== 'Yes' && $confirmation !== 'None') {
+                return response()->json(['error' => 'Invalid confirmation value']);
+            }
 
-            $pdfFile = $request->file('nda');
-            $ndaFileName = $pdfFile->getClientOriginalName();
-            $pdfFile->move(public_path('uploads/prototype'), $ndaFileName);
-            $prototype->nda = $ndaFileName;
+            if ($confirmation === 'Yes') {
+                // Handle file uploads for confirmation 'Yes'
+                $prototype = new Prototype;
 
-            $pdfFile = $request->file('coa');
-            $coaFileName = $pdfFile->getClientOriginalName();
-            $pdfFile->move(public_path('uploads/prototype'), $coaFileName);
-            $prototype->coa = $coaFileName;
-            
-            $prototype->save();
-            $lastId = DB::getPdo()->lastInsertId();
+                // Handle file upload for 'letter'
+                $pdfFile = $request->file('letter');
+                $letterFileName = $pdfFile->getClientOriginalName();
+                $pdfFile->move(public_path('uploads/prototype'), $letterFileName);
+                $prototype->letter = $letterFileName;
 
-            $extension = Extension::find($request->proposalId);
-            $extension->prototype_id = $lastId;
-            $extension->status = 'Have Prototype: Letter, NDA, COA Inserted';
-            $extension->percentage_status = 85;
-            $extension->save();
+                // Handle file upload for 'nda'
+                $pdfFile = $request->file('nda');
+                $ndaFileName = $pdfFile->getClientOriginalName();
+                $pdfFile->move(public_path('uploads/prototype'), $ndaFileName);
+                $prototype->nda = $ndaFileName;
 
-            $notif = new Notifications;
-            $notif->type = 'Admin Notification';
-            $notif->title = 'Letter, Non Disclosure Agreement and Certificate of Acceptance Inserted';
-            $notif->message = 'Inserted letter, nda and coa ';
-            $notif->date = now();
-            $notif->user_id = $request->user_id;
-            $notif->reciever_id = 0;
-            $notif->save();
+                // Handle file upload for 'coa'
+                $pdfFile = $request->file('coa');
+                $coaFileName = $pdfFile->getClientOriginalName();
+                $pdfFile->move(public_path('uploads/prototype'), $coaFileName);
+                $prototype->coa = $coaFileName;
+                
+                // Save prototype and update extension
+                $prototype->save();
+                $lastId = DB::getPdo()->lastInsertId();
 
-            return response()->json(['success' => 'Inserted: Letter, NDA and COA File']);
+                $extension = Extension::find($request->proposalId);
+                $extension->prototype_id = $lastId;
+                $extension->status = 'Have Prototype: Letter, NDA, COA Inserted';
+                $extension->percentage_status = 93;
+                $extension->save();
 
-        } else {
+                // Notify user
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Letter, Non Disclosure Agreement and Certificate of Acceptance Inserted';
+                $notif->message = 'Inserted letter, nda and coa ';
+                $notif->date = now();
+                $notif->user_id = $request->user_id;
+                $notif->save();
 
-            $extension = Extension::find($request->proposalId);
-            $extension->status = 'Process Done';
-            $extension->percentage_status = 100;
-            $extension->save();
+                return response()->json(['success' => 'Inserted: Letter, NDA and COA File']);
 
-            $notif = new Notifications;
-            $notif->type = 'Admin Notification';
-            $notif->title = 'Extension Application Process Done';
-            $notif->message = 'Extension application was completed all the process ';
-            $notif->date = now();
-            $notif->user_id = $request->user_id;
-            $notif->reciever_id = 0;
-            $notif->save();
+            } else {
+                // Handle case when confirmation is 'None'
+                $extension = Extension::find($request->proposalId);
+                $extension->status = 'Process Done';
+                $extension->percentage_status = 100;
+                $extension->save();
 
-            return response()->json(['success' => 'Process Done']);
+                // Notify user
+                $notif = new Notifications;
+                $notif->type = 'Admin Notification';
+                $notif->title = 'Extension Application Process Done';
+                $notif->message = 'Extension application was completed all the process ';
+                $notif->date = now();
+                $notif->user_id = $request->user_id;
+                $notif->save();
+
+                return response()->json(['success' => 'Process Done']);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
         }
-
     }
 
     public function mobileproposal8(Request $request)
@@ -1612,7 +1625,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId);
             if ($extension) {
                 $extension->status = $request->pre_evaluation;
-                $extension->percentage_status = 87;
+                $extension->percentage_status = 94;
                 $extension->save();
 
                 $extension_id = DB::table('extension')
@@ -1636,7 +1649,6 @@ class ExtensionController extends Controller
                 $notif->message = 'Quick update: prototype pre-evaluation survey done';
                 $notif->date = now();
                 $notif->user_id = $request->user_id;
-                $notif->reciever_id = 0;
                 $notif->save();
 
                 $responseData['message'] = 'Prototype Pre-Evaluation Survey Done';
@@ -1673,7 +1685,6 @@ class ExtensionController extends Controller
                 $notif->message = 'Quick update: prototype pre-evaluation survey not done';
                 $notif->date = now();
                 $notif->user_id = $request->user_id;
-                $notif->reciever_id = 0;
                 $notif->save();
 
                 $responseData['message'] = 'Prototype Pre-Evaluation Survey Not Done';
@@ -1696,7 +1707,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId);
             if ($extension) {
                 $extension->status = $request->mid_evaluation;
-                $extension->percentage_status = 89;
+                $extension->percentage_status = 95;
                 $extension->save();
 
                 $extension_id = DB::table('extension')
@@ -1720,7 +1731,6 @@ class ExtensionController extends Controller
                 $notif->message = 'Quick update: prototype mid-evaluation survey done';
                 $notif->date = now();
                 $notif->user_id = $request->user_id;
-                $notif->reciever_id = 0;
                 $notif->save();
 
                 $responseData['message'] = 'Prototype Mid-Evaluation Survey Done';
@@ -1758,7 +1768,6 @@ class ExtensionController extends Controller
                 $notif->message = 'Quick update: prototype mid-evaluation survey not done';
                 $notif->date = now();
                 $notif->user_id = $request->user_id;
-                $notif->reciever_id = 0;
                 $notif->save();
 
                 $responseData['message'] = 'Prototype Mid-Evaluation Survey Not Done';
@@ -1781,7 +1790,7 @@ class ExtensionController extends Controller
             $extension = Extension::find($request->proposalId);
             if ($extension) {
                 $extension->status = $request->post_evaluation;
-                $extension->percentage_status = 91;
+                $extension->percentage_status = 96;
                 $extension->save();
 
                 $extension_id = DB::table('extension')
@@ -1805,7 +1814,6 @@ class ExtensionController extends Controller
                 $notif->message = 'Quick update: prototype post-evaluation survey done';
                 $notif->date = now();
                 $notif->user_id = $request->user_id;
-                $notif->reciever_id = 0;
                 $notif->save();
 
                 $responseData['message'] = 'Prototype Post-Evaluation Survey Done';
@@ -1843,7 +1851,6 @@ class ExtensionController extends Controller
                 $notif->message = 'Quick update: prototype post-evaluation survey not done';
                 $notif->date = now();
                 $notif->user_id = $request->user_id;
-                $notif->reciever_id = 0;
                 $notif->save();
 
                 $responseData['message'] = 'Prototype Post-Evaluation Survey Not Done';
@@ -1858,7 +1865,7 @@ class ExtensionController extends Controller
     }
 
     public function mobileproposal11(Request $request)
-    { 
+    {
         $extension = Extension::find($request->proposalId);
         $extension->status = 'Process Done';
         $extension->percentage_status = 100;
@@ -1905,8 +1912,8 @@ class ExtensionController extends Controller
         $notif->message = 'Inserted prototype capsule detail, certificate, documentation photos, and attendance.';
         $notif->date = now();
         $notif->user_id = $request->user_id;
-        $notif->reciever_id = 0;
         $notif->save();
+
 
         $responseData = [
             'success' => true,
