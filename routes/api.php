@@ -8,6 +8,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ResearchController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -228,5 +229,10 @@ Route::post('/mobilereUploadResearchProposal', 'App\Http\Controllers\ResearchPro
 Route::get('/mobileresearchProposalStatus/{id}', 'App\Http\Controllers\ResearchProposalController@mobileresearchProposalStatus');
 Route::get('/mobilecolloquiumSchedule/{id}', 'App\Http\Controllers\ResearchProposalController@mobilecolloquiumSchedule');
 Route::get('/RPmobileshowpdf/{fileName}', 'App\Http\Controllers\ResearchProposalController@RPmobileshowpdf');
+
+Route::get('/turnitin-proof-photos/{id}', [StudentController::class, 'getTurnitinProofPhotos']);
+
+Route::post('/mobilechange-password/{email}', 'App\Http\Controllers\StudentController@mobilechangePassword');
+Route::post('/mobilevalidate-password/{email}', 'App\Http\Controllers\StudentController@mobilevalidatePassword');
 
 //MOBILE END

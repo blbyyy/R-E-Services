@@ -420,8 +420,8 @@ class ResearchController extends Controller
             $notif->title = 'Research Access Request for Information';
             $notif->message = 'Someone requested access to the research information.';
             $notif->date = now();
-            $notif->user_id = Auth::id();
-            $notif->reciever_id = 0;
+            $notif->user_id = $request->requestor_id;
+            
             $notif->save();
 
         return response()->json([

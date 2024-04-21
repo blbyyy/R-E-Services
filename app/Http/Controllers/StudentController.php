@@ -1338,6 +1338,51 @@ class StudentController extends Controller
 
         return response()->json($research);
     }
+
+    public function mobilechangePassword(Request $request, $email)
+    {
+        $student = Student::where('email', $email)->first();
+
+        $request->validate([
+            'password' => 'required',
+            'newpassword' => 'required|min:8',
+            'renewpassword' => 'required|same:newpassword',
+        ]);
+
+        // Fetch the User model instance
+        $user = User::where('email', $student->email)->first();
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Current password is incorrect.'], 422);
+        } else {
+            // Update the password using the User model instance
+            $user->update([
+                'password' => Hash::make($request->newpassword),
+            ]);
+            return response()->json(['success' => 'Password changed successfully!']);
+        }
+    }
+
+    public function mobilevalidatePassword(Request $request, $email)
+    {
+        $student = Student::where('email', $email)->first();
+        
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        }
+
+        // Fetch the User model instance
+        $user = User::where('email', $student->email)->first();
+
+        if (!$user->password) {
+            return response()->json(['error' => 'User does not have a password.'], 422);
+        }
+
+        $enteredPassword = $request->input('password');
+        $isMatch = Hash::check($enteredPassword, $user->password);
+
+        return response()->json(['match' => $isMatch]);
+    }
     //MOBILE END
 
 
