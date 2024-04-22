@@ -202,7 +202,7 @@
                 @else
                   <img class="rounded-circle" src="{{ asset('/uploads/avatars/'.$staff->avatar) }}" alt="" />    
                 @endif
-              @elseif(Auth::user()->role === 'Faculty' || Auth::user()->role === 'Faculty Not Verified')
+              @elseif(Auth::user()->role === 'Faculty' || Auth::user()->role === 'Faculty Not Verified' || Auth::user()->role === 'Research Coordinator')
                 @if($faculty->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
@@ -238,7 +238,7 @@
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
-              @elseif(Auth::user()->role == 'Faculty')
+              @elseif(Auth::user()->role == 'Faculty' || Auth::user()->role == 'Research Coordinator')
               <a class="dropdown-item d-flex align-items-center" href="{{ url('faculty/profile/{id}') }}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
@@ -619,6 +619,90 @@
             <span>Extension Proposals</span>
           </a>
         </li>
+      @elseif(Auth::user()->role == 'Research Coordinator')
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/homepage')}}">
+              <i class="bi bi-house-door"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/myfiles')}}">
+              <i class="bi bi-folder"></i>
+              <span>My Files</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/apply/certification')}}">
+              <i class="bi bi-award"></i>
+              <span>Certification</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/application/status')}}">
+              <i class="bi bi-file-earmark-bar-graph"></i>
+              <span>Application Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/research-proposal')}}">
+              <i class="bx bxs-file-export"></i>
+              <span>Research Proposal</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/student-applications')}}">
+              <i class="bi bi-file-earmark-person"></i>
+              <span>Students Application</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/research-list')}}">
+              <i class="bi bi-card-list"></i>
+              <span>Researches</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-file-richtext"></i><span>Templates</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li>
+                <a href="{{url('/faculty/research/templates')}}">
+                  <i class="bi bi-circle"></i><span>Research</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{url('/faculty/extension/templates')}}">
+                  <i class="bi bi-circle"></i><span>Extension</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/citation')}}">
+              <i class="bi bi-chat-quote"></i>
+              <span>Citation References</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/research-inventory')}}">
+              <i class="bi bi-archive"></i>
+              <span>Research Inventory</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/extension/application')}}">
+              <i class="bi bi-card-heading"></i>
+              <span>Extension Application</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/extension/application/status')}}">
+              <i class="bi bi-file-earmark-break"></i>
+              <span>Extension Application Status</span>
+            </a>
+          </li>
       @endif
       @endguest
 

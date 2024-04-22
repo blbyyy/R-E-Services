@@ -1174,7 +1174,89 @@ class AdminController extends Controller
             ->take(4)
             ->get();
 
-        return View::make('admin.userslist',compact('users','admin','adminNotifCount','adminNotification'));
+        $department = DB::table('departments')->get();
+
+        return View::make('admin.userslist',compact('users','admin','adminNotifCount','adminNotification','department'));
+    }
+
+    public function createUserProfile(Request $request)
+    {
+        if ($request->userRole === 'Student') {
+            
+            $users = new User;
+            $users->fname = $request->studentFname;
+            $users->lname = $request->studentLname;
+            $users->mname = $request->studentMname;
+            $users->email = $request->studentEmail;
+            $users->password = bcrypt($request->studentPassword);
+            $users->role = 'Student';   
+            $users->save();
+            $last = DB::getPdo()->lastInsertId();
+
+            $students = new Student;
+            $students->fname = $request->studentFname;
+            $students->lname = $request->studentLname;
+            $students->mname = $request->studentMname;
+            $students->college = $request->studentCollege;
+            $students->course = $request->studentCourse;
+            $students->tup_id = $request->studentId;
+            $students->email = $request->studentEmail;
+            $students->gender = $request->studentGender;
+            $students->phone = $request->studentPhone;
+            $students->address = $request->studentAddress;
+            $students->birthdate = $request->studentBirthdate;
+            $students->user_id = $last;
+            $students->save();
+
+            return redirect()->to('/admin/userlist')->with('success', 'Student Profile Successfully Created.');
+
+        } else {
+            
+            $users = new User;
+            $users->fname = $request->facultyFname;
+            $users->lname = $request->studentLname;
+            $users->mname = $request->facultyMname;
+            $users->email = $request->facultyEmail;
+            $users->password = bcrypt($request->facultyPassword);
+
+            if ($request->userRole === 'Faculty') {
+                $users->role = 'Faculty'; 
+            } 
+
+            if ($request->userRole === 'Research Coordinator') {
+                $users->role = 'Research Coordinator'; 
+            } 
+            
+            $users->save();
+            $last = DB::getPdo()->lastInsertId();
+
+            $faculty = new Faculty;
+            $faculty->fname = $request->facultyFname;
+            $faculty->lname = $request->studentLname;
+            $faculty->mname = $request->facultyMname;
+            $faculty->department_id = $request->facultyDepartment;
+            $faculty->position = $request->facultyPosition;
+            $faculty->designation = $request->facultyDesignation;
+            $faculty->tup_id = $request->facultyId;
+            $faculty->email = $request->facultyEmail;
+            $faculty->gender = $request->facultyGender;
+            $faculty->phone = $request->facultyPhone;
+            $faculty->address = $request->facultyAddress;
+            $faculty->birthdate = $request->facultyBirthdate;
+            $faculty->user_id = $last;
+            $faculty->save();
+
+            if ($request->userRole === 'Faculty') {
+                return redirect()->to('/admin/userlist')->with('success', 'Faculty Profile Successfully Created.'); 
+            } 
+
+            if ($request->userRole === 'Research Coordinator') {
+                return redirect()->to('/admin/userlist')->with('success', 'Research Coordinator Profile Successfully Created.');
+            } 
+            
+        }
+        
+        
     }
 
     public function selectedSpecificRole(Request $request)

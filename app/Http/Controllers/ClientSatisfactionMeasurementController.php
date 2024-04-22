@@ -35,7 +35,53 @@ class ClientSatisfactionMeasurementController extends Controller
             ->where('user_id',Auth::id())
             ->first();
 
-        return View::make('csm.firstPage',compact('faculty','student','staff','admin'));
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+        
+        $facultyNotifCount = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $facultyNotification = DB::table('notifications')
+            ->where('type', 'Faculty Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        $staffNotifCount = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $staffNotification = DB::table('notifications')
+            ->where('type', 'Staff Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('csm.firstPage',compact('faculty','student','staff','admin','adminNotifCount','adminNotification','facultyNotifCount','facultyNotification','studentNotifCount','studentNotification','staffNotifCount','staffNotification'));
     }
 
     public function session1(Request $request)
@@ -81,7 +127,7 @@ class ClientSatisfactionMeasurementController extends Controller
 
         $session = session('form_data');
 
-        return view('csm.secondPage', ['session' => $session]);
+        return view('csm.secondPage', compact('session'));
     }
 
     public function session2(Request $request)
@@ -311,25 +357,25 @@ class ClientSatisfactionMeasurementController extends Controller
         $csm->comprehensive_type = $request->comprehensive_type;
         $csm->complaint_message = $request->complaint_message;
 
-        $csm->email = $existingData['email'];
-        $csm->rated_office = $existingData['office'];
-        $csm->date = $existingData['date'];
-        $csm->time = $existingData['time'];
-        $csm->email_address = $existingData['email_address'];
-        $csm->name = $existingData['name'];
-        $csm->user_type = $existingData['type'];
-        $csm->transaction_purpose = $existingData['purpose'];
-        $csm->facilitator = $existingData['assisted_by'];
-        $csm->cc1 = $existingData['cc1'];
-        $csm->cc2 = $existingData['cc2'];
-        $csm->cc3 = $existingData['cc3'];
-        $csm->cc3_explanation = $existingData['cc3_explanation'];
+        $csm->email = $existingData['email'] ?? null;;
+        $csm->rated_office = $existingData['office'] ?? null;;
+        $csm->date = $existingData['date'] ?? null;;
+        $csm->time = $existingData['time'] ?? null;;
+        $csm->email_address = $existingData['email_address'] ?? null;;
+        $csm->name = $existingData['name'] ?? null;;
+        $csm->user_type = $existingData['type'] ?? null;;
+        $csm->transaction_purpose = $existingData['purpose'] ?? null;;
+        $csm->facilitator = $existingData['assisted_by'] ?? null;;
+        $csm->cc1 = $existingData['cc1'] ?? null;;
+        $csm->cc2 = $existingData['cc2'] ?? null;;
+        $csm->cc3 = $existingData['cc3'] ?? null;;
+        $csm->cc3_explanation = $existingData['cc3_explanation'] ?? null;;
 
         $csm->save();
 
         $request->session()->flush();
         
-        return redirect()->to('/sixthPage')->with('success', 'Your Proposal has been sent to Board and OSG; kindly wait the result if the result is out we immediately contact you.');
+        return redirect()->to('/csm-form/sixthPage')->with('success', "Thank you for your feedback! We are glad you had a positive experience. Your input is valued, and we're committed to improving. Have a great day!");
     }
 
     public function sixthPage()
