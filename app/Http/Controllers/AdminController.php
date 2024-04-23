@@ -76,6 +76,16 @@ class AdminController extends Controller
         ->groupBy('course')
         ->get();
 
+        $csmRatedOfficeCount = DB::table('csm')
+        ->select('rated_office', DB::raw('count(*) as count'))
+        ->groupBy('rated_office')
+        ->get();
+
+        $csmUserTypeCount = DB::table('csm')
+        ->select('user_type', DB::raw('count(*) as count'))
+        ->groupBy('user_type')
+        ->get();
+
         $studentCount = DB::table('users')->where('role', 'Student')->count();
 
         $staffCount = DB::table('users')->where('role', 'Staff')->count();
@@ -122,7 +132,7 @@ class AdminController extends Controller
             ->get();
 
 
-        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount','extensionCount'));
+        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount','extensionCount','csmRatedOfficeCount','csmUserTypeCount'));
     }
 
     public function administration()
