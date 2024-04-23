@@ -46,44 +46,94 @@ class AdminController extends Controller
 
         $extensionCount = DB::table('extension')->count();
 
-        $rolesCount = DB::table('users')
-        ->select('role', DB::raw('count(*) as count'))
-        ->groupBy('role')
+        $dailyUserCount = DB::table('users')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
         ->get();
 
-        $applicationsCount = DB::table('requestingform')
-        ->select('status', DB::raw('count(*) as count'))
-        ->groupBy('status')
+        $monthlyUserCount = DB::table('users')
+        ->select(DB::raw('MONTHNAME(created_at) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(created_at)'))
         ->get();
 
-        $thesisTypeCount = DB::table('requestingform')
-        ->select('thesis_type', DB::raw('count(*) as count'))
-        ->groupBy('thesis_type')
+        $yearlyUserCount = DB::table('users')
+        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(created_at)'))
         ->get();
 
-        $courseCount = DB::table('requestingform')
-        ->select('course', DB::raw('count(*) as count'))
-        ->groupBy('course')
+        $dailyApplicationsCount = DB::table('requestingform')
+        ->select(DB::raw('DATE(date) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(date)'))
         ->get();
 
-        $researchDepartmentCount = DB::table('research_list')
-        ->select('department', DB::raw('count(*) as count'))
-        ->groupBy('department')
+        $monthlyApplicationsCount = DB::table('requestingform')
+        ->select(DB::raw('MONTHNAME(date) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(date)'))
         ->get();
 
-        $researchCourseCount = DB::table('research_list')
-        ->select('course', DB::raw('count(*) as count'))
-        ->groupBy('course')
+        $yearlyApplicationsCount = DB::table('requestingform')
+        ->select(DB::raw('YEAR(date) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(date)'))
         ->get();
 
-        $csmRatedOfficeCount = DB::table('csm')
-        ->select('rated_office', DB::raw('count(*) as count'))
-        ->groupBy('rated_office')
+        $dailyResearchProposalCount = DB::table('research_proposal')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
         ->get();
 
-        $csmUserTypeCount = DB::table('csm')
-        ->select('user_type', DB::raw('count(*) as count'))
-        ->groupBy('user_type')
+        $monthlyResearchProposalCount = DB::table('research_proposal')
+        ->select(DB::raw('MONTHNAME(created_at) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(created_at)'))
+        ->get();
+
+        $yearlyResearchProposalCount = DB::table('research_proposal')
+        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(created_at)'))
+        ->get();
+
+        $dailyResearchesCount = DB::table('research_list')
+        ->select(DB::raw('DATE(date_completion) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(date_completion)'))
+        ->get();
+
+        $monthlyResearchesCount = DB::table('research_list')
+        ->select(DB::raw('MONTHNAME(date_completion) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(date_completion)'))
+        ->get();
+
+        $yearlyResearchesCount = DB::table('research_list')
+        ->select(DB::raw('YEAR(date_completion) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(date_completion)'))
+        ->get();
+
+        $dailyExtensionCount = DB::table('extension')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get();
+
+        $monthlyExtensionCount = DB::table('extension')
+        ->select(DB::raw('MONTHNAME(created_at) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(created_at)'))
+        ->get();
+
+        $yearlyExtensionCount = DB::table('extension')
+        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(created_at)'))
+        ->get();
+
+        $dailyCsmCount = DB::table('csm')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get();
+
+        $monthlyCsmCount = DB::table('csm')
+        ->select(DB::raw('MONTHNAME(date) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(date)'))
+        ->get();
+
+        $yearlyCsmCount = DB::table('csm')
+        ->select(DB::raw('YEAR(date) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(date)'))
         ->get();
 
         $studentCount = DB::table('users')->where('role', 'Student')->count();
@@ -132,7 +182,7 @@ class AdminController extends Controller
             ->get();
 
 
-        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount','extensionCount','csmRatedOfficeCount','csmUserTypeCount'));
+        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','dailyUserCount','monthlyUserCount','yearlyUserCount','dailyApplicationsCount','monthlyApplicationsCount','yearlyApplicationsCount','dailyResearchProposalCount','monthlyResearchProposalCount','yearlyResearchProposalCount','dailyResearchesCount','monthlyResearchesCount','yearlyResearchesCount','dailyExtensionCount','monthlyExtensionCount','yearlyExtensionCount','dailyCsmCount','monthlyCsmCount','yearlyCsmCount','extensionCount'));
     }
 
     public function administration()

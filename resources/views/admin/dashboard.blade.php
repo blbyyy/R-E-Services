@@ -125,30 +125,27 @@
                 </div>
             </div>
 
-            <div class="col-lg-6">
+            
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">Users</h5>
-                            <a href="{{url('/userCountTable')}}" class="btn-sm" id="printData">
-                                Print Table
-                                <i class="bi bi-arrow-right-circle"></i>
-                            </a>
+                            <h5 class="card-title">Users Daily Count</h5>
                         </div> 
-                        <canvas id="rolesChart" style="max-height: 400px;"></canvas>
+                        <canvas id="dailyUserChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
-                                const rolesCount = <?php echo json_encode($rolesCount); ?>;
-                                const labels = rolesCount.map(data => data.role);
-                                const counts = rolesCount.map(data => data.count);
+                                const dailyUserCount = <?php echo json_encode($dailyUserCount); ?>;
+                                const labels = dailyUserCount.map(data => data.date);
+                                const counts = dailyUserCount.map(data => data.count);
                                 const admin = <?php echo json_encode($admin); ?>;
             
-                                new Chart(document.querySelector('#rolesChart'), {
+                                new Chart(document.querySelector('#dailyUserChart'), {
                                     type: 'line',
                                     data: {
                                         labels: labels,
                                         datasets: [{
-                                            label: 'Users Count by Role',
+                                            label: 'User',
                                             data: counts,
                                             fill: false,
                                             borderColor: 'rgb(75, 192, 192)',
@@ -165,29 +162,248 @@
                                 });
                             });
                         </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Users Monthly Count</h5>
+                        </div> 
+                        <canvas id="monthlyUserChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const monthlyUserCount = <?php echo json_encode($monthlyUserCount); ?>;
+                                const labels = monthlyUserCount.map(data => data.month);
+                                const counts = monthlyUserCount.map(data => data.count);
+                                const admin = <?php echo json_encode($admin); ?>;
+            
+                                new Chart(document.querySelector('#monthlyUserChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'User',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Users Yearly Count</h5>
+                        </div> 
+                        <canvas id="yearlyUserChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const yearlyUserCount = <?php echo json_encode($yearlyUserCount); ?>;
+                                const labels = yearlyUserCount.map(data => data.year);
+                                const counts = yearlyUserCount.map(data => data.count);
+                                const admin = <?php echo json_encode($admin); ?>;
+            
+                                new Chart(document.querySelector('#yearlyUserChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'User',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">Applications</h5>
-                            <a href="{{url('/applicationsCountTable')}}" class="btn-sm" id="printData">
-                                Print Table
-                                <i class="bi bi-arrow-right-circle"></i>
-                            </a>
+                            <h5 class="card-title">Applications Daily Count</h5>
                         </div>
 
                         <!-- Bar Chart -->
-                        <canvas id="applicationsChart" style="max-height: 400px;"></canvas>
+                        <canvas id="dailyApplicationsChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
-                                const applicationsCount = <?php echo json_encode($applicationsCount); ?>;
-                                const labels = applicationsCount.map(data => data.status);
-                                const counts = applicationsCount.map(data => data.count);
-                                new Chart(document.querySelector('#applicationsChart'), {
+                                const dailyApplicationsCount = <?php echo json_encode($dailyApplicationsCount); ?>;
+                                const labels = dailyApplicationsCount.map(data => data.date);
+                                const counts = dailyApplicationsCount.map(data => data.count);
+                                new Chart(document.querySelector('#dailyApplicationsChart'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Applications',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Applications Daily Count</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="monthlyApplicationsChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const monthlyApplicationsCount = <?php echo json_encode($monthlyApplicationsCount); ?>;
+                                const labels = monthlyApplicationsCount.map(data => data.month);
+                                const counts = monthlyApplicationsCount.map(data => data.count);
+                                new Chart(document.querySelector('#monthlyApplicationsChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Applications',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Applications Yearly Count</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="yearlyApplicationsChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const yearlyApplicationsCount = <?php echo json_encode($yearlyApplicationsCount); ?>;
+                                const labels = yearlyApplicationsCount.map(data => data.year);
+                                const counts = yearlyApplicationsCount.map(data => data.count);
+                                new Chart(document.querySelector('#yearlyApplicationsChart'), {
                                     type: 'bar',
                                     data: {
                                         labels: labels,
@@ -230,115 +446,26 @@
                 </div>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">Thesis Type Applications</h5>
-                            <a href="{{url('/thesisTypeCountTable')}}" class="btn-sm" id="printData">
-                                Print Table
-                                <i class="bi bi-arrow-right-circle"></i>
-                            </a>
-                        </div>
-
-                        <canvas id="thesisTypeChart" style="max-height: 400px;"></canvas>
-                        <script>
-                            document.addEventListener("DOMContentLoaded", () => {
-                                const thesisTypeCount = <?php echo json_encode($thesisTypeCount); ?>;
-                                const labels = thesisTypeCount.map(data => data.thesis_type);
-                                const counts = thesisTypeCount.map(data => data.count);
-                                new Chart(document.querySelector('#thesisTypeChart'), {
-                                    type: 'pie',
-                                    data: {
-                                        labels: labels,
-                                        datasets: [{
-                                            label: 'Thesis Type',
-                                            data: counts,
-                                            backgroundColor: [
-                                                'rgb(255, 99, 132)',
-                                                'rgb(54, 162, 235)',
-                                                'rgb(255, 205, 86)'
-                                                // Add more colors if needed
-                                            ],
-                                            hoverOffset: 4
-                                        }]
-                                    }
-                                });
-                            });
-                        </script>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">Course Application Counts</h5>
-                            <a href="{{url('/courseCountTable')}}" class="btn-sm" id="printData">
-                                Print Table
-                                <i class="bi bi-arrow-right-circle"></i>
-                            </a>
-                        </div>
-
-                        <!-- Doughnut Chart -->
-                        <canvas id="applicationCourseChart" style="max-height: 400px;"></canvas>
-                        <script>
-                            document.addEventListener("DOMContentLoaded", () => {
-                                const courseCount = <?php echo json_encode($courseCount); ?>;
-                                const labels = courseCount.map(data => data.course);
-                                const counts = courseCount.map(data => data.count);
-                                new Chart(document.querySelector('#applicationCourseChart'), {
-                                    type: 'doughnut',
-                                    data: {
-                                        labels: labels,
-                                        datasets: [{
-                                            label: 'Course',
-                                            data: counts,
-                                            backgroundColor: [
-                                                'rgb(255, 99, 132)',
-                                                'rgb(54, 162, 235)',
-                                                'rgb(255, 205, 86)'
-                                                // Add more colors if needed
-                                            ],
-                                            hoverOffset: 4
-                                        }]
-                                    }
-                                });
-                            });
-                        </script>
-                        <!-- End Doughnut Chart -->
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">Department Research Counts</h5>
-                            <a href="{{url('/researchesDepartmentCountTable')}}" class="btn-sm" id="printData">
-                                Print Table
-                                <i class="bi bi-arrow-right-circle"></i>
-                            </a>
+                            <h5 class="card-title">Research Proposal Daily Count</h5>
                         </div>
 
                         <!-- Bar Chart -->
-                        <canvas id="researchDepartmentChart" style="max-height: 400px;"></canvas>
+                        <canvas id="dailyResearchProposalChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
-                                const researchDepartmentCount = <?= json_encode($researchDepartmentCount) ?>;
-                                const labels = researchDepartmentCount.map(data => data.department);
-                                const counts = researchDepartmentCount.map(data => data.count);
-                                
-                                new Chart(document.querySelector('#researchDepartmentChart'), {
-                                    type: 'bar',
+                                const dailyResearchProposalCount = <?php echo json_encode($dailyResearchProposalCount); ?>;
+                                const labels = dailyResearchProposalCount.map(data => data.date);
+                                const counts = dailyResearchProposalCount.map(data => data.count);
+                                new Chart(document.querySelector('#dailyResearchProposalChart'), {
+                                    type: 'line',
                                     data: {
                                         labels: labels,
                                         datasets: [{
-                                            label: 'Department',
+                                            label: 'Research Proposal',
                                             data: counts,
                                             backgroundColor: [
                                                 'rgba(255, 99, 132, 0.2)',
@@ -371,41 +498,50 @@
                                 });
                             });
                         </script>
-                        <!-- End Bar Chart -->
 
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">Course Research Counts</h5>
-                            <a href="{{url('/researchesCourseCountTable')}}" class="btn-sm" id="printData">
-                                Print Table
-                                <i class="bi bi-arrow-right-circle"></i>
-                            </a>
+                            <h5 class="card-title">Research Proposals Monthly Count</h5>
                         </div>
 
-                        <!-- Line Chart -->
-                        <canvas id="lineChart" style="max-height: 400px;"></canvas>
+                        <!-- Bar Chart -->
+                        <canvas id="monthlyResearchProposalChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
-                                const researchCourseCount = <?= json_encode($researchCourseCount) ?>;
-                                const labels = researchCourseCount.map(data => data.course);
-                                const counts = researchCourseCount.map(data => data.count);
-
-                                new Chart(document.querySelector('#lineChart'), {
-                                    type: 'line',
+                                const monthlyResearchProposalCount = <?php echo json_encode($monthlyResearchProposalCount); ?>;
+                                const labels = monthlyResearchProposalCount.map(data => data.month);
+                                const counts = monthlyResearchProposalCount.map(data => data.count);
+                                new Chart(document.querySelector('#monthlyResearchProposalChart'), {
+                                    type: 'bar',
                                     data: {
                                         labels: labels,
                                         datasets: [{
-                                            label: 'Course',
+                                            label: 'Applications',
                                             data: counts,
-                                            fill: false,
-                                            borderColor: 'rgb(75, 192, 192)',
-                                            tension: 0.1
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
                                         }]
                                     },
                                     options: {
@@ -418,27 +554,476 @@
                                 });
                             });
                         </script>
-                        <!-- End Line Chart -->
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Research Proposals Yearly Count</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="yearlyReseearchProposalChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const yearlyResearchProposalCount = <?php echo json_encode($yearlyResearchProposalCount); ?>;
+                                const labels = yearlyResearchProposalCount.map(data => data.year);
+                                const counts = yearlyResearchProposalCount.map(data => data.count);
+                                new Chart(document.querySelector('#yearlyReseearchProposalChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Research Proposal',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
 
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">CSM (Client Satisfaction Measurement) Count By Rated Office</h5>
+                            <h5 class="card-title">Researches Daily Count</h5>
                         </div>
 
                         <!-- Bar Chart -->
-                        <canvas id="csmRatedOfficeChart" style="max-height: 400px;"></canvas>
+                        <canvas id="dailyResearchesChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
-                                const csmRatedOfficeCount = <?php echo json_encode($csmRatedOfficeCount); ?>;
-                                const labels = csmRatedOfficeCount.map(data => data.rated_office);
-                                const counts = csmRatedOfficeCount.map(data => data.count);
-                                new Chart(document.querySelector('#csmRatedOfficeChart'), {
+                                const dailyResearchesCount = <?php echo json_encode($dailyResearchesCount); ?>;
+                                const labels = dailyResearchesCount.map(data => data.date);
+                                const counts = dailyResearchesCount.map(data => data.count);
+                                new Chart(document.querySelector('#dailyResearchesChart'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Researches',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Researches Monthly Count</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="monthlyResearchesChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const monthlyResearchesCount = <?php echo json_encode($monthlyResearchesCount); ?>;
+                                const labels = monthlyResearchesCount.map(data => data.month);
+                                const counts = monthlyResearchesCount.map(data => data.count);
+                                new Chart(document.querySelector('#monthlyResearchesChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Researches',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Researches Yearly Count</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="yearlyReseearchesChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const yearlyResearchesCount = <?php echo json_encode($yearlyResearchesCount); ?>;
+                                const labels = yearlyResearchesCount.map(data => data.year);
+                                const counts = yearlyResearchesCount.map(data => data.count);
+                                new Chart(document.querySelector('#yearlyReseearchesChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Researches',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Extension Applications Daily Count</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="dailyExtensionChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const dailyExtensionCount = <?php echo json_encode($dailyExtensionCount); ?>;
+                                const labels = dailyExtensionCount.map(data => data.date);
+                                const counts = dailyExtensionCount.map(data => data.count);
+                                new Chart(document.querySelector('#dailyExtensionChart'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Extension Applications',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Extension Applications Monthly Count</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="monthlyExtensionChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const monthlyExtensionCount = <?php echo json_encode($monthlyExtensionCount); ?>;
+                                const labels = monthlyExtensionCount.map(data => data.month);
+                                const counts = monthlyExtensionCount.map(data => data.count);
+                                new Chart(document.querySelector('#monthlyExtensionChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Extension Applications',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Extension Applications Yearly Count</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="yearlyExtensionChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const yearlyExtensionCount = <?php echo json_encode($yearlyExtensionCount); ?>;
+                                const labels = yearlyExtensionCount.map(data => data.year);
+                                const counts = yearlyExtensionCount.map(data => data.count);
+                                new Chart(document.querySelector('#yearlyExtensionChart'), {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Extension Applications',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">CSM (Client Satisfaction Measurement) Daily</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="dailyCsmChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const dailyCsmCount = <?php echo json_encode($dailyCsmCount); ?>;
+                                const labels = dailyCsmCount.map(data => data.date);
+                                const counts = dailyCsmCount.map(data => data.count);
+                                new Chart(document.querySelector('#dailyCsmChart'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Respondents',
+                                            data: counts,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(201, 203, 207, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgb(255, 99, 132)',
+                                                'rgb(255, 159, 64)',
+                                                'rgb(255, 205, 86)',
+                                                'rgb(75, 192, 192)',
+                                                'rgb(54, 162, 235)',
+                                                'rgb(153, 102, 255)',
+                                                'rgb(201, 203, 207)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">CSM (Client Satisfaction Measurement) Monthly</h5>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <canvas id="monthlyCsmChart" style="max-height: 400px;"></canvas>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const monthlyCsmCount = <?php echo json_encode($monthlyCsmCount); ?>;
+                                const labels = monthlyCsmCount.map(data => data.month);
+                                const counts = monthlyCsmCount.map(data => data.count);
+                                new Chart(document.querySelector('#monthlyCsmChart'), {
                                     type: 'bar',
                                     data: {
                                         labels: labels,
@@ -480,22 +1065,21 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">CSM (Client Satisfaction Measurement) Count By User Type</h5>
+                            <h5 class="card-title">CSM (Client Satisfaction Measurement) Yearly</h5>
                         </div>
 
                         <!-- Bar Chart -->
-                        <canvas id="csmUserTypeChart" style="max-height: 400px;"></canvas>
+                        <canvas id="yearlyCsmChart" style="max-height: 400px;"></canvas>
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
-                                const csmUserTypeCount = <?php echo json_encode($csmUserTypeCount); ?>;
-                                const labels = csmUserTypeCount.map(data => data.user_type);
-                                const counts = csmUserTypeCount.map(data => data.count);
-                                new Chart(document.querySelector('#csmUserTypeChart'), {
+                                const yearlyCsmCount = <?php echo json_encode($yearlyCsmCount); ?>;
+                                const labels = yearlyCsmCount.map(data => data.year);
+                                const counts = yearlyCsmCount.map(data => data.count);
+                                new Chart(document.querySelector('#yearlyCsmChart'), {
                                     type: 'bar',
                                     data: {
                                         labels: labels,
