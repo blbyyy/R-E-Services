@@ -1375,3 +1375,19 @@ Route::post('/admin/create-user', [
       'uses' => 'AdminController@createUserProfile',
             'as' => 'admin.create.user.profile'
     ]);
+
+Route::get('/admin/reserch-proposal/list', [
+      'uses' => 'AdminController@researchProposalslist',
+            'as' => 'admin.research-proposal.list'
+    ]);
+
+Route::post('/admin/reserch-proposal/specific-research-type', [
+      'uses' => 'AdminController@selectedSpecificResearchType',
+            'as' => 'admin.reserch-proposal.specific-department'
+    ]);
+
+Route::post('/notification/is-read', [
+      'uses' => 'LayoutsController@markAsRead',
+            'as' => 'notifications.is-read'
+    ]);
+

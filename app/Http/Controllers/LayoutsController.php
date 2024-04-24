@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Notifications;
 use Imagick, TCPDF, FPDF, View, DB, File, Auth;
 
 
@@ -322,6 +323,18 @@ class LayoutsController extends Controller
             ->get();
 
         return View::make('notifications.staff',compact('staff','notification','staffNotifCount','staffNotification'));
+    }
+
+    public function markAsRead(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        
+        $userId = Auth::id();
+        Notifications::where('user_id', $userId)->where('status', 'not read')->update(['status' => 'read']);
+
+        return response()->json(['message' => 'Notifications marked as read successfully']);
     }
 
     //mobile

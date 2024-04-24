@@ -5653,4 +5653,23 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //admin manipulation for certification
+        $(".notificationBell").click(function() {
+            $.ajax({
+                url: "/notification/is-read",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), 
+                },
+                success: function(data) {
+                    // alert('Notifications marked as read successfully');
+                }, 
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText, error, status); 
+                    // alert('Error marking notifications as read');
+                }
+            });
+        });
+
 });

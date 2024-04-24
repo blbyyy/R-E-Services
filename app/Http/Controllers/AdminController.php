@@ -23,6 +23,7 @@ use App\Models\Extension;
 use App\Models\Certificate;
 use App\Models\Announcement;
 use App\Models\RequestingForm;
+use App\Models\ResearchProposal;
 use App\Models\Notifications;
 use App\Models\Files;
 use App\Models\Research;
@@ -45,6 +46,7 @@ class AdminController extends Controller
         $usersCount = DB::table('users')->count();
 
         $extensionCount = DB::table('extension')->count();
+        $researchProposalCount = DB::table('research_proposal')->count();
 
         $dailyUserCount = DB::table('users')
         ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
@@ -182,7 +184,7 @@ class AdminController extends Controller
             ->get();
 
 
-        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','dailyUserCount','monthlyUserCount','yearlyUserCount','dailyApplicationsCount','monthlyApplicationsCount','yearlyApplicationsCount','dailyResearchProposalCount','monthlyResearchProposalCount','yearlyResearchProposalCount','dailyResearchesCount','monthlyResearchesCount','yearlyResearchesCount','dailyExtensionCount','monthlyExtensionCount','yearlyExtensionCount','dailyCsmCount','monthlyCsmCount','yearlyCsmCount','extensionCount'));
+        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','dailyUserCount','monthlyUserCount','yearlyUserCount','dailyApplicationsCount','monthlyApplicationsCount','yearlyApplicationsCount','dailyResearchProposalCount','monthlyResearchProposalCount','yearlyResearchProposalCount','dailyResearchesCount','monthlyResearchesCount','yearlyResearchesCount','dailyExtensionCount','monthlyExtensionCount','yearlyExtensionCount','dailyCsmCount','monthlyCsmCount','yearlyCsmCount','extensionCount','researchProposalCount'));
     }
 
     public function administration()
@@ -1812,6 +1814,76 @@ class AdminController extends Controller
             ->get();
 
         return View::make('admin.extensionlist',compact('extension','admin','adminNotifCount','adminNotification'));
+    }
+
+    public function researchProposalslist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $researchProposal = DB::table('research_proposal')
+        ->join('users','users.id','research_proposal.user_id')
+        ->select('research_proposal.*',
+                'users.id as userID',
+                'users.fname',
+                'users.mname',
+                'users.lname',
+                'users.role',
+                )
+        ->orderBy('research_proposal.id')
+        ->get();
+
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.researchProposals',compact('admin','researchProposal','adminNotifCount','adminNotification'));
+    }
+
+    public function selectedSpecificResearchType(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->researchType === 'Research Program') {
+            $researchProposal = ResearchProposal::orderBy('id')
+            ->where('research_type', 'Research Program')
+            ->get();
+        } elseif ($request->researchType === 'Research Study') {
+            $researchProposal = ResearchProposal::orderBy('id')
+            ->where('research_type', 'Research Study')
+            ->get();
+        } elseif ($request->researchType === 'Independent Study') {
+            $researchProposal = ResearchProposal::orderBy('id')
+            ->where('research_type', 'Independent Study')
+            ->get();
+        } elseif ($request->researchType === 'All') {
+            $researchProposal = ResearchProposal::orderBy('id')->get();
+        }
+
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.researchProposals',compact('researchProposal','admin','adminNotifCount','adminNotification'));
     }
 
     public function usersPending()

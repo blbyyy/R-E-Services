@@ -81,8 +81,8 @@
 
         <li class="nav-item dropdown">
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell" style="font-size: 30px;"></i>
+          <a class="nav-link nav-icon notificationBell" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell" style="font-size: 30px;" ></i>
             @if (Auth::user()->role === 'Admin')
               <span class="badge bg-primary badge-number">{{$adminNotifCount}}</span>
             @elseif (Auth::user()->role === 'Student')
