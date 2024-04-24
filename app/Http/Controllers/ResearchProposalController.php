@@ -275,13 +275,13 @@ class ResearchProposalController extends Controller
 
         $proposal->save();
 
-        $notif = new Notifications;
-        $notif->type = 'Admin Notification';
-        $notif->title = 'Faculty Research Proposal Submitted';
-        $notif->message = 'Someone submitted an research proposal for assesment.';
-        $notif->date = now();
-        $notif->user_id = $request->user_id;
-        $notif->save();
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Faculty Research Proposal Submitted';
+            $notif->message = 'Someone submitted an research proposal for assesment.';
+            $notif->date = now();
+            $notif->user_id = $request->user_id;
+            $notif->save();
 
         $response = [
             'success' => true,
@@ -316,13 +316,13 @@ class ResearchProposalController extends Controller
 
         $proposal->save();
 
-        $notif = new Notifications;
-        $notif->type = 'Admin Notification';
-        $notif->title = 'Faculty Research Proposal Submitted';
-        $notif->message = 'Someone submitted an research proposal for assesment.';
-        $notif->date = now();
-        $notif->user_id = $request->user_id;
-        $notif->save();
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Faculty Research Proposal Submitted';
+            $notif->message = 'Someone submitted an research proposal for assesment.';
+            $notif->date = now();
+            $notif->user_id = $request->user_id;
+            $notif->save();
 
         $response = [
             'success' => true,

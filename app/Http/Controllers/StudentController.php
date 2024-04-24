@@ -736,36 +736,37 @@ class StudentController extends Controller
     public function RegisterMobile(Request $request)
     { 
         $response = [];
-        $user = new User;
-        $user->fname = $request->fname;
-        $user->lname = $request->lname;
-        $user->mname = $request->mname;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->role = $request->role;   
-        $user->save();
-        $lastUserId = DB::getPdo()->lastInsertId();
 
-        $student = new Student;
-        $student->fname = $request->fname;
-        $student->lname = $request->lname;
-        $student->mname = $request->mname;
-        $student->college = $request->college;
-        $student->course = $request->course;
-        $student->tup_id = $request->tup_id;
-        $student->email = $request->email;
-        $student->gender = $request->gender;
-        $student->phone = $request->phone;
-        $student->address = $request->address;
-        $student->birthdate = $request->birthdate;
-        $student->user_id = $lastUserId;
-        $student->save();
+        $users = new User;
+        $users->fname = $request->fname;
+        $users->lname = $request->lname;
+        $users->mname = $request->mname;
+        $users->email = $request->email;
+        $users->password = bcrypt($request->password);
+        $users->role = 'Student';   
+        $users->save();
+        $last = DB::getPdo()->lastInsertId();
 
-        auth()->login($user, true);
+        $students = new Student;
+        $students->fname = $request->fname;
+        $students->lname = $request->lname;
+        $students->mname = $request->mname;
+        $students->college = 'TUPT';
+        $students->course = $request->course;
+        $students->tup_id = $request->tup_id;
+        $students->email = $request->email;
+        $students->gender = $request->gender;
+        $students->phone = $request->phone;
+        $students->address = $request->address;
+        $students->birthdate = $request->birthdate;
+        $students->user_id = $last;
+        $students->save();
+
+        auth()->login($users, true);
 
         $response['message'] = 'Registration successful';
-        $response['user'] = $user;
-        $response['student'] = $student;
+        $response['user'] = $users;
+        $response['student'] = $students;
 
         return response()->json($response, 200);
     }

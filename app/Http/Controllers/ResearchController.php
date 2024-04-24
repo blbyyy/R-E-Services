@@ -479,8 +479,7 @@ class ResearchController extends Controller
             $notif->title = 'Research Access Request for Documents';
             $notif->message = 'Someone requested access to the research documents.';
             $notif->date = now();
-            $notif->user_id = Auth::id();
-            $notif->reciever_id = 0;
+            $notif->user_id = $request->requestor_id;
             $notif->save();
 
             return redirect()->to('/faculty/research-list')->with('success', 'Request was successfully sent');

@@ -158,6 +158,7 @@ Route::post('/upload_file', 'App\Http\Controllers\StudentController@mobileupload
 Route::get('/mobilecertification', 'App\Http\Controllers\StudentController@mobilecertification');
 Route::post('mobileapply_certification/{id}', 'App\Http\Controllers\StudentController@mobileapply_certification');
 
+Route::post('mobilefacultyapply_certificationfinal/{id}', 'App\Http\Controllers\FacultyController@mobilefacultyapply_certificationfinal');
 Route::post('mobilefacultyapply_certification/{id}', 'App\Http\Controllers\FacultyController@mobileapply_certification');
 
 Route::get('/mobileshowpdf/{fileName}', 'App\Http\Controllers\StudentController@mobileshowpdf');
@@ -234,5 +235,8 @@ Route::get('/turnitin-proof-photos/{id}', [StudentController::class, 'getTurniti
 
 Route::post('/mobilechange-password/{email}', 'App\Http\Controllers\StudentController@mobilechangePassword');
 Route::post('/mobilevalidate-password/{email}', 'App\Http\Controllers\StudentController@mobilevalidatePassword');
+
+Route::post('/facultymobilechange-password/{email}', 'App\Http\Controllers\FacultyController@facultymobilechangePassword');
+Route::post('/facultymobilevalidate-password/{email}', 'App\Http\Controllers\FacultyController@facultymobilevalidatePassword');
 
 //MOBILE END
