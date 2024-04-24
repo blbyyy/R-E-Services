@@ -10,7 +10,6 @@ class ResearchProposal extends Model
     use HasFactory;
 
     public $table = "research_proposal";
-    public $timestamps = false;
     public $primaryKey = "id";
     public $guarded = [
         "id"

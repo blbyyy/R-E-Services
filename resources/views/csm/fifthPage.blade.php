@@ -28,8 +28,8 @@
 
             <form class="row g-3" method="POST" action="{{route('form.submit5')}}" enctype="multipart/form-data" style="padding-top: 60px">
                 @csrf
-
-                <fieldset class="row mb-3 text-center">
+                <hr style="height: 5px; color: maroon;">
+                <fieldset class="row mb-3 text-center" style="padding-top: 20px; padding-bottom: 10px;">
                     <legend class="col-form-label col-sm-2 pt-0">I spent an acceptable amount of time to complete my transaction (Responsiveness)</legend>
                     <div class="col-sm-2">
                       <div class="form-check">
@@ -72,8 +72,8 @@
                         </div>
                     </div>
                 </fieldset>
- 
-                <fieldset class="row mb-3 text-center">
+                <hr style="height: 5px; color: maroon;">
+                <fieldset class="row mb-3 text-center" style="padding-top: 20px; padding-bottom: 10px;">
                     <legend class="col-form-label col-sm-2 pt-0">The office accurately informed and followed the transaction's requirements and steps (Reliability)</legend>
                     <div class="col-sm-2">
                       <div class="form-check">
@@ -116,8 +116,8 @@
                         </div>
                     </div>
                 </fieldset>
-
-                <fieldset class="row mb-3 text-center">
+                <hr style="height: 5px; color: maroon;">
+                <fieldset class="row mb-3 text-center" style="padding-top: 20px; padding-bottom: 10px;">
                     <legend class="col-form-label col-sm-2 pt-0">My online transaction (including steps and payment) was simple and convenient (Access and Facilities)</legend>
                     <div class="col-sm-2">
                       <div class="form-check">
@@ -160,8 +160,8 @@
                         </div>
                     </div>
                 </fieldset>
-
-                <fieldset class="row mb-3 text-center">
+                <hr style="height: 5px; color: maroon;">
+                <fieldset class="row mb-3 text-center" style="padding-top: 20px; padding-bottom: 10px;">
                     <legend class="col-form-label col-sm-2 pt-0">I easily found information about my transaction from the office or its website (Communication)</legend>
                     <div class="col-sm-2">
                       <div class="form-check">
@@ -204,8 +204,8 @@
                         </div>
                     </div>
                 </fieldset>
-
-                <fieldset class="row mb-3 text-center">
+                <hr style="height: 5px; color: maroon;">
+                <fieldset class="row mb-3 text-center" style="padding-top: 20px; padding-bottom: 10px;">
                     <legend class="col-form-label col-sm-2 pt-0">I paid an acceptable amount of fees for my transaction (Costs)</legend>
                     <div class="col-sm-2">
                       <div class="form-check">
@@ -248,8 +248,8 @@
                         </div>
                     </div>
                 </fieldset>
-
-                <fieldset class="row mb-3 text-center">
+                <hr style="height: 5px; color: maroon;">
+                <fieldset class="row mb-3 text-center" style="padding-top: 20px; padding-bottom: 10px;">
                     <legend class="col-form-label col-sm-2 pt-0">I am confident my online transaction was secure (Integrity)</legend>
                     <div class="col-sm-2">
                       <div class="form-check">
@@ -292,8 +292,8 @@
                         </div>
                     </div>
                 </fieldset>
-
-                <fieldset class="row mb-3 text-center">
+                <hr style="height: 5px; color: maroon;">
+                <fieldset class="row mb-3 text-center" style="padding-top: 20px; padding-bottom: 10px;">
                     <legend class="col-form-label col-sm-2 pt-0">The office's online support was available, or (if asked questions) onlin support was quick to respond (Assurance)</legend>
                     <div class="col-sm-2">
                       <div class="form-check">
@@ -336,8 +336,8 @@
                         </div>
                     </div>
                 </fieldset>
-
-                <fieldset class="row mb-3 text-center">
+                <hr style="height: 5px; color: maroon;">
+                <fieldset class="row mb-3 text-center" style="padding-top: 20px; padding-bottom: 10px;">
                     <legend class="col-form-label col-sm-2 pt-0">I got what I needed from the government office (Outcome)</legend>
                     <div class="col-sm-2">
                       <div class="form-check">
@@ -380,7 +380,7 @@
                         </div>
                     </div>
                 </fieldset>
-
+                <hr style="height: 5px; color: maroon;">
                 <div class="col-12">
                     <label for="comprehensive_type" class="form-label">Please check if you are providing a:</label>
                     <select name="comprehensive_type" class="form-select" id="comprehensive_type">

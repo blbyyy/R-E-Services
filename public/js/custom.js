@@ -1325,18 +1325,38 @@ $(document).ready(function () {
                         $("#userProfile").html('<img src="storage/' + data.avatar + '" class="img-fluid rounded-start" alt="...">');
                     }
 
+                    if (data.role === "Admin") {
+                        $("#dprtmnt").hide(); 
+                        $("#cllg").hide();
+                        $("#crs").hide();      
+                    }  
+                    if (data.role === "Student") {
+                        $("#dprtmnt").hide();
+                        $("#dsgntn").hide();
+                        $("#pstn").hide();    
+                        $("#cllg").show();
+                        $("#crs").show();  
+                    } 
+                    if (data.role === "Faculty") {
+                        $("#dprtmnt").show();
+                        $("#dsgntn").show();
+                        $("#pstn").show();  
+                        $("#cllg").hide();
+                        $("#crs").hide();    
+                    } 
+
                     $("#userName").text(data.fname + ' ' + data.mname + ' ' + data.lname);
                     $("#userID").text( data.tup_id);
                     $("#userEmail").text( data.email);
                     $("#userCollege").text( data.college);
                     $("#userCourse").text(data.course);
                     $("#userPosition").text( data.position);
-                    $("#userDesignation").text( data.designation);
-                    $("#userDepartment").text( data.department_name);
+                    $("#userDesignation").text(data.designation);
+                    $("#userDepartment").text(data.department_name);
                     $("#userGender").text(data.gender);
                     $("#userPhone").text(data.phone);
                     $("#userAddress").text(data.address);
-                    $("#userBirthdate").text(data.birthdate);   
+                    $("#userBirthdate").text(data.birthdate);
 
                     $('#showUserInfo').on('hidden.bs.modal', function () {
                         $("#userCollege").text('');
@@ -5633,4 +5653,23 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //admin manipulation for certification
+        $(".notificationBell").click(function() {
+            $.ajax({
+                url: "/notification/is-read",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), 
+                },
+                success: function(data) {
+                    // alert('Notifications marked as read successfully');
+                }, 
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText, error, status); 
+                    // alert('Error marking notifications as read');
+                }
+            });
+        });
+
 });

@@ -23,6 +23,7 @@ use App\Models\Extension;
 use App\Models\Certificate;
 use App\Models\Announcement;
 use App\Models\RequestingForm;
+use App\Models\ResearchProposal;
 use App\Models\Notifications;
 use App\Models\Files;
 use App\Models\Research;
@@ -45,35 +46,96 @@ class AdminController extends Controller
         $usersCount = DB::table('users')->count();
 
         $extensionCount = DB::table('extension')->count();
+        $researchProposalCount = DB::table('research_proposal')->count();
 
-        $rolesCount = DB::table('users')
-        ->select('role', DB::raw('count(*) as count'))
-        ->groupBy('role')
+        $dailyUserCount = DB::table('users')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
         ->get();
 
-        $applicationsCount = DB::table('requestingform')
-        ->select('status', DB::raw('count(*) as count'))
-        ->groupBy('status')
+        $monthlyUserCount = DB::table('users')
+        ->select(DB::raw('MONTHNAME(created_at) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(created_at)'))
         ->get();
 
-        $thesisTypeCount = DB::table('requestingform')
-        ->select('thesis_type', DB::raw('count(*) as count'))
-        ->groupBy('thesis_type')
+        $yearlyUserCount = DB::table('users')
+        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(created_at)'))
         ->get();
 
-        $courseCount = DB::table('requestingform')
-        ->select('course', DB::raw('count(*) as count'))
-        ->groupBy('course')
+        $dailyApplicationsCount = DB::table('requestingform')
+        ->select(DB::raw('DATE(date) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(date)'))
         ->get();
 
-        $researchDepartmentCount = DB::table('research_list')
-        ->select('department', DB::raw('count(*) as count'))
-        ->groupBy('department')
+        $monthlyApplicationsCount = DB::table('requestingform')
+        ->select(DB::raw('MONTHNAME(date) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(date)'))
         ->get();
 
-        $researchCourseCount = DB::table('research_list')
-        ->select('course', DB::raw('count(*) as count'))
-        ->groupBy('course')
+        $yearlyApplicationsCount = DB::table('requestingform')
+        ->select(DB::raw('YEAR(date) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(date)'))
+        ->get();
+
+        $dailyResearchProposalCount = DB::table('research_proposal')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get();
+
+        $monthlyResearchProposalCount = DB::table('research_proposal')
+        ->select(DB::raw('MONTHNAME(created_at) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(created_at)'))
+        ->get();
+
+        $yearlyResearchProposalCount = DB::table('research_proposal')
+        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(created_at)'))
+        ->get();
+
+        $dailyResearchesCount = DB::table('research_list')
+        ->select(DB::raw('DATE(date_completion) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(date_completion)'))
+        ->get();
+
+        $monthlyResearchesCount = DB::table('research_list')
+        ->select(DB::raw('MONTHNAME(date_completion) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(date_completion)'))
+        ->get();
+
+        $yearlyResearchesCount = DB::table('research_list')
+        ->select(DB::raw('YEAR(date_completion) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(date_completion)'))
+        ->get();
+
+        $dailyExtensionCount = DB::table('extension')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get();
+
+        $monthlyExtensionCount = DB::table('extension')
+        ->select(DB::raw('MONTHNAME(created_at) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(created_at)'))
+        ->get();
+
+        $yearlyExtensionCount = DB::table('extension')
+        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(created_at)'))
+        ->get();
+
+        $dailyCsmCount = DB::table('csm')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get();
+
+        $monthlyCsmCount = DB::table('csm')
+        ->select(DB::raw('MONTHNAME(date) as month'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(date)'))
+        ->get();
+
+        $yearlyCsmCount = DB::table('csm')
+        ->select(DB::raw('YEAR(date) as year'), DB::raw('count(*) as count'))
+        ->groupBy(DB::raw('YEAR(date)'))
         ->get();
 
         $studentCount = DB::table('users')->where('role', 'Student')->count();
@@ -122,7 +184,7 @@ class AdminController extends Controller
             ->get();
 
 
-        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','rolesCount','applicationsCount','thesisTypeCount','courseCount','researchDepartmentCount','researchCourseCount','extensionCount'));
+        return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','dailyUserCount','monthlyUserCount','yearlyUserCount','dailyApplicationsCount','monthlyApplicationsCount','yearlyApplicationsCount','dailyResearchProposalCount','monthlyResearchProposalCount','yearlyResearchProposalCount','dailyResearchesCount','monthlyResearchesCount','yearlyResearchesCount','dailyExtensionCount','monthlyExtensionCount','yearlyExtensionCount','dailyCsmCount','monthlyCsmCount','yearlyCsmCount','extensionCount','researchProposalCount'));
     }
 
     public function administration()
@@ -1174,7 +1236,89 @@ class AdminController extends Controller
             ->take(4)
             ->get();
 
-        return View::make('admin.userslist',compact('users','admin','adminNotifCount','adminNotification'));
+        $department = DB::table('departments')->get();
+
+        return View::make('admin.userslist',compact('users','admin','adminNotifCount','adminNotification','department'));
+    }
+
+    public function createUserProfile(Request $request)
+    {
+        if ($request->userRole === 'Student') {
+            
+            $users = new User;
+            $users->fname = $request->studentFname;
+            $users->lname = $request->studentLname;
+            $users->mname = $request->studentMname;
+            $users->email = $request->studentEmail;
+            $users->password = bcrypt($request->studentPassword);
+            $users->role = 'Student';   
+            $users->save();
+            $last = DB::getPdo()->lastInsertId();
+
+            $students = new Student;
+            $students->fname = $request->studentFname;
+            $students->lname = $request->studentLname;
+            $students->mname = $request->studentMname;
+            $students->college = $request->studentCollege;
+            $students->course = $request->studentCourse;
+            $students->tup_id = $request->studentId;
+            $students->email = $request->studentEmail;
+            $students->gender = $request->studentGender;
+            $students->phone = $request->studentPhone;
+            $students->address = $request->studentAddress;
+            $students->birthdate = $request->studentBirthdate;
+            $students->user_id = $last;
+            $students->save();
+
+            return redirect()->to('/admin/userlist')->with('success', 'Student Profile Successfully Created.');
+
+        } else {
+            
+            $users = new User;
+            $users->fname = $request->facultyFname;
+            $users->lname = $request->studentLname;
+            $users->mname = $request->facultyMname;
+            $users->email = $request->facultyEmail;
+            $users->password = bcrypt($request->facultyPassword);
+
+            if ($request->userRole === 'Faculty') {
+                $users->role = 'Faculty'; 
+            } 
+
+            if ($request->userRole === 'Research Coordinator') {
+                $users->role = 'Research Coordinator'; 
+            } 
+            
+            $users->save();
+            $last = DB::getPdo()->lastInsertId();
+
+            $faculty = new Faculty;
+            $faculty->fname = $request->facultyFname;
+            $faculty->lname = $request->studentLname;
+            $faculty->mname = $request->facultyMname;
+            $faculty->department_id = $request->facultyDepartment;
+            $faculty->position = $request->facultyPosition;
+            $faculty->designation = $request->facultyDesignation;
+            $faculty->tup_id = $request->facultyId;
+            $faculty->email = $request->facultyEmail;
+            $faculty->gender = $request->facultyGender;
+            $faculty->phone = $request->facultyPhone;
+            $faculty->address = $request->facultyAddress;
+            $faculty->birthdate = $request->facultyBirthdate;
+            $faculty->user_id = $last;
+            $faculty->save();
+
+            if ($request->userRole === 'Faculty') {
+                return redirect()->to('/admin/userlist')->with('success', 'Faculty Profile Successfully Created.'); 
+            } 
+
+            if ($request->userRole === 'Research Coordinator') {
+                return redirect()->to('/admin/userlist')->with('success', 'Research Coordinator Profile Successfully Created.');
+            } 
+            
+        }
+        
+        
     }
 
     public function selectedSpecificRole(Request $request)
@@ -1670,6 +1814,76 @@ class AdminController extends Controller
             ->get();
 
         return View::make('admin.extensionlist',compact('extension','admin','adminNotifCount','adminNotification'));
+    }
+
+    public function researchProposalslist()
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        $researchProposal = DB::table('research_proposal')
+        ->join('users','users.id','research_proposal.user_id')
+        ->select('research_proposal.*',
+                'users.id as userID',
+                'users.fname',
+                'users.mname',
+                'users.lname',
+                'users.role',
+                )
+        ->orderBy('research_proposal.id')
+        ->get();
+
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.researchProposals',compact('admin','researchProposal','adminNotifCount','adminNotification'));
+    }
+
+    public function selectedSpecificResearchType(Request $request)
+    {
+        $admin = DB::table('staff')
+        ->join('users','users.id','staff.user_id')
+        ->select('staff.*','users.*')
+        ->where('user_id',Auth::id())
+        ->first();
+
+        if ($request->researchType === 'Research Program') {
+            $researchProposal = ResearchProposal::orderBy('id')
+            ->where('research_type', 'Research Program')
+            ->get();
+        } elseif ($request->researchType === 'Research Study') {
+            $researchProposal = ResearchProposal::orderBy('id')
+            ->where('research_type', 'Research Study')
+            ->get();
+        } elseif ($request->researchType === 'Independent Study') {
+            $researchProposal = ResearchProposal::orderBy('id')
+            ->where('research_type', 'Independent Study')
+            ->get();
+        } elseif ($request->researchType === 'All') {
+            $researchProposal = ResearchProposal::orderBy('id')->get();
+        }
+
+        $adminNotifCount = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->count();
+
+        $adminNotification = DB::table('notifications')
+            ->where('type', 'Admin Notification')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('admin.researchProposals',compact('researchProposal','admin','adminNotifCount','adminNotification'));
     }
 
     public function usersPending()

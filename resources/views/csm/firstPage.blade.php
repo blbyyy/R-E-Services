@@ -22,12 +22,12 @@
                 @csrf
                 <div class="col-12">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Your Email">
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Your Email" required>
                 </div>
             
                 <div class="col-12">
                     <label for="office" class="form-label">Office Being Rated:</label>
-                    <select name="office" class="form-select" id="office">
+                    <select name="office" class="form-select" id="office" required>
                         <option selected>--- Select Office ---</option>
                         <option value="Extension Office">Extension Office</option>
                         <option value="Research Office">Research Office</option>
@@ -36,17 +36,17 @@
             
                 <div class="col-12">
                     <label for="date" class="form-label">Date:</label>
-                    <input type="date" class="form-control" id="date" name="date">
+                    <input type="date" class="form-control" id="date" name="date" required>
                 </div>
             
                 <div class="col-12">
                     <label for="time" class="form-label">Time:</label>
-                    <input type="time" class="form-control" id="time" name="time">
+                    <input type="time" class="form-control" id="time" name="time" required>
                 </div>
             
                 <div class="col-12">
                     <label for="email_address" class="form-label">Email Address:</label>
-                    <input type="text" class="form-control" id="email_address" name="email_address" placeholder="Your Answer">
+                    <input type="text" class="form-control" id="email_address" name="email_address" placeholder="Your Answer" required>
                 </div>
             
                 <div class="col-12">
@@ -56,7 +56,7 @@
             
                 <div class="col-12">
                     <label for="type" class="form-label">Are you a/an?</label>
-                    <select name="type" class="form-select" id="type">
+                    <select name="type" class="form-select" id="type" required>
                         <option selected>--- Select ---</option>
                         <option value="Student">Student</option>
                         <option value="Employee">Employee</option>
@@ -66,12 +66,12 @@
             
                 <div class="col-12">
                     <label for="purpose" class="form-label">Purpose of Transaction:</label>
-                    <input type="text" class="form-control" id="purpose" name="purpose" placeholder="Your Answer">
+                    <input type="text" class="form-control" id="purpose" name="purpose" placeholder="Your Answer" required>
                 </div>
             
                 <div class="col-12">
                     <label for="assisted_by" class="form-label">Name of specific person who assisted you in your transaction:</label>
-                    <input type="text" class="form-control" id="assisted_by" name="assisted_by" placeholder="Your Answer">
+                    <input type="text" class="form-control" id="assisted_by" name="assisted_by" placeholder="Your Answer" required>
                 </div>
             
                 <div class="col-12" style="padding-top: 20px">

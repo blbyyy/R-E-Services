@@ -432,7 +432,6 @@ class FacultyController extends Controller
             $notif->message = 'Someone submitted an application to certify.';
             $notif->date = now();
             $notif->user_id = Auth::id();
-            $notif->reciever_id = '0';
             $notif->save();
 
             return response()->json(["form" => $form, "file" => $file ]);

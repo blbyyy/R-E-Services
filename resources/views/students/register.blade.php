@@ -65,7 +65,7 @@
             </div>
 
             <div class="col-md-6">
-                <div class="form-floating mb-3">
+                <div class="form-floating">
                     <select name="course" class="form-select" id="course" aria-label="State">
                         <option selected>Choose.....</option>
                         <option value="BSIT">BS in Information Technology</option>
@@ -130,7 +130,7 @@
             </div>
 
             <div class="col-md-4">
-              <div class="form-floating mb-3">
+              <div class="form-floating">
                 <select class="form-select" id="gender" name="gender" aria-label="State">
                   <option value="" disabled selected>Select Sex</option>
                   <option value="Male" >Male</option>
