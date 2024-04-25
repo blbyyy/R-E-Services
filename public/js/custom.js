@@ -5663,11 +5663,10 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), 
                 },
                 success: function(data) {
-                    // alert('Notifications marked as read successfully');
+                    $(".badge-number").hide();
                 }, 
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText, error, status); 
-                    // alert('Error marking notifications as read');
                 }
             });
         });

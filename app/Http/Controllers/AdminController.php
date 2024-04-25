@@ -175,14 +175,14 @@ class AdminController extends Controller
         
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->orderBy('date', 'desc')
-            ->take(5)
             ->get();
-
 
         return View::make('admin.dashboard',compact('adminNotifCount','adminNotification','usersCount','studentCount','staffCount','facultyCount','applicationCount','admin','pendingCount','passedCount','returnedCount','eaadResearchCount','maadResearchCount','caadResearchCount','basdResearchCount','researchCount','dailyUserCount','monthlyUserCount','yearlyUserCount','dailyApplicationsCount','monthlyApplicationsCount','yearlyApplicationsCount','dailyResearchProposalCount','monthlyResearchProposalCount','yearlyResearchProposalCount','dailyResearchesCount','monthlyResearchesCount','yearlyResearchesCount','dailyExtensionCount','monthlyExtensionCount','yearlyExtensionCount','dailyCsmCount','monthlyCsmCount','yearlyCsmCount','extensionCount','researchProposalCount'));
     }
