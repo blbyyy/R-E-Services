@@ -149,12 +149,13 @@ class ResearchProposalController extends Controller
 
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->orderBy('date', 'desc')
-            ->take(5)
             ->get();
 
         $proposal = DB::table('research_proposal')

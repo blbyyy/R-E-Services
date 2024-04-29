@@ -38,12 +38,13 @@ class LayoutsController extends Controller
 
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->orderBy('date', 'desc')
-            ->take(5)
             ->get();
         
         $facultyNotifCount = DB::table('notifications')
@@ -223,12 +224,13 @@ class LayoutsController extends Controller
             
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->orderBy('date', 'desc')
-            ->take(5)
             ->get();
 
         return View::make('notifications.admin',compact('admin','notification','adminNotifCount','adminNotification'));
@@ -330,9 +332,18 @@ class LayoutsController extends Controller
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        
-        $userId = Auth::id();
-        Notifications::where('user_id', $userId)->where('status', 'not read')->update(['status' => 'read']);
+
+        $user = DB::table('users')->where('id', Auth::id())->first();
+
+        if ($user->role === 'Admin') {
+            Notifications::where('type', 'Admin Notification')->where('status', 'not read')->update(['status' => 'read']);
+        } elseif ($user->role === 'Faculty') {
+            Notifications::where('type', 'Faculty')->where('status', 'not read')->update(['status' => 'read']);
+        } elseif ($user->role === 'Faculty') {
+            Notifications::where('type', 'Research Coordinator')->where('status', 'not read')->update(['status' => 'read']);
+        } elseif ($user->role === 'Research Coordinator') {
+            Notifications::where('type', 'Student')->where('status', 'not read')->update(['status' => 'read']);
+        } 
 
         return response()->json(['message' => 'Notifications marked as read successfully']);
     }

@@ -731,12 +731,13 @@ class ExtensionController extends Controller
 
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->orderBy('date', 'desc')
-            ->take(4)
             ->get();
 
         $proposals = DB::table('extension')

@@ -20,14 +20,15 @@ class AppointmentController extends Controller
         ->first();
 
         $adminNotifCount = DB::table('notifications')
-        ->where('type', 'Admin Notification')
-        ->count();
+            ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
+            ->count();
 
         $adminNotification = DB::table('notifications')
-        ->where('type', 'Admin Notification')
-        ->orderBy('date', 'desc')
-        ->take(5)
-        ->get();
+            ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
+            ->orderBy('date', 'desc')
+            ->get();
 
         $appointments = DB::table('appointments')
         ->join('users','users.id','appointments.user_id')
