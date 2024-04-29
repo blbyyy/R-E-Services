@@ -1922,6 +1922,64 @@ class ExtensionController extends Controller
         
         return response()->json($responseData);
     }
+
+    public function MOBILEfacultyApplicationStatus($id)
+    {
+        $faculty = DB::table('faculty')
+            ->join('users', 'users.id', 'faculty.user_id')
+            ->select('faculty.*', 'users.*')
+            ->where('user_id', $id)
+            ->first();
+
+        $extension = DB::table('extension')->where('extension.user_id', $id)->get();
+
+        $data = [
+            'faculty' => $faculty,
+            'extension' => $extension,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function MOBILEgetAppointment($appid)
+    {
+        $appointment = Appointments::find($appid);
+        return response()->json($appointment);
+    }
+
+    public function MOBILEgetFileExtension($extid)
+    {
+        $extension = Extension::find($extid);
+        return response()->json($extension);
+    }
+
+    public function MOBILEgetDoumentationPhotos($docid)
+    {
+        $photos = DB::table('extension')
+        ->join('documentation_photos','extension.id','documentation_photos.extension_id')
+        ->select('documentation_photos.*')
+        ->where('extension.id', $docid)
+        ->get();
+
+        return response()->json($photos);
+    }
+
+    public function MOBILEgetFilePrototype($proid)
+    {
+        $prototype = Prototype::find($proid);
+        return response()->json($prototype);
+    }
+
+    public function MOBILEgetProtoypePhotos($propoid)
+    {
+        $photos = DB::table('prototype')
+        ->join('prototype_photos','prototype.id','prototype_photos.prototype_id')
+        ->select('prototype_photos.*')
+        ->where('prototype.id', $propoid)
+        ->get();
+
+        return response()->json($photos);
+    }
     //MOBILE END
 }
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ResearchController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ExtensionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -239,4 +240,10 @@ Route::post('/mobilevalidate-password/{email}', 'App\Http\Controllers\StudentCon
 Route::post('/facultymobilechange-password/{email}', 'App\Http\Controllers\FacultyController@facultymobilechangePassword');
 Route::post('/facultymobilevalidate-password/{email}', 'App\Http\Controllers\FacultyController@facultymobilevalidatePassword');
 
+Route::get('/MOBILEfacultyApplicationStatus/{id}', [ExtensionController::class, 'MOBILEfacultyApplicationStatus']);
+Route::get('/MOBILEgetAppointment/{appid}', [ExtensionController::class, 'MOBILEgetAppointment']);
+Route::get('/MOBILEgetFileExtension/{extid}', [ExtensionController::class, 'MOBILEgetFileExtension']);
+Route::get('/MOBILEgetDoumentationPhotos/{docid}', [ExtensionController::class, 'MOBILEgetDoumentationPhotos']);
+Route::get('/MOBILEgetFilePrototype/{proid}', [ExtensionController::class, 'MOBILEgetFilePrototype']);
+Route::get('/MOBILEgetProtoypePhotos/{propoid}', [ExtensionController::class, 'MOBILEgetProtoypePhotos']);
 //MOBILE END
