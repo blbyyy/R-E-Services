@@ -43,6 +43,7 @@ class ExtensionController extends Controller
         $facultyNotifCount = DB::table('notifications')
             ->where('type', 'Faculty Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $facultyNotification = DB::table('notifications')
@@ -83,6 +84,7 @@ class ExtensionController extends Controller
         $facultyNotifCount = DB::table('notifications')
             ->where('type', 'Faculty Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $facultyNotification = DB::table('notifications')
@@ -736,8 +738,8 @@ class ExtensionController extends Controller
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
-            ->where('status', 'not read')
             ->orderBy('date', 'desc')
+            ->take(4)
             ->get();
 
         $proposals = DB::table('extension')

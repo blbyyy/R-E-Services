@@ -23,6 +23,7 @@ class ResearchProposalController extends Controller
         $facultyNotifCount = DB::table('notifications')
             ->where('type', 'Faculty Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $facultyNotification = DB::table('notifications')
@@ -154,8 +155,8 @@ class ResearchProposalController extends Controller
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
-            ->where('status', 'not read')
             ->orderBy('date', 'desc')
+            ->take(4)
             ->get();
 
         $proposal = DB::table('research_proposal')

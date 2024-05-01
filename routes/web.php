@@ -781,13 +781,13 @@ Route::post('/request',[
 
 Route::get('/announcements', function () {
 
-    $admin = DB::table('staff')
+      $admin = DB::table('staff')
         ->join('users','users.id','staff.user_id')
         ->select('staff.*','users.*')
         ->where('user_id',Auth::id())
         ->first();
 
-    $staff = DB::table('staff')
+      $staff = DB::table('staff')
         ->join('users','users.id','staff.user_id')
         ->select('staff.*','users.*')
         ->where('user_id',Auth::id())
@@ -800,16 +800,16 @@ Route::get('/announcements', function () {
 
       $adminNotification = DB::table('notifications')
         ->where('type', 'Admin Notification')
-        ->where('status', 'not read')
         ->orderBy('date', 'desc')
+        ->take(4)
         ->get();
 
-    $staffNotifCount = DB::table('notifications')
+      $staffNotifCount = DB::table('notifications')
         ->where('type', 'Staff Notification')
         ->where('reciever_id', Auth::id())
         ->count();
 
-    $staffNotification = DB::table('notifications')
+      $staffNotification = DB::table('notifications')
         ->where('type', 'Staff Notification')
         ->where('reciever_id', Auth::id())
         ->orderBy('date', 'desc')

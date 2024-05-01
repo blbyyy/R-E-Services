@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('reciever_id')->unsigned()->nullable();
             $table->foreign('reciever_id')->references('id')->on('users');
+            $table->string('status')->default('not read');
             $table->timestamps();
         });
     }

@@ -131,6 +131,7 @@ class StudentController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -249,6 +250,7 @@ class StudentController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -652,6 +654,7 @@ class StudentController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -708,6 +711,7 @@ class StudentController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')

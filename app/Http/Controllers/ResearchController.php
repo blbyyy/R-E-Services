@@ -33,8 +33,8 @@ class ResearchController extends Controller
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
-            ->where('status', 'not read')
             ->orderBy('date', 'desc')
+            ->take(4)
             ->get();
 
         $query = $request->input('query');
@@ -247,8 +247,8 @@ class ResearchController extends Controller
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
-            ->where('status', 'not read')
             ->orderBy('date', 'desc')
+            ->take(4)
             ->get();
 
         return View::make('admin.studentResearchAccessRequests',compact('admin','requestAccess','adminNotifCount','adminNotification'));
@@ -346,8 +346,8 @@ class ResearchController extends Controller
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
-            ->where('status', 'not read')
             ->orderBy('date', 'desc')
+            ->take(4)
             ->get();
 
         return View::make('admin.facultyResearchAccessRequests',compact('admin','requestAccess','adminNotifCount','adminNotification'));

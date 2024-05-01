@@ -26,8 +26,8 @@ class AppointmentController extends Controller
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
-            ->where('status', 'not read')
             ->orderBy('date', 'desc')
+            ->take(4)
             ->get();
 
         $appointments = DB::table('appointments')
