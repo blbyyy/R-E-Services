@@ -883,16 +883,13 @@ class AppointmentController extends Controller
 
     public function mobilefacultySchedulingAppointment1(Request $request)
     { 
-        $response = []; // Initialize an empty array for the response data
-
         if ($request->purpose === 'Proposal Consultation') {
 
             $extension = DB::table('extension')
-                ->where('id', $request->extensionId)
-                ->first();
-
+                    ->where('id', $request->extensionId)
+                    ->first();
+            
             if ($extension->status === 'New Application') {
-                
                 $appointments = new Appointments;
                 $appointments->date = $request->date;
                 $appointments->time = $request->time;
@@ -909,7 +906,7 @@ class AppointmentController extends Controller
                 $extension->save();
 
             } else {
-                
+
                 $appointments = Appointments::find($extension->appointment1_id);
                 $appointments->date = $request->date;
                 $appointments->time = $request->time;
@@ -932,16 +929,16 @@ class AppointmentController extends Controller
             $notif->user_id = $request->user_id;
             $notif->save();
 
-            $response['success'] = 'Your schedule has been sent; kindly wait to be approved.';
+            return response()->json(['success' => true, 'message' => 'Your schedule has been sent; kindly wait to be approved.']);
         
         } elseif ($request->purpose === 'Pre-Survey Consultation') {
-
+            
             $extension = DB::table('extension')
-                ->where('id', $request->extensionId)
-                ->first();
-
+                    ->where('id', $request->extensionId)
+                    ->first();
+            
             if ($extension->status === 'Topics and Sub Topics Inputted') {
-                
+
                 $appointments = new Appointments;
                 $appointments->date = $request->date;
                 $appointments->time = $request->time;
@@ -958,7 +955,7 @@ class AppointmentController extends Controller
                 $extension->save();
 
             } else {
-                
+
                 $appointments = Appointments::find($extension->appointment3_id);
                 $appointments->date = $request->date;
                 $appointments->time = $request->time;
@@ -980,16 +977,16 @@ class AppointmentController extends Controller
             $notif->user_id = $request->user_id;
             $notif->save();
             
-            $response['success'] = 'Your schedule has been sent; kindly wait to be approved.';
+            return response()->json(['success' => true, 'message' => 'Your schedule has been sent; kindly wait to be approved.']);
 
         } elseif ($request->purpose === 'Mid-Survey Consultation') {
-
+            
             $extension = DB::table('extension')
-                ->where('id', $request->extensionId)
-                ->first();
-
+                    ->where('id', $request->extensionId)
+                    ->first();
+            
             if ($extension->status === 'Appointment Done for Pre-Survey Consultation') {
-                
+
                 $appointments = new Appointments;
                 $appointments->date = $request->date;
                 $appointments->time = $request->time;
@@ -1006,7 +1003,7 @@ class AppointmentController extends Controller
                 $extension->save();
 
             } else {
-                
+
                 $appointments = Appointments::find($extension->appointment4_id);
                 $appointments->date = $request->date;
                 $appointments->time = $request->time;
@@ -1028,16 +1025,15 @@ class AppointmentController extends Controller
             $notif->user_id = $request->user_id;
             $notif->save();
 
-            $response['success'] = 'Your schedule has been sent; kindly wait to be approved.';
+            return response()->json(['success' => true, 'message' => 'Your schedule has been sent; kindly wait to be approved.']);
 
         } elseif ($request->purpose === 'Implementation Proper Appointment') {
-
+            
             $extension = DB::table('extension')
-                ->where('id', $request->extensionId)
-                ->first();
-
+                    ->where('id', $request->extensionId)
+                    ->first();
+            
             if ($extension->status === 'Proposal Approved By Board and OSG') {
-                
                 $appointments = new Appointments;
                 $appointments->date = $request->date;
                 $appointments->time = $request->time;
@@ -1052,9 +1048,7 @@ class AppointmentController extends Controller
                 $extension->status = 'Pending Approval for Implementation Proper Appointment';
                 $extension->percentage_status = 70;
                 $extension->save();
-
             } else {
-                
                 $appointments = Appointments::find($extension->appointment2_id);
                 $appointments->date = $request->date;
                 $appointments->time = $request->time;
@@ -1065,7 +1059,6 @@ class AppointmentController extends Controller
                 $extension = Extension::find($request->extensionId);
                 $extension->status = 'Pending Approval for Implementation Proper Appointment';
                 $extension->save();
-
             }
 
             $notif = new Notifications;
@@ -1076,13 +1069,9 @@ class AppointmentController extends Controller
             $notif->user_id = $request->user_id;
             $notif->save();
 
-            $response['success'] = 'Your schedule has been sent; kindly wait to be approved.';
-
+            return response()->json(['success' => true, 'message' => 'Your schedule has been sent; kindly wait to be approved.']);
         }
-
-        // Return the response as JSON
-        return response()->json($response);
     }
-    //MOBILE START
+    //MOBILE END
 
 }
