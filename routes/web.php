@@ -1392,3 +1392,18 @@ Route::post('/notification/is-read', [
             'as' => 'notifications.is-read'
     ]);
 
+Route::get('/forms/customer-satisfaction-survey/first-page', [
+      'uses' => 'CustomerSatisfactionSurveyController@index',
+            'as' => 'forms.customer-satisfaction-survey'
+    ]);
+
+Route::post('/forms/customer-satisfaction-survey/second-page', 'CustomerSatisfactionSurveyController@session1')->name('forms.customer-satisfaction-survey.second-page');
+
+Route::post('/forms/customer-satisfaction-survey/third-page', 'CustomerSatisfactionSurveyController@session2')->name('forms.customer-satisfaction-survey.third-page');
+
+Route::get('/forms/customer-satisfaction-survey/submitted', [
+      'uses' => 'CustomerSatisfactionSurveyController@submittedPage',
+            'as' => 'forms.customer-satisfaction-survey.submitted'
+    ]);
+
+
