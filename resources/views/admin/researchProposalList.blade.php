@@ -163,7 +163,7 @@
                                         </select>
                                     </div>
 
-                                    <div id="colloquiumContainer" class="text-center" style="padding-top: 20px; display: none;" >
+                                    {{-- <div id="colloquiumContainer" class="text-center" style="padding-top: 20px; display: none;" >
                                         <div class="row">
                                             <h5><b style="color: maroon">Make Schedule for Research Colloquium</b></h5>
                                             <div class="col-6 text-center">
@@ -173,6 +173,15 @@
                                             <div class="col-6 text-center">
                                                 <label for="colloquium_time">Time</label>
                                                 <input class="form-control" type="time" id="colloquium_time" name="colloquium_time"></input>
+                                            </div>
+                                        </div>
+                                    </div> --}}
+
+                                    <div id="remarksContainer" class="text-center" style="padding-top: 20px; display: none;" >
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <label for="remarks" class="form-label">Remarks/Issue</label>
+                                                <textarea class="form-control" placeholder="Input Remarks/Issue" id="remarks" name="remarks" style="height: 150px;"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -201,17 +210,18 @@
 <script>
     $(document).ready(function() {
         document.getElementById('status').addEventListener('change', function () {
-            var colloquiumContainer = document.getElementById('colloquiumContainer');
+            var remarksContainer = document.getElementById('remarksContainer');
 
-            if (this.value === 'Research Proposal Approved By R&E Office') {
-                colloquiumContainer.style.display = 'block';
+            if (this.value === 'Research Proposal Rejected By R&E Office') {
+                remarksContainer.style.display = 'block';
             } else {
-                colloquiumContainer.style.display = 'none';
+                remarksContainer.style.display = 'none';
             }
         });
 
         $('#processingResearchProposal').on('hidden.bs.modal', function () {
-                $('#colloquiumContainer').hide();
+                $('#remarksContainer').hide();
+                $('#status').val('');
         });
     });
 </script>

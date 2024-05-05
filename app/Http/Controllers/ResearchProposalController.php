@@ -194,12 +194,12 @@ class ResearchProposalController extends Controller
                 $proposal->remarks = 'We would like to inform you, your research proposal has been approved by the R&E Office. Please proceed to the R&E Office to obtain the wet signature for your proposal.';
                 $proposal->save();
 
-                $colloquium = new ColloquiumSchedule;
-                $colloquium->time = $request->colloquium_time;
-                $colloquium->date = $request->colloquium_date;
-                $colloquium->status = 'Date Set';
-                $colloquium->researchProposal_id = $request->proposalId;
-                $colloquium->save();
+                // $colloquium = new ColloquiumSchedule;
+                // $colloquium->time = $request->colloquium_time;
+                // $colloquium->date = $request->colloquium_date;
+                // $colloquium->status = 'Date Set';
+                // $colloquium->researchProposal_id = $request->proposalId;
+                // $colloquium->save();
                 
                 $notif = new Notifications;
                 $notif->type = 'Faculty Notification';
@@ -214,7 +214,7 @@ class ResearchProposalController extends Controller
 
                 $proposal = ResearchProposal::find($request->proposalId);
                 $proposal->status = $request->status;
-                $proposal->remarks = 'We would like to inform you, that your research proposal has not been approved by the R&E Office. You are welcome to revise and resubmit your proposal for further consideration.';
+                $proposal->remarks = $request->remarks;
                 $proposal->save();
                 
                 $notif = new Notifications;
