@@ -1133,6 +1133,7 @@ class StudentController extends Controller
             $notif->date = now();
             $notif->user_id = $id;
             $notif->reciever_id = $technicalAdviser->user_id;
+            $notif->status = 'not read';
             $notif->save();
 
             $data = [

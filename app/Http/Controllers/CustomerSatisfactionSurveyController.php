@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\CustomerSatisfactionSurvey;
 use View, DB, Auth, File, Session, Redirect;
 
+use Illuminate\Support\Facades\Log;
+
 class CustomerSatisfactionSurveyController extends Controller
 {
     public function index()
@@ -218,4 +220,48 @@ class CustomerSatisfactionSurveyController extends Controller
 
         return View::make('survey.thirdPage',compact('faculty','student','staff','admin'));
     }
+
+    //Mobile Start
+    public function mobilesession2(Request $request)
+    {
+        try {
+            $survey = new CustomerSatisfactionSurvey;
+            $survey->a1 = $request->rating1;
+            $survey->a2 = $request->rating2;
+            $survey->a3 = $request->rating3;
+            $survey->a4 = $request->rating4;
+            $survey->a5 = $request->rating5;
+            $survey->a6 = $request->rating6;
+
+            // Map other fields as needed
+            $survey->email = $request->email;
+            $survey->rated_department = $request->rated_department;
+            $survey->transaction_purpose = $request->transaction_purpose;
+            $survey->date = $request->date;
+            $survey->time = $request->time;
+            $survey->facilitator = $request->facilitator;
+            $survey->name = $request->name;
+            $survey->email_address = $request->email_address;
+            $survey->phone = $request->phone;
+            $survey->address = $request->address;
+            $survey->company = $request->company;
+            $survey->customer_feedback = $request->customer_feedback;
+            $survey->customer_remarks = $request->customer_remarks;
+
+            $survey->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => "Thank you for your feedback! We are glad you had a positive experience. Your input is valued, and we're committed to improving. Have a great day!",
+                'survey' => $survey
+            ]);
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error saving survey data: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+    //Mobile End
 }

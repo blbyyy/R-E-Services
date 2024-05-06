@@ -246,4 +246,10 @@ Route::get('/MOBILEgetFileExtension/{extid}', [ExtensionController::class, 'MOBI
 Route::get('/MOBILEgetDoumentationPhotos/{docid}', [ExtensionController::class, 'MOBILEgetDoumentationPhotos']);
 Route::get('/MOBILEgetFilePrototype/{proid}', [ExtensionController::class, 'MOBILEgetFilePrototype']);
 Route::get('/MOBILEgetProtoypePhotos/{propoid}', [ExtensionController::class, 'MOBILEgetProtoypePhotos']);
+
+// Route::post('/mobilegoogle-callback', 'Auth\LoginController@mobilehandleGoogleCallback');
+Route::post('/mobilegoogle-callback', 'Auth\LoginController@mobilehandleGoogleCallback')
+    ->withoutMiddleware(['api']);
+
+Route::post('/mobilesession2', 'App\Http\Controllers\CustomerSatisfactionSurveyController@mobilesession2');
 //MOBILE END
