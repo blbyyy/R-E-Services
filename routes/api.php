@@ -255,4 +255,6 @@ Route::post('/mobilesession2', 'App\Http\Controllers\CustomerSatisfactionSurveyC
 
 Route::get('/mobile-second-page', 'App\Http\Controllers\AssessmentController@MobilesecondPage');
 Route::post('/Mobilesubmiting', 'App\Http\Controllers\AssessmentController@Mobilesubmiting');
+
+Route::get('/eventMobileHomePage', 'App\Http\Controllers\LayoutsController@eventMobileHomePage');
 //MOBILE END

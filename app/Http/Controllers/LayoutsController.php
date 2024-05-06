@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Notifications;
 use Imagick, TCPDF, FPDF, View, DB, File, Auth;
+use App\Models\Event;
 
 
 class LayoutsController extends Controller
@@ -479,5 +480,13 @@ class LayoutsController extends Controller
 
         return response()->json($responseData);
     }
+
+    public function eventMobileHomePage()
+    {
+        $data = Event::all(['id', 'title', 'start', 'end']); // Fetch all events
+
+        return response()->json($data);
+    }
+    //MObile end
 
 }
