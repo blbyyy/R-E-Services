@@ -228,4 +228,59 @@ class AssessmentController extends Controller
         return View::make('assessment.thirdPage',compact('faculty','student','staff','admin'));
     }
 
+    //Mobile Start
+    public function MobilesecondPage(Request $request)
+    {
+        $extensions = DB::table('extension')->get();
+
+        return response()->json(['extensions' => $extensions]);
+    }
+
+    public function Mobilesubmiting(Request $request)
+    {
+
+        $training_cheker = $request->training1;;
+        $ranks = $request->ranks;
+
+        $assessment = new Assessment;
+        $assessment->rank1 = $ranks[0];
+        $assessment->rank2 = $ranks[1];
+        $assessment->rank3 = $ranks[2];
+        $assessment->rank4 = $ranks[3];
+        $assessment->rank5 = $ranks[4];
+        $assessment->rank6 = $ranks[5];
+        $assessment->rank7 = $ranks[6];
+        $assessment->date = now();
+
+        // Assuming $training_cheker is defined somewhere above
+        if ($training_cheker != null) {
+            $assessment->training = 'There Is';
+        } else {
+            $assessment->training = 'None';
+        }
+        
+        $assessment->name = $request->name;
+        $assessment->address = $request->address;
+        $assessment->age = $request->age;
+        $assessment->status = $request->status;
+        $assessment->sex = $request->sex;
+        $assessment->phone = $request->phone;
+        $assessment->education_level = $request->education_level;
+        $assessment->employment = $request->employment;
+        $assessment->employment_state = $request->employment_state;
+        $assessment->training1 = $request->training1;
+        $assessment->training2 = $request->training2;
+        $assessment->training3 = $request->training3;
+
+        $assessment->save();
+        
+        // Prepare JSON response
+        $response = [
+            'success' => true,
+            'message' => "Thank you for your feedback! We are glad you had a positive experience. Your input is valued, and we're committed to improving. Have a great day!"
+        ];
+
+        return response()->json($response);
+    }
+    //Mobile End
 }

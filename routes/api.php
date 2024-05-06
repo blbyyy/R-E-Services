@@ -252,4 +252,7 @@ Route::post('/mobilegoogle-callback', 'Auth\LoginController@mobilehandleGoogleCa
     ->withoutMiddleware(['api']);
 
 Route::post('/mobilesession2', 'App\Http\Controllers\CustomerSatisfactionSurveyController@mobilesession2');
+
+Route::get('/mobile-second-page', 'App\Http\Controllers\AssessmentController@MobilesecondPage');
+Route::post('/Mobilesubmiting', 'App\Http\Controllers\AssessmentController@Mobilesubmiting');
 //MOBILE END
