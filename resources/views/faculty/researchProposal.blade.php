@@ -46,10 +46,10 @@
     </div>
 
     <div id="researchProposalUploadForm" class="col-md-12" style="display: none;">
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title">Submit Research Proposal</h5>
-                <hr style="color: maroon; height: 5px;">
+
                 <p>
                     <span class="badge bg-warning text-dark">Notes:</span> 
                     (To make sure your document is in the proper format, 
@@ -57,19 +57,6 @@
                     by searching for <b>"Standard Research Proposal,</b> and make sure you follow to 
                     the reference file's content accurately to prevent the proposal from being rejected.)
                 </p>
-                <p>
-                    <i><b>Research Program:</b> consists of two or more multi-disciplinary research projects wherein a Program Leader,
-                    assisted by Project Leaders, is assigned to oversee the successful implementation of the research that is expected
-                    to be completed within 18 months above.</i>
-                </p>
-                <p>
-                    <i><b>Research Project:</b> consists of two or more related or inter-disciplinary studies headed by a Project Leader that is
-                    expected to be completed within 12 to 20 months.</i>
-                </p>
-                <p>
-                    <i><b>Independent Study:</b> a research study that is expected to be completed within two semesters.</i>
-                </p>
-                <hr style="color: maroon; height: 5px;">
     
                 <form class="row g-3" method="POST" action="{{ route('faculty.research-proposal.sent') }}" enctype="multipart/form-data" style="padding-top: 20px;">
                     @csrf
@@ -105,41 +92,48 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row g-0">
         @if(count($proposal) > 0)
             @foreach($proposal as $proposals)
                 <div class="card mb-3">
                     <div class="row g-0">
-                    <div class="col-md-10 d-flex justify-content-center align-items-center">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$proposals->title}}</h5>  
-                            @if ($proposals->status === 'Research Proposal Approved By R&E Office')
-                                <span class="badge rounded-pill bg-success">{{$proposals->status}}</span> 
-                            @elseif ($proposals->status === 'Research Proposal Rejected By R&E Office')
-                                <span class="badge rounded-pill bg-danger">{{$proposals->status}}</span>
-                            @else 
-                                <span class="badge rounded-pill bg-warning">{{$proposals->status}}</span>
-                            @endif 
-                               
+                        <div class="col-md-10 d-flex justify-content-center align-items-center">
+                            <div class="card-body">
+                                <h5 class="card-title">{{$proposals->title}}</h5>  
+                                @if ($proposals->status === 'Research Proposal Approved By R&E Office')
+                                    <span class="badge rounded-pill bg-success">{{$proposals->status}}</span> 
+                                @elseif ($proposals->status === 'Research Proposal Rejected By R&E Office')
+                                    <span class="badge rounded-pill bg-danger">{{$proposals->status}}</span>
+                                @else 
+                                    <span class="badge rounded-pill bg-warning">{{$proposals->status}}</span>
+                                @endif 
+                                
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-2 d-flex justify-content-center align-items-center">
-                        <div>
-                            @if ($proposals->status === 'Research Proposal Rejected By R&E Office')
-                                <button type="button" class="btn btn-outline-dark viewReseachProposalStatus" data-bs-toggle="modal" data-bs-target="#researchProposalStatus" data-id="{{$proposals->id}}">
-                                    <i class="ri-file-info-line" style="font-size: 25px"></i>
-                                </button> 
-                                <button type="button" class="btn btn-outline-dark reSubmitResearchProposal" data-bs-toggle="modal" data-bs-target="#reSubmitResearchProposal" data-id="{{$proposals->id}}">
-                                    <i class="ri-file-edit-line" style="font-size: 25px"></i>
-                                </button> 
-                            @else 
-                                <button type="button" class="btn btn-outline-dark viewReseachProposalStatus" data-bs-toggle="modal" data-bs-target="#researchProposalStatus" data-id="{{$proposals->id}}">
-                                    <i class="bi bi-info" style="font-size: 2em"></i>
-                                </button> 
-                            @endif 
-                            
+                        <div class="col-md-2 d-flex justify-content-center align-items-center">
+                            <div>
+                                @if ($proposals->status === 'Research Proposal Rejected By R&E Office')
+                                    <button type="button" class="btn btn-outline-dark viewReseachProposalStatus" data-bs-toggle="modal" data-bs-target="#researchProposalStatus" data-id="{{$proposals->id}}">
+                                        <i class="ri-file-info-line" style="font-size: 25px"></i>
+                                    </button> 
+                                    <button type="button" class="btn btn-outline-dark reSubmitResearchProposal" data-bs-toggle="modal" data-bs-target="#reSubmitResearchProposal" data-id="{{$proposals->id}}">
+                                        <i class="ri-file-edit-line" style="font-size: 25px"></i>
+                                    </button> 
+                                @elseif ($proposals->status === 'Research Proposal Approved By R&E Office')
+                                    <button type="button" class="btn btn-outline-dark viewReseachProposalStatus" data-bs-toggle="modal" data-bs-target="#researchProposalStatus" data-id="{{$proposals->id}}">
+                                        <i class="ri-file-info-line" style="font-size: 25px"></i>
+                                    </button> 
+                                    <button type="button" class="btn btn-outline-dark sendingProposalFile" data-bs-toggle="modal" data-bs-target="#sendingFile" data-id="{{$proposals->id}}">
+                                        <i class="ri-arrow-right-line" style="font-size: 25px"></i>
+                                    </button> 
+                                @else
+                                    <button type="button" class="btn btn-outline-dark viewReseachProposalStatus" data-bs-toggle="modal" data-bs-target="#researchProposalStatus" data-id="{{$proposals->id}}">
+                                        <i class="ri-file-info-line" style="font-size: 25px"></i>
+                                    </button> 
+                                @endif 
+                                
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             @endforeach
@@ -205,7 +199,7 @@
                             </div>
                         </div>     
 
-                        <div id="colloquiumSchedule" class="text-center" style="padding-top: 20px;">
+                        {{-- <div id="colloquiumSchedule" class="text-center" style="padding-top: 20px;">
                             <div class="row">
                                 <h5 style="padding-bottom: 20px;"><b style="color: maroon;">Research Colloquium Schedule</b></h5>
                                 <div class="col-md-6">
@@ -224,7 +218,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     
                 </div>
@@ -235,7 +229,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="reSubmitResearchProposal" tabindex="-2">
+        <div class="modal fade" id="reSubmitResearchProposal" tabindex="-1">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
@@ -267,6 +261,58 @@
                             </div>
                         </div>
                     </form>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="sendingFile" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Sending Proposal File</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row mb-3">
+                        <legend class="col-form-label col-sm-2 pt-0">Choose Recipient</legend>
+                        <div class="col-sm-10">
+      
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="">
+                            <label class="form-check-label" for="gridCheck1">
+                              Director Office
+                            </label>
+                          </div>
+      
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck2">
+                            <label class="form-check-label" for="gridCheck2">
+                              UES
+                            </label>
+                          </div>
+
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck2">
+                            <label class="form-check-label" for="gridCheck2">
+                              Vice President
+                            </label>
+                          </div>
+
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck2">
+                            <label class="form-check-label" for="gridCheck2">
+                              President
+                            </label>
+                          </div>
+      
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">

@@ -1406,4 +1406,17 @@ Route::get('/forms/customer-satisfaction-survey/submitted', [
             'as' => 'forms.customer-satisfaction-survey.submitted'
     ]);
 
+Route::get('/forms/community-survey-training-needs/first-page', [
+      'uses' => 'AssessmentController@firstPage',
+            'as' => 'forms.community-survey-training-needs'
+    ]);
+
+Route::post('/forms/community-survey-training-needs/second-page', 'AssessmentController@secondPage')->name('forms.community-survey-training-needs.second-page');
+
+Route::post('/forms/community-survey-training-needs/third-page', 'AssessmentController@submiting')->name('forms.community-survey-training-needs.third-page');
+
+Route::get('/forms/community-survey-training-needs/submitted', [
+      'uses' => 'AssessmentController@submittedPage',
+            'as' => 'forms.community-survey-training-needs.submitted'
+    ]);
 
