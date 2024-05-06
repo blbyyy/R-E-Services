@@ -128,6 +128,18 @@ class ResearchProposalController extends Controller
         return response()->json($proposal);
     }
 
+    public function gettingProposalFile($id)
+    {
+        $proposal = DB::table('research_proposal')
+            ->join('users','users.id','research_proposal.user_id')
+            ->select(
+                'research_proposal.*',
+                'users.id as userId','users.fname','users.mname','users.lname','users.role',)
+            ->where('research_proposal.id', $id)
+            ->first();
+        return response()->json($proposal);
+    }
+
     public function colloquiumSchedule($id)
     {
         $proposal = DB::table('research_proposal')

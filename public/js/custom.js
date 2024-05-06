@@ -5671,4 +5671,31 @@ $(document).ready(function () {
             });
         });
 
+        //faculty getting resarch proposal file
+        $(".sendingProposalFile").click(function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/research-proposal/sepcific/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
 });
