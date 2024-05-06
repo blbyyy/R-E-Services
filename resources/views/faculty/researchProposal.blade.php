@@ -51,7 +51,7 @@
                 <h5 class="card-title">Submit Research Proposal</h5>
 
                 <p>
-                    <span class="badge bg-warning text-dark">Notes:</span> 
+                    <span class="badge bg-warning text-dark">Note:</span> 
                     (To make sure your document is in the proper format, 
                     you can check it to the <a href="{{url('faculty/research/templates')}}">downloadable templates</a> 
                     by searching for <b>"Standard Research Proposal,</b> and make sure you follow to 
@@ -66,7 +66,7 @@
                         <textarea name="title" class="form-control" id="title" style="height: 100px;"></textarea>
                     </div>
 
-                    <div class="col-6 text-center">
+                    <div class="col-12 text-center">
                         <label for="research_type" class="form-label">Select Research Proposal Type:</label>
                         <select name="research_type" class="form-select" id="research_type" aria-label="State">
                             <option selected>Choose.....</option>
@@ -76,10 +76,11 @@
                         </select>
                     </div>
 
-                    <div class="col-6 text-center">
+                    <div class="col-12 text-center">
                         <label for="researchProposalFile" class="form-label">Research Proposal File</label>
                         <input type="file" class="form-control" id="researchProposalFile" name="researchProposalFile">
                     </div>
+                    <span style="font-size: small; color: maroon">(Note: We recommend using either PDF or Word formats, with a preference for Word.)</span>
     
                     <div class="col-12" style="padding-top: 20px">
                         <div class="d-flex justify-content-end">
@@ -280,8 +281,8 @@
                 <div class="modal-body">
 
                     <div class="row mb-3">
-                        <legend class="col-form-label col-sm-2 pt-0">Choose Recipient</legend>
-                        <div class="col-sm-10">
+                        <legend class="col-form-label col-sm-3 pt-0">Choose Recipient:</legend>
+                        <div class="col-sm-9">
       
                           <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="">
@@ -293,7 +294,7 @@
                           <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="gridCheck2">
                             <label class="form-check-label" for="gridCheck2">
-                              UES
+                                University Research and Development Services
                             </label>
                           </div>
 

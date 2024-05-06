@@ -731,6 +731,12 @@ Route::get('/faculty/research-proposal/{id}', [
       'uses' => 'ResearchProposalController@researchProposalStatus',
             'as' => 'faculty.research-proposal.status'
     ]);
+
+Route::get('/faculty/research-proposal/sepcific/{id}', [
+      'uses' => 'ResearchProposalController@gettingProposalFile',
+            'as' => 'faculty.research-proposal.specific'
+    ]);
+
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [
@@ -1419,4 +1425,5 @@ Route::get('/forms/community-survey-training-needs/submitted', [
       'uses' => 'AssessmentController@submittedPage',
             'as' => 'forms.community-survey-training-needs.submitted'
     ]);
+
 
