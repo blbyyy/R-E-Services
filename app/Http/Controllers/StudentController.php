@@ -805,8 +805,9 @@ class StudentController extends Controller
         }
 
         $file = $request->file('avatar');
-        $fileName = time() . '-' . $file->getClientOriginalName();
+        $fileName = time().'-'.$files->getClientOriginalName();
         $filePath = 'images/' . $fileName;
+        Storage::put('public/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
 
         // Update student avatar
         $student->avatar = $filePath;
