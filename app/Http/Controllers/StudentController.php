@@ -805,16 +805,15 @@ class StudentController extends Controller
         }
 
         $file = $request->file('avatar');
-        $fileName = time().'-'.$files->getClientOriginalName();
+        $fileName = time() . '-' . $file->getClientOriginalName();
         $filePath = 'images/' . $fileName;
-        Storage::put('public/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
 
         // Update student avatar
         $student->avatar = $filePath;
         $student->save();
 
         // Save the avatar file
-        Storage::put('public/' . $filePath, file_get_contents($file));
+        Storage::put('public/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
 
         return response()->json([
             'status' => 'success',
