@@ -21,6 +21,8 @@ class AdminSeeder extends Seeder
         $user->lname = 'Macapagal';
         $user->mname = 'D';
         $user->role = 'Admin';
+        $user->email = 'laarnie@gmail.com';
+        $user->password = bcrypt('password');
         $user->save();
 
         $staff = new Staff;
