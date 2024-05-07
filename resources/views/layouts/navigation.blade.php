@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>R&E-Services</title>
-    <link rel="website icon" type="png" href="{{ asset('assets/img/RED.png')}}">
+    <link rel="website icon" type="png" href="{{ secure_asset('../assets/img/RED.png')}}">
 
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -68,7 +68,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ url('/homepage')}}" class="logo d-flex align-items-center">
         {{-- <img src="{{ asset('assets/img/TUP.png')}}" alt=""> --}}
-        <img src="{{ asset('assets/img/RED.png')}}" alt="">
+        <img src="{{ secure_asset('../assets/img/RED.png')}}" alt="">
         <span class="d-none d-lg-block">  R&E-Services</span>
       </a> 
     </div><!-- End Logo -->
