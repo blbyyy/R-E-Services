@@ -68,7 +68,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ url('/homepage')}}" class="logo d-flex align-items-center">
         {{-- <img src="{{ asset('assets/img/TUP.png')}}" alt=""> --}}
-        <img src="{{ asset('assets/img/RED.png')}}" alt="">
+        <img src="{{ secure_asset('../assets/img/RED.png')}}" alt="">
         <span class="d-none d-lg-block">  R&E-Services</span>
       </a> 
     </div><!-- End Logo -->
