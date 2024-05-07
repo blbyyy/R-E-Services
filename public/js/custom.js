@@ -3727,7 +3727,7 @@ $(document).ready(function () {
                     // Dynamically create an <embed> element
                     var embedElement = document.createElement("embed");
                     embedElement.setAttribute("src", pdfUrl);
-                    embedElement.setAttribute("type", "application/pdf");
+                    embedElement.setAttribute("type", "storage/applications");
                     embedElement.setAttribute("width", "100%");
                     embedElement.setAttribute("height", "600px");
         
