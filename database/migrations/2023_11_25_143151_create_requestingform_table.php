@@ -74,7 +74,16 @@ return new class extends Migration
             $table->foreign('research_id')->references('id')->on('files')->onDelete('cascade');
             $table->integer('certificate_id')->unsigned()->nullable();
             $table->foreign('certificate_id')->references('id')->on('certificates')->onDelete('cascade');
+            $table->string('date_processed')->nullable();
             $table->string('date_processing_end')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('turnitin_photos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('requestingform_id')->unsigned()->nullable();
+            $table->foreign('requestingform_id')->references('id')->on('requestingform');
+            $table->string('img_path');
             $table->timestamps();
         });
         

@@ -28,12 +28,13 @@ class ResearchController extends Controller
 
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
             ->orderBy('date', 'desc')
-            ->take(5)
+            ->take(4)
             ->get();
 
         $query = $request->input('query');
@@ -241,12 +242,13 @@ class ResearchController extends Controller
 
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
             ->orderBy('date', 'desc')
-            ->take(5)
+            ->take(4)
             ->get();
 
         return View::make('admin.studentResearchAccessRequests',compact('admin','requestAccess','adminNotifCount','adminNotification'));
@@ -339,12 +341,13 @@ class ResearchController extends Controller
 
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
             ->orderBy('date', 'desc')
-            ->take(5)
+            ->take(4)
             ->get();
 
         return View::make('admin.facultyResearchAccessRequests',compact('admin','requestAccess','adminNotifCount','adminNotification'));
@@ -417,14 +420,14 @@ class ResearchController extends Controller
         $requests->status = 'Pending';
         $requests->save();
 
-        $notif = new Notifications;
-        $notif->type = 'Admin Notification';
-        $notif->title = 'Research Access Request for Information';
-        $notif->message = 'Someone requested access to the research information.';
-        $notif->date = now();
-        $notif->user_id = $request->requestor_id;
-        $notif->reciever_id = 0;
-        $notif->save();
+            $notif = new Notifications;
+            $notif->type = 'Admin Notification';
+            $notif->title = 'Research Access Request for Information';
+            $notif->message = 'Someone requested access to the research information.';
+            $notif->date = now();
+            $notif->user_id = Auth::id();
+            $notif->reciever_id = 0;
+            $notif->save();
 
         return response()->json([
             'success' => true,
@@ -482,7 +485,7 @@ class ResearchController extends Controller
             $notif->title = 'Research Access Request for Documents';
             $notif->message = 'Someone requested access to the research documents.';
             $notif->date = now();
-            $notif->user_id = $request->requestor_id;
+            $notif->user_id = Auth::id();
             $notif->reciever_id = 0;
             $notif->save();
 

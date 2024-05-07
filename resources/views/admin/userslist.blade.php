@@ -1,5 +1,183 @@
 @extends('layouts.navigation')
+@include('sweetalert::alert')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <main id="main" class="main">
+
+    @if(session('success'))
+      <script>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: '{{ session('success') }}',
+          });
+      </script>
+    @elseif(session('error'))
+      <script>
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: '{{ session('error') }}',
+          });
+      </script>
+    @endif
+
+    <div class="col-md-12" style="padding-bottom: 20px;">
+        <button type="button" class="btn btn-dark" onclick="toggleAddUserForm()"><i class="bx bxs-user-plus"></i> Add User</button>
+    </div>
+
+    <div id="addUserForm" class="col-md-12" style="display: none;">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Create User Profile</h5>
+
+                <form class="row g-3" method="POST" action="{{ route('admin.create.user.profile') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="col-12 text-center">
+                      <label for="userRole" class="form-label">User Role:</label>
+                      <select id="userRole" class="form-select" name="userRole">
+                          <option selected>Choose....</option>
+                          <option value="Student">Student</option>
+                          <option value="Faculty">Faculty</option>
+                          <option value="Research Coordinator">Research Coordinator</option>
+                      </select>
+                    </div>
+
+                    <div id="studentFormContainer" style="display: none;">
+                      <div class="row g-2">
+                        <div class="col-4">
+                            <label for="studentFname" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="studentFname" name="studentFname">
+                        </div>
+                        <div class="col-4">
+                            <label for="studentLname" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="studentLname" name="studentLname">
+                        </div>
+                        <div class="col-4">
+                            <label for="studentMname" class="form-label">Middle Name</label>
+                            <input type="text" class="form-control" id="studentMname" name="studentMname">
+                        </div>
+                        <div class="col-4">
+                            <label for="studentId" class="form-label">ID Number</label>
+                            <input type="text" class="form-control" id="studentId" name="studentId">
+                        </div>
+                        <div class="col-4">
+                            <label for="studentCollege" class="form-label">College</label>
+                            <input type="text" class="form-control" id="studentCollege" name="studentCollege">
+                        </div>
+                        <div class="col-4">
+                            <label for="studentCourse" class="form-label">Course</label>
+                            <input type="text" class="form-control" id="studentCourse" name="studentCourse">
+                        </div>
+                        <div class="col-12">
+                          <label for="studentAddress">Address</label>
+                          <textarea class="form-control" id="studentAddress" name="studentAddress" style="height: 100px;"></textarea>
+                        </div>
+                        <div class="col-4">
+                          <label for="studentGender" class="form-label">Sex</label>
+                          <select id="studentGender" class="form-select" name="studentGender">
+                              <option selected>Choose....</option>
+                              <option value="Male">Male</option>
+                              <option value="Female">Female</option>
+                          </select>
+                        </div>
+                        <div class="col-4">
+                            <label for="studentPhone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="studentPhone" name="studentPhone">
+                        </div>
+                        <div class="col-4">
+                            <label for="studentBirthdate" class="form-label">BirthDate</label>
+                            <input type="date" class="form-control" id="studentBirthdate" name="studentBirthdate">
+                        </div>
+                        <div class="col-6">
+                            <label for="studentEmail" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="studentEmail" name="studentEmail">
+                        </div>
+                        <div class="col-6">
+                            <label for="studentPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="studentPassword" name="studentPassword">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="facultyFormContainer" style="display: none;">
+                      <div class="row g-2">
+                        <div class="col-4">
+                            <label for="facultyFname" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="facultyFname" name="facultyFname">
+                        </div>
+                        <div class="col-4">
+                            <label for="facultyLname" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="studentLname" name="studentLname">
+                        </div>
+                        <div class="col-4">
+                            <label for="facultyMname" class="form-label">Middle Name</label>
+                            <input type="text" class="form-control" id="facultyMname" name="facultyMname">
+                        </div>
+                        <div class="col-6">
+                            <label for="facultyId" class="form-label">ID Number</label>
+                            <input type="text" class="form-control" id="facultyId" name="facultyId">
+                        </div>
+                        <div class="col-6">
+                          <label for="facultyDepartment" class="form-label">Department</label>
+                          <select id="facultyDepartment" class="form-select" name="facultyDepartment">
+                              <option selected>Select Department.....</option>
+                                @foreach($department as $departments)
+                                  <option value="{{$departments->id}}">{{$departments->department_name}} ({{$departments->department_code}})</option>
+                                @endforeach
+                          </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="facultyDesignation" class="form-label">Designation</label>
+                            <input type="text" class="form-control" id="facultyDesignation" name="facultyDesignation">
+                        </div>
+                        <div class="col-6">
+                            <label for="facultyPosition" class="form-label">Position</label>
+                            <input type="text" class="form-control" id="facultyPosition" name="facultyPosition">
+                        </div>
+                        <div class="col-12">
+                            <label for="facultyAddress">Address</label>
+                            <textarea class="form-control" id="facultyAddress" name="facultyAddress" style="height: 100px;"></textarea>
+                        </div>
+                        <div class="col-4">
+                          <label for="facultyGender" class="form-label">Sex</label>
+                          <select id="facultyGender" class="form-select" name="facultyGender">
+                              <option selected>Choose....</option>
+                              <option value="Male">Male</option>
+                              <option value="Female">Female</option>
+                          </select>
+                        </div>
+                        <div class="col-4">
+                            <label for="facultyPhone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="facultyPhone" name="facultyPhone">
+                        </div>
+                        <div class="col-4">
+                            <label for="facultyBirthdate" class="form-label">BirthDate</label>
+                            <input type="date" class="form-control" id="facultyBirthdate" name="facultyBirthdate">
+                        </div>
+                        <div class="col-6">
+                            <label for="facultyEmail" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="facultyEmail" name="facultyEmail">
+                        </div>
+                        <div class="col-6">
+                            <label for="facultyPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="facultyPassword" name="facultyPassword">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12" style="padding-top: 20px">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-outline-dark">Create</button>
+                            <button type="reset" class="btn btn-outline-dark ms-2" onclick="toggleAddUserForm()">Close</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
           <h5 class="card-title">List of Users</h5>
@@ -24,7 +202,6 @@
           </div>
         </form>
 
-
         @if($users->isEmpty())
           <table class="table table-hover">
               <thead>
@@ -47,7 +224,7 @@
         @else
           <table class="table table-hover">
             <thead>
-              <tr>
+              <tr class="text-center">
                 <th scope="col">Actions</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
@@ -56,7 +233,7 @@
             </thead>
             <tbody>
               @foreach ($users as $user)
-                <tr>
+                <tr class="text-center">
                   <td style="width: 152px">
                       <button data-id="{{$user->user_id}}" type="button" class="btn btn-info userlistShowBtn" data-bs-toggle="modal" data-bs-target="#showUserInfo"><i class="bi bi-eye"></i></button>
                       <button data-id="{{$user->user_id}}" type="button" class="btn btn-primary editUserBtn" data-bs-toggle="modal" data-bs-target="#editUserInfo"><i class="bi bi-pencil-square"></i></button>
@@ -79,29 +256,28 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <div class="card mb-3">
-                  <div class="row g-0">
-                    <div id="userProfile" class="col-md-4">
-                      
+
+                  <div class="row">
+                    <div class="col-4 text-center">
+                    <div id="userProfile" style="padding-top: 10px; padding-bottom: 20px;"></div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card-body" id="userForm">
-                        <h5 id="userName" class="card-title"></h5>
-                        <h6 id="userID"></h6>
-                        <h6 id="userEmail"></h6>
-                        <h6 id="userCollege"></h6>
-                        <h6 id="userCourse"></h6>
-                        <h6 id="userPosition"></h6>
-                        <h6 id="userDesignation"></h6>
-                        <h6 id="userDepartment"></h6>
-                        <h6 id="userGender"></h6>
-                        <h6 id="userPhone"></h6>
-                        <h6 id="userAddress"></h6>
-                        <h6 id="userBirthdate"></h6>
-                      </div>
+                      
+                    <div class="col-8">
+                        <h6><b style="color: maroon">Account Owner:  </b><span id="userName"></span></h6>
+                        <h6><b style="color: maroon">ID Number:  </b><span id="userID"></span></h6>
+                        <h6><b style="color: maroon">Email:  </b><span id="userEmail"></span></h6>
+                        <h6 id="cllg"><b style="color: maroon">College: </b><span id="userCollege"></span></h6>
+                        <h6 id="crs"><b style="color: maroon">Course  </b><span id="userCourse"></span></h6>
+                        <h6 id="pstn"><b style="color: maroon">Position:   </b><span id="userPosition"></span></h6>
+                        <h6 id="dsgntn"><b style="color: maroon">Designation: </b><span id="userDesignation"></span></h6>
+                        <h6 id="dprtmnt"><b style="color: maroon">Department  </b><span id="userDepartment"></span></h6>
+                        <h6><b style="color: maroon">Sex:  </b><span id="userGender"></span></h6>
+                        <h6><b style="color: maroon">Phone:  </b><span id="userPhone"></span></h6>
+                        <h6><b style="color: maroon">Address:   </b><span id="userAddress"></span></h6>
+                        <h6><b style="color: maroon">BirthDate: </b><span id="userBirthdate"></span></h6>
                     </div>
                   </div>
-                </div>
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -232,5 +408,37 @@
         </div>
 
         </div>
-      </div>
+    </div>
+
 </main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+      document.getElementById('userRole').addEventListener('change', function () {
+            var studentFormContainer = document.getElementById('studentFormContainer');
+            var facultyFormContainer = document.getElementById('facultyFormContainer');
+
+            if (this.value === 'Student') {
+              studentFormContainer.style.display = 'block';
+              facultyFormContainer.style.display = 'none';
+            } else if (this.value === 'Faculty' || this.value === 'Research Coordinator') {
+              facultyFormContainer.style.display = 'block';
+              studentFormContainer.style.display = 'none';
+            } 
+        });
+  });
+
+
+  function showAddUserForm() {
+      document.getElementById('addUserForm').style.display = 'block';
+  }
+
+  function toggleAddUserForm() {
+              var addUserForm = document.getElementById('addUserForm');
+              if (addUserForm.style.display === 'none' || addUserForm.style.display === '') {
+                addUserForm.style.display = 'block';
+              } else {
+                addUserForm.style.display = 'none';
+              }
+  }
+</script>

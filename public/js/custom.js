@@ -1325,18 +1325,38 @@ $(document).ready(function () {
                         $("#userProfile").html('<img src="storage/' + data.avatar + '" class="img-fluid rounded-start" alt="...">');
                     }
 
+                    if (data.role === "Admin") {
+                        $("#dprtmnt").hide(); 
+                        $("#cllg").hide();
+                        $("#crs").hide();      
+                    }  
+                    if (data.role === "Student") {
+                        $("#dprtmnt").hide();
+                        $("#dsgntn").hide();
+                        $("#pstn").hide();    
+                        $("#cllg").show();
+                        $("#crs").show();  
+                    } 
+                    if (data.role === "Faculty") {
+                        $("#dprtmnt").show();
+                        $("#dsgntn").show();
+                        $("#pstn").show();  
+                        $("#cllg").hide();
+                        $("#crs").hide();    
+                    } 
+
                     $("#userName").text(data.fname + ' ' + data.mname + ' ' + data.lname);
                     $("#userID").text( data.tup_id);
                     $("#userEmail").text( data.email);
                     $("#userCollege").text( data.college);
                     $("#userCourse").text(data.course);
                     $("#userPosition").text( data.position);
-                    $("#userDesignation").text( data.designation);
-                    $("#userDepartment").text( data.department_name);
+                    $("#userDesignation").text(data.designation);
+                    $("#userDepartment").text(data.department_name);
                     $("#userGender").text(data.gender);
                     $("#userPhone").text(data.phone);
                     $("#userAddress").text(data.address);
-                    $("#userBirthdate").text(data.birthdate);   
+                    $("#userBirthdate").text(data.birthdate);
 
                     $('#showUserInfo').on('hidden.bs.modal', function () {
                         $("#userCollege").text('');
@@ -1881,6 +1901,53 @@ $(document).ready(function () {
                     $("#time1").text(data.time);
                     $("#purpose1").text(data.purpose);
                     $("#status1").text(data.status);
+
+                    if (data.status === 'Appointment Pending' ) {
+                        $('option[value="Appointment Done"]').prop('disabled', true);
+                    } else {
+                        $('option[value="Appointment Cancelled"]').prop('disabled', true);
+                        $('option[value="Appointment Set"]').prop('disabled', true);
+                    }
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin approval an implementation-proper appointment
+        $(".processAppointmentImplementationProper").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/appointments/implentation-proper/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $("#appointmentId2").val(data.appointmentId);
+                    $("#extensionId2").val(data.id);
+                    $("#requestor2").text(data.requestor_name);
+                    $("#date2").text(data.date);
+                    $("#time2").text(data.time);
+                    $("#purpose2").text(data.purpose); 
+                    $("#status2").text(data.status);
+
+                    if (data.status === 'Appointment Pending' ) {
+                        $('option[value="Appointment Done"]').prop('disabled', true);
+                    } else {
+                        $('option[value="Appointment Cancelled"]').prop('disabled', true);
+                        $('option[value="Appointment Set"]').prop('disabled', true);
+                    }
                 },
                 error: function (error) {
                     console.log(error);
@@ -1906,13 +1973,20 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) { 
                     console.log(data);
-                    $("#appointmentId2").val(data.appointmentId);
-                    $("#extensionId2").val(data.id);
-                    $("#requestor2").text(data.requestor_name);
-                    $("#date2").text(data.date);
-                    $("#time2").text(data.time);
-                    $("#purpose2").text(data.purpose);
-                    $("#status2").text(data.status); 
+                    $("#appointmentId3").val(data.appointmentId);
+                    $("#extensionId3").val(data.id);
+                    $("#requestor3").text(data.requestor_name);
+                    $("#date3").text(data.date);
+                    $("#time3").text(data.time);
+                    $("#purpose3").text(data.purpose);
+                    $("#status3").text(data.status); 
+
+                    if (data.status === 'Appointment Pending' ) {
+                        $('option[value="Appointment Done"]').prop('disabled', true);
+                    } else {
+                        $('option[value="Appointment Cancelled"]').prop('disabled', true);
+                        $('option[value="Appointment Set"]').prop('disabled', true);
+                    }
                 },
                 error: function (error) {
                     console.log(error);
@@ -1938,13 +2012,20 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) { 
                     console.log(data);
-                    $("#appointmentId3").val(data.appointmentId);
-                    $("#extensionId3").val(data.id);
-                    $("#requestor3").text(data.requestor_name);
-                    $("#date3").text(data.date);
-                    $("#time3").text(data.time);
-                    $("#purpose3").text(data.purpose); 
-                    $("#status3").text(data.status);
+                    $("#appointmentId4").val(data.appointmentId);
+                    $("#extensionId4").val(data.id);
+                    $("#requestor4").text(data.requestor_name);
+                    $("#date4").text(data.date);
+                    $("#time4").text(data.time);
+                    $("#purpose4").text(data.purpose); 
+                    $("#status4").text(data.status);
+
+                    if (data.status === 'Appointment Pending' ) {
+                        $('option[value="Appointment Done"]').prop('disabled', true);
+                    } else {
+                        $('option[value="Appointment Cancelled"]').prop('disabled', true);
+                        $('option[value="Appointment Set"]').prop('disabled', true);
+                    }
                 },
                 error: function (error) {
                     console.log(error);
@@ -2336,6 +2417,95 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //admin view research proposal status
+        $(".processResearchProposal").click(function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/research-proposal/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    $('#proposalId').val(id);
+                    $('#researchProposalTitle').text(data.title);
+                    $('#researchProposalType').text(data.research_type);
+
+                    if (data.status === "Pending R&E Office Approval") {
+                        $("#researchProposalStatus").html('<h5><span class="badge bg-warning">Pending R&E Office Approval</span></h5>');
+                    } else if (data.status === "Research Proposal Approved By R&E Office") {
+                        $("#researchProposalStatus").html('<h5><span class="badge bg-success">Research Proposal Approved By R&E Office</span></h5>');
+                    } 
+
+                    var pdfLink = $('<a>', {
+                        href: "/uploads/researchProposal/" + encodeURIComponent(data.proposal_file),
+                        text: "Download File",
+                        target: "_blank"
+                    });
+                    $("#pdfFile").empty().append(pdfLink);
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //show userlist info
+        $(".verifyUserAccount").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/admin/users-pending/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+
+                    $("#usersID").val(data.userID);
+                    
+                    if (data.avatar === "avatar.jpg") {
+                        $("#userProfile").html('<img src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" class="img-fluid rounded-start" alt="..."></img>');
+                    } else {
+                        $("#userProfile").html('<img src="storage/' + data.avatar + '" class="img-fluid rounded-start" alt="...">');
+                    }
+
+                    $("#userName").text(data.fname + ' ' + data.mname + ' ' + data.lname);
+                    $("#userID").text(data.tup_id);
+                    $("#userEmail").text(data.email);
+                    $("#userPosition").text(data.position);
+                    $("#userDesignation").text(data.designation);
+                    $("#userDepartment").text(data.department_name);
+                    $("#userGender").text(data.gender);
+                    $("#userPhone").text(data.phone);
+                    $("#userAddress").text(data.address);
+                    $("#userBirthdate").text(data.birthdate);   
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
     //END OF ADMIN POV
 
     //START OF STUDENT POV
@@ -2718,6 +2888,70 @@ $(document).ready(function () {
                     console.log(error);
                 },
             });
+        });
+
+        //student view application turnitin proof photos
+        $(".turnitinPhotos").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                url: "/student/application/turnitin-proof-photos/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    if (data == '') { 
+                        $('#carouselTurnitinProofPhotos').hide();
+                        $('#noTurnitinProofPhotos').show();
+                    } else {
+                        $('#carouselTurnitinProofPhotos').show();
+                        $('#noTurnitinProofPhotos').hide();
+                        data.forEach(function(item, index) {
+                            var imageName = item.img_path; 
+                            var imageUrl = '/images/turnitinProofs/' + imageName;
+                            
+                            var carouselItem = document.createElement("div");
+                            carouselItem.classList.add("carousel-item");
+                            
+                            if (index === 0) {
+                                carouselItem.classList.add("active");
+                            }
+                            
+                            var img = document.createElement("img");
+                            img.src = imageUrl;
+                            img.classList.add("d-block", "w-100");
+                            img.alt = "Slide " + (index + 1);
+                            
+                            carouselItem.appendChild(img);
+                            
+                            document.querySelector("#turnitin").appendChild(carouselItem);
+                        });
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //refresh modal when the modal is close
+        $("#turnitinPhotos").on("hidden.bs.modal", function () {
+            function clearCarouselItems() {
+                var carouselInner = document.querySelector("#turnitin");
+                carouselInner.innerHTML = ''; // Clear all inner HTML
+            }
+
+            clearCarouselItems();
         });
 
         //if modal is hidden or close it will refresh 
@@ -4604,6 +4838,35 @@ $(document).ready(function () {
             });
         });
 
+        //faculty extension application getting appointment4
+        $(".appointment4").click(function() {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/extension/application/status/appointment/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data);
+                    $('#purpose4').text(data.purpose);
+                    $('#status4').text(data.status);
+                    $('#time4').text(data.time);
+                    $('#date4').text(data.date);
+                },
+                error: function (error) {
+                    console.log("error");
+                },
+            });
+        });
+
         //faculty extension application getting extension files
         $(".extensionFiles").click(function() {
             var id = $(this).data("id");
@@ -4698,7 +4961,7 @@ $(document).ready(function () {
                         $("#ppmpmFile").empty().append(ppmpmFile);
                     }
                     
-                    if (data.prFile === null) {
+                    if (data.pr_file === null) {
                         $('#prFile').text('No File Loaded Yet');
                     } else {
                         var prFile = $('<a>', {
@@ -4709,11 +4972,11 @@ $(document).ready(function () {
                         $("#prFile").empty().append(prFile);
                     }
                     
-                    if (data.marketStudyFile === null) {
+                    if (data.market_study_file === null) {
                         $('#marketStudyFile').text('No File Loaded Yet');
                     } else {
                         var marketStudyFile = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.c),
+                            href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -5036,28 +5299,39 @@ $(document).ready(function () {
                         if (data.appointment1_id === null) {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
-                            $("#p1Title").text('Set Up an Appointment for a Proposal Consultation');
+                            $('option[value="Implementation Proper Appointment"]').prop('disabled', true);
+                            $("#p1Title").text('Make an Appointment for a Proposal Consultation');
                         } 
                     } else if (data.status === 'Proposal Consultation Appointment Cancelled') {
                         if (data.status === 'Proposal Consultation Appointment Cancelled') {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Implementation Proper Appointment"]').prop('disabled', true);
                             $("#p1Title").text('Reschedule a Consultation Appointment for a Proposal');
                         } 
-                    }else if (data.status === 'Topics and Sub Topics Inputted' || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
-                        if (data.appointment2_id === null || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
+                    } else if (data.status === 'Topics and Sub Topics Inputted' || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
+                        if (data.appointment3_id === null || data.status === 'Appointment Cancelled for Pre-Survey Consultation') {
                             $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Proposal Consultation"]').prop('disabled', true);
+                            $('option[value="Implementation Proper Appointment"]').prop('disabled', true);
+                            $("#p1Title").text('Make an Appointment for a Pre-Survey Consultation');
                         } 
                     } else if (data.status === 'Appointment Done for Pre-Survey Consultation' || data.status === 'Appointment Cancelled for Mid-Survey Consultation') {
-                        if (data.appointment3_id === null || data.status === 'Appointment Cancelled for Mid-Survey Consultation') {
+                        if (data.appointment4_id === null || data.status === 'Appointment Cancelled for Mid-Survey Consultation') {
                             $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
                             $('option[value="Proposal Consultation"]').prop('disabled', true);
+                            $('option[value="Implementation Proper Appointment"]').prop('disabled', true);
+                            $("#p1Title").text('Make an Appointment for a Mid-Survey Consultation');
                         } 
-                    } 
+                    } else if (data.status === 'Proposal Approved By Board and OSG' || data.status === 'Implementation Proper Appointment Cancelled') {
+                            $('option[value="Proposal Consultation"]').prop('disabled', true);
+                            $('option[value="Pre-Survey Consultation"]').prop('disabled', true);
+                            $('option[value="Mid-Survey Consultation"]').prop('disabled', true);
+                            $("#p1Title").text('Make an Appointment for Implementation Proper');
+                    }
                     
                 },
-                error: function(error) {
+                error: function(error) {s
                     console.log(error);
                 },
             });
@@ -5097,8 +5371,14 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function(data) {
-                    console.log(id);
+                    console.log(data);
                     $('#proposal2Id').val(id);
+
+                   if (data.status === 'Proposal Rejected By DO' || data.status === 'Proposal Rejected By UES' || data.status === 'Proposal Rejected By President') {
+                    $('#proposal2Title').text('Re-Submission of Documents');
+                   } else if (data.status === 'Proposal Rejected By Board' || data.status === 'Proposal Rejected By OSG') {
+                    $('#proposal2Title').text('Re-Submission of Documents');
+                   }
                 },
                 error: function(error) {
                     console.log(error);
@@ -5116,7 +5396,7 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function(data) {
-                    console.log(id);
+                    console.log(data);
                     $('#proposal3Id').val(id);
                 },
                 error: function(error) {
@@ -5280,4 +5560,142 @@ $(document).ready(function () {
                 },
             });
         });
+
+        //faculty view research proposal status
+        $(".viewReseachProposalStatus").click(function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/research-proposal/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    if (data.colloquiumId === null) { 
+                        $('#colloquiumSchedule').hide();
+                    } else {
+                        $('#colloquiumSchedule').show();
+                        $('#colloquiumTime').text(data.time);
+                        $('#colloquiumDate').text(data.date);
+                    }
+                    
+                    $('#researchTitle').text(data.title);
+                    $('#status').text(data.status);
+                    $('#researchProposalRemarks').text(data.remarks);
+                    $('#researchProposalType').text(data.research_type);
+
+                    if (data.status === "Pending R&E Office Approval") {
+                        $("#status").html('<h5><span class="badge bg-warning">Pending R&E Office Approval</span></h5>');
+                    } else if (data.status === "Research Proposal Approved By R&E Office") {
+                        $("#status").html('<h5><span class="badge bg-success">Research Proposal Approved By R&E Office</span></h5>');
+                    } else if (data.status === "Research Proposal Rejected By R&E Office") {
+                        $("#status").html('<h5><span class="badge bg-danger">Research Proposal Rejected By R&E Office</span></h5>');
+                    }
+
+                    var pdfLink = $('<a>', {
+                        href: "/uploads/researchProposal/" + encodeURIComponent(data.proposal_file),
+                        text: "View File",
+                        target: "_blank"
+                    });
+                    $("#pdfFile").empty().append(pdfLink);
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //when the research proposal modal is hidden all the data will be back to the default
+        $("#viewReseachProposalStatus").on("hidden.bs.modal", function () {
+            $('#researchTitle').empty();
+            $('#status').empty();
+            $('#researchProposalRemarks').empty();
+            $('#researchProposalType').empty();
+            $("#pdfFile").empty();
+        });
+
+        //faculty getting id for resubmit research proposal
+        $(".reSubmitResearchProposal").click(function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/research-proposal/resbumit/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+
+                    $('#proposalId').val(id);
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
+        //admin manipulation for certification
+        $(".notificationBell").click(function() {
+            $.ajax({
+                url: "/notification/is-read",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), 
+                },
+                success: function(data) {
+                    $(".badge-number").hide();
+                }, 
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText, error, status); 
+                }
+            });
+        });
+
+        //faculty getting resarch proposal file
+        $(".sendingProposalFile").click(function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                enctype: 'multipart/form-data',
+                processData: false, // Important!
+                contentType: false,
+                cache: false,
+                url: "/faculty/research-proposal/sepcific/" + id,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                dataType: "json",
+                success: function (data) { 
+                    console.log(data)
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        });
+
 });

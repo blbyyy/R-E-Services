@@ -44,7 +44,10 @@
           <div class="col-md-2 d-flex justify-content-center align-items-center">
               <div>
                   <button type="button" class="btn btn-outline-dark studentViewDetails" data-bs-toggle="modal" data-bs-target="#studentViewInfo" data-id="{{ $stats->id }}">
-                      <i class="bi bi-info-circle"> View Details</i>
+                    <i class="bx bx-show" style="font-size: 25px"></i> 
+                  </button>
+                  <button type="button" class="btn btn-outline-dark turnitinPhotos" data-bs-toggle="modal" data-bs-target="#turnitinPhotos" data-id="{{ $stats->id }}">
+                    <i class="bx bx-images" style="font-size: 25px"></i> 
                   </button>
               </div>
           </div>
@@ -57,10 +60,10 @@
           <div class="card-body">
               <h5 class="card-title"></h5>
               <div class="icon">
-                  <i class="bi bi-folder2-open"></i>
+                <i class="ri-file-forbid-line"></i>
               </div>
               <div class="body">
-                  <h2>Nothing has been uploaded here.</h2>
+                <h2>No files have been uploaded here.</h2>
               </div>
           </div>
       </div>
@@ -238,6 +241,44 @@
                 </div>
               </div>
             </section>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="turnitinPhotos" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Proofs of Turnitin Similarity Percentage</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+              <div id="carouselTurnitinProofPhotos" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner" id="turnitin">
+                  </div>
+              
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselTurnitinProofPhotos" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselTurnitinProofPhotos" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                  </button>
+              </div>
+
+              <div class="col-md-12" id="noTurnitinProofPhotos">
+                  <div class="card-body text-center" style="padding: 40px">
+                      <i class="bi bi-file-image" style="font-size: 8em; color: maroon;"></i>
+                      <h5 style="padding: 20px"><b style="color: maroon">Nothing has been uploaded here.</b></h5>
+                  </div>
+              </div>
+              
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -20,6 +20,45 @@ use App\Models\Department;
 //     'uses' => 'AdminController@showannouncement',
 //           'as' => 'homepage'
 //   ]);
+Route::get('/csm-form/firsPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@firstPage',
+            'as' => 'csm.page1'
+    ]);
+
+Route::post('/form-submit1', 'ClientSatisfactionMeasurementController@session1')->name('form.submit1');
+
+Route::get('/csm-form/secondPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@secondPage',
+            'as' => 'csm.page2'
+    ]);
+
+Route::post('/form-submit2', 'ClientSatisfactionMeasurementController@session2')->name('form.submit2');
+
+Route::get('/csm-form/thirdPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@thirdPage',
+            'as' => 'csm.page3'
+    ]);
+
+Route::post('/form-submit3', 'ClientSatisfactionMeasurementController@session3')->name('form.submit3');
+
+Route::get('/csm-form/fourthPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@fourthPage',
+            'as' => 'csm.page4'
+    ]);
+
+Route::post('/form-submit4', 'ClientSatisfactionMeasurementController@session4')->name('form.submit4');
+
+Route::get('/csm-form/fifthPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@fifthPage',
+            'as' => 'csm.page5'
+    ]);
+
+Route::get('/csm-form/sixthPage', [
+      'uses' => 'ClientSatisfactionMeasurementController@sixthPage',
+            'as' => 'csm.page6'
+    ]);
+
+Route::post('/form-submit5', 'ClientSatisfactionMeasurementController@session5')->name('form.submit5');
 
 Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
 
@@ -132,6 +171,11 @@ Route::get('/application/status/{id}', [
         'as' => 'student.get-specific-data'
 ]);
 
+Route::get('/student/application/turnitin-proof-photos/{id}', [
+      'uses' => 'StudentController@getTurnitinProofPhotos',
+            'as' => 'student.get.application.turnitin-proof-proof.specific'
+    ]);
+
 Route::get('/student/title-checker', [
   'uses' => 'StudentController@titleChecker',
         'as' => 'student.titleChecker'
@@ -156,6 +200,21 @@ Route::get('/student/all/notifications', [
   'uses' => 'LayoutsController@studentNotifications',
         'as' => 'student.all.notifications'
 ]);
+
+Route::get('/admin/research-proposal', [
+      'uses' => 'ResearchProposalController@researchProposalList',
+            'as' => 'admin.research-proposal'
+    ]);
+
+Route::get('/admin/research-proposal/{id}', [
+      'uses' => 'ResearchProposalController@processingResearchProposal',
+            'as' => 'admin.process.research-proposal'
+    ]);
+
+Route::post('/admin/research-proposal/sent', [
+      'uses' => 'ResearchProposalController@sendingBackResearchProposal',
+            'as' => 'admin.sending-back.research.proposal'
+    ]);
 //END OF STUDENT POV
 
 //START STAFF POV
@@ -647,6 +706,37 @@ Route::post('/faculty/extension/application/proposal11/sent', [
       'uses' => 'ExtensionController@proposal11',
             'as' => 'faculty.extension.proposal11.sent'
     ]);
+
+Route::get('/faculty/research-proposal', [
+      'uses' => 'ResearchProposalController@researchProposal',
+            'as' => 'faculty.research-proposal'
+    ]);
+
+Route::post('/faculty/research-proposal/sent', [
+      'uses' => 'ResearchProposalController@uploadResearchProposal',
+            'as' => 'faculty.research-proposal.sent'
+    ]);
+
+Route::get('/faculty/research-proposal/resbumit/{id}', [
+      'uses' => 'ResearchProposalController@reSubmitProposalFetchingId',
+            'as' => 'faculty.research-proposal.resubmit'
+    ]);
+
+Route::post('/faculty/research-proposal/resubmit/sent', [
+      'uses' => 'ResearchProposalController@reUploadResearchProposal',
+            'as' => 'faculty.research-proposal.resubmit.sent'
+    ]);
+
+Route::get('/faculty/research-proposal/{id}', [
+      'uses' => 'ResearchProposalController@researchProposalStatus',
+            'as' => 'faculty.research-proposal.status'
+    ]);
+
+Route::get('/faculty/research-proposal/sepcific/{id}', [
+      'uses' => 'ResearchProposalController@gettingProposalFile',
+            'as' => 'faculty.research-proposal.specific'
+    ]);
+
 //END OF FACULTY POV
 
 Route::get('/applicationlist', [
@@ -697,34 +787,35 @@ Route::post('/request',[
 
 Route::get('/announcements', function () {
 
-    $admin = DB::table('staff')
+      $admin = DB::table('staff')
         ->join('users','users.id','staff.user_id')
         ->select('staff.*','users.*')
         ->where('user_id',Auth::id())
         ->first();
 
-    $staff = DB::table('staff')
+      $staff = DB::table('staff')
         ->join('users','users.id','staff.user_id')
         ->select('staff.*','users.*')
         ->where('user_id',Auth::id())
         ->first();
 
-    $adminNotifCount = DB::table('notifications')
+      $adminNotifCount = DB::table('notifications')
         ->where('type', 'Admin Notification')
+        ->where('status', 'not read')
         ->count();
 
-    $adminNotification = DB::table('notifications')
+      $adminNotification = DB::table('notifications')
         ->where('type', 'Admin Notification')
         ->orderBy('date', 'desc')
-        ->take(5)
+        ->take(4)
         ->get();
 
-    $staffNotifCount = DB::table('notifications')
+      $staffNotifCount = DB::table('notifications')
         ->where('type', 'Staff Notification')
         ->where('reciever_id', Auth::id())
         ->count();
 
-    $staffNotification = DB::table('notifications')
+      $staffNotification = DB::table('notifications')
         ->where('type', 'Staff Notification')
         ->where('reciever_id', Auth::id())
         ->orderBy('date', 'desc')
@@ -1037,15 +1128,45 @@ Route::get('/userCountTable', [
         'as' => 'userCountTable.pdf'
 ]);
 
+Route::get('/studentCountTable', [
+      'uses' => 'PdfController@studentCountTable',
+            'as' => 'studentCountTable.pdf'
+    ]);
+
+Route::get('/facultyCountTable', [
+      'uses' => 'PdfController@facultyCountTable',
+            'as' => 'facultyCountTable.pdf'
+    ]);
+
+Route::get('/researchCoordinatorCountTable', [
+      'uses' => 'PdfController@researchCoordinatorCountTable',
+            'as' => 'researchCoordinatorCountTable.pdf'
+    ]);
+
+Route::get('/staffAdminCountTable', [
+      'uses' => 'PdfController@staffAdminCountTable',
+            'as' => 'staffAdminCountTable.pdf'
+    ]);
+
 Route::get('/applicationsCountTable', [
   'uses' => 'PdfController@applicationsCountTable',
         'as' => 'applicationsCountTable.pdf'
 ]);
 
-Route::get('/thesisTypeCountTable', [
+Route::post('/thesisTypeCountTable', [
   'uses' => 'PdfController@thesisTypeCountTable',
         'as' => 'thesisTypeCountTable.pdf'
 ]);
+
+Route::post('/requestorTypeCountTable', [
+      'uses' => 'PdfController@requestorTypeCountTable',
+            'as' => 'requestorTypeCountTable.pdf'
+    ]);
+
+Route::post('/statusTypeCountTable', [
+      'uses' => 'PdfController@statusTypeCountTable',
+            'as' => 'statusTypeCountTable.pdf'
+    ]);
 
 Route::get('/courseCountTable', [
   'uses' => 'PdfController@courseCountTable',
@@ -1061,6 +1182,21 @@ Route::get('/researchesCourseCountTable', [
   'uses' => 'PdfController@researchesCourseCountTable',
         'as' => 'researchesCourseCountTable.pdf'
 ]);
+
+Route::post('/researchListByDepartmentAndYear', [
+      'uses' => 'PdfController@researchListByDepartmentAndYear',
+            'as' => 'researchListByDepartmentAndYear.pdf'
+    ]);
+
+Route::get('/researchesCountTable', [
+      'uses' => 'PdfController@researchesCountTable',
+            'as' => 'researchesCountTable.pdf'
+    ]);
+
+Route::get('/researchListByInputText', [
+      'uses' => 'PdfController@researchListByInputText',
+            'as' => 'researchListByInputText.pdf'
+    ]);
 
 Route::get('/certificate/{control_id}', [
   'uses' => 'QrCodeController@landingPage',
@@ -1115,6 +1251,16 @@ Route::get('/appointments/proposal/{id}', [
 Route::post('/appointment/proposal/sent', [
       'uses' => 'AppointmentController@sendingAppointmentProposal',
             'as' => 'appointment.proposal.sent'
+    ]);
+
+Route::get('/appointments/implentation-proper/{id}', [
+      'uses' => 'AppointmentController@implementationProperAppointmentId',
+            'as' => 'appointments.list.implementation-proper'
+    ]);
+
+Route::post('/appointment/implentation-proper/sent', [
+      'uses' => 'AppointmentController@sendingImplementationProperAppointment',
+            'as' => 'appointment.implementation-proper.sent'
     ]);
 
 Route::get('/appointments/pre-survey/{id}', [
@@ -1207,7 +1353,77 @@ Route::get('/admin/extension/proposalList/proposal7/{id}', [
             'as' => 'admin.proposallist.proposal7'
     ]);
     
-    Route::post('/admin/extension/proposal-list/sent7', [
+Route::post('/admin/extension/proposal-list/sent7', [
       'uses' => 'ExtensionController@adminProposalApproval7',
             'as' => 'admin.proposal.list.specific.sent7'
     ]);
+
+Route::get('/admin/printable-data', [
+      'uses' => 'PdfController@printableData',
+            'as' => 'admin.printable.data'
+    ]);
+
+Route::get('/admin/users-pending', [
+      'uses' => 'AdminController@usersPending',
+            'as' => 'admin.users.pending'
+    ]);
+
+Route::get('/admin/users-pending/{id}', [
+      'uses' => 'AdminController@usersPendingId',
+            'as' => 'admin.users.pending.specific'
+    ]);
+
+Route::post('/admin/users-pending/verified', [
+      'uses' => 'AdminController@usersVerified',
+            'as' => 'admin.users.pending.verified'
+    ]);
+
+Route::post('/admin/create-user', [
+      'uses' => 'AdminController@createUserProfile',
+            'as' => 'admin.create.user.profile'
+    ]);
+
+Route::get('/admin/reserch-proposal/list', [
+      'uses' => 'AdminController@researchProposalslist',
+            'as' => 'admin.research-proposal.list'
+    ]);
+
+Route::post('/admin/reserch-proposal/specific-research-type', [
+      'uses' => 'AdminController@selectedSpecificResearchType',
+            'as' => 'admin.reserch-proposal.specific-department'
+    ]);
+
+Route::post('/notification/is-read', [
+      'uses' => 'LayoutsController@markAsRead',
+            'as' => 'notifications.is-read'
+    ]);
+
+Route::get('/forms/customer-satisfaction-survey/first-page', [
+      'uses' => 'CustomerSatisfactionSurveyController@index',
+            'as' => 'forms.customer-satisfaction-survey'
+    ]);
+
+Route::post('/forms/customer-satisfaction-survey/second-page', 'CustomerSatisfactionSurveyController@session1')->name('forms.customer-satisfaction-survey.second-page');
+
+Route::post('/forms/customer-satisfaction-survey/third-page', 'CustomerSatisfactionSurveyController@session2')->name('forms.customer-satisfaction-survey.third-page');
+
+Route::get('/forms/customer-satisfaction-survey/submitted', [
+      'uses' => 'CustomerSatisfactionSurveyController@submittedPage',
+            'as' => 'forms.customer-satisfaction-survey.submitted'
+    ]);
+
+Route::get('/forms/community-survey-training-needs/first-page', [
+      'uses' => 'AssessmentController@firstPage',
+            'as' => 'forms.community-survey-training-needs'
+    ]);
+
+Route::post('/forms/community-survey-training-needs/second-page', 'AssessmentController@secondPage')->name('forms.community-survey-training-needs.second-page');
+
+Route::post('/forms/community-survey-training-needs/third-page', 'AssessmentController@submiting')->name('forms.community-survey-training-needs.third-page');
+
+Route::get('/forms/community-survey-training-needs/submitted', [
+      'uses' => 'AssessmentController@submittedPage',
+            'as' => 'forms.community-survey-training-needs.submitted'
+    ]);
+
+

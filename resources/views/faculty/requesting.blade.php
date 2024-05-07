@@ -79,7 +79,7 @@
               </div>
             </div>
         @else
-              <div class="card mb-3">
+            <div class="card mb-3">
                 <div class="row">
                   <div class="col-md-10 d-flex justify-content-center align-items-center">
                       <div class="card-body">
@@ -95,7 +95,7 @@
                       </div>
                   </div>
                 </div>
-              </div>
+            </div>
         @endif
       @endforeach
     @else
@@ -104,7 +104,7 @@
               <div class="card-body">
                   <h5 class="card-title"></h5>
                   <div class="icon">
-                      <i class="bi bi-folder2-open"></i>
+                    <i class="ri-file-forbid-line"></i>
                   </div>
                   <div class="body">
                       <h2>Nothing has been uploaded here.</h2>

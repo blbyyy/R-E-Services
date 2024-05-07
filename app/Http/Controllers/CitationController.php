@@ -31,6 +31,7 @@ class CitationController extends Controller
         $facultyNotifCount = DB::table('notifications')
             ->where('type', 'Faculty Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $facultyNotification = DB::table('notifications')

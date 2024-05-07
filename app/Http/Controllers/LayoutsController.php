@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Notifications;
 use Imagick, TCPDF, FPDF, View, DB, File, Auth;
+use App\Models\Event;
 
 
 class LayoutsController extends Controller
@@ -37,6 +39,7 @@ class LayoutsController extends Controller
 
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
@@ -48,6 +51,7 @@ class LayoutsController extends Controller
         $facultyNotifCount = DB::table('notifications')
             ->where('type', 'Faculty Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $facultyNotification = DB::table('notifications')
@@ -60,6 +64,7 @@ class LayoutsController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -221,14 +226,14 @@ class LayoutsController extends Controller
         $twoDaysAgo = Carbon::now()->subDays(2);
             
         $adminNotifCount = DB::table('notifications')
-        ->where('type', 'Admin Notification')
-        ->where('created_at', '>=', $twoDaysAgo)
-        ->count();
+            ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
+            ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->orderBy('date', 'desc')
-            ->take(4)
             ->get();
 
         return View::make('notifications.admin',compact('admin','notification','adminNotifCount','adminNotification'));
@@ -252,13 +257,14 @@ class LayoutsController extends Controller
         $facultyNotifCount = DB::table('notifications')
             ->where('type', 'Faculty Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', '=', 'Unread')
             ->count();
 
         $facultyNotification = DB::table('notifications')
             ->where('type', 'Faculty Notification')
+            ->where('status', '=', 'Unread')
             ->where('reciever_id', Auth::id())
             ->orderBy('date', 'desc')
-            ->take(4)
             ->get();
 
         return View::make('notifications.faculty',compact('faculty','notification','facultyNotifCount','facultyNotification'));
@@ -282,6 +288,7 @@ class LayoutsController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -322,6 +329,27 @@ class LayoutsController extends Controller
             ->get();
 
         return View::make('notifications.staff',compact('staff','notification','staffNotifCount','staffNotification'));
+    }
+
+    public function markAsRead(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = DB::table('users')->where('id', Auth::id())->first();
+
+        if ($user->role === 'Admin') {
+            Notifications::where('type', 'Admin Notification')->where('status', 'not read')->update(['status' => 'read']);
+        } elseif ($user->role === 'Faculty') {
+            Notifications::where('reciever_id', Auth::id())->where('status', 'not read')->update(['status' => 'read']);
+        } elseif ($user->role === 'Student') {
+            Notifications::where('reciever_id', Auth::id())->where('status', 'not read')->update(['status' => 'read']);
+        } elseif ($user->role === 'Research Coordinator') {
+            Notifications::where('type', 'Student')->where('status', 'not read')->update(['status' => 'read']);
+        } 
+
+        return response()->json(['message' => 'Notifications marked as read successfully']);
     }
 
     //mobile
@@ -452,5 +480,13 @@ class LayoutsController extends Controller
 
         return response()->json($responseData);
     }
+
+    public function eventMobileHomePage()
+    {
+        $data = Event::all(['id', 'title', 'start', 'end']); // Fetch all events
+
+        return response()->json($data);
+    }
+    //MObile end
 
 }

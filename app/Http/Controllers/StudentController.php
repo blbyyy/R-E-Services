@@ -70,7 +70,19 @@ class StudentController extends Controller
         ->where('user_id',Auth::id())
         ->first();
 
-        return View::make('auth.fillup',compact('student'));
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        return View::make('auth.fillup',compact('student','studentNotifCount','studentNotification'));
     }
 
     public function filled(Request $request)
@@ -82,7 +94,7 @@ class StudentController extends Controller
 
         $student = Student::find($student_id->id);
         $student->mname = $request->mname;
-        $student->college = $request->college;
+        $student->college = 'TUPT';
         $student->course = $request->course;
         $student->tup_id = $request->tup_id;
         $student->gender = $request->gender;
@@ -119,6 +131,7 @@ class StudentController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -237,6 +250,7 @@ class StudentController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -640,6 +654,7 @@ class StudentController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -674,6 +689,17 @@ class StudentController extends Controller
         return response()->json($specificData);
     }
 
+    public function getTurnitinProofPhotos($id)
+    {
+        $photos = DB::table('requestingform')
+        ->join('turnitin_photos','requestingform.id','turnitin_photos.requestingform_id')
+        ->select('turnitin_photos.*')
+        ->where('requestingform.id', $id)
+        ->get();
+
+        return response()->json($photos);
+    }
+
     public function titleChecker(Request $request)
     {
         $student = DB::table('students')
@@ -685,6 +711,7 @@ class StudentController extends Controller
         $studentNotifCount = DB::table('notifications')
             ->where('type', 'Student Notification')
             ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
             ->count();
 
         $studentNotification = DB::table('notifications')
@@ -713,36 +740,37 @@ class StudentController extends Controller
     public function RegisterMobile(Request $request)
     { 
         $response = [];
-        $user = new User;
-        $user->fname = $request->fname;
-        $user->lname = $request->lname;
-        $user->mname = $request->mname;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->role = $request->role;   
-        $user->save();
-        $lastUserId = DB::getPdo()->lastInsertId();
 
-        $student = new Student;
-        $student->fname = $request->fname;
-        $student->lname = $request->lname;
-        $student->mname = $request->mname;
-        $student->college = $request->college;
-        $student->course = $request->course;
-        $student->tup_id = $request->tup_id;
-        $student->email = $request->email;
-        $student->gender = $request->gender;
-        $student->phone = $request->phone;
-        $student->address = $request->address;
-        $student->birthdate = $request->birthdate;
-        $student->user_id = $lastUserId;
-        $student->save();
+        $users = new User;
+        $users->fname = $request->fname;
+        $users->lname = $request->lname;
+        $users->mname = $request->mname;
+        $users->email = $request->email;
+        $users->password = bcrypt($request->password);
+        $users->role = 'Student';   
+        $users->save();
+        $last = DB::getPdo()->lastInsertId();
 
-        auth()->login($user, true);
+        $students = new Student;
+        $students->fname = $request->fname;
+        $students->lname = $request->lname;
+        $students->mname = $request->mname;
+        $students->college = 'TUPT';
+        $students->course = $request->course;
+        $students->tup_id = $request->tup_id;
+        $students->email = $request->email;
+        $students->gender = $request->gender;
+        $students->phone = $request->phone;
+        $students->address = $request->address;
+        $students->birthdate = $request->birthdate;
+        $students->user_id = $last;
+        $students->save();
+
+        auth()->login($users, true);
 
         $response['message'] = 'Registration successful';
-        $response['user'] = $user;
-        $response['student'] = $student;
+        $response['user'] = $users;
+        $response['student'] = $students;
 
         return response()->json($response, 200);
     }
@@ -1105,6 +1133,7 @@ class StudentController extends Controller
             $notif->date = now();
             $notif->user_id = $id;
             $notif->reciever_id = $technicalAdviser->user_id;
+            $notif->status = 'not read';
             $notif->save();
 
             $data = [
@@ -1314,6 +1343,51 @@ class StudentController extends Controller
         ->first();
 
         return response()->json($research);
+    }
+
+    public function mobilechangePassword(Request $request, $email)
+    {
+        $student = Student::where('email', $email)->first();
+
+        $request->validate([
+            'password' => 'required',
+            'newpassword' => 'required|min:8',
+            'renewpassword' => 'required|same:newpassword',
+        ]);
+
+        // Fetch the User model instance
+        $user = User::where('email', $student->email)->first();
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Current password is incorrect.'], 422);
+        } else {
+            // Update the password using the User model instance
+            $user->update([
+                'password' => Hash::make($request->newpassword),
+            ]);
+            return response()->json(['success' => 'Password changed successfully!']);
+        }
+    }
+
+    public function mobilevalidatePassword(Request $request, $email)
+    {
+        $student = Student::where('email', $email)->first();
+        
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        }
+
+        // Fetch the User model instance
+        $user = User::where('email', $student->email)->first();
+
+        if (!$user->password) {
+            return response()->json(['error' => 'User does not have a password.'], 422);
+        }
+
+        $enteredPassword = $request->input('password');
+        $isMatch = Hash::check($enteredPassword, $user->password);
+
+        return response()->json(['match' => $isMatch]);
     }
     //MOBILE END
 

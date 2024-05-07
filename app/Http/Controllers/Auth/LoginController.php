@@ -19,6 +19,7 @@ use Auth;
 //MOBILE START
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 //MOBILE END
 
 class LoginController extends Controller
@@ -112,6 +113,41 @@ class LoginController extends Controller
             "token" => $token,
             "status" => 200,
         ]);
+    }
+
+    public function mobilehandleGoogleCallback(Request $request)
+    {
+        // Validate incoming request
+        $request->validate([
+            'email' => 'required|email',
+            'fname' => 'required|string',
+            'lname' => 'required|string',
+        ]);
+
+        // Check if user already exists in the database
+        $user = User::where('email', $request->input('email'))->first();
+
+        if (!$user) {
+            // If user does not exist, create a new one
+            $user = new User();
+            $user->email = $request->input('email');
+            $user->fname = $request->input('fname');
+            $user->lname = $request->input('lname');
+            $user->role = 'Student'; 
+            // You may want to add more fields here or customize as needed
+            $user->save();
+
+            // Assuming you want to associate a Student model with the new user
+            $newStudent = new Student;
+            $newStudent->fname = $request->input('fname');
+            $newStudent->lname = $request->input('lname');
+            $newStudent->email = $request->input('email');
+            $newStudent->user_id = $user->id; // Assuming user_id is the foreign key linking User and Student
+            $newStudent->save();
+        }
+
+        // Return success response
+        return response()->json(['message' => 'User registration succeeded.'], 200);
     }
     //MOBILE END
 

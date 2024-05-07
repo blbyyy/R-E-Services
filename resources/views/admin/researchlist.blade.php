@@ -25,6 +25,7 @@
           </div>
         </form>
 
+        
 
         @if($researches->isEmpty())
           <table class="table table-hover">

@@ -28,12 +28,13 @@ class DepartmentController extends Controller
 
         $adminNotifCount = DB::table('notifications')
             ->where('type', 'Admin Notification')
+            ->where('status', 'not read')
             ->count();
 
         $adminNotification = DB::table('notifications')
             ->where('type', 'Admin Notification')
             ->orderBy('date', 'desc')
-            ->take(5)
+            ->take(4)
             ->get();
 
         return View::make('department.index',compact('admin','departmentlists','adminNotifCount','adminNotification'));

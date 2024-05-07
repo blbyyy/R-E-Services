@@ -6,6 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>R&E-Services</title>
+    <link rel="website icon" type="png" href="{{ asset('assets/img/RED.png')}}">
+
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta content="{{ csrf_token() }}" name="csrf-token" >
@@ -15,7 +17,6 @@
     <!-- Favicons -->
     {{-- <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
-
     <link href="{{ secure_asset('../assets/img/favicon.png') }}" rel="icon">
     <link href="{{ secure_asset('../assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
@@ -36,7 +37,7 @@
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
     <link href="{{ asset('css/comment.css') }}" rel="stylesheet"> --}}
     
-    <link href="{{ secure_asset('../assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ secure_asset('../assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
@@ -45,7 +46,18 @@
     <link href="{{ secure_asset('../assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../css/login.css') }}" rel="stylesheet">
-    <link href="{{ secure_asset('../css/comment.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('../css/comment.css') }}" rel="stylesheet"> --}}
+
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet" defer>
+    <link href="{{ asset('css/comment.css') }}" rel="stylesheet" >
   
   </head>
   
@@ -69,16 +81,24 @@
 
         <li class="nav-item dropdown">
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell" style="font-size: 30px;"></i>
+          <a class="nav-link nav-icon notificationBell" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell" style="font-size: 30px;" ></i>
             @if (Auth::user()->role === 'Admin')
-              <span class="badge bg-primary badge-number">{{$adminNotifCount}}</span>
+              @if ($adminNotifCount > 0)
+                <span class="badge bg-primary badge-number">{{$adminNotifCount}}</span>
+              @endif
             @elseif (Auth::user()->role === 'Student')
-              <span class="badge bg-primary badge-number">{{$studentNotifCount}}</span>
+              @if ($studentNotifCount > 0)
+                <span class="badge bg-primary badge-number">{{$studentNotifCount}}</span>
+              @endif
             @elseif (Auth::user()->role === 'Faculty')
-              <span class="badge bg-primary badge-number">{{$facultyNotifCount}}</span>
+              @if ($facultyNotifCount > 0)
+                <span class="badge bg-primary badge-number">{{$facultyNotifCount}}</span>
+              @endif
             @elseif (Auth::user()->role === 'Staff')
-              <span class="badge bg-primary badge-number">{{$staffNotifCount}}</span>
+              @if ($staffNotifCount > 0)
+                <span class="badge bg-primary badge-number">{{$staffNotifCount}}</span>
+              @endif
             @endif
           </a>
 
@@ -190,7 +210,7 @@
                 @else
                   <img class="rounded-circle" src="{{ asset('/uploads/avatars/'.$staff->avatar) }}" alt="" />    
                 @endif
-              @elseif(Auth::user()->role === 'Faculty' || Auth::user()->role === 'Faculty Not Verified')
+              @elseif(Auth::user()->role === 'Faculty' || Auth::user()->role === 'Faculty Not Verified' || Auth::user()->role === 'Research Coordinator')
                 @if($faculty->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
@@ -226,7 +246,7 @@
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
-              @elseif(Auth::user()->role == 'Faculty')
+              @elseif(Auth::user()->role == 'Faculty' || Auth::user()->role == 'Research Coordinator')
               <a class="dropdown-item d-flex align-items-center" href="{{ url('faculty/profile/{id}') }}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
@@ -423,6 +443,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link " href="{{url('/faculty/research-proposal')}}">
+            <i class="bx bxs-file-export"></i>
+            <span>Research Proposal</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link " href="{{url('/faculty/student-applications')}}">
             <i class="bi bi-file-earmark-person"></i>
             <span>Students Application</span>
@@ -491,9 +517,21 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link " href="{{url('/admin/printable-data')}}">
+            <i class="bx bxs-printer"></i>
+            <span>Printable Data</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link " href="{{url('/administration')}}">
             <i class="bi bi-person-fill-gear"></i>
             <span>Administration</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/admin/users-pending')}}">
+            <i class="bx bxs-user-check"></i>
+            <span>Accounts Verification</span>
           </a>
         </li>
         <li class="nav-item">
@@ -534,6 +572,12 @@
           <a class="nav-link " href="{{url('/events')}}">
             <i class="bi bi-calendar-event"></i>
             <span>Events</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url('/admin/research-proposal')}}">
+            <i class="ri-file-edit-line"></i>
+            <span>Research Proposals</span>
           </a>
         </li>
         <li class="nav-item">
@@ -583,6 +627,90 @@
             <span>Extension Proposals</span>
           </a>
         </li>
+      @elseif(Auth::user()->role == 'Research Coordinator')
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/homepage')}}">
+              <i class="bi bi-house-door"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/myfiles')}}">
+              <i class="bi bi-folder"></i>
+              <span>My Files</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/apply/certification')}}">
+              <i class="bi bi-award"></i>
+              <span>Certification</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/application/status')}}">
+              <i class="bi bi-file-earmark-bar-graph"></i>
+              <span>Application Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/research-proposal')}}">
+              <i class="bx bxs-file-export"></i>
+              <span>Research Proposal</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/student-applications')}}">
+              <i class="bi bi-file-earmark-person"></i>
+              <span>Students Application</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/research-list')}}">
+              <i class="bi bi-card-list"></i>
+              <span>Researches</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-file-richtext"></i><span>Templates</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li>
+                <a href="{{url('/faculty/research/templates')}}">
+                  <i class="bi bi-circle"></i><span>Research</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{url('/faculty/extension/templates')}}">
+                  <i class="bi bi-circle"></i><span>Extension</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/citation')}}">
+              <i class="bi bi-chat-quote"></i>
+              <span>Citation References</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/research-inventory')}}">
+              <i class="bi bi-archive"></i>
+              <span>Research Inventory</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/extension/application')}}">
+              <i class="bi bi-card-heading"></i>
+              <span>Extension Application</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/faculty/extension/application/status')}}">
+              <i class="bi bi-file-earmark-break"></i>
+              <span>Extension Application Status</span>
+            </a>
+          </li>
       @endif
       @endguest
 
@@ -609,7 +737,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.all.min.js"></script>
   <!-- Vendor JS Files -->
-  <script src="{{ secure_asset('../assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+  {{-- <script src="{{ secure_asset('../assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/chart.js/chart.umd.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/echarts/echarts.min.js')}}"></script>
@@ -619,22 +747,21 @@
   <script src="{{ secure_asset('../assets/vendor/php-email-form/validate.js')}}"></script>
   <script src="{{ secure_asset('../js/custom.js')}}"></script>
 
-  {{-- <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
-  <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-  <script src="{{ asset('assets/vendor/chart.js/chart.umd.js')}}"></script>
-  <script src="{{ asset('assets/vendor/echarts/echarts.min.js')}}"></script>
-  <script src="{{ asset('assets/vendor/quill/quill.min.js')}}"></script>
-  <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
-  <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js')}}"></script>
-  <script src="{{ asset('assets/vendor/php-email-form/validate.js')}}"></script>
-  <script src="{{ asset('js/custom.js')}}"></script> --}}
-
+  {{-- <script src="https://redigitalize-production.up.railway.app/assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="https://redigitalize-production.up.railway.app/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://redigitalize-production.up.railway.app/assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="https://redigitalize-production.up.railway.app/assets/vendor/echarts/echarts.min.js"></script>
+  <script src="https://redigitalize-production.up.railway.app/assets/vendor/quill/quill.min.js"></script>
+  <script src="https://redigitalize-production.up.railway.app/assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="https://redigitalize-production.up.railway.app/assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="https://redigitalize-production.up.railway.app/assets/vendor/php-email-form/validate.js"></script>
+  <script src="https://redigitalize-production.up.railway.app/js/custom.js"></script> --}}
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js"></script>
   <!-- Template Main JS File -->
-  <script src="{{ secure_asset('../assets/js/main.js')}}"></script>
+  
   
 </body>
 </html>

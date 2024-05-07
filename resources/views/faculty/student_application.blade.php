@@ -25,45 +25,67 @@
         <div class="card-body">
           <h5 class="card-title">Applications from your students</h5>
 
-          <table class="table table-hover">
-            <thead>
-              <tr class="text-center">
-                <th scope="col">Actions</th>
-                <th scope="col">Student Name</th>
-                <th scope="col">Research Title</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            @foreach ($application as $applications)
-            <tbody>
-              <tr class="text-center">
-                <td> 
-                  <button data-id="{{$applications->id}}" type="button" class="btn btn-info showStudentApplication" data-bs-toggle="modal" data-bs-target="#showStudentApplicationInfo"><i class="bi bi-info-lg"></i></button>
-                  @if ($applications->status === 'Pending Technical Adviser Approval')
-                    <button data-id="{{$applications->id}}" type="button" class="btn btn-success taApproval" data-bs-toggle="modal" data-bs-target="#technicalAdviserApproval"><i class="bi bi-check2-circle"></i></button>
-                  @elseif ($applications->status === 'Pending Subject Adviser Approval')
-                    <button data-id="{{$applications->id}}" type="button" class="btn btn-success saApproval" data-bs-toggle="modal" data-bs-target="#subjectAdviserApproval"><i class="bi bi-check2-circle"></i></button>
-                  @endif
+          @if(count($application) > 0)
+            <table class="table table-hover">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">Actions</th>
+                  <th scope="col">Student Name</th>
+                  <th scope="col">Research Title</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              @foreach ($application as $applications)
+              <tbody>
+                <tr class="text-center">
+                  <td> 
+                    <button data-id="{{$applications->id}}" type="button" class="btn btn-info showStudentApplication" data-bs-toggle="modal" data-bs-target="#showStudentApplicationInfo"><i class="bi bi-info-lg"></i></button>
+                    @if ($applications->status === 'Pending Technical Adviser Approval')
+                      <button data-id="{{$applications->id}}" type="button" class="btn btn-success taApproval" data-bs-toggle="modal" data-bs-target="#technicalAdviserApproval"><i class="bi bi-check2-circle"></i></button>
+                    @elseif ($applications->status === 'Pending Subject Adviser Approval')
+                      <button data-id="{{$applications->id}}" type="button" class="btn btn-success saApproval" data-bs-toggle="modal" data-bs-target="#subjectAdviserApproval"><i class="bi bi-check2-circle"></i></button>
+                    @endif
+                    </td>
+                  <td>{{$applications->requestor_name}}</td>
+                  <td>{{$applications->research_title}}</td>
+                  <td>
+                    @if ($applications->status === 'Returned')
+                      <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
+                    @elseif ($applications->status === 'Passed')
+                      <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
+                    @elseif ($applications->status === 'Pending')
+                      <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
+                    @elseif ($applications->status === 'Pending Technical Adviser Approval')
+                      <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
+                    @elseif ($applications->status === 'Pending Subject Adviser Approval')
+                      <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
+                    @endif
                   </td>
-                <td>{{$applications->requestor_name}}</td>
-                <td>{{$applications->research_title}}</td>
-                <td>
-                  @if ($applications->status === 'Returned')
-                    <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
-                  @elseif ($applications->status === 'Passed')
-                    <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
-                  @elseif ($applications->status === 'Pending')
-                    <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
-                  @elseif ($applications->status === 'Pending Technical Adviser Approval')
-                    <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
-                  @elseif ($applications->status === 'Pending Subject Adviser Approval')
-                    <h5><span class="badge bg-warning" style="color: black">{{$applications->status}}</span></h5>
-                  @endif
-                </td>
-              </tr>
-            </tbody>
-            @endforeach
-          </table>
+                </tr>
+              </tbody>
+              @endforeach
+            </table>
+          @else
+            <table class="table table-hover">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">Actions</th>
+                  <th scope="col">Student Name</th>
+                  <th scope="col">Research Title</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+            <div class="alert alert-danger" role="alert">
+                <div class="text-center">
+                    <span class="badge border-danger border-1 text-danger" style="font-size: large">No Applications Populated</span>
+                </div>
+            </div>
+          @endif
 
           <div class="modal fade" id="showStudentApplicationInfo" tabindex="-1">
             <div class="modal-dialog modal-lg">
@@ -257,7 +279,7 @@
                   <div class="row g-4">
                     <div class="col-md-4">
                         <div class="icon" style="padding-bottom: 20px; padding-top: 30px;">
-                          <i class="bi bi-file-earmark-pdf"></i>
+                          <i class="bx bxs-file-pdf"></i>
                         </div>
                     
                         <center>
@@ -271,16 +293,14 @@
         
                           <input name="fileId1" type="hidden" class="form-control" id="fileId1">
                           <input name="requestId1" type="hidden" class="form-control" id="requestId1">
-            
-                          <div class="col-md-12">
-                              <div class="form-floating">
-                                  <select name="technicalAdviserStatus" class="form-select" id="technicalAdviserStatus" aria-label="State">
-                                      <option selected>Choose....</option>
-                                      <option value="Pending Subject Adviser Approval">Approve</option>
-                                      <option value="Rejected By Technical Adviser">Reject</option>
-                                  </select>
-                                  <label for="technicalAdviserStatus">Status</label>
-                              </div>
+
+                          <div class="col-12 text-center">
+                            <label for="technicalAdviserStatus" class="form-label">Are you approving this application?</label>
+                            <select id="technicalAdviserStatus" class="form-select" name="technicalAdviserStatus">
+                                <option selected>Choose....</option>
+                                <option value="Pending Subject Adviser Approval">Approve</option>
+                                <option value="Rejected By Technical Adviser">Reject</option>
+                            </select>
                           </div>
                           
                           <div class="col-12" id="technicalAdviserRemarksContainer" style="display: none;">
@@ -321,7 +341,7 @@
                   <div class="row g-4">
                     <div class="col-md-4">
                         <div class="icon" style="padding-bottom: 20px; padding-top: 30px;">
-                          <i class="bi bi-file-earmark-pdf"></i>
+                          <i class="bx bxs-file-pdf"></i>
                         </div>
                     
                         <center>
@@ -335,16 +355,14 @@
         
                           <input name="fileId2" type="hidden" class="form-control" id="fileId2">
                           <input name="requestId2" type="hidden" class="form-control" id="requestId2">
-            
-                          <div class="col-md-12">
-                              <div class="form-floating">
-                                  <select name="subjectAdviserStatus" class="form-select" id="subjectAdviserStatus" aria-label="State">
-                                      <option selected>Choose....</option>
-                                      <option value="Pending">Approve</option>
-                                      <option value="Rejected By Subject Adviser">Reject</option>
-                                  </select>
-                                  <label for="subjectAdviserStatus">Status</label>
-                              </div>
+
+                          <div class="col-12 text-center">
+                            <label for="subjectAdviserStatus" class="form-label">Are you approving this application?</label>
+                            <select name="subjectAdviserStatus" class="form-select" id="subjectAdviserStatus" aria-label="State">
+                              <option selected>Choose....</option>
+                              <option value="Pending">Approve</option>
+                              <option value="Rejected By Subject Adviser">Reject</option>
+                            </select>
                           </div>
                           
                           <div class="col-12" id="subjectAdviserRemarksContainer" style="display: none;">
