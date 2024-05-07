@@ -202,7 +202,7 @@
                 @if($student->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
-                  <img class="rounded-circle" src="{{ asset('../storage/uploads/avatars/' . $student->avatar) }}" alt="Avatar" />   
+                  <img class="rounded-circle" src="{{ asset('storage/avatars' . $student->avatar) }}" alt="Avatar" />   
                 @endif
               @elseif(Auth::user()->role === 'Staff')
                 @if($staff->avatar === 'avatar.jpg')
