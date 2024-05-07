@@ -214,4 +214,47 @@ Route::post('/mobilecheckingAppointments', 'App\Http\Controllers\AppointmentCont
 Route::post('/mobilefacultySchedulingAppointment1', 'App\Http\Controllers\AppointmentController@mobilefacultySchedulingAppointment1');
 Route::post('/mobileproposal1', 'App\Http\Controllers\ExtensionController@mobileproposal1');
 Route::post('/mobileproposal2', 'App\Http\Controllers\ExtensionController@mobileproposal2');
+Route::post('/mobileproposal3', 'App\Http\Controllers\ExtensionController@mobileproposal3');
+Route::post('/mobileproposal4', 'App\Http\Controllers\ExtensionController@mobileproposal4');
+Route::post('/mobileproposal5', 'App\Http\Controllers\ExtensionController@mobileproposal5');
+Route::post('/mobileproposal6', 'App\Http\Controllers\ExtensionController@mobileproposal6');
+Route::post('/mobileproposal7', 'App\Http\Controllers\ExtensionController@mobileproposal7');
+Route::post('/mobileproposal8', 'App\Http\Controllers\ExtensionController@mobileproposal8');
+Route::post('/mobileproposal9', 'App\Http\Controllers\ExtensionController@mobileproposal9');
+Route::post('/mobileproposal10', 'App\Http\Controllers\ExtensionController@mobileproposal10');
+Route::post('/mobileproposal11', 'App\Http\Controllers\ExtensionController@mobileproposal11');
+
+Route::get('/mobileresearchProposal/{id}', 'App\Http\Controllers\ResearchProposalController@mobileresearchProposal');
+Route::post('/mobileuploadResearchProposal', 'App\Http\Controllers\ResearchProposalController@mobileuploadResearchProposal');
+Route::get('/mobilereSubmitProposalFetchingId/{id}', 'App\Http\Controllers\ResearchProposalController@mobilereSubmitProposalFetchingId');
+Route::post('/mobilereUploadResearchProposal', 'App\Http\Controllers\ResearchProposalController@mobilereUploadResearchProposal');
+Route::get('/mobileresearchProposalStatus/{id}', 'App\Http\Controllers\ResearchProposalController@mobileresearchProposalStatus');
+Route::get('/mobilecolloquiumSchedule/{id}', 'App\Http\Controllers\ResearchProposalController@mobilecolloquiumSchedule');
+Route::get('/RPmobileshowpdf/{fileName}', 'App\Http\Controllers\ResearchProposalController@RPmobileshowpdf');
+
+Route::get('/turnitin-proof-photos/{id}', [StudentController::class, 'getTurnitinProofPhotos']);
+
+Route::post('/mobilechange-password/{email}', 'App\Http\Controllers\StudentController@mobilechangePassword');
+Route::post('/mobilevalidate-password/{email}', 'App\Http\Controllers\StudentController@mobilevalidatePassword');
+
+Route::post('/facultymobilechange-password/{email}', 'App\Http\Controllers\FacultyController@facultymobilechangePassword');
+Route::post('/facultymobilevalidate-password/{email}', 'App\Http\Controllers\FacultyController@facultymobilevalidatePassword');
+
+Route::get('/MOBILEfacultyApplicationStatus/{id}', [ExtensionController::class, 'MOBILEfacultyApplicationStatus']);
+Route::get('/MOBILEgetAppointment/{appid}', [ExtensionController::class, 'MOBILEgetAppointment']);
+Route::get('/MOBILEgetFileExtension/{extid}', [ExtensionController::class, 'MOBILEgetFileExtension']);
+Route::get('/MOBILEgetDoumentationPhotos/{docid}', [ExtensionController::class, 'MOBILEgetDoumentationPhotos']);
+Route::get('/MOBILEgetFilePrototype/{proid}', [ExtensionController::class, 'MOBILEgetFilePrototype']);
+Route::get('/MOBILEgetProtoypePhotos/{propoid}', [ExtensionController::class, 'MOBILEgetProtoypePhotos']);
+
+// Route::post('/mobilegoogle-callback', 'Auth\LoginController@mobilehandleGoogleCallback');
+Route::post('/mobilegoogle-callback', 'Auth\LoginController@mobilehandleGoogleCallback')
+    ->withoutMiddleware(['api']);
+
+Route::post('/mobilesession2', 'App\Http\Controllers\CustomerSatisfactionSurveyController@mobilesession2');
+
+Route::get('/mobile-second-page', 'App\Http\Controllers\AssessmentController@MobilesecondPage');
+Route::post('/Mobilesubmiting', 'App\Http\Controllers\AssessmentController@Mobilesubmiting');
+
+Route::get('/eventMobileHomePage', 'App\Http\Controllers\LayoutsController@eventMobileHomePage');
 //MOBILE END
