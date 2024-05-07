@@ -37,7 +37,7 @@
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
     <link href="{{ asset('css/comment.css') }}" rel="stylesheet"> --}}
     
-    {{-- <link href="{{ secure_asset('../assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('../assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
@@ -46,9 +46,9 @@
     <link href="{{ secure_asset('../assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../css/login.css') }}" rel="stylesheet">
-    <link href="{{ secure_asset('../css/comment.css') }}" rel="stylesheet"> --}}
+    <link href="{{ secure_asset('../css/comment.css') }}" rel="stylesheet">
 
-    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
@@ -57,7 +57,7 @@
     <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet" defer>
-    <link href="{{ asset('css/comment.css') }}" rel="stylesheet" >
+    <link href="{{ asset('css/comment.css') }}" rel="stylesheet" > --}}
   
   </head>
   
@@ -737,7 +737,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.all.min.js"></script>
   <!-- Vendor JS Files -->
-  {{-- <script src="{{ secure_asset('../assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+  <script src="{{ secure_asset('../assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/chart.js/chart.umd.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/echarts/echarts.min.js')}}"></script>
@@ -745,7 +745,7 @@
   <script src="{{ secure_asset('../assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/tinymce/tinymce.min.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/php-email-form/validate.js')}}"></script>
-  <script src="{{ secure_asset('../js/custom.js')}}"></script>
+  <script src="{{ secure_asset('../js/custom.js')}}"></script> 
 
   {{-- <script src="https://redigitalize-production.up.railway.app/assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="https://redigitalize-production.up.railway.app/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
