@@ -182,10 +182,6 @@ class StudentController extends Controller
         ->first();
 
         $student = Student::find($students->id);
-        // $files = $request->file('avatar');
-        // $avatarFileName = time().'-'.$files->getClientOriginalName();
-        // $files->move(public_path('uploads/avatars'), $avatarFileName);
-
         $files = $request->file('avatar');
         $avatarFileName = time().'-'.$files->getClientOriginalName();
         Storage::put('public/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
@@ -274,9 +270,13 @@ class StudentController extends Controller
         $file->research_title = $request->research_title;
         $file->abstract = $request->abstract;
 
+        // $pdfFile = $request->file('research_file');
+        // $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
+        // Storage::put('public/applications/'.$pdfFileName);
+
         $pdfFile = $request->file('research_file');
-        $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+        $pdfFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/applications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         
         $file->research_file = $pdfFileName;
         $file->user_id = Auth::id();

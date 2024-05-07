@@ -202,25 +202,25 @@
                 @if($student->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
-                  <img class="rounded-circle" src="{{ asset('storage/avatars' . $student->avatar) }}" alt="Avatar" />   
+                  <img class="rounded-circle" src="{{ asset('storage/avatars/'. $student->avatar) }}" alt="Avatar" />   
                 @endif
               @elseif(Auth::user()->role === 'Staff')
                 @if($staff->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
-                  <img class="rounded-circle" src="{{ asset('/uploads/avatars/'.$staff->avatar) }}" alt="" />    
+                  <img class="rounded-circle" src="{{ asset('storage/avatars/'.$staff->avatar) }}" alt="" />    
                 @endif
               @elseif(Auth::user()->role === 'Faculty' || Auth::user()->role === 'Faculty Not Verified' || Auth::user()->role === 'Research Coordinator')
                 @if($faculty->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
-                  <img class="rounded-circle" src="{{ asset('/uploads/avatars/'.$faculty->avatar) }}" alt="" />    
+                  <img class="rounded-circle" src="{{ asset('storage/avatars/'.$faculty->avatar) }}" alt="" />    
                 @endif
               @elseif(Auth::user()->role === 'Admin')
                 @if($admin->avatar === 'avatar.jpg')
                   <img class="rounded-circle" src="https://tse4.mm.bing.net/th?id=OIP.sRdQAfzOzF_ZjC3dnAZVSQHaGw&pid=Api&P=0&h=180" alt=""/>
                 @else
-                  <img class="rounded-circle" src="{{ asset('/uploads/avatars/'.$admin->avatar) }}" alt="" />    
+                  <img class="rounded-circle" src="{{ asset('storage/avatars/'.$admin->avatar) }}" alt="" />    
                 @endif
               @endif
             <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->lname .', '. Auth::user()->fname }}</span>
