@@ -805,7 +805,7 @@ class StudentController extends Controller
         }
 
         $file = $request->file('avatar');
-        $fileName = time() . '-' . $file->getClientOriginalName();
+        $fileName = time().'-'.$file->getClientOriginalName();
         $filePath = 'images/' . $fileName;
 
         // Update student avatar
@@ -813,7 +813,7 @@ class StudentController extends Controller
         $student->save();
 
         // Save the avatar file
-        Storage::put('public/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
+        Storage::put('public/avatars/'.time().'-'.$file->getClientOriginalName(), file_get_contents($file));
 
         return response()->json([
             'status' => 'success',
@@ -882,8 +882,8 @@ class StudentController extends Controller
 
             if ($request->hasFile('research_file')) {
                 $pdfFile = $request->file('research_file');
-                $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-                $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+                $pdfFileName = time().'-'.$pdfFile->getClientOriginalName();
+                Storage::put('public/applications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
                 $file->research_file = $pdfFileName;
             }
 
