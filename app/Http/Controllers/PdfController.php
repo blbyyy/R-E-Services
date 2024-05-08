@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Algolia\AlgoliaSearch\SearchClient;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Research;
