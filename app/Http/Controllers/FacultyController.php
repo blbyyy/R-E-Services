@@ -228,9 +228,13 @@ class FacultyController extends Controller
         $file->research_title = $request->research_title;
         $file->abstract = $request->abstract;
 
+        // $pdfFile = $request->file('research_file');
+        // $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
+        // $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+
         $pdfFile = $request->file('research_file');
-        $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+        $pdfFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/applications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         
         $file->research_file = $pdfFileName;
         $file->user_id = Auth::id();
