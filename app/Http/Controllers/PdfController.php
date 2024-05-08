@@ -46,9 +46,11 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/userCountTable.pdf'));
+        Storage::put('reports/userCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/userCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/userCountTable.pdf'));
+        // return response()->download(public_path('uploads/reports/userCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function studentCountTable()

@@ -77,6 +77,8 @@
                                         <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This proposal has already been approved."><i class="bi bi-arrow-right"></i></button>
                                     @elseif ($proposals->status === 'Research Proposal Rejected By R&E Office')
                                         <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This proposal has already been rejected."><i class="bi bi-arrow-right"></i></button>
+                                    @elseif ($proposals->status === 'Proposal Sent to Respective Recipient')
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="This proposal has been sent to respective recipient; please wait the result"><i class="bi bi-arrow-right"></i></button>
                                     @endif
                                 </td>
                             </tr>
