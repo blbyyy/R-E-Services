@@ -1427,6 +1427,6 @@ Route::get('/forms/community-survey-training-needs/submitted', [
     ]);
 
 Route::post('/tryyys', [
-      'uses' => 'ResearchPRoposalController@sendingResearchFile',
-            'as' => 'ResearchPRoposalController.sendingResearchFile'
+      'uses' => 'ResearchProposalController@sendingResearchFile',
+            'as' => 'ResearchProposalController.sendingResearchFile'
     ]);
