@@ -297,7 +297,7 @@
                         </div>
                     </div>
 
-                    <form class="row g-3" method="POST" action="{{ route('ResearchPRoposalController.sendingResearchFile') }}" enctype="multipart/form-data" style="padding-top: 20px;">
+                    <form class="row g-3" method="POST" action="{{ route('ResearchProposalController.sendingResearchFile') }}" enctype="multipart/form-data" style="padding-top: 20px;">
                         @csrf
 
                             <input name="researchProposalId" type="hidden" class="form-control" id="researchProposalId">
