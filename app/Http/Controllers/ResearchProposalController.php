@@ -356,8 +356,11 @@ class ResearchProposalController extends Controller
         $proposal->user_id  = $request->user_id;
 
         $pdfFile = $request->file('researchProposalFile');
-        $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/researchProposal'), $pdfFileName);
+        $pdfFileName = time() . '-' . $pdfFile->getClientOriginalName();
+        // $pdfFile->move(public_path('uploads/researchProposal'), $pdfFileName);
+
+        Storage::put('public/researchProposal/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
+
         $proposal->proposal_file = $pdfFileName;
 
         $proposal->save();
@@ -397,8 +400,9 @@ class ResearchProposalController extends Controller
         $proposal->remarks = 'Your research proposal will undergo a review process. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
 
         $pdfFile = $request->file('researchProposalFile');
-        $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/researchProposal'), $pdfFileName);
+        $pdfFileName = time() . '-' . $pdfFile->getClientOriginalName();
+        // $pdfFile->move(public_path('uploads/researchProposal'), $pdfFileName);
+        Storage::put('public/researchProposal/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $proposal->proposal_file = $pdfFileName;
 
         $proposal->save();
@@ -448,7 +452,7 @@ class ResearchProposalController extends Controller
 
     public function RPmobileshowpdf($fileName)
     {
-        $filePath = public_path("uploads/researchProposal/{$fileName}");
+        $filePath = public_path("storage/researchProposal/{$fileName}");
 
         // Check if the file exists
         if (!file_exists($filePath)) {
