@@ -3733,7 +3733,7 @@ $(document).ready(function () {
         
                     // Replace the existing content of the container with the new <embed> element
                     $('#content').text(data.research_title);
-                    $("#pdf-containerss").html(embedElement);
+                    $("#pdf-container").html(embedElement);
                 },
                 error: function (error) {
                     console.log(error);
