@@ -938,7 +938,7 @@ class AdminController extends Controller
             ->where('requestingform.id',$id)
             ->first();
 
-            $certificate = 'http://reachtupt.online/certificate/' . $qrCodeName;
+            $certificate = 'https://reachtupt.online/certificate/' . $qrCodeName;
 
             $date = \Carbon\Carbon::parse($latestFile->date_processing_end)->format('F d, Y');
 
