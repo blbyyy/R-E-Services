@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Favicons -->
-    {{-- <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
-    <link href="{{ secure_asset('../assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ secure_asset('../assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    {{-- <link href="{{ secure_asset('../assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ secure_asset('../assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
 
   
     <!-- Google Fonts -->
@@ -26,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
   
     <!-- Vendor CSS Files -->
-    {{-- <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
@@ -35,9 +35,9 @@
     <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/comment.css') }}" rel="stylesheet"> --}}
+    <link href="{{ asset('css/comment.css') }}" rel="stylesheet">
     
-    <link href="{{ secure_asset('../assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ secure_asset('../assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
@@ -46,18 +46,7 @@
     <link href="{{ secure_asset('../assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('../css/login.css') }}" rel="stylesheet">
-    <link href="{{ secure_asset('../css/comment.css') }}" rel="stylesheet">
-
-    {{-- <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/login.css') }}" rel="stylesheet" defer>
-    <link href="{{ asset('css/comment.css') }}" rel="stylesheet" > --}}
+    <link href="{{ secure_asset('../css/comment.css') }}" rel="stylesheet"> --}}
   
   </head>
   

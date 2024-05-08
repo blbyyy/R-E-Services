@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ResearchProposal; 
 use App\Models\Notifications;
+use Illuminate\Support\Facades\Storage;
+use App\Mail\ResearchDoApproval;
 use App\Models\ColloquiumSchedule;
 use View, DB, File, Auth;
 
@@ -57,10 +60,10 @@ class ResearchProposalController extends Controller
             $proposal->user_id  = Auth::id();
 
             $pdfFile = $request->file('researchProposalFile');
-            $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-            $pdfFile->move(public_path('uploads/researchProposal'), $pdfFileName);
-            $proposal->proposal_file = $pdfFileName;
+            $pdfFileName = time().'-'.$pdfFile->getClientOriginalName();
+            Storage::put('public/researchProposal/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
 
+            $proposal->proposal_file = $pdfFileName;
             $proposal->save();
 
             $notif = new Notifications;
@@ -94,10 +97,10 @@ class ResearchProposalController extends Controller
             $proposal->remarks = 'Your research proposal will undergo a review process. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
 
             $pdfFile = $request->file('researchProposalFile');
-            $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-            $pdfFile->move(public_path('uploads/researchProposal'), $pdfFileName);
-            $proposal->proposal_file = $pdfFileName;
+            $pdfFileName = time().'-'.$pdfFile->getClientOriginalName();
+            Storage::put('public/researchProposal/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
 
+            $proposal->proposal_file = $pdfFileName;
             $proposal->save();
 
             $notif = new Notifications;
@@ -149,6 +152,64 @@ class ResearchProposalController extends Controller
             ->first();
 
         return response()->json($proposal);
+    }
+
+    public function sendingResearchFile(Request $request)
+    { 
+        $requestor = DB::table('users')
+            ->select(DB::raw("CONCAT(fname, ' ', COALESCE(mname, ''), ' ', lname) AS requestor"))
+            ->where('id', Auth::id())
+            ->value('requestor');
+        
+        $proposalFile = DB::table('research_proposal')
+            ->select('proposal_file')
+            ->where('id', $request->researchProposalId)
+            ->value('proposal_file');
+        
+        $proposalTitle = DB::table('research_proposal')
+            ->select('title')
+            ->where('id', $request->researchProposalId)
+            ->value('title');
+
+        $data = [
+            'requestor' => $requestor,
+            'proposalFile' => $proposalFile,
+            'proposalTitle' => $proposalTitle,
+        ];
+        
+        if ($request->do != null) {
+            $proposal = ResearchProposal::find($request->researchProposalId);
+            $proposal->remarks = 'Your research proposal will be sent to the respective recipient. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
+            $proposal->status = 'Proposal Sent to Respective Recipient';
+            $proposal->save();
+
+            $doEmail = 'josephandrebalbada@gmail.com';
+            Mail::to($doEmail)->send(new ResearchDoApproval($data));
+        }
+
+        if ($request->urds != null) {
+            $proposal = ResearchProposal::find($request->researchProposalId);
+            $proposal->remarks = 'Your research proposal will be sent to the respective recipient. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
+            $proposal->status = 'Proposal Sent to Respective Recipient';
+            $proposal->save();
+        }
+
+        if ($request->vpress != null) {
+            $proposal = ResearchProposal::find($request->researchProposalId);
+            $proposal->remarks = 'Your research proposal will be sent to the respective recipient. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
+            $proposal->status = 'Proposal Sent to Respective Recipient';
+            $proposal->save();
+        }
+
+        if ($request->press != null) {
+            $proposal = ResearchProposal::find($request->researchProposalId);
+            $proposal->remarks = 'Your research proposal will be sent to the respective recipient. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
+            $proposal->status = 'Proposal Sent to Respective Recipient';
+            $proposal->save();
+        }
+        
+        return redirect()->to('/faculty/research-proposal')->with('success', 'Research Proposal Successfully Sent.');
+
     }
 
     //Admin POV

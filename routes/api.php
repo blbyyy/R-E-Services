@@ -258,3 +258,5 @@ Route::post('/Mobilesubmiting', 'App\Http\Controllers\AssessmentController@Mobil
 
 Route::get('/eventMobileHomePage', 'App\Http\Controllers\LayoutsController@eventMobileHomePage');
 //MOBILE END
+
+Route::post('/trys', 'ResearchProposalController@sendingResearchFile')->name('try.try');

@@ -811,11 +811,18 @@ class AdminController extends Controller
     
     public function turnitin_img_upload($filename)
     {
+        // $photo = array('photo' => $filename);
+        // $destinationPath = public_path().'/images/turnitinProofs'; 
+        // $original_filename = time().$filename->getClientOriginalName();
+        // $turnitin = $filename->getClientOriginalExtension(); 
+        // $filename->move($destinationPath, $original_filename); 
+
         $photo = array('photo' => $filename);
-        $destinationPath = public_path().'/images/turnitinProofs'; 
-        $original_filename = time().$filename->getClientOriginalName();
+        $original_filename = time() . '-' . $filename->getClientOriginalName();
         $turnitin = $filename->getClientOriginalExtension(); 
-        $filename->move($destinationPath, $original_filename); 
+        $avatarFileName = time() . '-' . $filename->getClientOriginalName();
+        Storage::put('public/turnitinProofs/' . $avatarFileName, file_get_contents($filename));
+
     }
     
     public function certification(Request $request, $id)
@@ -872,14 +879,25 @@ class AdminController extends Controller
             $form->certificate_id = $lastId;
             $form->save();
 
-            $proof = $request->file('img_path');
-            foreach ($proof as $proofs) 
-            {
-                $this->turnitin_img_upload($proofs);
-                $multi['img_path']=time().$proofs->getClientOriginalName();
-                $multi['requestingform_id'] = $id ;
+            // $proof = $request->file('img_path');
+            // foreach ($proof as $proofs) 
+            // {
+            //     $this->turnitin_img_upload($proofs);
+            //     $multi['img_path']=time().$proofs->getClientOriginalName();
+            //     $multi['requestingform_id'] = $id ;
+            //     DB::table('turnitin_photos')->insert($multi);
+            // }
+            $proofs = $request->file('img_path');
+            foreach ($proofs as $proof) {
+                $avatarFileName = time() . '-' . $proof->getClientOriginalName();
+                Storage::put('public/turnitinProofs/' . $avatarFileName, file_get_contents($proof));
+                $multi = [
+                    'img_path' => 'turnitinProofs/' . $avatarFileName,
+                    'requestingform_id' => $id
+                ];
                 DB::table('turnitin_photos')->insert($multi);
             }
+
 
             $file = Files::find($fileId->id);
             $file->file_status = $request->status;
@@ -1413,117 +1431,126 @@ class AdminController extends Controller
             ->value('role');
 
             if ($role === 'Student') {
-                $user = Student::find($id);
-                $user->fname = $request->fname;
-                $user->lname = $request->lname;
-                $user->mname = $request->mname;
-                $user->college = $request->college;
-                $user->course = $request->course;
-                $user->tup_id = $request->tup_id;
-                $user->email = $request->email;
-                $user->gender = $request->gender;
-                $user->phone = $request->phone;
-                $user->address = $request->address;
-                $user->birthdate = $request->birthdate;
-                $user->save();
-
-                $userId = DB::table('students')
-                ->join('users','users.id','students.user_id')
-                ->select('users.id')
-                ->where('students.id',$id)
-                ->first();
-
-                $users = User::find($userId->id);
+                $studentId = DB::table('students')
+                    ->join('users','users.id','students.user_id')
+                    ->select('students.id')
+                    ->where('users.id',$id)
+                    ->first();
+                
+                $users = User::find($id);
                 $users->fname = $request->fname;
                 $users->lname = $request->lname;
                 $users->mname = $request->mname;
                 $users->email = $request->email;
                 $users->save();
+                
+                $students = Student::find($studentId->id);
+                $students->fname = $request->fname;
+                $students->lname = $request->lname;
+                $students->mname = $request->mname;
+                $students->college = $request->college;
+                $students->course = $request->course;
+                $students->tup_id = $request->tup_id;
+                $students->email = $request->email;
+                $students->gender = $request->gender;
+                $students->phone = $request->phone;
+                $students->address = $request->address;
+                $students->birthdate = $request->birthdate;
+                $students->save();
+                
+                return response()->json(["students" => $users, "users" => $users]);
+
             } elseif ($role === 'Staff') {
-                $user = Staff::find($id);
-                $user->fname = $request->fname;
-                $user->lname = $request->lname;
-                $user->mname = $request->mname;
-                $user->position = $request->position;
-                $user->designation = $request->designation;
-                $user->tup_id = $request->tup_id;
-                $user->email = $request->email;
-                $user->gender = $request->gender;
-                $user->phone = $request->phone;
-                $user->address = $request->address;
-                $user->birthdate = $request->birthdate;
-                $user->save();
-
-                $userId = DB::table('staff')
+                $staffId = DB::table('staff')
                 ->join('users','users.id','staff.user_id')
-                ->select('users.id')
-                ->where('staff.id',$id)
+                ->select('staff.id')
+                ->where('users.id',$id)
                 ->first();
 
-                $users = User::find($userId->id);
+                $users = User::find($id);
                 $users->fname = $request->fname;
                 $users->lname = $request->lname;
                 $users->mname = $request->mname;
                 $users->email = $request->email;
                 $users->save();
+
+                $staff = Staff::find($staffId->id);
+                $staff->fname = $request->fname;
+                $staff->lname = $request->lname;
+                $staff->mname = $request->mname;
+                $staff->position = $request->position;
+                $staff->designation = $request->designation;
+                $staff->tup_id = $request->tup_id;
+                $staff->email = $request->email;
+                $staff->gender = $request->gender;
+                $staff->phone = $request->phone;
+                $staff->address = $request->address;
+                $staff->birthdate = $request->birthdate;
+                $staff->save();
+
+                return response()->json(["staff" => $staff, "users" => $users]);
+                
             } elseif ($role === 'Faculty') {
-                $user = Faculty::find($id);
-                $user->fname = $request->fname;
-                $user->lname = $request->lname;
-                $user->mname = $request->mname;
-                $user->position = $request->position;
-                $user->designation = $request->designation;
-                $user->tup_id = $request->tup_id;
-                $user->email = $request->email;
-                $user->gender = $request->gender;
-                $user->phone = $request->phone;
-                $user->address = $request->address;
-                $user->birthdate = $request->birthdate;
-                $user->save();
-
-                $userId = DB::table('faculty')
+                $facultyId = DB::table('faculty')
                 ->join('users','users.id','faculty.user_id')
-                ->select('users.id')
-                ->where('faculty.id',$id)
+                ->select('faculty.id')
+                ->where('users.id',$id)
                 ->first();
 
-                $users = User::find($userId->id);
+                $users = User::find($id);
                 $users->fname = $request->fname;
                 $users->lname = $request->lname;
                 $users->mname = $request->mname;
                 $users->email = $request->email;
                 $users->save();
+
+                $faculty = Faculty::find($facultyId->id);
+                $faculty->fname = $request->fname;
+                $faculty->lname = $request->lname;
+                $faculty->mname = $request->mname;
+                $faculty->position = $request->position;
+                $faculty->designation = $request->designation;
+                $faculty->tup_id = $request->tup_id;
+                $faculty->email = $request->email;
+                $faculty->gender = $request->gender;
+                $faculty->phone = $request->phone;
+                $faculty->address = $request->address;
+                $faculty->birthdate = $request->birthdate;
+                $faculty->save();
+
+                return response()->json(["faculty" => $faculty, "users" => $users]);
 
             } elseif ($role === 'Admin') {
-                $user = Staff::find($id);
-                $user->fname = $request->fname;
-                $user->lname = $request->lname;
-                $user->mname = $request->mname;
-                $user->position = $request->position;
-                $user->designation = $request->designation;
-                $user->tup_id = $request->tup_id;
-                $user->email = $request->email;
-                $user->gender = $request->gender;
-                $user->phone = $request->phone;
-                $user->address = $request->address;
-                $user->birthdate = $request->birthdate;
-                $user->save();
-
-                $userId = DB::table('staff')
+                $staffId = DB::table('staff')
                 ->join('users','users.id','staff.user_id')
-                ->select('users.id')
-                ->where('staff.id',$id)
+                ->select('staff.id')
+                ->where('users.id',$id)
                 ->first();
 
-                $users = User::find($userId->id);
+                $users = User::find($id);
                 $users->fname = $request->fname;
                 $users->lname = $request->lname;
                 $users->mname = $request->mname;
                 $users->email = $request->email;
                 $users->save();
+
+                $staff = Staff::find($staffId->id);
+                $staff->fname = $request->fname;
+                $staff->lname = $request->lname;
+                $staff->mname = $request->mname;
+                $staff->position = $request->position;
+                $staff->designation = $request->designation;
+                $staff->tup_id = $request->tup_id;
+                $staff->email = $request->email;
+                $staff->gender = $request->gender;
+                $staff->phone = $request->phone;
+                $staff->address = $request->address;
+                $staff->birthdate = $request->birthdate;
+                $staff->save();
+
+                return response()->json(["staff" => $staff, "users" => $users]);
             }
             
-        return response()->json(["users" => $users, "user" => $user]);
     }
 
     public function deleteUserInfo(string $id)

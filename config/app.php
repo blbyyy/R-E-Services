@@ -186,6 +186,7 @@ return [
         CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        
         /*
          * Package Service Providers...
          */
@@ -199,7 +200,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
-
 
     ],
 

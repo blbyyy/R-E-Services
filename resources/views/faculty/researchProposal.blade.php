@@ -275,45 +275,74 @@
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Sending Proposal File</h5>
+                  <h5 class="modal-title">Sending Research Proposal File</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
-                    <div class="row mb-3">
-                        <legend class="col-form-label col-sm-3 pt-0">Choose Recipient:</legend>
-                        <div class="col-sm-9">
-      
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="">
-                            <label class="form-check-label" for="gridCheck1">
-                              Director Office
-                            </label>
-                          </div>
-      
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="gridCheck2">
-                            <label class="form-check-label" for="gridCheck2">
-                                University Research and Development Services
-                            </label>
-                          </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body text-center">
+                                <h5><b style="color: maroon">Research Proposal Title:</b></h5>
+                                <span id="sendingResearhFileTitle"></span>
+                            </div>
+                        </div>
 
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="gridCheck2">
-                            <label class="form-check-label" for="gridCheck2">
-                              Vice President
-                            </label>
-                          </div>
-
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="gridCheck2">
-                            <label class="form-check-label" for="gridCheck2">
-                              President
-                            </label>
-                          </div>
-      
+                        <div class="col-md-12">
+                            <div class="card-body text-center">
+                                <h5><b style="color: maroon">Research Proposal File:</b></h5>
+                                <i class="bx bxs-file-pdf" style="font-size: 4em; color: maroon;"></i>
+                                <p id="sendingResearchFile" style="color: maroon; font-size: small;"></p>
+                            </div>
                         </div>
                     </div>
+
+                    <form class="row g-3" method="POST" action="{{ route('ResearchPRoposalController.sendingResearchFile') }}" enctype="multipart/form-data" style="padding-top: 20px;">
+                        @csrf
+
+                            <input name="researchProposalId" type="hidden" class="form-control" id="researchProposalId">
+
+                            <div class="row mb-3">
+                                <legend class="col-form-label col-sm-3 pt-0">Choose Recipient:</legend>
+                                <div class="col-sm-9">
+            
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="do" name="do">
+                                    <label class="form-check-label" for="do">
+                                        Director Office
+                                    </label>
+                                </div>
+            
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="urds" name="urds">
+                                    <label class="form-check-label" for="urds">
+                                        University Research and Development Services
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="vpress" name="vpress">
+                                    <label class="form-check-label" for="vpress">
+                                    Vice President
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="press" name="press">
+                                    <label class="form-check-label" for="press">
+                                    President
+                                    </label>
+                                </div>
+            
+                                </div>
+                            </div>
+                            <div class="col-12" style="padding-top: 20px">
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-outline-dark">Send</button>
+                                    <button type="reset" class="btn btn-outline-dark ms-2">Reset</button>
+                                </div>
+                            </div>
+                    </form>
 
                 </div>
                 <div class="modal-footer">

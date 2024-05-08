@@ -826,7 +826,7 @@ $(document).ready(function () {
                     $('#file_id').val(id);
 
                     var pdfLink = $('<a>', {
-                        href: "/uploads/pdf/" + encodeURIComponent(data.research_file),
+                        href: "/storage/applications/" + encodeURIComponent(data.research_file),
                         text: "View PDF",
                         target: "_blank"
                     });
@@ -2449,7 +2449,7 @@ $(document).ready(function () {
                     } 
 
                     var pdfLink = $('<a>', {
-                        href: "/uploads/researchProposal/" + encodeURIComponent(data.proposal_file),
+                        href: "/storage/researchProposal/" + encodeURIComponent(data.proposal_file),
                         text: "Download File",
                         target: "_blank"
                     });
@@ -2917,7 +2917,7 @@ $(document).ready(function () {
                         $('#noTurnitinProofPhotos').hide();
                         data.forEach(function(item, index) {
                             var imageName = item.img_path; 
-                            var imageUrl = '/images/turnitinProofs/' + imageName;
+                            var imageUrl = '/storage/' + imageName;
                             
                             var carouselItem = document.createElement("div");
                             carouselItem.classList.add("carousel-item");
@@ -4094,7 +4094,7 @@ $(document).ready(function () {
                         $("#status").html('<span class="badge border-primary border-1 text-primary"><h5>Passed</h5></span>');
 
                         var pdfLink = $('<a>', {
-                            href: "/uploads/pdf/" + encodeURIComponent(data.certificate_file),
+                            href: "/storage/applications/" + encodeURIComponent(data.certificate_file),
                             text: "Download PDF",
                             target: "_blank"
                         });
@@ -4279,7 +4279,7 @@ $(document).ready(function () {
                     $('#requestId1').val(id);
 
                     var pdfLink = $('<a>', {
-                        href: "/uploads/pdf/" + encodeURIComponent(data.research_file),
+                        href: "/storage/applications/" + encodeURIComponent(data.research_file),
                         text: "Download File",
                         target: "_blank"
                     });
@@ -4343,7 +4343,7 @@ $(document).ready(function () {
                     $('#requestId2').val(id);
 
                     var pdfLink = $('<a>', {
-                        href: "/uploads/pdf/" + encodeURIComponent(data.research_file),
+                        href: "/storage/applications/" + encodeURIComponent(data.research_file),
                         text: "Download File",
                         target: "_blank"
                     });
@@ -5603,7 +5603,7 @@ $(document).ready(function () {
                     }
 
                     var pdfLink = $('<a>', {
-                        href: "/uploads/researchProposal/" + encodeURIComponent(data.proposal_file),
+                        href: "/storage/researchProposal/" + encodeURIComponent(data.proposal_file),
                         text: "View File",
                         target: "_blank"
                     });
@@ -5690,6 +5690,16 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) { 
                     console.log(data)
+
+                    $('#sendingResearhFileTitle').text(data.title);
+                    $('#researchProposalId').val(data.id);
+
+                    var pdfLink = $('<a>', {
+                        href: "/storage/researchProposal/" + encodeURIComponent(data.proposal_file),
+                        text: "View File",
+                        target: "_blank"
+                    });
+                    $("#sendingResearchFile").empty().append(pdfLink);
                     
                 },
                 error: function (error) {

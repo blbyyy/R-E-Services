@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use BaconQrCode\Renderer\Image\Png;
+use BaconQrCode\Writer;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -151,6 +154,28 @@ class QrCodeController extends Controller
             ->first();
     
         return View::make('certificate.landingPage',compact('admin','student','staff','faculty','certificate'));
+    }
+
+    public function generateQRCodeAndSave()
+    {
+        // Generate QR code content
+        $qrCodeContent = 'Your QR code content here';
+
+        // Create a QR code writer
+        $renderer = new Png();
+        $renderer->setHeight(200);
+        $renderer->setWidth(200);
+        $writer = new Writer($renderer);
+
+        // Generate QR code image
+        $imageData = $writer->writeString($qrCodeContent);
+
+        // Save QR code image to storage
+        $imageName = 'qrcode_' . time() . '.png';
+        Storage::put('public/qrcodes/' . $imageName, $imageData);
+
+        // Return the image path or do further processing
+        return 'public/qrcodes/' . $imageName;
     }
 
 }
