@@ -1015,8 +1015,9 @@ class FacultyController extends Controller
             $research->course = $request->course;
 
             $pdfFile = $request->file('research_file');
-            $researchFileName = $pdfFile->getClientOriginalName();
-            $pdfFile->move(public_path('uploads/researchFile'), $researchFileName);
+            $researchFileName = time().'-'.$pdfFile->getClientOriginalName();
+            Storage::put('public/researches/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
+
             $research->research_file = $researchFileName;
             $research->save();
                 

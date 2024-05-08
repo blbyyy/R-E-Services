@@ -163,7 +163,6 @@ class ResearchController extends Controller
             $notif->message = 'Someone requested access to the research information.';
             $notif->date = now();
             $notif->user_id = Auth::id();
-            $notif->reciever_id = 0;
             $notif->save();
 
             return redirect()->to('/student/title-checker')->with('success', 'Request was successfully sent');
@@ -211,7 +210,6 @@ class ResearchController extends Controller
             $notif->message = 'Someone requested access to the research documents.';
             $notif->date = now();
             $notif->user_id = Auth::id();
-            $notif->reciever_id = 0;
             $notif->save();
 
             return redirect()->to('/faculty/research-list')->with('success', 'Request was successfully sent');

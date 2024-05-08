@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use App\Mail\PresidentApproval;
 use App\Mail\BoardApproval;
 use App\Mail\DoApproval;
@@ -159,8 +160,8 @@ class ExtensionController extends Controller
         $extension->percentage_status = 15;
 
         $pdfFile = $request->file('mou_file');
-        $pdfFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $pdfFileName);
+        $pdfFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
             
         $extension->mou_file = $pdfFileName;
         $extension->save();
@@ -185,6 +186,8 @@ class ExtensionController extends Controller
     public function proposal2(Request $request)
     { 
         $doEmail = 'josephandrebalbada@gmail.com';
+        $uesEmail = 'josephandrebalbada@gmail.com';
+        $presidentEmail = 'josephandrebalbada@gmail.com';
 
         $extension = Extension::find($request->proposal2Id);
         $extension->status = 'Pending Approval of DO, UES and President';
@@ -194,18 +197,18 @@ class ExtensionController extends Controller
         $extension->president_email = $presidentEmail;
 
         $pdfFile = $request->file('ppmp_file');
-        $ppmpFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $ppmpFileName);
+        $ppmpFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $extension->ppmp_file = $ppmpFileName;
 
         $pdfFile = $request->file('pr_file');
-        $prFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $prFileName);
+        $prFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $extension->pr_file = $prFileName;
 
         $pdfFile = $request->file('market_study_file');
-        $marketStudyFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $marketStudyFileName);
+        $marketStudyFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $extension->market_study_file = $marketStudyFileName;
         $extension->save();
 
@@ -229,7 +232,9 @@ class ExtensionController extends Controller
             'marketStudyFile' => $marketStudyFileName,
         ];
     
-        // Mail::to($doEmail)->send(new DoApproval($data));
+        Mail::to($doEmail)->send(new DoApproval($data));
+        Mail::to($uesEmail)->send(new UesApproval($data));
+        Mail::to($presidentEmail)->send(new PresidentApproval($data));
         
         return redirect()->to('/faculty/extension/application')->with('success', 'Your Proposal has been sent to DO, UES and President; kindly wait the result we immediately contact you about the result.');
     }
@@ -252,8 +257,9 @@ class ExtensionController extends Controller
         $extension->osg_email = $osgEmail;
 
         $pdfFile = $request->file('moa_file');
-        $moaFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $moaFileName);
+        $moaFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
+
         $extension->moa_file = $moaFileName;
         $extension->save();
 
@@ -353,11 +359,17 @@ class ExtensionController extends Controller
 
     public function documentation_img_upload($filename)
     {
+        // $photo = array('photo' => $filename);
+        // $destinationPath = public_path().'/images/documentation'; 
+        // $original_filename = time().$filename->getClientOriginalName();
+        // $extension = $filename->getClientOriginalExtension(); 
+        // $filename->move($destinationPath, $original_filename); 
+
         $photo = array('photo' => $filename);
-        $destinationPath = public_path().'/images/documentation'; 
-        $original_filename = time().$filename->getClientOriginalName();
+        $original_filename = time() . '-' . $filename->getClientOriginalName();
         $extension = $filename->getClientOriginalExtension(); 
-        $filename->move($destinationPath, $original_filename); 
+        $extensionFileName = time() . '-' . $filename->getClientOriginalName();
+        Storage::put('public/documentation/' . $extensionFileName, file_get_contents($filename));
     }
 
     public function proposal6(Request $request)
@@ -365,28 +377,28 @@ class ExtensionController extends Controller
         $extension = Extension::find($request->proposal6Id);
 
         $pdfFile = $request->file('post_evaluation_attendance');
-        $postEvaluationAttendanceFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $postEvaluationAttendanceFileName);
+        $postEvaluationAttendanceFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $extension->post_evaluation_attendance = $postEvaluationAttendanceFileName;
 
-        $pdfFile = $request->file('evaluation_form');
-        $evaluationFormFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $evaluationFormFileName);
+        $pdfFile = $request->file('post_evaluation_attendance');
+        $evaluationFormFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $extension->evaluation_form = $evaluationFormFileName;
 
         $pdfFile = $request->file('capsule_detail');
-        $capsuleDetailFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $capsuleDetailFileName);
+        $capsuleDetailFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $extension->capsule_detail = $capsuleDetailFileName;
 
         $pdfFile = $request->file('certificate');
-        $certificateFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $certificateFileName);
+        $certificateFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $extension->certificate = $certificateFileName;
 
         $pdfFile = $request->file('attendance');
-        $attendanceFileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/extension'), $attendanceFileName);
+        $attendanceFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/extensionApplications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         $extension->attendance = $attendanceFileName;
         
         $extension->status = 'Inserted: Certificate, Documentation, Attendance, and Capsule Details';

@@ -17,11 +17,11 @@
 
   @if(session('success'))
     <script>
-      // Swal.fire({
-      //   icon: 'success',
-      //   title: 'Success',
-      //   text: '{{ session('success') }}',
-      //   });
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session('success') }}',
+        });
     </script>
   @elseif(session('error'))
     <script>

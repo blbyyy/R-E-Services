@@ -8,10 +8,10 @@
 
     Here are the attached files for your reference:
     <ul>
-        <li><a href="{{ url('uploads/extension/' . $ppmpFile) }}">PPMP File</a></li>
-        <li><a href="{{ url('uploads/extension/' . $prFile) }}">PR File</a></li>
-        <li><a href="{{ url('uploads/extension/' . $marketStudyFile) }}">Market Study File</a></li>
-        <li><a href="{{ url('uploads/extension/' . $moaFile) }}">MOA File</a></li>
+        <li><a href="{{ url('storage/extensionApplications/' . $ppmpFile) }}">PPMP File</a></li>
+        <li><a href="{{ url('storage/extensionApplications/' . $prFile) }}">PR File</a></li>
+        <li><a href="{{ url('storage/extensionApplications/' . $marketStudyFile) }}">Market Study File</a></li>
+        <li><a href="{{ url('storage/extensionApplications/' . $moaFile) }}">MOA File</a></li>
     </ul>
 <p>
     Could you please review these documents and let us know if the application is approved or not, 

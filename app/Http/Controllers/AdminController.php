@@ -362,10 +362,10 @@ class AdminController extends Controller
     public function announcement_img_upload($filename)
     {
         $photo = array('photo' => $filename);
-        $destinationPath = public_path().'/images'; 
-        $original_filename = time().$filename->getClientOriginalName();
+        $original_filename = time() . '-' . $filename->getClientOriginalName();
         $extension = $filename->getClientOriginalExtension(); 
-        $filename->move($destinationPath, $original_filename); 
+        $avatarFileName = time() . '-' . $filename->getClientOriginalName();
+        Storage::put('public/announcementPhotos/' . $avatarFileName, file_get_contents($filename));
     }
 
     public function add_announcements(Request $request)
@@ -378,13 +378,15 @@ class AdminController extends Controller
             $announcment->save();
             $announcment_id = DB::getPdo()->lastInsertId();
 
-                $files = $request->file('img_path');
-                foreach ($files as $file) {
-                $this->announcement_img_upload($file);
-                $multi['img_path']=time().$file->getClientOriginalName();
-                $multi['announcements_id'] = $announcment_id ;
+            $files = $request->file('img_path');
+            foreach ($files as $file) {
+                $avatarFileName = time() . '-' . $file->getClientOriginalName();
+                Storage::put('public/announcementPhotos/' . $avatarFileName, file_get_contents($file));
+            
+                $multi['img_path'] = $avatarFileName;
+                $multi['announcements_id'] = $announcment_id;
                 DB::table('announcementsphoto')->insert($multi);
-        }
+            }
 
         return redirect()->to('/announcements')->with('success', 'Announcement was successfully created');
     }
@@ -811,18 +813,11 @@ class AdminController extends Controller
     
     public function turnitin_img_upload($filename)
     {
-        // $photo = array('photo' => $filename);
-        // $destinationPath = public_path().'/images/turnitinProofs'; 
-        // $original_filename = time().$filename->getClientOriginalName();
-        // $turnitin = $filename->getClientOriginalExtension(); 
-        // $filename->move($destinationPath, $original_filename); 
-
         $photo = array('photo' => $filename);
         $original_filename = time() . '-' . $filename->getClientOriginalName();
         $turnitin = $filename->getClientOriginalExtension(); 
         $avatarFileName = time() . '-' . $filename->getClientOriginalName();
         Storage::put('public/turnitinProofs/' . $avatarFileName, file_get_contents($filename));
-
     }
     
     public function certification(Request $request, $id)
@@ -879,14 +874,6 @@ class AdminController extends Controller
             $form->certificate_id = $lastId;
             $form->save();
 
-            // $proof = $request->file('img_path');
-            // foreach ($proof as $proofs) 
-            // {
-            //     $this->turnitin_img_upload($proofs);
-            //     $multi['img_path']=time().$proofs->getClientOriginalName();
-            //     $multi['requestingform_id'] = $id ;
-            //     DB::table('turnitin_photos')->insert($multi);
-            // }
             $proofs = $request->file('img_path');
             foreach ($proofs as $proof) {
                 $avatarFileName = time() . '-' . $proof->getClientOriginalName();

@@ -2056,7 +2056,7 @@ $(document).ready(function () {
                     $("#beneficiary").text(data.beneficiary);
     
                     var pdfLink = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        href: "/storage/extensionapplications/" + encodeURIComponent(data.mou_file),
                         text: "View PDF",
                         target: "_blank"
                     });
@@ -2093,28 +2093,28 @@ $(document).ready(function () {
                     $("#proposal2Status").text(data.status); 
 
                     var mou = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        href: "/storage/extensionapplications/" + encodeURIComponent(data.mou_file),
                         text: "MOA (Memorandum of Understanding)",
                         target: "_blank"
                     });
                     $("#proposal2Mou").empty().append(mou);
 
                     var ppmp = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                        href: "/storage/extensionapplications/" + encodeURIComponent(data.ppmp_file),
                         text: "PPMP (Project Procurement Management Plan)", 
                         target: "_blank"
                     });
                     $("#proposal2Ppmp").empty().append(ppmp);
 
                     var pr = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                        href: "/storage/extensionapplications/" + encodeURIComponent(data.pr_file),
                         text: "PR (Purchase Request)",
                         target: "_blank"
                     });
                     $("#proposal2Pr").empty().append(pr);
 
                     var marketStudy = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
+                        href: "/storage/extensionapplications/" + encodeURIComponent(data.market_study_file),
                         text: "Request for Qoutation/Market Study",
                         target: "_blank"
                     });
@@ -2264,28 +2264,28 @@ $(document).ready(function () {
                     $("#proposal5Status").text(data.status);
 
                     var mou = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                        href: "/storage/extensionApplications/" + encodeURIComponent(data.mou_file),
                         text: "MOA (Memorandum of Understanding)",
                         target: "_blank"
                     });
                     $("#proposal5Mou").empty().append(mou);
 
                     var ppmp = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                        href: "/storage/extensionApplications/" + encodeURIComponent(data.ppmp_file),
                         text: "PPMP (Project Procurement Management Plan)", 
                         target: "_blank"
                     });
                     $("#proposal5Ppmp").empty().append(ppmp);
 
                     var pr = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                        href: "/storage/extensionApplications/" + encodeURIComponent(data.pr_file),
                         text: "PR (Purchase Request)",
                         target: "_blank"
                     });
                     $("#proposal5Pr").empty().append(pr);
 
                     var marketStudy = $('<a>', {
-                        href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
+                        href: "/storage/extensionApplications/" + encodeURIComponent(data.market_study_file),
                         text: "Request for Qoutation/Market Study",
                         target: "_blank"
                     });
@@ -4671,7 +4671,7 @@ $(document).ready(function () {
 
                             $("#facultyEndAccessDate").text(data.end_access_date); 
                             var pdfLink = $('<a>', {
-                                href: "/uploads/pdf/" + encodeURIComponent(data.research_file),
+                                href: "/storage/researches/" + encodeURIComponent(data.research_file),
                                 text: "Download PDF",
                                 target: "_blank"
                             });
@@ -4943,7 +4943,7 @@ $(document).ready(function () {
                         $('#mouFile').text('No File Loaded Yet');
                     } else {
                         var mouFile = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.mou_file),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.mou_file),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -4954,7 +4954,7 @@ $(document).ready(function () {
                         $('#ppmpmFile').text('No File Loaded Yet');
                     } else {
                         var ppmpmFile = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.ppmp_file),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.ppmp_file),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -4965,7 +4965,7 @@ $(document).ready(function () {
                         $('#prFile').text('No File Loaded Yet');
                     } else {
                         var prFile = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.pr_file),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.pr_file),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -4976,7 +4976,7 @@ $(document).ready(function () {
                         $('#marketStudyFile').text('No File Loaded Yet');
                     } else {
                         var marketStudyFile = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.market_study_file),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.market_study_file),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -4987,7 +4987,7 @@ $(document).ready(function () {
                         $('#moaFile').text('No File Loaded Yet');
                     } else {
                         var moaFile = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.moa_file),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.moa_file),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -4998,7 +4998,7 @@ $(document).ready(function () {
                         $('#attendancePostEvaluationSurvey').text('No File Loaded Yet');
                     } else {
                         var attendancePostEvaluationSurvey = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.post_evaluation_attendance),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.post_evaluation_attendance),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -5009,7 +5009,7 @@ $(document).ready(function () {
                         $('#evaluationForm').text('No File Loaded Yet');
                     } else {
                         var evaluationForm = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.evaluation_form),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.evaluation_form),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -5020,7 +5020,7 @@ $(document).ready(function () {
                         $('#capsuleDetail').text('No File Loaded Yet');
                     } else {
                         var capsuleDetail = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.capsule_detail),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.capsule_detail),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -5031,7 +5031,7 @@ $(document).ready(function () {
                         $('#certificate').text('No File Loaded Yet');
                     } else {
                         var certificate = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.certificate),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.certificate),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -5042,7 +5042,7 @@ $(document).ready(function () {
                         $('#attendance').text('No File Loaded Yet');
                     } else {
                         var attendance = $('<a>', {
-                            href: "/uploads/extension/" + encodeURIComponent(data.attendance),
+                            href: "/storage/extensionApplications/" + encodeURIComponent(data.attendance),
                             text: "View PDF",
                             target: "_blank"
                         });
@@ -5083,7 +5083,7 @@ $(document).ready(function () {
                         $('#noDocumentationPhotos').hide();
                         data.forEach(function(item, index) {
                             var imageName = item.img_path; 
-                            var imageUrl = '/images/documentation/' + imageName;
+                            var imageUrl = '/storage/documentation/' + imageName;
                             
                             var carouselItem = document.createElement("div");
                             carouselItem.classList.add("carousel-item");

@@ -124,7 +124,7 @@
                                         @if($key < 3) 
                                             <div class="col-md-4 mb-3">
                                                 <a data-bs-toggle="modal" data-bs-target="#LargeImageModal{{ $announcementId }}_{{ $key }}">
-                                                    <img src="{{ asset('images/'.$photo->img_path) }}" class="custom" alt="...">
+                                                    <img src="{{ asset('storage/announcementPhotos/'.$photo->img_path) }}" class="custom" alt="...">
                                                 </a>
                                             </div>
                                             <div class="modal fade" id="LargeImageModal{{ $announcementId }}_{{ $key }}" tabindex="-1" aria-labelledby="LargeImageModalLabel" aria-hidden="true">
@@ -135,7 +135,7 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                          <img src="{{ asset('images/'.$photo->img_path) }}" class="img-fluid" alt="Large Image" style="width: 100%; height: 100vh;">
+                                                          <img src="{{ asset('storage/announcementPhotos/'.$photo->img_path) }}" class="img-fluid" alt="Large Image" style="width: 100%; height: 100vh;">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
