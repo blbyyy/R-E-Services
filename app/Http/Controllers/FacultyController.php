@@ -142,7 +142,7 @@ class FacultyController extends Controller
         $faculty = Faculty::find($faculty->id);
         $files = $request->file('avatar');
         $avatarFileName = time().'-'.$files->getClientOriginalName();
-        $files->move(public_path('uploads/avatars'), $avatarFileName);
+        Storage::put('public/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
         
         $faculty->avatar = $avatarFileName;
         $faculty->save();
@@ -229,8 +229,8 @@ class FacultyController extends Controller
         $file->abstract = $request->abstract;
 
         $pdfFile = $request->file('research_file');
-        $pdfFileName = time() . '_' . $pdfFile->getClientOriginalName();
-        $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+        $pdfFileName = time().'-'.$pdfFile->getClientOriginalName();
+        Storage::put('public/applications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
         
         $file->research_file = $pdfFileName;
         $file->user_id = Auth::id();

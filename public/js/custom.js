@@ -3722,12 +3722,12 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function (data) {
-                    var pdfUrl = '/uploads/pdf/' + data.research_file;
+                    var pdfUrl = '/storage/applications/' + data.research_file;
         
                     // Dynamically create an <embed> element
                     var embedElement = document.createElement("embed");
                     embedElement.setAttribute("src", pdfUrl);
-                    embedElement.setAttribute("type", "application/pdf");
+                    embedElement.setAttribute("type", "storage/applications");
                     embedElement.setAttribute("width", "100%");
                     embedElement.setAttribute("height", "600px");
         

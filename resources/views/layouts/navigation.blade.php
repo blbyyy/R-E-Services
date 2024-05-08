@@ -737,7 +737,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.all.min.js"></script>
   <!-- Vendor JS Files -->
-  <script src="{{ secure_asset('../assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+  {{-- <script src="{{ secure_asset('../assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/chart.js/chart.umd.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/echarts/echarts.min.js')}}"></script>
@@ -745,17 +745,19 @@
   <script src="{{ secure_asset('../assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/tinymce/tinymce.min.js')}}"></script>
   <script src="{{ secure_asset('../assets/vendor/php-email-form/validate.js')}}"></script>
-  <script src="{{ secure_asset('../js/custom.js')}}"></script> 
+  <script src="{{ secure_asset('../js/custom.js')}}"></script>
+  <script src="{{ secure_asset('../assets/js/main.js')}}"></script> --}}
 
-  {{-- <script src="https://redigitalize-production.up.railway.app/assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="https://redigitalize-production.up.railway.app/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="https://redigitalize-production.up.railway.app/assets/vendor/chart.js/chart.umd.js"></script>
-  <script src="https://redigitalize-production.up.railway.app/assets/vendor/echarts/echarts.min.js"></script>
-  <script src="https://redigitalize-production.up.railway.app/assets/vendor/quill/quill.min.js"></script>
-  <script src="https://redigitalize-production.up.railway.app/assets/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="https://redigitalize-production.up.railway.app/assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="https://redigitalize-production.up.railway.app/assets/vendor/php-email-form/validate.js"></script>
-  <script src="https://redigitalize-production.up.railway.app/js/custom.js"></script> --}}
+  <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+  <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{ asset('assets/vendor/chart.js/chart.umd.js')}}"></script>
+  <script src="{{ asset('assets/vendor/echarts/echarts.min.js')}}"></script>
+  <script src="{{ asset('assets/vendor/quill/quill.min.js')}}"></script>
+  <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
+  <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js')}}"></script>
+  <script src="{{ asset('assets/vendor/php-email-form/validate.js')}}"></script>
+  <script src="{{ asset('js/custom.js')}}"></script>
+  <script src="{{ asset('assets/js/main.js')}}"></script>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
