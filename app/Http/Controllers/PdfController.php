@@ -50,7 +50,6 @@ class PdfController extends Controller
         Storage::put('reports/userCountTable.pdf', $pdf->output());
         $pdfPath = Storage::path('reports/userCountTable.pdf');
 
-        // return response()->download(public_path('uploads/reports/userCountTable.pdf'));
         return response()->download($pdfPath);
     }
 
@@ -70,9 +69,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/studentCountTable.pdf'));
+        Storage::put('reports/studentCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/studentCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/studentCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function facultyCountTable()
@@ -91,9 +91,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/facultyCountTable.pdf'));
+        Storage::put('reports/facultyCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/facultyCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/facultyCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function researchCoordinatorCountTable()
@@ -112,9 +113,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/researchCoordinatorCount.pdf'));
+        Storage::put('reports/researchCoordinatorCount.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/researchCoordinatorCount.pdf');
 
-        return response()->download(public_path('uploads/reports/researchCoordinatorCount.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function staffAdminCountTable()
@@ -133,9 +135,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/staffAdminCount.pdf'));
+        Storage::put('reports/staffAdminCount.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/staffAdminCount.pdf');
 
-        return response()->download(public_path('uploads/reports/staffAdminCount.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function applicationsCountTable()
@@ -154,9 +157,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html)->setPaper('a4', 'landscape');
 
-        $pdf->save(public_path('uploads/reports/applicationsCountTable.pdf'));
+        Storage::put('reports/applicationsCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/applicationsCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/applicationsCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function thesisTypeCountTable(Request $request)
@@ -168,14 +172,14 @@ class PdfController extends Controller
         ->orderBy('requestingform.id')
         ->get();
 
-
         $html = view('reports.thesisTypeApplicationsCount', compact('applications'))->render();
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/thesisTypeApplicationsCountTable.pdf'));
+        Storage::put('reports/thesisTypeApplicationsCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/thesisTypeApplicationsCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/thesisTypeApplicationsCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function requestorTypeCountTable(Request $request)
@@ -191,9 +195,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/requestorTypeApplicationsCountTable.pdf'));
+        Storage::put('reports/requestorTypeApplicationsCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/requestorTypeApplicationsCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/requestorTypeApplicationsCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function statusTypeCountTable(Request $request)
@@ -209,9 +214,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/statusTypeApplicationsCountTable.pdf'));
+        Storage::put('reports/statusTypeApplicationsCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/statusTypeApplicationsCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/statusTypeApplicationsCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function courseCountTable()
@@ -227,9 +233,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html);
 
-        $pdf->save(public_path('uploads/reports/courseApplicationsCountTable.pdf'));
+        Storage::put('reports/courseApplicationsCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/courseApplicationsCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/courseApplicationsCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function researchesCountTable()
@@ -240,9 +247,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html)->setPaper('a4', 'landscape');
 
-        $pdf->save(public_path('uploads/reports/researchesCountTable.pdf'));
+        Storage::put('reports/researchesCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/researchesCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/researchesCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function departmentCountTable()
@@ -258,9 +266,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html)->setPaper('a4', 'landscape');
 
-        $pdf->save(public_path('uploads/reports/researchesDepartmentApplicationsCountTable.pdf'));
+        Storage::put('reports/researchesDepartmentApplicationsCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/researchesDepartmentApplicationsCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/researchesDepartmentApplicationsCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function researchesCourseCountTable()
@@ -276,9 +285,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html)->setPaper('a4', 'landscape');
 
-        $pdf->save(public_path('uploads/reports/researchesCourseApplicationsCountTable.pdf'));
+        Storage::put('reports/researchesCourseApplicationsCountTable.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/researchesCourseApplicationsCountTable.pdf');
 
-        return response()->download(public_path('uploads/reports/researchesCourseApplicationsCountTable.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function researchListByDepartmentAndYear(Request $request)
@@ -292,9 +302,10 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html)->setPaper('a4', 'landscape');
 
-        $pdf->save(public_path('uploads/reports/researchListByYear.pdf'));
+        Storage::put('reports/researchListByYear.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/researchListByYear.pdf');
 
-        return response()->download(public_path('uploads/reports/researchListByYear.pdf'));
+        return response()->download($pdfPath);
     }
 
     public function researchListByInputText(Request $request)
@@ -306,8 +317,9 @@ class PdfController extends Controller
 
         $pdf = PDF::loadHTML($html)->setPaper('a4', 'landscape');
 
-        $pdf->save(public_path('uploads/reports/researchListByInputText.pdf'));
+        Storage::put('reports/researchListByInputText.pdf', $pdf->output());
+        $pdfPath = Storage::path('reports/researchListByInputText.pdf');
 
-        return response()->download(public_path('uploads/reports/researchListByInputText.pdf'));
+        return response()->download($pdfPath);
     }
 }
