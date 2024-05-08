@@ -3727,13 +3727,13 @@ $(document).ready(function () {
                     // Dynamically create an <embed> element
                     var embedElement = document.createElement("embed");
                     embedElement.setAttribute("src", pdfUrl);
-                    embedElement.setAttribute("type", "storage/applications");
+                    embedElement.setAttribute("type", "application/pdf");
                     embedElement.setAttribute("width", "100%");
                     embedElement.setAttribute("height", "600px");
         
                     // Replace the existing content of the container with the new <embed> element
                     $('#content').text(data.research_title);
-                    $("#pdf-container").html(embedElement);
+                    $("#pdf-containerss").html(embedElement);
                 },
                 error: function (error) {
                     console.log(error);
