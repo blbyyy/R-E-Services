@@ -9,6 +9,9 @@ use App\Models\ResearchProposal;
 use App\Models\Notifications;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\ResearchDoApproval;
+use App\Mail\ResearchUrdsApproval;
+use App\Mail\ResearchVpressApproval;
+use App\Mail\ResearchPressApproval;
 use App\Models\ColloquiumSchedule;
 use View, DB, File, Auth;
 
@@ -192,6 +195,9 @@ class ResearchProposalController extends Controller
             $proposal->remarks = 'Your research proposal will be sent to the respective recipient. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
             $proposal->status = 'Proposal Sent to Respective Recipient';
             $proposal->save();
+
+            $urdsEmail = 'josephandrebalbada@gmail.com';
+            Mail::to($urdsEmail)->send(new ResearchUrdsApproval($data));
         }
 
         if ($request->vpress != null) {
@@ -199,6 +205,9 @@ class ResearchProposalController extends Controller
             $proposal->remarks = 'Your research proposal will be sent to the respective recipient. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
             $proposal->status = 'Proposal Sent to Respective Recipient';
             $proposal->save();
+
+            $vpressEmail = 'josephandrebalbada@gmail.com';
+            Mail::to($vpressEmail)->send(new ResearchVpressApproval($data));
         }
 
         if ($request->press != null) {
@@ -206,6 +215,9 @@ class ResearchProposalController extends Controller
             $proposal->remarks = 'Your research proposal will be sent to the respective recipient. Please wait for the results once your proposal has been assessed, we will contact you immediately.';
             $proposal->status = 'Proposal Sent to Respective Recipient';
             $proposal->save();
+
+            $pressEmail = 'josephandrebalbada@gmail.com';
+            Mail::to($pressEmail)->send(new ResearchPressApproval($data));
         }
         
         return redirect()->to('/faculty/research-proposal')->with('success', 'Research Proposal Successfully Sent.');
