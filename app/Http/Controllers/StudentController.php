@@ -804,8 +804,6 @@ class StudentController extends Controller
             ], 400);
         }
 
-        Storage::put('public/avatars/'.time().'-'.$files->getClientOriginalName(), file_get_contents($files));
-
         $file = $request->file('avatar');
         $fileName = time() . '-' . $file->getClientOriginalName();
         // $filePath = 'images/' . $fileName;
@@ -818,7 +816,7 @@ class StudentController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Avatar changed successfully!',
-            'avatar' => $filePath // Optionally, you can return the updated avatar path
+            'avatar' => $fileName // Optionally, you can return the updated avatar path
         ]);
     }
 
@@ -882,8 +880,11 @@ class StudentController extends Controller
 
             if ($request->hasFile('research_file')) {
                 $pdfFile = $request->file('research_file');
-                $pdfFileName = time().'-'.$pdfFile->getClientOriginalName();
+                $pdfFileName = time() . '-' . $pdfFile->getClientOriginalName();
+                // $pdfFile->move(public_path('uploads/pdf'), $pdfFileName);
+
                 Storage::put('public/applications/'.time().'-'.$pdfFile->getClientOriginalName(), file_get_contents($pdfFile));
+
                 $file->research_file = $pdfFileName;
             }
 
@@ -897,7 +898,7 @@ class StudentController extends Controller
 
     public function mobileshowpdf($fileName)
     {
-        $filePath = public_path("uploads/pdf/{$fileName}");
+        $filePath = storage_path("storage/applications/{$fileName}");
 
         // Check if the file exists
         if (!file_exists($filePath)) {
