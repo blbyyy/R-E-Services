@@ -1106,19 +1106,17 @@ class FacultyController extends Controller
 
         $file = $request->file('avatar');
         $fileName = time() . '-' . $file->getClientOriginalName();
-        $filePath = 'images/' . $fileName;
+        // $filePath = 'images/' . $fileName;
+        Storage::put('public/avatars/'.time().'-'.$file->getClientOriginalName(), file_get_contents($file));
 
         // Update student avatar
-        $faculty->avatar = $filePath;
+        $faculty->avatar = $fileName;
         $faculty->save();
-
-        // Save the avatar file
-        Storage::put('public/' . $filePath, file_get_contents($file));
 
         return response()->json([
             'status' => 'success',
             'message' => 'Avatar changed successfully!',
-            'avatar' => $filePath // Optionally, you can return the updated avatar path
+            'avatar' => $fileName // Optionally, you can return the updated avatar path
         ]);
     }
 
