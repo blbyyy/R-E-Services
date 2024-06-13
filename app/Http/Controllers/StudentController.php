@@ -736,6 +736,38 @@ class StudentController extends Controller
         return response()->json($research);
     }
 
+    // public function checkerTitle(Request $request)
+    // {
+    //     $title = $request->input('title');
+
+    //     // Check if there's an existing record with a title containing the input word
+    //     $existingTitles = Research::where('research_title', 'like', '%' . $title . '%')->exists();
+
+    //     // Return the result as JSON
+    //     return response()->json(['exists' => $existingTitles]);
+    // }
+
+    public function checkerTitle(Request $request)
+    {
+        $title = $request->input('title');
+
+        if (empty($title)) {
+            return response()->json(['exists' => false, 'message' => 'Title input is required.']);
+        }
+
+        $matchingTitles = Research::where('research_title', 'like', '%' . $title . '%')->get();
+
+        return response()->json(['exists' => $matchingTitles->isNotEmpty(), 'titles' => $matchingTitles]);
+    }
+
+    public function showResults(Request $request)
+    {
+        $titles = json_decode($request->input('titles'), true);
+        return view('students.results', ['titles' => $titles]);
+    }
+
+
+
     //MOBILE START
     public function RegisterMobile(Request $request)
     { 

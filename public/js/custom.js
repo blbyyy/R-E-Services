@@ -3107,6 +3107,90 @@ $(document).ready(function () {
             $("#requestAccessForm").hide();
             $("#requestAccessForm")[0].reset();
         });
+
+        //title checker
+        // $('#research_title').change(function() {
+        //     var title = $('#research_title').val();
+        
+        //     $.ajax({
+        //         url: "/api/student/title-checker",
+        //         type: 'POST',
+        //         data: {
+        //             '_token': '{{ csrf_token() }}',
+        //             'title': title,
+        //         },
+        //         success: function(data) {
+        //             if (data.exists) {
+        //                 Swal.fire({
+        //                     icon: "error",
+        //                     title: "Title Conflict",
+        //                     text: "A title containing '" + title + "' already exists.",
+        //                 });
+        //                 $("#title").val('');
+        //             } else {
+        //                 Swal.fire({
+        //                     icon: "success",
+        //                     title: "Title Available",
+        //                     text: "No titles containing '" + title + "' found.",
+        //                 }); 
+        //             }
+        //         }
+        //     });
+        // });
+
+        $('#title').change(function() {
+            var title = $('#title').val();
+        
+            $.ajax({
+                url: "/api/student/title-checker",
+                type: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'title': title,
+                },
+                success: function(data) {
+                    if (data.message) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Input Required",
+                            text: data.message,
+                        });
+                    } else if (data.exists) {
+                        Swal.fire({
+                            icon: "info",
+                            title: "Matching Titles Found",
+                            text: "Redirecting to search results...",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var form = $('<form>', {
+                                    'method': 'GET',
+                                    'action': '/search-results'
+                                }).append($('<input>', {
+                                    'name': 'titles',
+                                    'value': JSON.stringify(data.titles),
+                                    'type': 'hidden'
+                                }));
+        
+                                $('body').append(form);
+                                form.submit();
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Title Available",
+                            text: "No titles containing '" + title + "' found.",
+                        });
+                    }
+                }
+            });
+        });
+        
+        
+        
+        
+
+        
     //END OF STUDENT POV
 
     //START OF STAFF POV

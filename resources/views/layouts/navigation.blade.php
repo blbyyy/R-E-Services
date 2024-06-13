@@ -329,7 +329,7 @@
         <li class="nav-item">
           <a class="nav-link " href="{{url('/student/title-checker')}}">
             <i class="bi bi-check-circle"></i>
-            <span>Title Checker</span>
+            <span>Research List</span>
           </a>
         </li>
         <li class="nav-item">

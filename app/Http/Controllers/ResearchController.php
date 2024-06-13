@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Algolia\AlgoliaSearch\SearchClient;
+use Illuminate\Support\Facades\Storage;
 use App\Models\StudentRequestAccess;
 use App\Models\FacultyRequestAccess;
 use App\Models\Notifications;

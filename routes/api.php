@@ -113,6 +113,11 @@ Route::post('/faculty/extension/schedule-appointment/checking-appointment', [
           'as' => 'appointments.purpose.check'
   ]);
 
+Route::post('/student/title-checker', [
+    'uses' => 'StudentController@checkerTitle',
+          'as' => 'students.title.checker'
+  ]);
+
 //MOBILE START
 //MOBILE 
 Route::post('/students/register', 'App\Http\Controllers\StudentController@RegisterMobile');

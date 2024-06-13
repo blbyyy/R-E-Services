@@ -34,8 +34,9 @@
                         @csrf
                         <div class="col-12">
                             <label for="research_title" class="form-label">Application Title</label>
-                            <input type="text" class="form-control" id="research_title" name="research_title">
+                            <input type="text" class="form-control" id="title" name="research_title">
                         </div>
+
                         <div class="col-12">
                             <label for="abstract" class="form-label">Application Abstract</label>
                             <textarea name="abstract" class="form-control" id="abstract" style="height: 300px;"></textarea>

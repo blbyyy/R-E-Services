@@ -1430,3 +1430,8 @@ Route::post('/tryyys', [
       'uses' => 'ResearchProposalController@sendingResearchFile',
             'as' => 'ResearchProposalController.sendingResearchFile'
     ]);
+
+Route::get('/search-results', [
+      'uses' => 'StudentController@showResults',
+            'as' => 'search.results'
+    ]);
