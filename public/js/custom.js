@@ -3109,35 +3109,6 @@ $(document).ready(function () {
         });
 
         //title checker
-        // $('#research_title').change(function() {
-        //     var title = $('#research_title').val();
-        
-        //     $.ajax({
-        //         url: "/api/student/title-checker",
-        //         type: 'POST',
-        //         data: {
-        //             '_token': '{{ csrf_token() }}',
-        //             'title': title,
-        //         },
-        //         success: function(data) {
-        //             if (data.exists) {
-        //                 Swal.fire({
-        //                     icon: "error",
-        //                     title: "Title Conflict",
-        //                     text: "A title containing '" + title + "' already exists.",
-        //                 });
-        //                 $("#title").val('');
-        //             } else {
-        //                 Swal.fire({
-        //                     icon: "success",
-        //                     title: "Title Available",
-        //                     text: "No titles containing '" + title + "' found.",
-        //                 }); 
-        //             }
-        //         }
-        //     });
-        // });
-
         $('#title').change(function() {
             var title = $('#title').val();
         
@@ -3158,8 +3129,8 @@ $(document).ready(function () {
                     } else if (data.exists) {
                         Swal.fire({
                             icon: "info",
-                            title: "Matching Titles Found",
-                            text: "Redirecting to search results...",
+                            title: "Possible Matching Titles Found",
+                            text: "Redirecting to search results for possible matching titles....",
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 var form = $('<form>', {
@@ -3169,27 +3140,20 @@ $(document).ready(function () {
                                     'name': 'titles',
                                     'value': JSON.stringify(data.titles),
                                     'type': 'hidden'
+                                })).append($('<input>', {
+                                    'name': 'inputTitle',
+                                    'value': data.inputTitle,
+                                    'type': 'hidden'
                                 }));
-        
+                                
                                 $('body').append(form);
                                 form.submit();
                             }
                         });
-                    } else {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Title Available",
-                            text: "No titles containing '" + title + "' found.",
-                        });
-                    }
+                    } s
                 }
             });
         });
-        
-        
-        
-        
-
         
     //END OF STUDENT POV
 

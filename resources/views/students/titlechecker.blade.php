@@ -3,7 +3,7 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Title Checker</h1>
+        <h1>Research List</h1>
     </div>
 
     @if(session('success'))

@@ -757,13 +757,34 @@ class StudentController extends Controller
 
         $matchingTitles = Research::where('research_title', 'like', '%' . $title . '%')->get();
 
-        return response()->json(['exists' => $matchingTitles->isNotEmpty(), 'titles' => $matchingTitles]);
+        return response()->json(['exists' => $matchingTitles->isNotEmpty(), 'titles' => $matchingTitles, 'inputTitle' => $title]);
     }
 
     public function showResults(Request $request)
     {
+        $student = DB::table('students')
+            ->join('users','users.id','students.user_id')
+            ->select('students.*','users.*')
+            ->where('user_id',Auth::id())
+            ->first();
+
+        $studentNotifCount = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->where('status', 'not read')
+            ->count();
+
+        $studentNotification = DB::table('notifications')
+            ->where('type', 'Student Notification')
+            ->where('reciever_id', Auth::id())
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get();
+
+        $inputTitle = $request->input('inputTitle');
         $titles = json_decode($request->input('titles'), true);
-        return view('students.results', ['titles' => $titles]);
+
+        return View::make('students.results',compact('inputTitle', 'titles', 'student','studentNotifCount','studentNotification'));
     }
 
 

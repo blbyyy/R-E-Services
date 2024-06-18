@@ -328,7 +328,7 @@
         </li>   
         <li class="nav-item">
           <a class="nav-link " href="{{url('/student/title-checker')}}">
-            <i class="bi bi-check-circle"></i>
+            <i class="ri-file-list-2-line"></i>
             <span>Research List</span>
           </a>
         </li>
@@ -708,7 +708,7 @@
   </aside><!-- End Sidebar-->
   
   <main id="main" class="main">
-    <div class="card" id="spinnerCard" style="display: none;">
+    <daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiv class="card" id="spinnerCard" style="display: none;">
       <div class="card-body">
           <h5 class="card-title">Loading...</h5>
           <p>Please wait while we fetch the data.</p>
