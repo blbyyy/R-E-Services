@@ -945,14 +945,17 @@ class AdminController extends Controller
 
             $date = \Carbon\Carbon::parse($latestFile->date_processing_end)->format('F d, Y');
 
-            // $certificate = 'https://reachtupt.online/certificate/' . $qrCodeName;
-            // $qrCodePath = public_path("uploads/certificate/image/{$qrCodeName}.png");
-            // QrCode::format('png')->size(300)->generate($certificate, $qrCodePath);
-
             $certificate = 'https://reachtupt.online/certificate/' . $qrCodeName;
             $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$certificate}";
             $qrCodePath = public_path("uploads/certificate/image/{$qrCodeName}.png");
             file_put_contents($qrCodePath, file_get_contents($qrCodeUrl));
+
+            // $certificate = 'https://reachtupt.online/certificate/' . $qrCodeName;
+            // $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$certificate}";
+            // $qrCodeContents = file_get_contents($qrCodeUrl);
+            // $qrCodeFilename = $qrCodeName . '.png';
+            // Storage::put('public/certificate/image/' . $qrCodeFilename, $qrCodeContents);
+            // $qrCodePath = Storage::url('public/certificate/image/' . $qrCodeFilename);
 
             $existingPdfPath = public_path("uploads/certificate/CertificateFormat.pdf");
 

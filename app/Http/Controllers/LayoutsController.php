@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\StudentAccessRequest;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Notifications;
@@ -89,6 +91,7 @@ class LayoutsController extends Controller
         $role = DB::table('users')->where('id',Auth::id())->value('role');
 
         if ($role === 'Student') {
+
             $announcements = DB::table('announcements')
             ->join('announcementsphoto', 'announcementsphoto.announcements_id', 'announcements.id')
             ->join('users', 'announcements.user_id', 'users.id')
@@ -108,6 +111,52 @@ class LayoutsController extends Controller
             ->orderBy('announcements.id') 
             ->get()
             ->groupBy('announcement_id');
+
+            $currentDate = Carbon::now()->addDay()->toDateString();
+            $fetchingEndDate = DB::table('student_request_access')
+                ->where('requestor_id', Auth::id())
+                ->first();
+
+            if ($fetchingEndDate) {
+                $endDate = new Carbon($fetchingEndDate->end_access_date);
+                
+                if ($currentDate === $endDate->toDateString()) {
+
+                    $reminderSent = DB::table('student_request_access')
+                        ->where('requestor_id', Auth::id())
+                        ->where('reminder', 'true')
+                        ->latest('created_at')
+                        ->exists();
+                        dd($reminderSent);
+                
+                    if (!$reminderSent) {
+                        $studentRequests = DB::table('student_request_access')
+                            ->join('research_list', 'research_list.id', '=', 'student_request_access.research_id')
+                            ->where('end_access_date', $currentDate)
+                            ->get();
+                
+                        $data = [
+                            'receiver' => $student->fname . ' ' . $student->mname . ' ' . $student->lname,
+                            'studentRequests' => []
+                        ];
+                
+                        foreach ($studentRequests as $request) {
+                            $data['studentRequests'][] = [
+                                'researchTitle' => $request->research_title,
+                            ];
+                        }
+
+                        Mail::to($student->email)->send(new StudentAccessRequest($data));
+                        
+                        DB::table('student_request_access')
+                        ->where('requestor_id', Auth::id())
+                        ->update(['reminder' => 'true']);
+                    }
+                }
+
+            }
+            
+
         } elseif ($role === 'Faculty') {
             $announcements = DB::table('announcements')
             ->join('announcementsphoto', 'announcementsphoto.announcements_id', 'announcements.id')

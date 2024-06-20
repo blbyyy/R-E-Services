@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('start_access_date');
             $table->string('end_access_date')->nullable();
+            $table->string('reminder')->nullable();
             $table->timestamps();
         });
 
