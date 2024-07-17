@@ -1224,7 +1224,7 @@ class AdminController extends Controller
             ->where('certificates.control_id', 'like', "%$controlNumber%") 
             ->get(); 
 
-            return View::make('certificate.tracking',compact('admin','certificates'));
+        return View::make('certificate.tracking',compact('admin','certificates'));
 
     }
 

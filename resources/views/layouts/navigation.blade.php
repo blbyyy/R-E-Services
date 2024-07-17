@@ -73,9 +73,9 @@
           <a class="nav-link nav-icon notificationBell" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell" style="font-size: 30px;" ></i>
             @if (Auth::user()->role === 'Admin')
-              @if ($adminNotifCount > 0)
+              {{-- @if ($adminNotifCount > 0)
                 <span class="badge bg-primary badge-number">{{$adminNotifCount}}</span>
-              @endif
+              @endif --}}
             @elseif (Auth::user()->role === 'Student')
               @if ($studentNotifCount > 0)
                 <span class="badge bg-primary badge-number">{{$studentNotifCount}}</span>
