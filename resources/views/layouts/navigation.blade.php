@@ -94,10 +94,10 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style="width: 350px">
 
             @if (Auth::user()->role === 'Admin')
-              <li class="dropdown-header">
+              {{-- <li class="dropdown-header">
                 You have {{$adminNotifCount}} notifications
                 <a href="{{url('admin/all/notifications')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-              </li>
+              </li> --}}
             @elseif (Auth::user()->role === 'Faculty')
               <li class="dropdown-header">
                 You have {{$facultyNotifCount}} notifications
