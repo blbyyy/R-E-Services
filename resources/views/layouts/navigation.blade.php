@@ -120,7 +120,7 @@
             </li>
 
             @if (Auth::user()->role === 'Admin')
-              @foreach ($adminNotification as $notif)
+              {{-- @foreach ($adminNotification as $notif)
                 <li class="notification-item">
                   <i class="bi bi-info-circle text-primary"></i>
                   <div>
@@ -132,7 +132,7 @@
                 <li>
                   <hr class="dropdown-divider">
                 </li>
-              @endforeach
+              @endforeach --}}
             @elseif (Auth::user()->role === 'Student')
               @foreach ($studentNotification as $notif)
                   <li class="notification-item">
