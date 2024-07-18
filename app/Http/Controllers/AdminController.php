@@ -948,9 +948,8 @@ class AdminController extends Controller
 
             $certificate = 'https://reachtupt.online/certificate/' . $qrCodeName;
             $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$certificate}";
-            $qrCodePath = "uploads/certificate/image/{$qrCodeName}.png";
+            $qrCodePath = public_path("uploads/certificate/image/{$qrCodeName}.png");
             file_put_contents($qrCodePath, file_get_contents($qrCodeUrl));
-
 
             $existingPdfPath = public_path("uploads/certificate/CertificateFormat.pdf");
 
