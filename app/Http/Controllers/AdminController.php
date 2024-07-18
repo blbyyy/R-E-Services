@@ -844,21 +844,21 @@ class AdminController extends Controller
         
         if ($request->status === 'Passed') {
 
-            // $certificateReCount = DB::table('certificates')->count();
-            // $certificateCount = ++$certificateReCount;
-            // $currentYearMonth = date('Ym');
+            $certificateReCount = DB::table('certificates')->count();
+            $certificateCount = ++$certificateReCount;
+            $currentYearMonth = date('Ym');
 
-            // if ($certificateCount >= 1 && $certificateCount <= 9) {
-            //     $qrCodeName = $currentYearMonth . 0 . 0 . 0 . $certificateCount;
-            // } else if ($certificateCount >= 10 && $certificateCount <= 99) {
-            //     $qrCodeName = $currentYearMonth . 0 . 0 . $certificateCount;
-            // } else if ($certificateCount >= 100 && $certificateCount <= 999) {
-            //     $qrCodeName = $currentYearMonth . 0 . $certificateCount;
-            // } else if ($certificateCount >= 1000) {
-            //     $qrCodeName = $currentYearMonth . $certificateCount;
-            // }
+            if ($certificateCount >= 1 && $certificateCount <= 9) {
+                $qrCodeName = $currentYearMonth . 0 . 0 . 0 . $certificateCount;
+            } else if ($certificateCount >= 10 && $certificateCount <= 99) {
+                $qrCodeName = $currentYearMonth . 0 . 0 . $certificateCount;
+            } else if ($certificateCount >= 100 && $certificateCount <= 999) {
+                $qrCodeName = $currentYearMonth . 0 . $certificateCount;
+            } else if ($certificateCount >= 1000) {
+                $qrCodeName = $currentYearMonth . $certificateCount;
+            }
 
-            $qrCodeName = 2024070005;
+            // $qrCodeName = 2024070005;
             
             $cert = new Certificate();
             $cert->control_id = $qrCodeName;
