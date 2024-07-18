@@ -116,19 +116,19 @@ class LayoutsController extends Controller
             $fetchingEndDate = DB::table('student_request_access')
                 ->where('requestor_id', Auth::id())
                 ->first();
-
-            if ($fetchingEndDate) {
+    
                 $endDate = new Carbon($fetchingEndDate->end_access_date);
-                
-                if ($currentDate === $endDate->toDateString()) {
+                $fetchingEndDate = Carbon::parse($fetchingEndDate->end_access_date);
+                $newFetchingEndDate = $fetchingEndDate->subDay()->toDateString();
+
+                if ($currentDate === $newFetchingEndDate) {
 
                     $reminderSent = DB::table('student_request_access')
                         ->where('requestor_id', Auth::id())
                         ->where('reminder', 'true')
                         ->latest('created_at')
                         ->exists();
-                        dd($reminderSent);
-                
+                        
                     if (!$reminderSent) {
                         $studentRequests = DB::table('student_request_access')
                             ->join('research_list', 'research_list.id', '=', 'student_request_access.research_id')
@@ -154,7 +154,7 @@ class LayoutsController extends Controller
                     }
                 }
 
-            }
+            
             
 
         } elseif ($role === 'Faculty') {

@@ -73,9 +73,9 @@
           <a class="nav-link nav-icon notificationBell" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell" style="font-size: 30px;" ></i>
             @if (Auth::user()->role === 'Admin')
-              {{-- @if ($adminNotifCount > 0)
+              @if ($adminNotifCount > 0)
                 <span class="badge bg-primary badge-number">{{$adminNotifCount}}</span>
-              @endif --}}
+              @endif
             @elseif (Auth::user()->role === 'Student')
               @if ($studentNotifCount > 0)
                 <span class="badge bg-primary badge-number">{{$studentNotifCount}}</span>
@@ -94,10 +94,10 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style="width: 350px">
 
             @if (Auth::user()->role === 'Admin')
-              {{-- <li class="dropdown-header">
+              <li class="dropdown-header">
                 You have {{$adminNotifCount}} notifications
                 <a href="{{url('admin/all/notifications')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-              </li> --}}
+              </li>
             @elseif (Auth::user()->role === 'Faculty')
               <li class="dropdown-header">
                 You have {{$facultyNotifCount}} notifications
@@ -120,7 +120,7 @@
             </li>
 
             @if (Auth::user()->role === 'Admin')
-              {{-- @foreach ($adminNotification as $notif)
+              @foreach ($adminNotification as $notif)
                 <li class="notification-item">
                   <i class="bi bi-info-circle text-primary"></i>
                   <div>
@@ -132,7 +132,7 @@
                 <li>
                   <hr class="dropdown-divider">
                 </li>
-              @endforeach --}}
+              @endforeach
             @elseif (Auth::user()->role === 'Student')
               @foreach ($studentNotification as $notif)
                   <li class="notification-item">
