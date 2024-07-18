@@ -887,7 +887,6 @@ class AdminController extends Controller
                 DB::table('turnitin_photos')->insert($multi);
             }
 
-
             $file = Files::find($fileId->id);
             $file->file_status = $request->status;
             $file->save();
@@ -949,8 +948,9 @@ class AdminController extends Controller
 
             $certificate = 'https://reachtupt.online/certificate/' . $qrCodeName;
             $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$certificate}";
-            $qrCodePath = public_path("uploads/certificate/image/{$qrCodeName}.png");
+            $qrCodePath = "uploads/certificate/image/{$qrCodeName}.png";
             file_put_contents($qrCodePath, file_get_contents($qrCodeUrl));
+
 
             $existingPdfPath = public_path("uploads/certificate/CertificateFormat.pdf");
 
