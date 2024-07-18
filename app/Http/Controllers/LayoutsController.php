@@ -117,6 +117,7 @@ class LayoutsController extends Controller
                 ->where('requestor_id', Auth::id())
                 ->first();
     
+            if ($fetchingEndDate !== null) {
                 $endDate = new Carbon($fetchingEndDate->end_access_date);
                 $fetchingEndDate = Carbon::parse($fetchingEndDate->end_access_date);
                 $newFetchingEndDate = $fetchingEndDate->subDay()->toDateString();
@@ -153,6 +154,7 @@ class LayoutsController extends Controller
                         ->update(['reminder' => 'true']);
                     }
                 }
+            }
 
             
             
