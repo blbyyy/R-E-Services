@@ -119,21 +119,20 @@ class LayoutsController extends Controller
     
             if ($fetchingEndDate !== null) {
                 $endDate = new Carbon($fetchingEndDate->end_access_date);
-                $fetchingEndDate = Carbon::parse($fetchingEndDate->end_access_date);
-                $newFetchingEndDate = $fetchingEndDate->subDay()->toDateString();
 
-                if ($currentDate === $newFetchingEndDate) {
+                if ($currentDate === $endDate->toDateString()) {
 
                     $reminderSent = DB::table('student_request_access')
                         ->where('requestor_id', Auth::id())
-                        ->where('reminder', 'true')
+                        ->where('reminder', 'true') 
                         ->latest('created_at')
                         ->exists();
                         
                     if (!$reminderSent) {
                         $studentRequests = DB::table('student_request_access')
                             ->join('research_list', 'research_list.id', '=', 'student_request_access.research_id')
-                            ->where('end_access_date', $currentDate)
+                            ->select('research_list.research_title')
+                            ->whereDate('end_access_date', $currentDate)
                             ->get();
                 
                         $data = [
@@ -147,8 +146,16 @@ class LayoutsController extends Controller
                             ];
                         }
 
+                        $notif = new Notifications;
+                        $notif->type = 'Student Notification';
+                        $notif->title = 'Access Request is About to Expire';
+                        $notif->message = 'This is a reminder that your access to the research file will expire in 1 day. Please ensure you review the necessary documents before your access ends.';
+                        $notif->date = now();
+                        $notif->reciever_id = Auth::id();
+                        $notif->save();
+
                         Mail::to($student->email)->send(new StudentAccessRequest($data));
-                        
+
                         DB::table('student_request_access')
                         ->where('requestor_id', Auth::id())
                         ->update(['reminder' => 'true']);
