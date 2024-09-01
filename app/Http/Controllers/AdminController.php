@@ -1360,6 +1360,8 @@ class AdminController extends Controller
             ->take(4)
             ->get();
 
+        $department = DB::table('departments')->get();
+
         if ($request->userRole === 'Student') {
             $users = DB::table('users')
             ->join('students', 'users.id', '=', 'students.user_id')
@@ -1382,7 +1384,7 @@ class AdminController extends Controller
             $users = User::orderBy('id')->with(['student', 'faculty', 'staff'])->get();
         }
 
-        return View::make('admin.userslist',compact('users','admin','adminNotifCount','adminNotification'));
+        return View::make('admin.userslist',compact('users','admin','adminNotifCount','adminNotification','department'));
     }
 
     public function showUserlistInfo($id)
