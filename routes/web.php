@@ -20,6 +20,7 @@ use App\Models\Department;
 //     'uses' => 'AdminController@showannouncement',
 //           'as' => 'homepage'
 //   ]);
+
 Route::get('/csm-form/firsPage', [
       'uses' => 'ClientSatisfactionMeasurementController@firstPage',
             'as' => 'csm.page1'
@@ -744,10 +745,14 @@ Route::get('/applicationlist', [
           'as' => 'application.list'
   ]);
 
-Route::get('/', [
-    'uses' => 'LayoutsController@navigation',
-          'as' => 'navigation'
-  ]);
+// Route::get('/', [
+//     'uses' => 'LayoutsController@navigation',
+//           'as' => 'navigation'
+//   ]);
+
+Route::get('/', function(){
+      return redirect()->route('login');
+  });
 
 Route::get('/old', function () {
     return view('welcome');

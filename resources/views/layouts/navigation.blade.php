@@ -279,14 +279,14 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
       @guest
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a style="background-color: {{ Request::is('homepage') ? '#700117' : '#c9c7c8' }};
                   color: {{ Request::is('homepage') ? 'white' : 'black' }}" 
            class="nav-link" href="{{ url('/homepage') }}">
             <i class="bi bi-house-door" style="color: {{ Request::is('homepage') ? 'white' : '#700117' }}"></i>
             <span>Home</span>
         </a>
-      </li>
+      </li> --}}
       <li class="nav-item">
         <a style="background-color: {{ Request::is('login') ? '#700117' : '#c9c7c8' }};
                   color: {{ Request::is('login') ? 'white' : 'black' }}" 
