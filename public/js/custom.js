@@ -2704,18 +2704,30 @@ $(document).ready(function () {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
                 },
                 dataType: "json",
+                // success: function (data) {
+                //     console.log(data);
+                //     setTimeout(function() {
+                //         window.location.href = '/apply/certification';
+                //     }, 1500);
+                //     Swal.fire({
+                //         position: 'center',
+                //         icon: 'success',
+                //         title: 'Request Sent',
+                //         html: '<p>Thanks for using our system! Your feedback means a lot to us as we aim to improve our services on campus</p>' 
+                //         + '<img class="img" src="/assets/img/CustomerSatisfaction.png" alt="" style="width: 250px; height: auto;">',
+                //     })
+                // },
                 success: function (data) {
                     console.log(data);
                     setTimeout(function() {
                         window.location.href = '/apply/certification';
-                    }, 1500);
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Request Sent',
-                        html: '<p>Thanks for using our system! Your feedback means a lot to us as we aim to improve our services on campus</p>' 
-                        + '<img class="img" src="/assets/img/CustomerSatisfaction.png" alt="" style="width: 250px; height: auto;">',
-                    })
+                    }, 2000);
+                    console.log(data);
+                    Swal.fire(
+                        'Request Sent!',
+                        'Your application has been submitted. Please wait while the process is completed.',
+                        'success'
+                    )
                 },
                 error: function (error) {
                     console.log(error);
