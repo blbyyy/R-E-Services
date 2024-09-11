@@ -135,10 +135,10 @@
                     <input type="date" class="form-control" id="date_processed" name="date_processed">
                   </div>
 
-                  <div class="col-12 text-center">
+                  {{-- <div class="col-12 text-center">
                     <label for="content" class="form-label">Proof of Similarity Index Using Turnitin:</label>
                     <input name="img_path[]" type="file" multiple id="img_path" class="form-control" id="documentation">
-                  </div>
+                  </div> --}}
 
                   <div class="col-12 text-center" id="remarksContainer" style="display: none;">
                     <label for="remarks">Remarks</label>

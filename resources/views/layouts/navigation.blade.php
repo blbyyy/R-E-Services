@@ -7,6 +7,8 @@
 
     <title>R&E-Services</title>
     <link rel="website icon" type="png" href="{{ secure_asset('../assets/img/RED.png')}}">
+    <link rel="website icon" type="png" href="{{ asset('../assets/img/RED.png')}}">
+
 
     <meta content="" name="description">
     <meta content="" name="keywords">

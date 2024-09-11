@@ -46,9 +46,9 @@
                   <button type="button" class="btn btn-outline-dark studentViewDetails" data-bs-toggle="modal" data-bs-target="#studentViewInfo" data-id="{{ $stats->id }}">
                     <i class="bx bx-show" style="font-size: 25px"></i> 
                   </button>
-                  <button type="button" class="btn btn-outline-dark turnitinPhotos" data-bs-toggle="modal" data-bs-target="#turnitinPhotos" data-id="{{ $stats->id }}">
+                  {{-- <button type="button" class="btn btn-outline-dark turnitinPhotos" data-bs-toggle="modal" data-bs-target="#turnitinPhotos" data-id="{{ $stats->id }}">
                     <i class="bx bx-images" style="font-size: 25px"></i> 
-                  </button>
+                  </button> --}}
               </div>
           </div>
         </div>

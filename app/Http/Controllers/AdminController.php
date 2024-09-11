@@ -876,16 +876,16 @@ class AdminController extends Controller
             $form->certificate_id = $lastId;
             $form->save();
 
-            $proofs = $request->file('img_path');
-            foreach ($proofs as $proof) {
-                $avatarFileName = time() . '-' . $proof->getClientOriginalName();
-                Storage::put('public/turnitinProofs/' . $avatarFileName, file_get_contents($proof));
-                $multi = [
-                    'img_path' => 'turnitinProofs/' . $avatarFileName,
-                    'requestingform_id' => $id
-                ];
-                DB::table('turnitin_photos')->insert($multi);
-            }
+            // $proofs = $request->file('img_path');
+            // foreach ($proofs as $proof) {
+            //     $avatarFileName = time() . '-' . $proof->getClientOriginalName();
+            //     Storage::put('public/turnitinProofs/' . $avatarFileName, file_get_contents($proof));
+            //     $multi = [
+            //         'img_path' => 'turnitinProofs/' . $avatarFileName,
+            //         'requestingform_id' => $id
+            //     ];
+            //     DB::table('turnitin_photos')->insert($multi);
+            // }
 
             $file = Files::find($fileId->id);
             $file->file_status = $request->status;
@@ -991,7 +991,7 @@ class AdminController extends Controller
       
                 $pdf->SetFont('Arial', 'B', 12);
                 $pdf->SetXY(10, 180); 
-                $pdf->MultiCell(0, 10, $latestFile->research_staff, 0, 'C');
+                $pdf->MultiCell(0, 10, ' Dr. Rico S. Santos ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'I', 12);
                 $pdf->SetXY(10, 185); 
@@ -1003,7 +1003,7 @@ class AdminController extends Controller
       
                 $pdf->SetFont('Arial', 'B', 12);
                 $pdf->SetXY(10, 210); 
-                $pdf->MultiCell(0, 10, ' Laarnie D. Macapagal, DMS ', 0, 'C');
+                $pdf->MultiCell(0, 10, ' Dr. Laarnie D. Macapagal ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'I', 12);
                 $pdf->SetXY(10, 215); 
@@ -1026,7 +1026,7 @@ class AdminController extends Controller
                 'percentage_results' => $request->simmilarity_percentage_results,
             ];
         
-            // Mail::to($userEmail)->send(new CertificationPassed($data));
+            Mail::to($userEmail)->send(new CertificationPassed($data));
         }else {  
 
             $researchTitle = DB::table('requestingform')
@@ -1092,7 +1092,7 @@ class AdminController extends Controller
                 'percentage_results' => $request->simmilarity_percentage_results,
             ];
         
-            // Mail::to($userEmail)->send(new CertificationComplete($data));
+            Mail::to($userEmail)->send(new CertificationComplete($data));
         }
 
         return response()->json($file);
