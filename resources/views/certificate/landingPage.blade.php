@@ -53,7 +53,7 @@
         <div class="col-md-10" style="padding-top: 20px">
           <div class="card-body">
             
-            <h5 class="card-title">Certifacate Details</h5>
+            <h5 class="card-title">Certificate Details</h5>
               <hr style="border-width: 10px; color: maroon;">
                   <p class="card-text" style="font-style: italic">
                       "This certificate officially confirms ownership of "<b>{{$certificate->research_title}}</b>", 

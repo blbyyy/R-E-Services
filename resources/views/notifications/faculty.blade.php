@@ -36,12 +36,13 @@
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/applicationlist')}}">View</a>
                         </div>
+                    @elseif ($notifications->title === 'Account Verified')
                     @elseif ($notifications->title === 'Technical Adviser Certification Approval' || $notifications->title === 'Subject Adviser Certification Approval')
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/faculty/student-applications')}}">View</a>
                         </div>
                     {{-- @elseif ($notifications->title === 'Appointment Done for Proposal Consultation' || $notifications->title === 'Appointment Set for Proposal Consultation' ||  $notifications->title === 'Appointment Cancelled for Proposal Consultation') --}}
-                    @else
+                    @else 
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/faculty/extension/application')}}">View</a>
                         </div>

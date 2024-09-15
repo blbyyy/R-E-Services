@@ -24,7 +24,15 @@
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/student/title-checker')}}">View</a>
                         </div>
-                    @elseif ($notifications->title === 'Application Certification Failed')
+                    @elseif ($notifications->title === 'Application Certification Failed' || $notifications->title === 'Application Certification Passed')
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('/application/status')}}">View</a>
+                        </div>
+                    @elseif ($notifications->title === 'Subject Adviser Certification Approved' || $notifications->title === 'Technical Adviser Certification Approved')
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('/application/status')}}">View</a>
+                        </div>
+                        @elseif ($notifications->title === 'Subject Adviser Certification Reject' || $notifications->title === 'Technical Adviser Certification Reject')
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/application/status')}}">View</a>
                         </div>

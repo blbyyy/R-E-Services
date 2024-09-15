@@ -40,7 +40,11 @@
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/appointments')}}">View</a> 
                         </div> 
-                    @else
+                    @elseif ($notifications->title === 'Faculty Member Account Verification')
+                        <div class="d-flex justify-content-end">
+                            <a href="{{url('/admin/users-pending')}}">View</a> 
+                        </div> 
+                    @else 
                         <div class="d-flex justify-content-end">
                             <a href="{{url('/admin/extension/proposal-list')}}">View</a>
                         </div>
