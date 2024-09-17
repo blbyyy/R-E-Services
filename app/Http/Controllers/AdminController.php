@@ -944,6 +944,12 @@ class AdminController extends Controller
             ->where('requestingform.id',$id)
             ->first();
 
+            $research_title = strtoupper($latestFile->research_title);
+            $researchers_name1 = strtoupper($latestFile->requestor_name);
+            $researchers_name2 = strtoupper($latestFile->researchers_name1);
+            $researchers_name3 = strtoupper($latestFile->researchers_name2);
+            $researchers_name4 = strtoupper($latestFile->researchers_name3);
+
             $date = \Carbon\Carbon::parse($latestFile->date_processing_end)->format('F d, Y');
 
             $certificate = 'https://reachtupt.online/certificate/' . $qrCodeName;
@@ -963,38 +969,40 @@ class AdminController extends Controller
                 $pdf->useTemplate($templateId);
            
                 $pdf->SetFont('Arial', '', 12);
-                $pdf->SetXY(10, 65); 
+                $pdf->SetXY(10, 55); 
                 $pdf->MultiCell(0, 10, ' This is to certify that the manuscript entitled ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'B', 12);
-                $pdf->SetXY(10, 75); 
-                $pdf->MultiCell(0, 10, $latestFile->research_title, 0, 'C');
+                $pdf->SetXY(10, 70); 
+                $pdf->MultiCell(0, 5, $research_title, 0, 'C');
       
                 $pdf->SetFont('Arial', '', 12);
-                $pdf->SetXY(10, 112); 
+                $pdf->SetXY(10, 95); 
                 $pdf->MultiCell(0, 10, ' authored by ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'B', 12);
-                $pdf->SetXY(10, 125); 
-                $pdf->MultiCell(0, 10, ' ACUISA, JOHN DOMINIC M.', 0, 'C');
-                $pdf->SetXY(10, 130); 
-                $pdf->MultiCell(0, 10, ' AGUIRRE, JERICO B.', 0, 'C');
-                $pdf->SetXY(10, 135); 
-                $pdf->MultiCell(0, 10, ' EBRON, XYRA C.', 0, 'C');
+                $pdf->SetXY(10, 108); 
+                $pdf->MultiCell(0, 10, $researchers_name1, 0, 'C');
+                $pdf->SetXY(10, 113); 
+                $pdf->MultiCell(0, 10, $researchers_name2, 0, 'C');
+                $pdf->SetXY(10, 118); 
+                $pdf->MultiCell(0, 10, $researchers_name3, 0, 'C');
+                $pdf->SetXY(10, 123); 
+                $pdf->MultiCell(0, 10, $researchers_name4, 0, 'C');
       
                 $pdf->SetFont('Arial', '', 12);
-                $pdf->SetXY(10, 150); 
-                $pdf->MultiCell(0, 5, 'has been subjected to similarity check on ' . $date . 
-                ' using Turnitin with generated similarity index of ' . $latestFile->simmilarity_percentage_results . '%', 0, 'C');
-                $pdf->SetXY(10, 170); 
+                $pdf->SetXY(10, 145); 
+                $pdf->MultiCell(0, 5, 'has been subjected to similarity check on ' . $date , 0, 'C');
+                $pdf->MultiCell(0, 5, ' using Turnitin with generated similarity index of ' . $latestFile->simmilarity_percentage_results . '%', 0, 'C');
+                $pdf->SetXY(10, 165); 
                 $pdf->MultiCell(0, 10, ' Processed by: ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'B', 12);
-                $pdf->SetXY(10, 180); 
-                $pdf->MultiCell(0, 10, ' Dr. Rico S. Santos ', 0, 'C');
+                $pdf->SetXY(10, 175); 
+                $pdf->MultiCell(0, 10, ' DR. RICO S. SANTOS ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'I', 12);
-                $pdf->SetXY(10, 185); 
+                $pdf->SetXY(10, 180); 
                 $pdf->MultiCell(0, 10, ' Head of Research & Development Services ', 0, 'C');
       
                 $pdf->SetFont('Arial', '', 12);
@@ -1003,7 +1011,7 @@ class AdminController extends Controller
       
                 $pdf->SetFont('Arial', 'B', 12);
                 $pdf->SetXY(10, 210); 
-                $pdf->MultiCell(0, 10, ' Dr. Laarnie D. Macapagal ', 0, 'C');
+                $pdf->MultiCell(0, 10, ' DR. LAARNIE D. MACAPAGAL ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'I', 12);
                 $pdf->SetXY(10, 215); 
