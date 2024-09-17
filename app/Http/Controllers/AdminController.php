@@ -971,16 +971,16 @@ class AdminController extends Controller
                 $pdf->MultiCell(0, 10, $latestFile->research_title, 0, 'C');
       
                 $pdf->SetFont('Arial', '', 12);
-                $pdf->SetXY(10, 115); 
+                $pdf->SetXY(10, 112); 
                 $pdf->MultiCell(0, 10, ' authored by ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'B', 12);
+                $pdf->SetXY(10, 125); 
+                $pdf->MultiCell(0, 10, ' ACUISA, JOHN DOMINIC M.', 0, 'C');
                 $pdf->SetXY(10, 130); 
-                $pdf->MultiCell(0, 10, $latestFile->researchers_name1, 0, 'C');
+                $pdf->MultiCell(0, 10, ' AGUIRRE, JERICO B.', 0, 'C');
                 $pdf->SetXY(10, 135); 
-                $pdf->MultiCell(0, 10, $latestFile->researchers_name2, 0, 'C');
-                $pdf->SetXY(10, 140); 
-                $pdf->MultiCell(0, 10, $latestFile->researchers_name3, 0, 'C');
+                $pdf->MultiCell(0, 10, ' EBRON, XYRA C.', 0, 'C');
       
                 $pdf->SetFont('Arial', '', 12);
                 $pdf->SetXY(10, 150); 
