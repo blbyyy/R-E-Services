@@ -262,8 +262,8 @@ class StudentController extends Controller
     public function upload_file(Request $request)
     {
         $request->validate([
-            'research_file' => 'required|mimes:pdf|max:2048', // PDF file validation
-        ]);
+            'research_file' => 'required|mimes:pdf|max:102400', 
+        ]);        
 
         $file = new Files;
         $file->file_status = 'Available';

@@ -949,6 +949,7 @@ class AdminController extends Controller
             $researchers_name2 = strtoupper($latestFile->researchers_name1);
             $researchers_name3 = strtoupper($latestFile->researchers_name2);
             $researchers_name4 = strtoupper($latestFile->researchers_name3);
+            $researchers_name5 = strtoupper($latestFile->researchers_name4);
 
             $date = \Carbon\Carbon::parse($latestFile->date_processing_end)->format('F d, Y');
 
@@ -989,12 +990,15 @@ class AdminController extends Controller
                 $pdf->MultiCell(0, 10, $researchers_name3, 0, 'C');
                 $pdf->SetXY(10, 123); 
                 $pdf->MultiCell(0, 10, $researchers_name4, 0, 'C');
+                $pdf->SetXY(10, 128); 
+                $pdf->MultiCell(0, 10, $researchers_name5, 0, 'C');
       
                 $pdf->SetFont('Arial', '', 12);
                 $pdf->SetXY(10, 145); 
                 $pdf->MultiCell(0, 5, 'has been subjected to similarity check on ' . $date , 0, 'C');
                 $pdf->MultiCell(0, 5, ' using Turnitin with generated similarity index of ' . $latestFile->simmilarity_percentage_results . '%', 0, 'C');
-                $pdf->SetXY(10, 165); 
+                
+                $pdf->SetXY(10, 160); 
                 $pdf->MultiCell(0, 10, ' Processed by: ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'B', 12);
@@ -1006,7 +1010,7 @@ class AdminController extends Controller
                 $pdf->MultiCell(0, 10, ' Head of Research & Development Services ', 0, 'C');
       
                 $pdf->SetFont('Arial', '', 12);
-                $pdf->SetXY(10, 200); 
+                $pdf->SetXY(10, 195); 
                 $pdf->MultiCell(0, 10, ' Certified Correct by: ', 0, 'C');
       
                 $pdf->SetFont('Arial', 'B', 12);
