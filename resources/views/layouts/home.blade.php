@@ -346,8 +346,7 @@
       @endif
 
     @else
-    <div id="ey">R.E.A.C.H</div >
-    <span>Research and Extension Access and Control Hub</span>
+    
     @endif
     
 </main>

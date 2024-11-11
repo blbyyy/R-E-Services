@@ -173,8 +173,10 @@
                         </div>
                        
                         <div >
-                          <button data-id="{{$facultylists->id}}" type="submit" class="btn btn-primary facultyupdateBtn">Save Changes</button>
-                          <button type="reset" class="btn btn-secondary">Reset</button>
+                          @if ($facultylist->isNotEmpty())
+                            <button data-id="{{$facultylists->id}}" type="submit" class="btn btn-primary facultyupdateBtn">Save Changes</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                          @endif
                         </div>
                       </form><!-- End floating Labels Form -->
         

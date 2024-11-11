@@ -57,7 +57,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="{{ url('/homepage')}}" class="logo d-flex align-items-center">
+      <a href="{{ url('/login')}}" class="logo d-flex align-items-center">
         {{-- <img src="{{ asset('assets/img/TUP.png')}}" alt=""> --}}
         <img src="{{ secure_asset('../assets/img/RED.png')}}" alt="">
         <span class="d-none d-lg-block">  R&E-Services</span>

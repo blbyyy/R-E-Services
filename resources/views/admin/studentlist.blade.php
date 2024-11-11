@@ -21,20 +21,28 @@
                 <th scope="col">Email</th>
               </tr>
             </thead>
-            @foreach ($studentlist as $studentlists)
-            <tbody>
-              <tr>
-                <td>
-                    <button data-id="{{$studentlists->id}}" type="button" class="btn btn-info studentshowBtn" data-bs-toggle="modal" data-bs-target="#showstudentinfo"><i class="bi bi-eye"></i></button>
-                    <button data-id="{{$studentlists->id}}" type="button" class="btn btn-primary studenteditBtn" data-bs-toggle="modal" data-bs-target="#editstudentinfo"><i class="bi bi-pencil-square"></i></button>
-                    <button data-id="{{$studentlists->id}}" type="button" class="btn btn-danger studentdeleteBtn"><i class="bi bi-trash"></i></button>
-                  </td>
-                <td>{{$studentlists->tup_id}}</td>
-                <td>{{$studentlists->fname . ' ' . $studentlists->lname .' '. $studentlists->mname}}</td>
-                <td>{{$studentlists->email}}</td>
-              </tr>
-            </tbody>
-            @endforeach
+              @if ($studentlist->isNotEmpty())
+                @foreach ($studentlist as $studentlists)
+                    <tbody>
+                        <tr>
+                          <td>
+                            <button data-id="{{$studentlists->id}}" type="button" class="btn btn-info studentshowBtn" data-bs-toggle="modal" data-bs-target="#showstudentinfo"><i class="bi bi-eye"></i></button>
+                            <button data-id="{{$studentlists->id}}" type="button" class="btn btn-primary studenteditBtn" data-bs-toggle="modal" data-bs-target="#editstudentinfo"><i class="bi bi-pencil-square"></i></button>
+                            <button data-id="{{$studentlists->id}}" type="button" class="btn btn-danger studentdeleteBtn"><i class="bi bi-trash"></i></button>
+                          </td>
+                          <td>{{$studentlists->tup_id}}</td>
+                          <td>{{$studentlists->fname . ' ' . $studentlists->lname .' '. $studentlists->mname}}</td>
+                          <td>{{$studentlists->email}}</td>
+                        </tr>
+                    </tbody>
+                @endforeach
+              @else
+                <tbody>
+                    <tr>
+                      <td colspan="4" class="text-center">No students found</td>
+                    </tr>
+                </tbody>
+              @endif
           </table>
          
           <div class="modal fade" id="showstudentinfo" tabindex="-1">
@@ -165,10 +173,12 @@
                        
                         <div class="col-12" style="padding-top: 20px">
                           <div class="d-flex justify-content-end">
-                            <button data-id="{{$studentlists->id}}" type="submit" class="btn btn-outline-dark studentupdateBtn">Save Changes</button>
-                            <button type="reset" class="btn btn-outline-dark  ms-2">Reset</button>
+                            @if ($studentlist->isNotEmpty())
+                              <button data-id="{{$studentlists->id}}" type="submit" class="btn btn-outline-dark studentupdateBtn">Save Changes</button>
+                              <button type="reset" class="btn btn-outline-dark  ms-2">Reset</button>
+                            @endif
                           </div>
-                      </div>
+                        </div>
                       </form><!-- End floating Labels Form -->
         
                     </div>
